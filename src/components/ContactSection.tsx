@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 const ContactSection = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-
   const contactMethods = [{
     Icon: Mail,
     label: 'Email',
@@ -42,7 +41,7 @@ const ContactSection = () => {
   }, {
     Icon: MessageSquare,
     label: 'Telegram',
-    value: '@adilmunawar',
+    value: '@adilmunawarx',
     description: 'Secure messaging platform',
     link: 'https://t.me/adilmunawar',
     color: 'text-blue-400',
@@ -103,7 +102,7 @@ const ContactSection = () => {
     dotColor: 'bg-pink-400'
   }, {
     Icon: Phone,
-    link: 'https://wa.me/923244965220',
+    link: 'https://wa.me/+923244965220',
     color: 'hover:text-green-400',
     bgGradient: 'from-green-500/10 to-emerald-500/10',
     hoverGradient: 'hover:from-green-500/25 hover:to-emerald-500/25',
@@ -111,13 +110,11 @@ const ContactSection = () => {
     shadowColor: 'hover:shadow-green-500/20',
     dotColor: 'bg-green-400'
   }];
-
   return (
     <section id="contact" className="min-h-screen py-20 px-4 relative overflow-hidden bg-gradient-to-b from-gray-900 to-cyber-dark">
       {/* Dark theme background */}
       <div className="absolute inset-0 bg-cyber-dark/90"></div>
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      
       {/* Animated background orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-cyber-cyan/5 to-blue-500/5 rounded-full blur-3xl animate-drift-1"></div>
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-500/5 to-pink-500/5 rounded-full blur-3xl animate-drift-2"></div>
@@ -139,7 +136,6 @@ const ContactSection = () => {
             <span className="text-cyber-cyan font-semibold"> communication channel</span> and 
             let's bring your ideas to life together
           </p>
-          
           {/* Additional info cards */}
           <div className="flex justify-center gap-8 mt-12">
             <div className="flex items-center gap-3 text-gray-500 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
@@ -152,7 +148,6 @@ const ContactSection = () => {
             </div>
           </div>
         </div>
-
         {/* Enhanced contact cards grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
           {contactMethods.map((method, index) => (
@@ -170,7 +165,6 @@ const ContactSection = () => {
               {/* Floating particles */}
               <div className="absolute top-4 right-4 w-2 h-2 bg-cyber-cyan/60 rounded-full animate-ping opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="absolute bottom-6 left-6 w-1 h-1 bg-cyber-cyan rounded-full animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ animationDelay: '0.3s' }}></div>
-              
               {/* Content */}
               <div className="relative text-center transform group-hover:translate-y-1 transition-transform duration-500">
                 {/* Enhanced icon container */}
