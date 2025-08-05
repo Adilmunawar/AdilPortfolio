@@ -7,20 +7,17 @@ interface ContributionDay {
   count: number;
   level: number;
 }
-
 const GitHubStats = () => {
   const [contributions, setContributions] = useState<ContributionDay[]>([]);
   const [totalContributions, setTotalContributions] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [animateStats, setAnimateStats] = useState(false);
-
   useEffect(() => {
     // Generate mock data since GitHub API requires authentication
     const generateMockData = () => {
       const data: ContributionDay[] = [];
       const today = new Date();
       const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-      
       let total = 0;
       for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
         const count = Math.floor(Math.random() * 15);
