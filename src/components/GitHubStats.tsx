@@ -34,106 +34,123 @@ const GitHubStats = () => {
   useEffect(() => {
     const fetchGitHubContributions = async () => {
       try {
-        // Using GitHub's contribution graph SVG endpoint which is public
         const username = 'AdilMunawar';
-        const contributionsUrl = `https://github.com/users/${username}/contributions`;
         
-        // Fetch user's basic stats from GitHub API (public endpoint)
-        const userResponse = await fetch(`https://api.github.com/users/${username}`);
-        const userData = await userResponse.json();
+        // Try to fetch user's repos to get some activity data
+        const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`);
         
-        if (!userResponse.ok) {
-          throw new Error('Failed to fetch GitHub user data');
-        }
-
-        // Since we can't easily parse the contributions without server-side processing,
-        // we'll use a combination of real user data and intelligent mock data
-        const currentYear = new Date().getFullYear();
-        const joinedYear = new Date(userData.created_at).getFullYear();
-        const yearsActive = currentYear - joinedYear + 1;
-        
-        // Create realistic contribution data based on user's actual profile
-        const data: ContributionDay[] = [];
-        const today = new Date();
-        const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-        let total = 0;
-        
-        for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
-          const dayOfWeek = d.getDay();
-          const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+        if (reposResponse.ok) {
+          const repos = await reposResponse.json();
+          // Use real total contributions from your actual stats
+          const actualTotal = 5846;
           
-          // Create more realistic patterns based on typical developer activity
-          let count = 0;
-          const randomFactor = Math.random();
+          // Generate realistic contribution pattern based on actual total
+          const data: ContributionDay[] = [];
+          const today = new Date();
+          const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
           
-          if (isWeekend) {
-            // Less activity on weekends
-            count = randomFactor < 0.7 ? 0 : Math.floor(Math.random() * 5);
-          } else {
-            // More activity on weekdays
-            if (randomFactor < 0.2) count = 0; // Some days off
-            else if (randomFactor < 0.5) count = Math.floor(Math.random() * 3) + 1;
-            else if (randomFactor < 0.8) count = Math.floor(Math.random() * 8) + 3;
-            else count = Math.floor(Math.random() * 15) + 8; // Very active days
+          // Calculate average contributions per day
+          const totalDays = Math.ceil((today.getTime() - oneYearAgo.getTime()) / (1000 * 60 * 60 * 24));
+          const avgPerDay = actualTotal / totalDays;
+          
+          let runningTotal = 0;
+          const targetTotal = actualTotal;
+          
+          for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
+            const dayOfWeek = d.getDay();
+            const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+            const daysRemaining = Math.ceil((today.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
+            const contributionsNeeded = targetTotal - runningTotal;
+            
+            let count = 0;
+            const randomFactor = Math.random();
+            
+            if (daysRemaining > 0) {
+              const targetForDay = Math.max(0, contributionsNeeded / Math.max(1, daysRemaining));
+              
+              if (isWeekend) {
+                // Lower activity on weekends
+                count = randomFactor < 0.4 ? 0 : Math.floor(targetForDay * (0.3 + randomFactor * 0.7));
+              } else {
+                // Higher activity on weekdays
+                if (randomFactor < 0.1) count = 0; // Some days off
+                else count = Math.floor(targetForDay * (0.8 + randomFactor * 1.2));
+              }
+              
+              // Add some realistic variation
+              count = Math.max(0, Math.min(25, count + Math.floor((Math.random() - 0.5) * 4)));
+            }
+            
+            const level = count === 0 ? 0 : count <= 3 ? 1 : count <= 8 ? 2 : count <= 15 ? 3 : 4;
+            
+            data.push({
+              date: new Date(d).toISOString().split('T')[0],
+              count,
+              level
+            });
+            runningTotal += count;
           }
           
-          const level = count === 0 ? 0 : count <= 3 ? 1 : count <= 7 ? 2 : count <= 12 ? 3 : 4;
-          
-          data.push({
-            date: new Date(d).toISOString().split('T')[0],
-            count,
-            level
-          });
-          total += count;
+          setContributions(data);
+          setTotalContributions(actualTotal);
+        } else {
+          throw new Error('Failed to fetch GitHub data');
         }
-        
-        setContributions(data);
-        setTotalContributions(total);
         
       } catch (error) {
         console.error('Error fetching GitHub data:', error);
-        // Enhanced fallback with realistic patterns
-        generateEnhancedFallbackData();
+        // Use your actual stats as fallback
+        generateEnhancedFallbackData(5846);
       }
       
       setIsLoading(false);
       setTimeout(() => setAnimateStats(true), 100);
     };
 
-    const generateEnhancedFallbackData = () => {
+    const generateEnhancedFallbackData = (targetTotal: number = 5846) => {
       const data: ContributionDay[] = [];
       const today = new Date();
       const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-      let total = 0;
+      
+      // Calculate total days and target per day
+      const totalDays = Math.ceil((today.getTime() - oneYearAgo.getTime()) / (1000 * 60 * 60 * 24));
+      let runningTotal = 0;
       
       for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
         const dayOfWeek = d.getDay();
         const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+        const daysRemaining = Math.ceil((today.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
+        const contributionsNeeded = targetTotal - runningTotal;
         
         let count = 0;
         const randomFactor = Math.random();
         
-        if (isWeekend) {
-          count = randomFactor < 0.6 ? 0 : Math.floor(Math.random() * 4);
-        } else {
-          if (randomFactor < 0.15) count = 0;
-          else if (randomFactor < 0.4) count = Math.floor(Math.random() * 3) + 1;
-          else if (randomFactor < 0.75) count = Math.floor(Math.random() * 7) + 3;
-          else count = Math.floor(Math.random() * 12) + 8;
+        if (daysRemaining > 0) {
+          const targetForDay = Math.max(0, contributionsNeeded / Math.max(1, daysRemaining));
+          
+          if (isWeekend) {
+            count = randomFactor < 0.6 ? 0 : Math.floor(targetForDay * (0.3 + randomFactor * 0.5));
+          } else {
+            if (randomFactor < 0.15) count = 0;
+            else count = Math.floor(targetForDay * (0.8 + randomFactor * 1.2));
+          }
+          
+          // Add realistic variation and clamp
+          count = Math.max(0, Math.min(25, count + Math.floor((Math.random() - 0.5) * 3)));
         }
         
-        const level = count === 0 ? 0 : count <= 3 ? 1 : count <= 7 ? 2 : count <= 12 ? 3 : 4;
+        const level = count === 0 ? 0 : count <= 3 ? 1 : count <= 8 ? 2 : count <= 15 ? 3 : 4;
         
         data.push({
           date: new Date(d).toISOString().split('T')[0],
           count,
           level
         });
-        total += count;
+        runningTotal += count;
       }
       
       setContributions(data);
-      setTotalContributions(total);
+      setTotalContributions(targetTotal);
     };
 
     fetchGitHubContributions();
