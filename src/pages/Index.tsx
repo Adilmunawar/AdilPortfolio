@@ -6,6 +6,7 @@ import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
 import ServicesSection from '@/components/ServicesSection';
 import ProjectsSection from '@/components/ProjectsSection';
+import AdvancedSocialIcons from '@/components/AdvancedSocialIcons';
 import ContactSection from '@/components/ContactSection';
 
 const Index = () => {
@@ -20,6 +21,7 @@ const Index = () => {
         <SkillsSection />
         <ServicesSection />
         <ProjectsSection />
+        <AdvancedSocialIcons />
         <ContactSection />
       </main>
     </div>
