@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -8,6 +8,7 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const isMounted = useRef(false);
   
   const navItems = [
     { name: 'Home', href: '#home' },
@@ -19,6 +20,15 @@ const Navigation = () => {
   ];
 
   useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted.current) return;
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
 
@@ -37,8 +47,10 @@ const Navigation = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+    
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [navItems]);
 
   const getSectionIdFromHref = (href: string) => href.substring(1);
 
