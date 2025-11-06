@@ -84,7 +84,7 @@ const HeroSection = () => {
     },
   ];
 
-  const skills = ['React', 'Node.js', 'TypeScript', 'Python', 'Azure'];
+  const skills = ['React', 'TypeScript', 'Framer Motion', 'Vite', 'Python', 'Azure'];
   const skillRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -110,18 +110,19 @@ const HeroSection = () => {
       ref.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
     };
 
-    skillRefs.current.forEach((ref, index) => {
+    const refs = skillRefs.current;
+    refs.forEach((ref, index) => {
       if (ref) {
         const mouseMove = (e: MouseEvent) => handleMouseMove(e, index);
         const mouseLeave = () => handleMouseLeave(index);
         ref.addEventListener('mousemove', mouseMove);
         ref.addEventListener('mouseleave', mouseLeave);
         return () => {
-            if(ref) {
-              ref.removeEventListener('mousemove', mouseMove);
-              ref.removeEventListener('mouseleave', mouseLeave);
-            }
-        }
+          if (ref) {
+            ref.removeEventListener('mousemove', mouseMove);
+            ref.removeEventListener('mouseleave', mouseLeave);
+          }
+        };
       }
     });
   }, []);
@@ -153,7 +154,7 @@ const HeroSection = () => {
     button.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
-      if(button) {
+      if (button) {
         button.removeEventListener('mousemove', handleMouseMove);
         button.removeEventListener('mouseleave', handleMouseLeave);
       }
@@ -262,5 +263,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
-    
