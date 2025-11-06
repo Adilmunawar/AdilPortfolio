@@ -86,8 +86,7 @@ const HeroSection = () => {
 
   const skills = ['React', 'TypeScript', 'Framer Motion', 'Vite', 'Azure'];
   const skillRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
+  
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent, index: number) => {
       const ref = skillRefs.current[index];
@@ -126,38 +125,6 @@ const HeroSection = () => {
         };
       }
     });
-  }, []);
-
-  useEffect(() => {
-    const button = buttonRef.current;
-    if (!button) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = button.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      const rotateX = (y / rect.height - 0.5) * -15;
-      const rotateY = (x / rect.width - 0.5) * 15;
-
-      button.style.setProperty('--glow-x', `${x}px`);
-      button.style.setProperty('--glow-y', `${y}px`);
-      button.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
-    };
-
-    const handleMouseLeave = () => {
-      button.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-    };
-
-    button.addEventListener('mousemove', handleMouseMove);
-    button.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      if (button) {
-        button.removeEventListener('mousemove', handleMouseMove);
-        button.removeEventListener('mouseleave', handleMouseLeave);
-      }
-    };
   }, []);
 
   return (
@@ -235,31 +202,36 @@ const HeroSection = () => {
         </div>
 
         {/* Professional CTA button */}
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-          <Button
-            ref={buttonRef}
-            className="group/cta relative inline-flex items-center justify-center rounded-full bg-transparent px-8 py-4 text-lg font-bold text-white overflow-hidden"
-            style={{
-              transition: 'transform 0.1s ease-out',
-              transformStyle: 'preserve-3d',
-            } as React.CSSProperties}
-            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            <div className="absolute inset-[-2px] rounded-full bg-gradient-to-r from-[var(--cyber-purple)] via-[var(--cyber-blue)] to-[var(--cyber-purple)] opacity-75 group-hover/cta:opacity-100 transition-opacity duration-500"></div>
-            <div className="absolute inset-0 rounded-full bg-cyber-dark"></div>
-            <div className="orbiting-light" style={{ '--glow-color': 'var(--cyber-blue)' } as React.CSSProperties}></div>
-            <div
-              className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_var(--glow-x)_var(--glow-y),_rgba(59,29,138,0.3)_0%,_rgba(30,30,57,0)_50%)] opacity-0 group-hover/cta:opacity-100 transition-opacity duration-500"
-              style={{ '--glow-x': '50%', '--glow-y': '50%' } as React.CSSProperties}
-            ></div>
-            <span 
-              className="relative z-10 flex items-center gap-2 group-hover/cta:scale-105 transition-transform duration-500 glitch-text" 
-              data-text="Decrypt my codeverse →"
-              style={{ textShadow: '0 0 15px rgba(30, 30, 57, 0.5)' }}
+        <div className="animate-fade-in-up group/cta" style={{ animationDelay: '0.8s' }}>
+            <Button
+              className="relative inline-flex items-center justify-center rounded-full bg-cyber-dark px-8 py-4 text-lg font-bold text-white overflow-hidden border-2 border-gray-700/60 transition-all duration-300 group-hover/cta:border-transparent group-hover/cta:scale-110"
+              style={
+                {
+                  transformStyle: 'preserve-3d',
+                } as React.CSSProperties
+              }
+              onClick={() =>
+                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+              }
             >
-              Decrypt my codeverse →
-            </span>
-          </Button>
+              <div 
+                className="absolute -inset-0.5 rounded-full bg-transparent group-hover/cta:bg-[conic-gradient(from_90deg_at_50%_50%,var(--cyber-purple)_50%,var(--cyber-blue)_100%)] opacity-0 group-hover/cta:opacity-100 transition-opacity duration-300 animate-gradient-rotate"
+              ></div>
+
+              <div className="relative w-full h-full bg-cyber-dark rounded-full flex items-center justify-center">
+                <div
+                  className="orbiting-light"
+                  style={{ '--glow-color': 'var(--cyber-blue)' } as React.CSSProperties}
+                ></div>
+                <span
+                  className="relative z-10 flex items-center gap-2 group-hover/cta:scale-105 transition-transform duration-500 glitch-text"
+                  data-text="Decrypt my codeverse →"
+                  style={{ textShadow: '0 0 15px rgba(30, 30, 57, 0.5)' }}
+                >
+                  Decrypt my codeverse →
+                </span>
+              </div>
+            </Button>
         </div>
       </div>
     </section>
