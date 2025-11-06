@@ -9,32 +9,28 @@ const timelineEvents = [
     icon: Code,
     color: 'text-sky-400',
     bgColor: 'bg-sky-900/20',
-    commitHash: 'b4a2d89',
-    commitMessage: 'feat: Initialized Frontend Mastery',
+    title: 'Frontend Mastery',
     description: 'Began my journey by mastering the core principles of web development, building responsive and dynamic user interfaces with modern JavaScript frameworks.',
   },
   {
     icon: GitCommit,
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-900/20',
-    commitHash: 'f7c3e1a',
-    commitMessage: 'build: Architecting Full-Stack Solutions',
+    title: 'Architecting Full-Stack Solutions',
     description: 'Expanded into backend development, learning to build robust server-side logic and manage data to create complete, end-to-end applications.',
   },
   {
     icon: Sparkles,
     color: 'text-purple-400',
     bgColor: 'bg-purple-900/20',
-    commitHash: 'a1d0f6c',
-    commitMessage: 'refactor: Elevating UI/UX with Animation',
+    title: 'Elevating UI/UX with Animation',
     description: 'Focused on creating fluid and engaging user experiences by integrating advanced animation libraries and design principles.',
   },
   {
     icon: Cpu,
     color: 'text-amber-400',
     bgColor: 'bg-amber-900/20',
-    commitHash: 'c9e8b4d',
-    commitMessage: 'feat(AI): Developing for Humans',
+    title: 'Developing for Humans',
     description: 'Currently exploring the intersection of AI and user interfaces, crafting intelligent, intuitive, and human-centered digital experiences.',
     isTyping: true,
   },
@@ -68,77 +64,87 @@ const TypingAnimation = () => {
 };
 
 const InteractiveTimeline = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [visibleItems, setVisibleItems] = useState<number[]>([]);
   const timelineRef = useRef<HTMLDivElement>(null);
+  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          const index = Number(entry.target.getAttribute('data-index'));
+          if (entry.isIntersecting) {
+            setVisibleItems((prev) => [...new Set([...prev, index])].sort());
+          }
+        });
       },
       { threshold: 0.3 }
     );
 
-    if (timelineRef.current) {
-      observer.observe(timelineRef.current);
-    }
+    const currentItems = itemsRef.current;
+    currentItems.forEach((item) => {
+      if (item) observer.observe(item);
+    });
 
     return () => {
-      if (timelineRef.current) {
-        observer.unobserve(timelineRef.current);
-      }
+      currentItems.forEach((item) => {
+        if (item) observer.unobserve(item);
+      });
     };
   }, []);
 
   return (
-    <div
-      ref={timelineRef}
-      className={cn(
-        'relative p-6 border border-cyber-purple/20 bg-cyber-gray/20 backdrop-blur-xl rounded-2xl overflow-hidden',
-        { 'is-visible': isVisible }
-      )}
-    >
-      <div className="absolute top-0 left-1/2 w-px h-full">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-cyber-purple/60 via-cyber-blue/40 to-transparent animate-draw-line" />
+    <div ref={timelineRef} className="relative p-6">
+      {/* Central animated line */}
+      <div className="absolute top-0 left-8 w-px h-full bg-cyber-purple/20">
+        <div 
+          className="absolute top-0 left-0 w-full bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 transition-all duration-1000 ease-out"
+          style={{ height: `${(visibleItems.length / timelineEvents.length) * 100}%` }}
+        />
       </div>
 
-      <div className="space-y-12 relative z-10">
+      <div className="space-y-16 relative z-10">
         {timelineEvents.map((event, index) => (
           <div
             key={index}
-            className={cn('flex items-start gap-4 animate-timeline-item', {
-              'opacity-0': !isVisible,
+            ref={(el) => (itemsRef.current[index] = el)}
+            data-index={index}
+            className={cn('flex items-start gap-6 transition-all duration-700', {
+              'opacity-100 transform-none': visibleItems.includes(index),
+              'opacity-0 translate-x-4': !visibleItems.includes(index),
             })}
-            style={{ animationDelay: `${index * 300}ms` }}
+            style={{ transitionDelay: visibleItems.includes(index) ? '0ms' : `${index * 150}ms` }}
           >
-            <div className="relative">
+            {/* Node Icon */}
+            <div className="relative flex-shrink-0">
               <div
                 className={cn(
-                  'w-12 h-12 rounded-full flex items-center justify-center border-2 border-cyber-purple/30',
-                  event.bgColor
+                  'w-16 h-16 rounded-full flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500',
+                  event.bgColor,
+                  { 'border-cyber-blue shadow-lg shadow-cyber-blue/30': visibleItems.includes(index) }
                 )}
               >
-                <event.icon className={cn('w-6 h-6', event.color)} />
+                <event.icon className={cn('w-8 h-8 transition-all duration-500', event.color, { 'scale-110': visibleItems.includes(index) })} />
               </div>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-cyber-purple rounded-full animate-pulse-glow" />
+              {visibleItems.includes(index) && (
+                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full animate-pulse-glow" style={{ animationDuration: '4s' }}/>
+              )}
             </div>
 
-            <div className="flex-1 pt-1.5">
-              <div className="flex items-center gap-2 mb-2">
-                <p className="font-mono text-xs text-gray-500 bg-gray-800/50 px-2 py-0.5 rounded">
-                  {event.commitHash}
-                </p>
-                <h4 className="font-semibold text-gray-300">
-                  {event.commitMessage}
+            {/* Content Card */}
+            <div className={cn(
+              "flex-1 pt-1 transition-all duration-500 delay-150",
+              { 'opacity-100 translate-y-0': visibleItems.includes(index), 'opacity-0 translate-y-4': !visibleItems.includes(index) }
+            )}>
+              <div className="p-6 bg-cyber-gray/30 backdrop-blur-xl border border-cyber-purple/20 rounded-xl hover:border-cyber-purple/50 transition-colors duration-300">
+                <h4 className="font-bold text-xl text-gray-200 mb-3">
+                  {event.title}
                 </h4>
+                <p className="text-sm text-gray-400 leading-relaxed mb-4">
+                  {event.description}
+                </p>
+                {event.isTyping && visibleItems.includes(index) && <TypingAnimation />}
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed mb-3">
-                {event.description}
-              </p>
-              {event.isTyping && isVisible && <TypingAnimation />}
             </div>
           </div>
         ))}
