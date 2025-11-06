@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Bot, Code, Cpu, GitCommit, Sparkles } from 'lucide-react';
+import { Code, Cpu, GitCommit, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const timelineEvents = [
@@ -78,12 +78,12 @@ const TypingAnimation = ({ code }: { code: string }) => {
 const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof timelineEvents)[0], index: number, isVisible: boolean, isLast: boolean }) => {
   return (
     <div className="relative">
-       <div className={cn(
+      <div className={cn(
         "flex items-start gap-8",
-        {'pb-12': !isLast}
+        { 'pb-12': !isLast }
       )}>
         {/* Node Icon */}
-         <div
+        <div
           className={cn(
             'z-10 w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500 relative',
             event.bgColor,
@@ -103,7 +103,7 @@ const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof time
               {event.title}
             </h4>
             
-            <p className="text-sm text-gray-400 font-mono italic">{event.description}</p>
+            <p className="text-sm text-gray-400 font-mono">{event.description}</p>
             
             {isVisible && <TypingAnimation code={event.code} />}
           </div>
@@ -116,11 +116,11 @@ const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof time
           className="absolute top-8 left-8 h-full w-px"
           style={{ height: 'calc(100% - 2rem)' }}
         >
-           {/* The visible track for the line */}
-          <div className="absolute top-8 left-0 h-full w-px bg-cyber-purple/20" />
-           {/* The animated "drawing" line */}
+          {/* The visible track for the line */}
+          <div className="absolute top-8 left-0 h-full w-px bg-cyber-purple/20" style={{ height: 'calc(100% - 4rem)' }} />
+          {/* The animated "drawing" line */}
           <div
-            className="absolute top-8 left-0 h-full w-px bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line"
+            className="absolute top-8 left-0 w-px bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line"
             style={{ 
               animationPlayState: isVisible ? 'running' : 'paused',
               height: 'calc(100% - 4rem)'
