@@ -132,6 +132,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     const card = cardRef.current;
     const wrap = wrapRef.current;
     if (!card || !wrap) return;
+
     const pointerMoveHandler = handlePointerMove as EventListener;
     const pointerEnterHandler = handlePointerEnter as EventListener;
     const pointerLeaveHandler = handlePointerLeave as EventListener;
