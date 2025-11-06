@@ -421,14 +421,20 @@
   border-radius: 50%;
   box-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color);
   animation: orbit 8s linear infinite;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.group-hover\/cta .orbiting-light {
+    opacity: 1;
 }
 
 @keyframes orbit {
   0% {
-    transform: rotate(0deg) translateX(35px) rotate(0deg);
+    transform: rotate(0deg) translateX(35px) rotate(0deg) scale(1);
   }
   100% {
-    transform: rotate(360deg) translateX(35px) rotate(-360deg);
+    transform: rotate(360deg) translateX(35px) rotate(-360deg) scale(1.2);
   }
 }
 
@@ -441,3 +447,52 @@
   from, to { border-color: transparent }
   50% { border-color: hsl(var(--foreground)); }
 }
+
+.glitch-text {
+  position: relative;
+}
+.glitch-text:before,
+.glitch-text:after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  clip-path: inset(50% 0 50% 0);
+  opacity: 0;
+}
+.glitch-text:before {
+  animation: glitch 3s infinite linear alternate-reverse;
+  text-shadow: -2px 0 var(--cyber-pink);
+}
+.glitch-text:after {
+  animation: glitch 2s infinite linear alternate-reverse;
+  text-shadow: 2px 0 var(--cyber-cyan);
+}
+
+.group-hover\/cta .glitch-text:before,
+.group-hover\/cta .glitch-text:after {
+    opacity: 1;
+}
+
+@keyframes glitch {
+  0%, 100% {
+    clip-path: inset(50% 0 30% 0);
+  }
+  20% {
+    clip-path: inset(20% 0 60% 0);
+  }
+  40% {
+    clip-path: inset(40% 0 40% 0);
+  }
+  60% {
+    clip-path: inset(70% 0 10% 0);
+  }
+  80% {
+    clip-path: inset(90% 0 5% 0);
+  }
+}
+
+    

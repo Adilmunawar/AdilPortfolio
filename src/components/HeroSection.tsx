@@ -86,6 +86,7 @@ const HeroSection = () => {
 
   const skills = ['React', 'TypeScript', 'Framer Motion', 'Vite', 'Azure'];
   const skillRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent, index: number) => {
@@ -126,8 +127,6 @@ const HeroSection = () => {
       }
     });
   }, []);
-
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const button = buttonRef.current;
@@ -239,20 +238,25 @@ const HeroSection = () => {
         <div className="animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
           <Button
             ref={buttonRef}
-            className="group relative inline-flex items-center justify-center rounded-full bg-transparent px-8 py-4 text-lg font-bold text-white overflow-hidden"
+            className="group/cta relative inline-flex items-center justify-center rounded-full bg-transparent px-8 py-4 text-lg font-bold text-white overflow-hidden"
             style={{
               transition: 'transform 0.1s ease-out',
               transformStyle: 'preserve-3d',
             } as React.CSSProperties}
             onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            <div className="absolute inset-[-2px] rounded-full bg-gradient-to-r from-[var(--cyber-purple)] via-[var(--cyber-blue)] to-[var(--cyber-purple)] opacity-75 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute inset-[-2px] rounded-full bg-gradient-to-r from-[var(--cyber-purple)] via-[var(--cyber-blue)] to-[var(--cyber-purple)] opacity-75 group-hover/cta:opacity-100 transition-opacity duration-500"></div>
             <div className="absolute inset-0 rounded-full bg-cyber-dark"></div>
+            <div className="orbiting-light" style={{ '--glow-color': 'var(--cyber-blue)' } as React.CSSProperties}></div>
             <div
-              className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_var(--glow-x)_var(--glow-y),_rgba(59,29,138,0.3)_0%,_rgba(30,30,57,0)_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_var(--glow-x)_var(--glow-y),_rgba(59,29,138,0.3)_0%,_rgba(30,30,57,0)_50%)] opacity-0 group-hover/cta:opacity-100 transition-opacity duration-500"
               style={{ '--glow-x': '50%', '--glow-y': '50%' } as React.CSSProperties}
             ></div>
-            <span className="relative z-10 flex items-center gap-2 group-hover:scale-105 transition-transform duration-500" style={{ textShadow: '0 0 15px rgba(30, 30, 57, 0.5)' }}>
+            <span 
+              className="relative z-10 flex items-center gap-2 group-hover/cta:scale-105 transition-transform duration-500 glitch-text" 
+              data-text="Decrypt my codeverse →"
+              style={{ textShadow: '0 0 15px rgba(30, 30, 57, 0.5)' }}
+            >
               Decrypt my codeverse →
             </span>
           </Button>
@@ -263,3 +267,5 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
+    
