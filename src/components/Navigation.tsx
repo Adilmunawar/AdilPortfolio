@@ -1,8 +1,10 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+
+const getSectionIdFromHref = (href: string) => href.substring(1);
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,14 +12,14 @@ const Navigation = () => {
   const [activeSection, setActiveSection] = useState('home');
   const isMounted = useRef(false);
   
-  const navItems = [
+  const navItems = useMemo(() => [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
     { name: 'Services', href: '#services' },
     { name: 'Projects', href: '#projects' },
     { name: 'Contact', href: '#contact' }
-  ];
+  ], []);
 
   useEffect(() => {
     isMounted.current = true;
@@ -51,8 +53,6 @@ const Navigation = () => {
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, [navItems]);
-
-  const getSectionIdFromHref = (href: string) => href.substring(1);
 
   return (
     <nav className={cn(
