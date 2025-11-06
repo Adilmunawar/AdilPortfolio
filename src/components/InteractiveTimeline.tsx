@@ -10,7 +10,7 @@ const timelineEvents = [
     color: 'text-sky-400',
     bgColor: 'bg-sky-900/20',
     title: 'init: Frontend Foundations',
-    description: '// Deployed core web APIs. Mastered DOM manipulation & state management with modern JS frameworks to build responsive, dynamic user interfaces.',
+    description: 'Deployed core web APIs. Mastered DOM manipulation & state management with modern JS frameworks to build responsive, dynamic user interfaces.',
     code: `const UIEngine = () => (
   <div className="responsive-ui">
     <h1>Hello, World!</h1>
@@ -22,7 +22,7 @@ const timelineEvents = [
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-900/20',
     title: 'feat: Full-Stack Architecture',
-    description: '// Scaled up. Engineered robust server-side logic, managed distributed data streams, and built RESTful APIs for end-to-end application services.',
+    description: 'Scaled up. Engineered robust server-side logic, managed distributed data streams, and built RESTful APIs for end-to-end application services.',
     code: `app.get('/api/data', async (req, res) => {
   const data = await db.fetchData();
   res.status(200).json(data);
@@ -33,7 +33,7 @@ const timelineEvents = [
     color: 'text-purple-400',
     bgColor: 'bg-purple-900/20',
     title: 'refactor: UI/UX & Motion',
-    description: '// Optimized for human interaction. Integrated advanced animation libraries and design principles to compile fluid, engaging user experiences.',
+    description: 'Optimized for human interaction. Integrated advanced animation libraries and design principles to compile fluid, engaging user experiences.',
     code: `const cardAnimation = {
   initial: { opacity: 0, y: 50 },
   animate: { opacity: 1, y: 0 },
@@ -45,7 +45,7 @@ const timelineEvents = [
     color: 'text-amber-400',
     bgColor: 'bg-amber-900/20',
     title: 'build: Human-Centered AI',
-    description: '// Exploring the next commit. Currently developing intelligent interfaces and human-centered digital experiences at the intersection of AI and UI.',
+    description: 'Exploring the next commit. Currently developing intelligent interfaces and human-centered digital experiences at the intersection of AI and UI.',
     code: `const createIntelligentUI = (user) => {
   const context = analyze(user.intent);
   return <AdaptiveComponent {...context} />;
@@ -66,7 +66,7 @@ const TypingAnimation = ({ code }: { code: string }) => {
   }, [typedCode, code]);
 
   return (
-    <pre className="text-xs text-amber-300/80 p-3 bg-black/30 rounded-md overflow-x-auto mt-3 font-mono">
+    <pre className="text-xs text-sky-300 p-3 bg-black/30 rounded-md overflow-x-auto mt-3 font-mono">
       <code>
         {typedCode}
         <span className="animate-blink">|</span>
@@ -75,21 +75,17 @@ const TypingAnimation = ({ code }: { code: string }) => {
   );
 };
 
-const TimelineItem = ({ event, index, isVisible }: { event: (typeof timelineEvents)[0], index: number, isVisible: boolean }) => {
-  const lineRef = useRef<HTMLDivElement>(null);
-
+const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof timelineEvents)[0], index: number, isVisible: boolean, isLast: boolean }) => {
   return (
     <div className="relative">
-      <div
-        className={cn('relative flex items-start gap-8 transition-opacity duration-700', {
-          'opacity-100': isVisible,
-          'opacity-40': !isVisible,
-        })}
-      >
+       <div className={cn(
+        "flex items-start gap-8",
+        {'pb-12': !isLast}
+      )}>
         {/* Node Icon */}
-        <div
+         <div
           className={cn(
-            'z-10 w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500',
+            'z-10 w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500 relative',
             event.bgColor,
             { 'animate-pulse-glow': isVisible }
           )}
@@ -115,18 +111,20 @@ const TimelineItem = ({ event, index, isVisible }: { event: (typeof timelineEven
       </div>
 
       {/* Connecting Line Segment */}
-      {index < timelineEvents.length - 1 && (
+      {!isLast && (
         <div 
-          ref={lineRef}
-          className="absolute top-16 left-8 h-full"
-          style={{ height: 'calc(100% - 4rem)' }}
+          className="absolute top-8 left-8 h-full w-px"
+          style={{ height: 'calc(100% - 2rem)' }}
         >
            {/* The visible track for the line */}
-          <div className="absolute w-px h-full bg-cyber-purple/20" />
+          <div className="absolute top-8 left-0 h-full w-px bg-cyber-purple/20" />
            {/* The animated "drawing" line */}
           <div
-            className="h-full w-px bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line"
-            style={{ animationPlayState: isVisible ? 'running' : 'paused' }}
+            className="absolute top-8 left-0 h-full w-px bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line"
+            style={{ 
+              animationPlayState: isVisible ? 'running' : 'paused',
+              height: 'calc(100% - 4rem)'
+             }}
           />
         </div>
       )}
@@ -167,13 +165,14 @@ const InteractiveTimeline = () => {
 
   return (
     <div className="relative py-6">
-      <div className="space-y-8">
+      <div className="flex flex-col">
         {timelineEvents.map((event, index) => (
           <div key={index} ref={(el) => (itemsRef.current[index] = el)} data-index={index}>
             <TimelineItem
               event={event}
               index={index}
               isVisible={visibleItems.includes(index)}
+              isLast={index === timelineEvents.length - 1}
             />
           </div>
         ))}
