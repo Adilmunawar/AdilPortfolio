@@ -2,6 +2,7 @@
 import { Card } from '@/components/ui/card';
 import ProfileCard from './ProfileCard';
 import { useState, useEffect, useRef } from 'react';
+import InteractiveTimeline from './InteractiveTimeline';
 
 const dynamicTexts = [
   "Passionate Developer",
@@ -58,7 +59,7 @@ const AboutSection = () => {
         </div>
 
         {/* Clean, balanced layout */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Animated ProfileCard */}
           <div className={`flex justify-center transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
             <ProfileCard
@@ -75,28 +76,9 @@ const AboutSection = () => {
             />
           </div>
 
-          {/* Clean content */}
+          {/* Interactive Timeline */}
           <div className={`space-y-8 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            {/* Main about card */}
-            <Card className="relative group overflow-hidden bg-cyber-gray/10 border-cyber-purple/20 backdrop-blur-xl hover:border-cyber-purple/40 transition-all duration-500">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyber-purple/5 via-transparent to-cyber-blue/5 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
-              
-              <div className="p-6 relative z-10">
-                <div className="flex items-center mb-4">
-                  <div className="w-1 h-6 bg-gradient-to-b from-cyber-purple to-cyber-blue rounded-full mr-3"></div>
-                  <h3 className="text-2xl font-bold text-gray-300">Who I Am</h3>
-                </div>
-                
-                <div className="space-y-4 text-gray-300 leading-relaxed">
-                  <p className="text-lg group-hover:text-white transition-colors duration-500">
-                    I am a <span className="text-gray-100 font-semibold">passionate and results-driven developer</span> with extensive experience in frontend development, backend systems, and mobile/web app integration.
-                  </p>
-                  <p className="group-hover:text-white transition-colors duration-500">
-                    Over the years, I've built a strong presence in the tech space through innovative projects, each crafted to solve real-world problems and push the boundaries of design and functionality.
-                  </p>
-                </div>
-              </div>
-            </Card>
+            <InteractiveTimeline />
           </div>
         </div>
       </div>
