@@ -83,15 +83,18 @@ const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof time
         { 'pb-12': !isLast }
       )}>
         {/* Node Icon */}
-        <div
-          className={cn(
-            'z-10 w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500 relative',
-            event.bgColor,
-            { 'animate-pulse-glow': isVisible }
-          )}
-        >
-          <event.icon className={cn('w-8 h-8 transition-all duration-500', event.color, { 'scale-110': isVisible })} />
+        <div className="z-10 relative">
+            <div
+            className={cn(
+                'w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500 relative',
+                event.bgColor,
+                { 'animate-pulse-glow': isVisible }
+            )}
+            >
+            <event.icon className={cn('w-8 h-8 transition-all duration-500', event.color, { 'scale-110': isVisible })} />
+            </div>
         </div>
+
 
         {/* Content Card */}
         <div className={cn(
@@ -116,9 +119,7 @@ const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof time
           className="absolute top-8 left-8 h-full w-px"
           style={{ height: 'calc(100% - 2rem)' }}
         >
-          {/* The visible track for the line */}
           <div className="absolute top-8 left-0 h-full w-px bg-cyber-purple/20" style={{ height: 'calc(100% - 4rem)' }} />
-          {/* The animated "drawing" line */}
           <div
             className="absolute top-8 left-0 w-px bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line"
             style={{ 
@@ -142,7 +143,7 @@ const InteractiveTimeline = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const index = Number(entry.target.getAttribute('data-index'));
-            setVisibleItems((prev) => [...new Set([...prev, index])].sort());
+            setVisibleItems((prev) => Array.from(new Set([...prev, index])).sort());
           }
         });
       },
