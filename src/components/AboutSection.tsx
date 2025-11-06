@@ -97,19 +97,6 @@ const AboutSection = () => {
                 </div>
               </div>
             </Card>
-
-            {/* Clean info cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card className="relative group overflow-hidden bg-cyber-gray/10 border-cyber-purple/20 backdrop-blur-xl hover:border-cyber-purple/40 transition-all duration-500 p-4">
-                  <p className="text-gray-400 font-semibold text-xs uppercase tracking-wider mb-1">Contact</p>
-                  <p className="text-white font-mono text-sm">+92 324 4965220</p>
-              </Card>
-              
-              <Card className="relative group overflow-hidden bg-cyber-gray/10 border-cyber-blue/20 backdrop-blur-xl hover:border-cyber-blue/40 transition-all duration-500 p-4">
-                  <p className="text-gray-400 font-semibold text-xs uppercase tracking-wider mb-1">Specialization</p>
-                  <p className="text-white font-mono text-sm">Web Development</p>
-              </Card>
-            </div>
           </div>
         </div>
       </div>
