@@ -78,7 +78,7 @@ const InteractiveTimeline = () => {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.5, rootMargin: '0px 0px -40% 0px' }
     );
 
     const currentItems = itemsRef.current;
@@ -94,41 +94,42 @@ const InteractiveTimeline = () => {
   }, []);
 
   return (
-    <div ref={timelineRef} className="relative p-6 pl-12">
-      {/* Central animated line */}
-      <div className="absolute top-0 left-[2.2rem] w-px h-full bg-cyber-purple/20">
-        <div 
-          className="absolute top-0 left-0 w-full bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 transition-all duration-1000 ease-out"
-          style={{ height: `${(visibleItems.length / timelineEvents.length) * 100}%` }}
-        />
-      </div>
-
-      <div className="space-y-16 relative z-10">
+    <div ref={timelineRef} className="relative py-6">
+      <div className="space-y-16">
         {timelineEvents.map((event, index) => (
           <div
             key={index}
             ref={(el) => (itemsRef.current[index] = el)}
             data-index={index}
-            className={cn('flex items-start gap-6 transition-all duration-700', {
-              'opacity-100 transform-none': visibleItems.includes(index),
-              'opacity-0 translate-x-4': !visibleItems.includes(index),
+            className={cn('relative flex items-start gap-8 transition-all duration-700', {
+              'opacity-100': visibleItems.includes(index),
+              'opacity-40': !visibleItems.includes(index),
             })}
-            style={{ transitionDelay: visibleItems.includes(index) ? '0ms' : `${index * 150}ms` }}
           >
-            {/* Node Icon */}
-            <div className="relative flex-shrink-0 -translate-x-1/2">
-              <div
-                className={cn(
-                  'w-16 h-16 rounded-full flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500',
-                  event.bgColor,
-                  { 'border-cyber-blue shadow-lg shadow-cyber-blue/30': visibleItems.includes(index) }
+            {/* Timeline Line and Node */}
+            <div className="flex flex-col items-center w-16 flex-shrink-0">
+              {/* Line segment */}
+              <div className="relative w-px h-full bg-cyber-purple/20">
+                {visibleItems.includes(index) && (
+                  <div className="absolute inset-0 w-full bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line"></div>
                 )}
-              >
-                <event.icon className={cn('w-8 h-8 transition-all duration-500', event.color, { 'scale-110': visibleItems.includes(index) })} />
               </div>
-              {visibleItems.includes(index) && (
-                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full animate-pulse-glow" style={{ animationDuration: '4s' }}/>
-              )}
+              
+              {/* Node Icon */}
+              <div className="relative z-10 flex-shrink-0">
+                <div
+                  className={cn(
+                    'w-16 h-16 rounded-full flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500',
+                    event.bgColor,
+                    { 'border-cyber-blue shadow-lg shadow-cyber-blue/30 scale-110': visibleItems.includes(index) }
+                  )}
+                >
+                  <event.icon className={cn('w-8 h-8 transition-all duration-500', event.color, { 'scale-110': visibleItems.includes(index) })} />
+                </div>
+                {visibleItems.includes(index) && (
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full animate-pulse-glow" style={{ animationDuration: '4s' }}/>
+                )}
+              </div>
             </div>
 
             {/* Content Card */}
