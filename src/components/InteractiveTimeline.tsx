@@ -72,8 +72,8 @@ const InteractiveTimeline = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const index = Number(entry.target.getAttribute('data-index'));
           if (entry.isIntersecting) {
+            const index = Number(entry.target.getAttribute('data-index'));
             setVisibleItems((prev) => [...new Set([...prev, index])].sort());
           }
         });
@@ -95,40 +95,37 @@ const InteractiveTimeline = () => {
 
   return (
     <div ref={timelineRef} className="relative py-6">
+      {/* Central Line */}
+      <div
+        className="absolute left-8 top-0 h-full w-px bg-cyber-purple/20"
+      >
+        <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line" />
+      </div>
+      
       <div className="space-y-16">
         {timelineEvents.map((event, index) => (
           <div
             key={index}
             ref={(el) => (itemsRef.current[index] = el)}
             data-index={index}
-            className={cn('relative flex items-start gap-8 transition-all duration-700', {
+            className={cn('relative flex items-start gap-8 transition-opacity duration-700', {
               'opacity-100': visibleItems.includes(index),
               'opacity-40': !visibleItems.includes(index),
             })}
           >
-            {/* Timeline Line and Node */}
-            <div className="flex flex-col items-center w-16 flex-shrink-0">
-              {/* Line segment */}
-              <div className="relative w-px h-full bg-cyber-purple/20">
-                {visibleItems.includes(index) && (
-                  <div className="absolute inset-0 w-full bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line"></div>
+            {/* Node Icon */}
+            <div className="relative z-10 flex-shrink-0">
+              <div
+                className={cn(
+                  'w-16 h-16 rounded-full flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500',
+                  event.bgColor,
+                  { 
+                    'border-cyber-blue shadow-lg animate-pulse-glow': visibleItems.includes(index),
+                    'shadow-cyber-blue/30 scale-110': visibleItems.includes(index),
+                  }
                 )}
-              </div>
-              
-              {/* Node Icon */}
-              <div className="relative z-10 flex-shrink-0">
-                <div
-                  className={cn(
-                    'w-16 h-16 rounded-full flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500',
-                    event.bgColor,
-                    { 'border-cyber-blue shadow-lg shadow-cyber-blue/30 scale-110': visibleItems.includes(index) }
-                  )}
-                >
-                  <event.icon className={cn('w-8 h-8 transition-all duration-500', event.color, { 'scale-110': visibleItems.includes(index) })} />
-                </div>
-                {visibleItems.includes(index) && (
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full animate-pulse-glow" style={{ animationDuration: '4s' }}/>
-                )}
+              >
+                <event.icon className={cn('w-8 h-8 transition-all duration-500', event.color, { 'scale-110': visibleItems.includes(index) })} />
               </div>
             </div>
 
