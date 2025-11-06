@@ -10,7 +10,8 @@ const timelineEvents = [
     color: 'text-sky-400',
     bgColor: 'bg-sky-900/20',
     title: 'init: Frontend Foundations',
-    description: `const UIEngine = () => (
+    description: '// Deployed core web APIs. Mastered DOM manipulation & state management with modern JS frameworks to build responsive, dynamic user interfaces.',
+    code: `const UIEngine = () => (
   <div className="responsive-ui">
     <h1>Hello, World!</h1>
   </div>
@@ -21,7 +22,8 @@ const timelineEvents = [
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-900/20',
     title: 'feat: Full-Stack Architecture',
-    description: `app.get('/api/data', (req, res) => {
+    description: '// Scaled up. Engineered robust server-side logic, managed distributed data streams, and built RESTful APIs for end-to-end application services.',
+    code: `app.get('/api/data', async (req, res) => {
   const data = await db.fetchData();
   res.status(200).json(data);
 });`,
@@ -31,7 +33,8 @@ const timelineEvents = [
     color: 'text-purple-400',
     bgColor: 'bg-purple-900/20',
     title: 'refactor: UI/UX & Motion',
-    description: `const cardAnimation = {
+    description: '// Optimized for human interaction. Integrated advanced animation libraries and design principles to compile fluid, engaging user experiences.',
+    code: `const cardAnimation = {
   initial: { opacity: 0, y: 50 },
   animate: { opacity: 1, y: 0 },
   transition: { type: 'spring', stiffness: 100 }
@@ -43,29 +46,27 @@ const timelineEvents = [
     bgColor: 'bg-amber-900/20',
     title: 'build: Human-Centered AI',
     description: '// Exploring the next commit. Currently developing intelligent interfaces and human-centered digital experiences at the intersection of AI and UI.',
-    isTyping: true,
+    code: `const createIntelligentUI = (user) => {
+  const context = analyze(user.intent);
+  return <AdaptiveComponent {...context} />;
+};`,
   },
 ];
 
-const TypingAnimation = () => {
-  const code = `const createIntelligentUI = (user) => {
-  const context = analyze(user.intent);
-  return <AdaptiveComponent {...context} />;
-};`;
-
+const TypingAnimation = ({ code }: { code: string }) => {
   const [typedCode, setTypedCode] = useState('');
 
   useEffect(() => {
     if (typedCode.length < code.length) {
       const timeoutId = setTimeout(() => {
         setTypedCode(code.slice(0, typedCode.length + 1));
-      }, 50);
+      }, 40); // Adjusted speed for better feel
       return () => clearTimeout(timeoutId);
     }
   }, [typedCode, code]);
 
   return (
-    <pre className="text-xs text-amber-300/80 p-3 bg-black/30 rounded-md overflow-x-auto">
+    <pre className="text-xs text-amber-300/80 p-3 bg-black/30 rounded-md overflow-x-auto mt-3 font-mono">
       <code>
         {typedCode}
         <span className="animate-blink">|</span>
@@ -76,30 +77,6 @@ const TypingAnimation = () => {
 
 const TimelineItem = ({ event, index, isVisible }: { event: (typeof timelineEvents)[0], index: number, isVisible: boolean }) => {
   const lineRef = useRef<HTMLDivElement>(null);
-  const [isLineVisible, setIsLineVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsLineVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    const currentLine = lineRef.current;
-    if (currentLine) {
-      observer.observe(currentLine);
-    }
-
-    return () => {
-      if (currentLine) {
-        observer.unobserve(currentLine);
-      }
-    };
-  }, []);
 
   return (
     <div className="relative">
@@ -130,13 +107,9 @@ const TimelineItem = ({ event, index, isVisible }: { event: (typeof timelineEven
               {event.title}
             </h4>
             
-            {event.isTyping && isVisible ? (
-              <TypingAnimation />
-            ) : (
-              <pre className="text-xs text-gray-400 p-3 bg-black/30 rounded-md overflow-x-auto font-mono">
-                <code>{event.description}</code>
-              </pre>
-            )}
+            <p className="text-sm text-gray-400 font-mono italic">{event.description}</p>
+            
+            {isVisible && <TypingAnimation code={event.code} />}
           </div>
         </div>
       </div>
@@ -144,17 +117,16 @@ const TimelineItem = ({ event, index, isVisible }: { event: (typeof timelineEven
       {/* Connecting Line Segment */}
       {index < timelineEvents.length - 1 && (
         <div 
-          ref={lineRef} 
-          className="absolute top-16 left-8 w-px bg-cyber-purple/20"
+          ref={lineRef}
+          className="absolute top-16 left-8 h-full"
           style={{ height: 'calc(100% - 4rem)' }}
         >
+           {/* The visible track for the line */}
+          <div className="absolute w-px h-full bg-cyber-purple/20" />
+           {/* The animated "drawing" line */}
           <div
-            className="h-full w-full bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400"
-            style={{
-              transform: isLineVisible ? 'scaleY(1)' : 'scaleY(0)',
-              transformOrigin: 'top',
-              transition: 'transform 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
-            }}
+            className="h-full w-px bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line"
+            style={{ animationPlayState: isVisible ? 'running' : 'paused' }}
           />
         </div>
       )}
