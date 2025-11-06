@@ -10,21 +10,32 @@ const timelineEvents = [
     color: 'text-sky-400',
     bgColor: 'bg-sky-900/20',
     title: 'init: Frontend Foundations',
-    description: '// Deployed core web APIs. Mastered DOM manipulation & state management with modern JS frameworks to build responsive, dynamic user interfaces.',
+    description: `const UIEngine = () => (
+  <div className="responsive-ui">
+    <h1>Hello, World!</h1>
+  </div>
+);`,
   },
   {
     icon: GitCommit,
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-900/20',
     title: 'feat: Full-Stack Architecture',
-    description: '// Scaled up. Engineered robust server-side logic, managed distributed data streams, and built RESTful APIs for end-to-end application services.',
+    description: `app.get('/api/data', (req, res) => {
+  const data = await db.fetchData();
+  res.status(200).json(data);
+});`,
   },
   {
     icon: Sparkles,
     color: 'text-purple-400',
     bgColor: 'bg-purple-900/20',
     title: 'refactor: UI/UX & Motion',
-    description: '// Optimized for human interaction. Integrated advanced animation libraries and design principles to compile fluid, engaging user experiences.',
+    description: `const cardAnimation = {
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0 },
+  transition: { type: 'spring', stiffness: 100 }
+};`,
   },
   {
     icon: Cpu,
@@ -63,7 +74,7 @@ const TypingAnimation = () => {
   );
 };
 
-const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof timelineEvents)[0], index: number, isVisible: boolean, isLast: boolean }) => {
+const TimelineItem = ({ event, index, isVisible }: { event: (typeof timelineEvents)[0], index: number, isVisible: boolean }) => {
   const lineRef = useRef<HTMLDivElement>(null);
   const [isLineVisible, setIsLineVisible] = useState(false);
 
@@ -91,60 +102,62 @@ const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof time
   }, []);
 
   return (
-    <div
-      className={cn('relative flex items-start gap-8 transition-opacity duration-700', {
-        'opacity-100': isVisible,
-        'opacity-40': !isVisible,
-      })}
-    >
-      {/* Node and Connecting Line */}
-      <div className="relative flex flex-col items-center flex-shrink-0">
+    <div className="relative">
+      <div
+        className={cn('relative flex items-start gap-8 transition-opacity duration-700', {
+          'opacity-100': isVisible,
+          'opacity-40': !isVisible,
+        })}
+      >
         {/* Node Icon */}
         <div
           className={cn(
-            'z-10 w-16 h-16 rounded-full flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500',
+            'z-10 w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500',
             event.bgColor,
-            { 
-              'animate-pulse-glow': isVisible,
-            }
+            { 'animate-pulse-glow': isVisible }
           )}
         >
           <event.icon className={cn('w-8 h-8 transition-all duration-500', event.color, { 'scale-110': isVisible })} />
         </div>
 
-        {/* Line Segment */}
-        {!isLast && (
-           <div ref={lineRef} className="flex-grow w-px bg-cyber-purple/20 mt-4 h-32 relative">
-            <div
-              className={cn('h-full w-full bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 absolute top-0 left-0 animate-draw-line', {
-                'animate-draw-line': isLineVisible,
-              })}
-              style={{
-                transformOrigin: 'top',
-                animationPlayState: isLineVisible ? 'running' : 'paused',
-                animationFillMode: 'forwards',
-                animationDuration: '1.5s', // Slower, more deliberate draw
-              }}
-            />
+        {/* Content Card */}
+        <div className={cn(
+          "flex-1 pt-1 transition-all duration-500 delay-150 -translate-y-4",
+          { 'opacity-100 translate-y-0': isVisible, 'opacity-0': !isVisible }
+        )}>
+          <div className="p-6 bg-cyber-gray/30 backdrop-blur-xl border border-cyber-purple/20 rounded-xl hover:border-cyber-purple/50 transition-colors duration-300">
+            <h4 className="font-bold text-xl text-gray-200 mb-3">
+              {event.title}
+            </h4>
+            
+            {event.isTyping && isVisible ? (
+              <TypingAnimation />
+            ) : (
+              <pre className="text-xs text-gray-400 p-3 bg-black/30 rounded-md overflow-x-auto font-mono">
+                <code>{event.description}</code>
+              </pre>
+            )}
           </div>
-        )}
-      </div>
-
-      {/* Content Card */}
-      <div className={cn(
-        "flex-1 pt-1 transition-all duration-500 delay-150 -translate-y-4",
-        { 'opacity-100 translate-y-0': isVisible, 'opacity-0': !isVisible }
-      )}>
-        <div className="p-6 bg-cyber-gray/30 backdrop-blur-xl border border-cyber-purple/20 rounded-xl hover:border-cyber-purple/50 transition-colors duration-300">
-          <h4 className="font-bold text-xl text-gray-200 mb-3">
-            {event.title}
-          </h4>
-          <p className="text-sm text-gray-400 leading-relaxed mb-4 font-mono">
-            {event.description}
-          </p>
-          {event.isTyping && isVisible && <TypingAnimation />}
         </div>
       </div>
+
+      {/* Connecting Line Segment */}
+      {index < timelineEvents.length - 1 && (
+        <div 
+          ref={lineRef} 
+          className="absolute top-16 left-8 w-px bg-cyber-purple/20"
+          style={{ height: 'calc(100% - 4rem)' }}
+        >
+          <div
+            className="h-full w-full bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400"
+            style={{
+              transform: isLineVisible ? 'scaleY(1)' : 'scaleY(0)',
+              transformOrigin: 'top',
+              transition: 'transform 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+          />
+        </div>
+      )}
     </div>
   )
 }
@@ -182,14 +195,13 @@ const InteractiveTimeline = () => {
 
   return (
     <div className="relative py-6">
-      <div className="space-y-4">
+      <div className="space-y-8">
         {timelineEvents.map((event, index) => (
           <div key={index} ref={(el) => (itemsRef.current[index] = el)} data-index={index}>
             <TimelineItem
               event={event}
               index={index}
               isVisible={visibleItems.includes(index)}
-              isLast={index === timelineEvents.length - 1}
             />
           </div>
         ))}
