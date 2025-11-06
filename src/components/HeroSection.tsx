@@ -202,36 +202,21 @@ const HeroSection = () => {
         </div>
 
         {/* Professional CTA button */}
-        <div className="animate-fade-in-up group/cta" style={{ animationDelay: '0.8s' }}>
-            <Button
-              className="relative inline-flex items-center justify-center rounded-full bg-cyber-dark px-8 py-4 text-lg font-bold text-white overflow-hidden border-2 border-gray-700/60 transition-all duration-300 group-hover/cta:border-transparent group-hover/cta:scale-110"
-              style={
-                {
-                  transformStyle: 'preserve-3d',
-                } as React.CSSProperties
-              }
-              onClick={() =>
-                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
-              }
-            >
-              <div 
-                className="absolute -inset-0.5 rounded-full bg-transparent group-hover/cta:bg-[conic-gradient(from_90deg_at_50%_50%,var(--cyber-purple)_50%,var(--cyber-blue)_100%)] opacity-0 group-hover/cta:opacity-100 transition-opacity duration-300 animate-gradient-rotate"
-              ></div>
-
-              <div className="relative w-full h-full bg-cyber-dark rounded-full flex items-center justify-center">
-                <div
-                  className="orbiting-light"
-                  style={{ '--glow-color': 'var(--cyber-blue)' } as React.CSSProperties}
-                ></div>
-                <span
-                  className="relative z-10 flex items-center gap-2 group-hover/cta:scale-105 transition-transform duration-500 glitch-text"
-                  data-text="Decrypt my codeverse →"
-                  style={{ textShadow: '0 0 15px rgba(30, 30, 57, 0.5)' }}
-                >
-                  Decrypt my codeverse →
-                </span>
-              </div>
-            </Button>
+        <div className="animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+          <a
+            href="#about"
+            className="cta-btn"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            <div className="cta-btn-background"></div>
+            <span className="cta-btn-content">
+              Decrypt my codeverse
+              <span className="cta-btn-arrow">→</span>
+            </span>
+          </a>
         </div>
       </div>
     </section>
@@ -239,5 +224,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
-    
