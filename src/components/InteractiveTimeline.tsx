@@ -94,9 +94,9 @@ const InteractiveTimeline = () => {
   }, []);
 
   return (
-    <div ref={timelineRef} className="relative p-6">
+    <div ref={timelineRef} className="relative p-6 pl-12">
       {/* Central animated line */}
-      <div className="absolute top-0 left-8 w-px h-full bg-cyber-purple/20">
+      <div className="absolute top-0 left-[2.2rem] w-px h-full bg-cyber-purple/20">
         <div 
           className="absolute top-0 left-0 w-full bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 transition-all duration-1000 ease-out"
           style={{ height: `${(visibleItems.length / timelineEvents.length) * 100}%` }}
@@ -116,7 +116,7 @@ const InteractiveTimeline = () => {
             style={{ transitionDelay: visibleItems.includes(index) ? '0ms' : `${index * 150}ms` }}
           >
             {/* Node Icon */}
-            <div className="relative flex-shrink-0">
+            <div className="relative flex-shrink-0 -translate-x-1/2">
               <div
                 className={cn(
                   'w-16 h-16 rounded-full flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500',
