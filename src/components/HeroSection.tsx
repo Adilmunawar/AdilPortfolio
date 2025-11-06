@@ -253,7 +253,7 @@ const HeroSection = () => {
               style={{ '--glow-x': '50%', '--glow-y': '50%' } as React.CSSProperties}
             ></div>
             <span className="relative z-10 flex items-center gap-2 group-hover:scale-105 transition-transform duration-500" style={{ textShadow: '0 0 15px rgba(30, 30, 57, 0.5)' }}>
-              Explore My Work →
+              Decrypt my codeverse →
             </span>
           </Button>
         </div>
