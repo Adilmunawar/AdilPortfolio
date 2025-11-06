@@ -9,29 +9,29 @@ const timelineEvents = [
     icon: Code,
     color: 'text-sky-400',
     bgColor: 'bg-sky-900/20',
-    title: 'Frontend Mastery',
-    description: 'Began my journey by mastering the core principles of web development, building responsive and dynamic user interfaces with modern JavaScript frameworks.',
+    title: 'init: Frontend Foundations',
+    description: '// Deployed core web APIs. Mastered DOM manipulation & state management with modern JS frameworks to build responsive, dynamic user interfaces.',
   },
   {
     icon: GitCommit,
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-900/20',
-    title: 'Architecting Full-Stack Solutions',
-    description: 'Expanded into backend development, learning to build robust server-side logic and manage data to create complete, end-to-end applications.',
+    title: 'feat: Full-Stack Architecture',
+    description: '// Scaled up. Engineered robust server-side logic, managed distributed data streams, and built RESTful APIs for end-to-end application services.',
   },
   {
     icon: Sparkles,
     color: 'text-purple-400',
     bgColor: 'bg-purple-900/20',
-    title: 'Elevating UI/UX with Animation',
-    description: 'Focused on creating fluid and engaging user experiences by integrating advanced animation libraries and design principles.',
+    title: 'refactor: UI/UX & Motion',
+    description: '// Optimized for human interaction. Integrated advanced animation libraries and design principles to compile fluid, engaging user experiences.',
   },
   {
     icon: Cpu,
     color: 'text-amber-400',
     bgColor: 'bg-amber-900/20',
-    title: 'Developing for Humans',
-    description: 'Currently exploring the intersection of AI and user interfaces, crafting intelligent, intuitive, and human-centered digital experiences.',
+    title: 'build: Human-Centered AI',
+    description: '// Exploring the next commit. Currently developing intelligent interfaces and human-centered digital experiences at the intersection of AI and UI.',
     isTyping: true,
   },
 ];
@@ -105,8 +105,7 @@ const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof time
             'z-10 w-16 h-16 rounded-full flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500',
             event.bgColor,
             { 
-              'border-cyber-blue shadow-lg animate-pulse-glow': isVisible,
-              'shadow-cyber-blue/30 scale-110': isVisible,
+              'animate-pulse-glow': isVisible,
             }
           )}
         >
@@ -115,12 +114,17 @@ const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof time
 
         {/* Line Segment */}
         {!isLast && (
-          <div ref={lineRef} className="flex-grow w-px bg-cyber-purple/20 mt-4 h-32">
+           <div ref={lineRef} className="flex-grow w-px bg-cyber-purple/20 mt-4 h-32 relative">
             <div
-              className={cn('h-full w-full bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 origin-top transition-transform duration-1000 ease-out', {
-                'scale-y-100': isLineVisible,
-                'scale-y-0': !isLineVisible,
+              className={cn('h-full w-full bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 absolute top-0 left-0 animate-draw-line', {
+                'animate-draw-line': isLineVisible,
               })}
+              style={{
+                transformOrigin: 'top',
+                animationPlayState: isLineVisible ? 'running' : 'paused',
+                animationFillMode: 'forwards',
+                animationDuration: '1.5s', // Slower, more deliberate draw
+              }}
             />
           </div>
         )}
@@ -135,7 +139,7 @@ const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof time
           <h4 className="font-bold text-xl text-gray-200 mb-3">
             {event.title}
           </h4>
-          <p className="text-sm text-gray-400 leading-relaxed mb-4">
+          <p className="text-sm text-gray-400 leading-relaxed mb-4 font-mono">
             {event.description}
           </p>
           {event.isTyping && isVisible && <TypingAnimation />}
