@@ -1,33 +1,36 @@
 'use client';
 import { Card } from '@/components/ui/card';
 import ProfileCard from './ProfileCard';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+const dynamicTexts = [
+  "Passionate Developer",
+  "Web Developer",
+  "Problem Solver",
+  "Innovation Driver"
+];
 
 const AboutSection = () => {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const dynamicTexts = [
-    "Passionate Developer",
-    "Web Developer",
-    "Problem Solver",
-    "Innovation Driver"
-  ];
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTextIndex((prev) => (prev + 1) % dynamicTexts.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [dynamicTexts.length]);
+  }, []);
 
   useEffect(() => {
-    const aboutSection = document.getElementById('about-section-observer');
+    const aboutSection = sectionRef.current;
     if (!aboutSection) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
+          observer.unobserve(aboutSection);
         }
       },
       { threshold: 0.2 } // Trigger when 20% is visible
@@ -39,8 +42,8 @@ const AboutSection = () => {
   }, []);
 
   return (
-    <section id="about" className="min-h-screen py-20 px-4 relative overflow-hidden bg-transparent">
-      <div id="about-section-observer" className="max-w-6xl mx-auto relative z-10">
+    <section id="about" ref={sectionRef} className="min-h-screen py-20 px-4 relative overflow-hidden bg-transparent">
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Clean, professional title section */}
         <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <h2 className="text-5xl md:text-7xl font-bold mb-6 text-gradient-slow">
