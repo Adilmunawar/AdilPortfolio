@@ -52,7 +52,7 @@ const MilestoneCard = ({ event, isVisible }: { event: typeof milestoneEvents[0],
     <Card
       className={cn(
         "relative p-6 bg-cyber-gray/30 border border-cyber-purple/20 backdrop-blur-sm transition-all duration-500 hover:border-cyber-purple/40 hover:scale-105",
-        { "animate-fade-in-up": isVisible }
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       )}
       style={{ animationDelay: event.animationDelay }}
     >
@@ -65,7 +65,13 @@ const MilestoneCard = ({ event, isVisible }: { event: typeof milestoneEvents[0],
           <p className="text-sm text-gray-400 leading-relaxed">{event.description}</p>
         </div>
       </div>
-      <div className="absolute -inset-px rounded-lg bg-gradient-to-r from-cyber-purple to-cyber-blue opacity-0 hover:opacity-100 transition-opacity duration-500" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 1px, 1px 1px, 1px 100%, 0 100%)' }}></div>
+       <div 
+        className={cn(
+          "absolute -inset-px rounded-lg bg-gradient-to-r from-cyber-purple to-cyber-blue transition-opacity duration-500",
+          isVisible ? "animate-pulse-glow" : "opacity-0"
+        )}
+        style={{ animationDelay: event.animationDelay, animationIterationCount: 1, animationDuration: '1.5s' }}
+       ></div>
     </Card>
   );
 };
@@ -94,12 +100,16 @@ const AboutSection = () => {
           observer.unobserve(aboutSection);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
     observer.observe(aboutSection);
 
-    return () => observer.disconnect();
+    return () => {
+      if(aboutSection) {
+        observer.unobserve(aboutSection);
+      }
+    };
   }, []);
 
   return (
@@ -132,10 +142,26 @@ const AboutSection = () => {
               />
             </div>
           
-            <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-              {milestoneEvents.map((event, index) => (
-                <MilestoneCard key={index} event={event} isVisible={isVisible} />
-              ))}
+            <div className="lg:col-span-3 relative">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {milestoneEvents.map((event, index) => (
+                        <MilestoneCard key={index} event={event} isVisible={isVisible} />
+                    ))}
+                </div>
+                
+                {/* Connecting Lines */}
+                {isVisible && (
+                    <>
+                        {/* Line 1 -> 2 */}
+                        <div className="hidden md:block absolute top-1/2 left-[calc(50%-1rem)] w-8 h-[2px] bg-gradient-to-r from-cyber-purple/50 to-cyber-blue/50 animate-draw-line" style={{ transformOrigin: 'left', animationDelay: '0.6s' }}></div>
+
+                        {/* Line 2 -> 3 */}
+                        <div className="hidden md:block absolute left-[calc(75%)] top-[calc(25%_+_2rem)] w-[2px] h-[calc(50%_-_4rem)] bg-gradient-to-b from-cyber-purple/50 to-cyber-blue/50 animate-draw-line" style={{ transformOrigin: 'top', animationDelay: '0.8s' }}></div>
+
+                        {/* Line 3 -> 4 */}
+                        <div className="hidden md:block absolute top-1/2 right-[calc(50%-1rem)] w-8 h-[2px] bg-gradient-to-l from-cyber-purple/50 to-cyber-blue/50 animate-draw-line" style={{ transformOrigin: 'right', animationDelay: '1s' }}></div>
+                    </>
+                )}
             </div>
         </div>
       </div>

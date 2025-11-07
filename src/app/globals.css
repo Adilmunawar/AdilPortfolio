@@ -122,10 +122,12 @@
 /* Smooth and professional animations */
 .animate-fade-in-up {
   animation: fadeInUp 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
 }
 
 .animate-scale-in {
   animation: scaleIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
 }
 
 .animate-subtle-tilt {
@@ -541,15 +543,15 @@
     
 @keyframes draw-line {
   from {
-    transform: scaleY(0);
+    transform: scaleX(0);
   }
   to {
-    transform: scaleY(1);
+    transform: scaleX(1);
   }
 }
+
 .animate-draw-line {
-  animation: draw-line 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  transform-origin: top;
+  animation: draw-line 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes pulse-glow {
@@ -559,13 +561,14 @@
     box-shadow: 0 0 10px 2px var(--cyber-purple, rgba(59, 29, 138, 0.4)), 0 0 20px 5px var(--cyber-purple-transparent, rgba(59, 29, 138, 0.2));
   }
   50% {
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow: 0 0 20px 5px var(--cyber-purple, rgba(59, 29, 138, 0.6)), 0 0 40px 10px var(--cyber-purple-transparent, rgba(59, 29, 138, 0.4));
   }
 }
 .animate-pulse-glow {
   --cyber-purple-transparent: rgba(59, 29, 138, 0.3);
-  animation: pulse-glow 3s infinite ease-in-out;
+  animation: pulse-glow 2.5s infinite ease-in-out;
+  opacity: 0;
 }
 
 @keyframes blink {
