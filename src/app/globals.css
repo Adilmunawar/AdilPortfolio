@@ -582,25 +582,24 @@
 
 /* NEW AURORA BACKGROUND */
 @keyframes aurora {
-  0% {
-    background-position: 0% 50%;
+  from {
+    background-position: 50% 50%, 50% 50%;
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+  to {
+    background-position: 350% 50%, 350% 50%;
   }
 }
 
 .bg-aurora {
-  background: radial-gradient(
-      ellipse at 25% 25%,
-      var(--cyber-purple) 0%,
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(
+      ellipse at top left,
+      var(--cyber-green) 0%,
       transparent 50%
     ),
-    radial-gradient(ellipse at 75% 75%, var(--cyber-blue) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, var(--cyber-cyan) 0%, transparent 40%);
-  background-size: 300% 300%;
-  animation: aurora 20s ease-in-out infinite;
+    radial-gradient(ellipse at top right, var(--cyber-purple) 0%, transparent 50%);
+  background-size: 600% 600%;
+  animation: aurora 15s ease-in-out infinite;
 }
