@@ -1,51 +1,50 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Code, Cpu, GitCommit, Sparkles } from 'lucide-react';
+import { Sparkles, Users, Rocket, Orbit } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const timelineEvents = [
   {
-    icon: Code,
+    icon: Sparkles,
     color: 'text-sky-400',
     bgColor: 'bg-sky-900/20',
-    title: 'init: Frontend Foundations',
-    description: 'Deployed core web APIs. Mastered DOM manipulation & state management with modern JS frameworks to build responsive, dynamic user interfaces.',
-    code: `const UIEngine = () => (
-  <div className="responsive-ui">
-    <h1>Hello, World!</h1>
-  </div>
-);`,
+    title: 'Spark of Curiosity',
+    description: 'My journey began with a childhood fascination for technology. Entirely self-taught, I dove into the digital world, earning numerous certifications and competing in coding contests to sharpen my skills.',
+    code: `function helloWorld() {
+  console.log("Dream Big, Start Small");
+}`,
   },
   {
-    icon: GitCommit,
+    icon: Users,
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-900/20',
-    title: 'feat: Full-Stack Architecture',
-    description: 'Scaled up. Engineered robust server-side logic, managed distributed data streams, and built RESTful APIs for end-to-end application services.',
-    code: `app.get('/api/data', async (req, res) => {
-  const data = await db.fetchData();
-  res.status(200).json(data);
+    title: 'Building the Collective',
+    description: 'Driven by a passion to create, I forged a dedicated team to build custom SaaS and web solutions. We started by making a mark on the local stage, delivering quality and innovation to our first clients.',
+    code: `app.post('/api/solutions', (req, res) => {
+  const { idea } = req.body;
+  const solution = createSolution(idea);
+  res.status(201).send(solution);
 });`,
   },
   {
-    icon: Sparkles,
+    icon: Rocket,
     color: 'text-purple-400',
     bgColor: 'bg-purple-900/20',
-    title: 'refactor: UI/UX & Motion',
-    description: 'Optimized for human interaction. Integrated advanced animation libraries and design principles to compile fluid, engaging user experiences.',
-    code: `const cardAnimation = {
-  initial: { opacity: 0, y: 50 },
-  animate: { opacity: 1, y: 0 },
-  transition: { type: 'spring', stiffness: 100 }
+    title: 'Expanding Horizons',
+    description: 'Our reputation for excellence allowed us to transition from local projects to the international arena, collaborating with a diverse range of overseas clients and tackling more complex challenges.',
+    code: `const globalPresence = {
+  animate: { scale: [1, 1.2, 1] },
+  transition: { repeat: Infinity, duration: 5 },
+  whileHover: { boxShadow: "0 0 20px #fff" }
 };`,
   },
   {
-    icon: Cpu,
+    icon: Orbit,
     color: 'text-amber-400',
     bgColor: 'bg-amber-900/20',
-    title: 'build: Human-Centered AI',
-    description: 'Exploring the next commit. Currently developing intelligent interfaces and human-centered digital experiences at the intersection of AI and UI.',
+    title: 'The Nexus Mission',
+    description: "Today, as a co-founder of Nexus Orbits Pakistan, our mission is to provide cutting-edge digital services on a global scale. The journey is ongoing, and we're just getting started.",
     code: `const createIntelligentUI = (user) => {
   const context = analyze(user.intent);
   return <AdaptiveComponent {...context} />;
@@ -76,27 +75,43 @@ const TypingAnimation = ({ code }: { code: string }) => {
 };
 
 const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof timelineEvents)[0], index: number, isVisible: boolean, isLast: boolean }) => {
+  const lineRef = useRef<HTMLDivElement>(null);
+  const itemRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const item = itemRef.current;
+    const line = lineRef.current;
+    if (!item || !line) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          line.style.animationPlayState = 'running';
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(item);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="relative">
-      <div className={cn(
-        "flex items-start gap-8",
-        { 'pb-12': !isLast }
-      )}>
-        {/* Node Icon */}
-        <div className="z-10 relative">
-            <div
+    <div ref={itemRef} className={cn("relative", { 'pb-16': !isLast })}>
+      <div className="flex items-start gap-8">
+        <div className="z-10 relative flex-shrink-0">
+          <div
             className={cn(
-                'w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500 relative',
+                'w-16 h-16 rounded-full flex items-center justify-center border-2 border-cyber-purple/30 transition-all duration-500',
                 event.bgColor,
                 { 'animate-pulse-glow': isVisible }
             )}
             >
             <event.icon className={cn('w-8 h-8 transition-all duration-500', event.color, { 'scale-110': isVisible })} />
-            </div>
+          </div>
         </div>
 
-
-        {/* Content Card */}
         <div className={cn(
           "flex-1 pt-1 transition-all duration-500 delay-150 -translate-y-4",
           { 'opacity-100 translate-y-0': isVisible, 'opacity-0': !isVisible }
@@ -113,20 +128,18 @@ const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof time
         </div>
       </div>
 
-      {/* Connecting Line Segment */}
       {!isLast && (
-         <div 
-          className="absolute top-8 left-8 h-full w-px"
-          style={{ height: 'calc(100% - 2rem)' }}
+        <div 
+          ref={lineRef}
+          className="absolute top-16 left-8 h-full w-px"
+          style={{ height: 'calc(100% - 4rem)' }}
         >
-          {/* Static track for the line */}
-          <div className="absolute top-8 left-0 h-full w-px bg-cyber-purple/20" style={{ height: 'calc(100% - 4rem)' }} />
-          {/* Animated line that draws on scroll */}
+          <div className="absolute top-0 left-0 h-full w-px bg-cyber-purple/20" />
           <div
-            className="absolute top-8 left-0 w-px bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line"
+            className="absolute top-0 left-0 w-px bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line"
             style={{ 
-              animationPlayState: isVisible ? 'running' : 'paused',
-              height: 'calc(100% - 4rem)'
+              animationPlayState: 'paused',
+              height: '100%'
              }}
           />
         </div>
@@ -170,7 +183,7 @@ const InteractiveTimeline = () => {
     <div className="relative py-6">
       <div className="flex flex-col">
         {timelineEvents.map((event, index) => (
-          <div key={index} ref={(el) => { itemsRef.current[index] = el; }} data-index={index}>
+          <div key={index} ref={(el) => {itemsRef.current[index] = el}} data-index={index}>
             <TimelineItem
               event={event}
               index={index}
