@@ -1,4 +1,4 @@
-import Aurora from '@/components/Aurora';
+'use client';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
@@ -10,12 +10,7 @@ import ContactSection from '@/components/ContactSection';
 export default function Home() {
   return (
     <div className="relative min-h-screen bg-cyber-dark">
-      <Aurora
-        colorStops={["#3b1d8a", "#4338ca", "#3730a3"]}
-        blend={0.5}
-        speed={1.0}
-        amplitude={1.0}
-      />
+      <div className="bg-aurora fixed inset-0 z-0 opacity-40" />
       <Navigation />
       
       <main className="relative z-10">
