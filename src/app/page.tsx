@@ -1,4 +1,3 @@
-import Spline from '@splinetool/react-spline/next';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
@@ -10,20 +9,7 @@ import ContactSection from '@/components/ContactSection';
 export default function Home() {
   return (
     <div className="relative min-h-screen bg-cyber-dark">
-      <div style={{
-        width: '105vw',
-        height: '105vh',
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%) scale(1.2)',
-        zIndex: 0,
-        pointerEvents: 'none'
-      }}>
-        <Spline
-          scene="https://prod.spline.design/AvF-dvRCaMAo12qX/scene.splinecode"
-        />
-      </div>
+      <div className="bg-aurora fixed inset-0 z-0 opacity-40" />
       <Navigation />
       
       <main className="relative z-10">
