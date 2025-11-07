@@ -115,11 +115,13 @@ const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof time
 
       {/* Connecting Line Segment */}
       {!isLast && (
-        <div 
+         <div 
           className="absolute top-8 left-8 h-full w-px"
           style={{ height: 'calc(100% - 2rem)' }}
         >
+          {/* Static track for the line */}
           <div className="absolute top-8 left-0 h-full w-px bg-cyber-purple/20" style={{ height: 'calc(100% - 4rem)' }} />
+          {/* Animated line that draws on scroll */}
           <div
             className="absolute top-8 left-0 w-px bg-gradient-to-b from-cyber-purple via-cyber-blue to-emerald-400 animate-draw-line"
             style={{ 
@@ -168,7 +170,7 @@ const InteractiveTimeline = () => {
     <div className="relative py-6">
       <div className="flex flex-col">
         {timelineEvents.map((event, index) => (
-          <div key={index} ref={(el) => (itemsRef.current[index] = el)} data-index={index}>
+          <div key={index} ref={(el) => { itemsRef.current[index] = el; }} data-index={index}>
             <TimelineItem
               event={event}
               index={index}
