@@ -11,9 +11,6 @@ const timelineEvents = [
     bgColor: 'bg-sky-900/20',
     title: 'Spark of Curiosity',
     description: 'My journey began with a childhood fascination for technology. Entirely self-taught, I dove into the digital world, earning numerous certifications and competing in coding contests to sharpen my skills.',
-    code: `function helloWorld() {
-  console.log("Dream Big, Start Small");
-}`,
   },
   {
     icon: Users,
@@ -21,11 +18,6 @@ const timelineEvents = [
     bgColor: 'bg-emerald-900/20',
     title: 'Building the Collective',
     description: 'Driven by a passion to create, I forged a dedicated team to build custom SaaS and web solutions. We started by making a mark on the local stage, delivering quality and innovation to our first clients.',
-    code: `app.post('/api/solutions', (req, res) => {
-  const { idea } = req.body;
-  const solution = createSolution(idea);
-  res.status(201).send(solution);
-});`,
   },
   {
     icon: Rocket,
@@ -33,11 +25,6 @@ const timelineEvents = [
     bgColor: 'bg-purple-900/20',
     title: 'Expanding Horizons',
     description: 'Our reputation for excellence allowed us to transition from local projects to the international arena, collaborating with a diverse range of overseas clients and tackling more complex challenges.',
-    code: `const globalPresence = {
-  animate: { scale: [1, 1.2, 1] },
-  transition: { repeat: Infinity, duration: 5 },
-  whileHover: { boxShadow: "0 0 20px #fff" }
-};`,
   },
   {
     icon: Orbit,
@@ -45,34 +32,9 @@ const timelineEvents = [
     bgColor: 'bg-amber-900/20',
     title: 'The Nexus Mission',
     description: "Today, as a co-founder of Nexus Orbits Pakistan, our mission is to provide cutting-edge digital services on a global scale. The journey is ongoing, and we're just getting started.",
-    code: `const createIntelligentUI = (user) => {
-  const context = analyze(user.intent);
-  return <AdaptiveComponent {...context} />;
-};`,
   },
 ];
 
-const TypingAnimation = ({ code }: { code: string }) => {
-  const [typedCode, setTypedCode] = useState('');
-
-  useEffect(() => {
-    if (typedCode.length < code.length) {
-      const timeoutId = setTimeout(() => {
-        setTypedCode(code.slice(0, typedCode.length + 1));
-      }, 40); // Adjusted speed for better feel
-      return () => clearTimeout(timeoutId);
-    }
-  }, [typedCode, code]);
-
-  return (
-    <pre className="text-xs text-sky-300 p-3 bg-black/30 rounded-md overflow-x-auto mt-3 font-mono">
-      <code>
-        {typedCode}
-        <span className="animate-blink">|</span>
-      </code>
-    </pre>
-  );
-};
 
 const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof timelineEvents)[0], index: number, isVisible: boolean, isLast: boolean }) => {
   const lineRef = useRef<HTMLDivElement>(null);
@@ -122,8 +84,6 @@ const TimelineItem = ({ event, index, isVisible, isLast }: { event: (typeof time
             </h4>
             
             <p className="text-sm text-gray-400 font-mono">{event.description}</p>
-            
-            {isVisible && <TypingAnimation code={event.code} />}
           </div>
         </div>
       </div>
@@ -183,7 +143,7 @@ const InteractiveTimeline = () => {
     <div className="relative py-6">
       <div className="flex flex-col">
         {timelineEvents.map((event, index) => (
-          <div key={index} ref={(el) => {itemsRef.current[index] = el}} data-index={index}>
+          <div key={index} ref={(el) => {itemsRef.current[index] = el;}} data-index={index}>
             <TimelineItem
               event={event}
               index={index}
