@@ -1849,46 +1849,39 @@ const GitHubStats = () => {
     }
   };
 
-  const getWeeks = () => {
+  const getContributionDays = () => {
     if (!contributions || contributions.length === 0) {
       return [];
     }
-
+  
+    const today = new Date();
+    const endDate = new Date(today);
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() - 365);
+  
     const contributionsMap = new Map();
     contributions.forEach(day => {
       contributionsMap.set(day.date, day);
     });
+  
+    const days = [];
+    const firstDay = new Date(contributions[0].date);
+    const firstDayOfWeek = firstDay.getDay();
 
-    const weeks: (any)[][] = Array(7).fill(null).map(() => []);
-    const today = new Date();
-    const startDate = new Date();
-    startDate.setDate(today.getDate() - 365 + today.getDay());
-    
-    for (let i = 0; i < 53 * 7; i++) {
-        const currentDate = new Date(startDate);
-        currentDate.setDate(startDate.getDate() + i);
-        const dateKey = currentDate.toISOString().split('T')[0];
-        const dayData = contributionsMap.get(dateKey);
-        const weekIndex = Math.floor(i/7);
-        if (weeks[weekIndex]) {
-            weeks[weekIndex].push(dayData || { date: dateKey, count: 0, level: 0 });
-        }
+    // Add padding for days before the first contribution day
+    for (let i = 0; i < firstDayOfWeek; i++) {
+        days.push(null);
     }
-
-    // This is a simple grid transpose
-    const columns = [];
-    for(let i=0; i < weeks.length; i++) {
-        for(let j=0; j < 7; j++) {
-            if(!columns[j]) {
-                columns[j] = [];
-            }
-            columns[j][i] = weeks[i][j];
-        }
+  
+    for (let i = 0; i < contributions.length; i++) {
+        const day = contributions[i];
+        days.push(day);
     }
-    return columns;
+  
+    return days;
   };
   
-  const weekColumns = getWeeks();
+  const contributionDays = getContributionDays();
 
   if (!totalContributions || totalContributions === 0) {
     return (
@@ -1926,25 +1919,21 @@ const GitHubStats = () => {
         </div>
         
         <div className="overflow-x-auto pb-2">
-           <div className="grid grid-flow-col auto-cols-max gap-1">
-            {weekColumns.map((week, weekIndex) => (
-              <div key={weekIndex} className="grid grid-rows-7 gap-1">
-                {week.map((day, dayIndex) => {
-                  if (!day) {
-                    return <div key={`empty-${weekIndex}-${dayIndex}`} className="w-3 h-3 rounded-sm bg-gray-800/20" />;
-                  }
-                  return (
-                    <div
-                      key={day.date}
-                      className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-cyber-blue/50 transition-all duration-300 cursor-pointer group/day hover:scale-125`}
-                      title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}`}
-                    >
-                      <div className="w-full h-full rounded-sm group-hover/day:animate-pulse transition-all duration-200"></div>
-                    </div>
-                  );
-                })}
-              </div>
-            ))}
+           <div className="grid grid-flow-col grid-rows-7 gap-1">
+            {contributionDays.map((day, dayIndex) => {
+              if (!day) {
+                return <div key={`empty-${dayIndex}`} className="w-3 h-3 rounded-sm bg-gray-800/20" />;
+              }
+              return (
+                <div
+                  key={day.date}
+                  className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-cyber-blue/50 transition-all duration-300 cursor-pointer group/day hover:scale-125`}
+                  title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}`}
+                >
+                  <div className="w-full h-full rounded-sm group-hover/day:animate-pulse transition-all duration-200"></div>
+                </div>
+              );
+            })}
           </div>
         </div>
         
