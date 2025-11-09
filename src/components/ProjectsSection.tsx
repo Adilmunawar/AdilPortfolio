@@ -151,8 +151,8 @@ const ProjectsSection = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-20 animate-fade-in-up">
           <div className="inline-block mb-8">
-            <span className="text-gray-400 text-sm font-semibold tracking-widest uppercase bg-cyber-purple/5 px-6 py-3 rounded-full border border-cyber-purple/20 backdrop-blur-sm">
-              <Sparkles className="inline w-4 h-4 mr-2" />
+            <span className="text-gray-400 text-sm font-semibold tracking-widest uppercase bg-cyber-purple/5 px-6 py-3 rounded-full border border-cyber-purple/20 backdrop-blur-sm animate-pulse-slow">
+              <Sparkles className="inline w-4 h-4 mr-2 text-cyber-purple animate-pulse" />
               Featured Work
             </span>
           </div>
@@ -238,7 +238,7 @@ const ProjectsSection = () => {
                   {project.title}
                 </h3>
                 
-                <p className="text-gray-400 text-sm mb-4 group-hover:text-gray-300 transition-colors duration-500 leading-relaxed">
+                <p className="text-gray-400 text-sm mb-4 group-hover:text-gray-300 transition-colors duration-500 leading-relaxed min-h-[40px]">
                   {hoveredProject === index ? project.longDescription : project.description}
                 </p>
 
@@ -266,7 +266,7 @@ const ProjectsSection = () => {
               <div className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-r ${project.gradient} blur-xl`}></div>
               
               <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                <div className={`absolute inset-0 rounded-3xl border-2 ${project.borderColor} animate-pulse`}></div>
+                <div className={`absolute inset-0 rounded-3xl border-2 ${project.borderColor} animate-pulse-slow`}></div>
               </div>
             </Card>
           ))}
