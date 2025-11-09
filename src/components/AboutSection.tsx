@@ -54,7 +54,7 @@ const MilestoneCard = ({ event, isVisible }: { event: typeof milestoneEvents[0],
         "relative p-6 bg-cyber-gray/30 border border-cyber-purple/20 backdrop-blur-sm transition-all duration-500 hover:border-cyber-purple/40 hover:scale-105",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       )}
-      style={{ animationDelay: event.animationDelay }}
+      style={{ transitionDelay: event.animationDelay }}
     >
       <div className="flex items-start gap-4">
         <div className={cn("p-3 rounded-lg", event.bgColor)}>
@@ -127,7 +127,7 @@ const AboutSection = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
-            <div className={cn("lg:col-span-2 flex justify-center transition-all duration-1000", isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90')}>
+            <div className={cn("lg:col-span-2 flex justify-center transition-all duration-1000", isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90')} style={{ transitionDelay: '200ms' }}>
               <ProfileCard
                 name="Adil Munawar"
                 title="Web Developer"

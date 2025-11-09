@@ -570,12 +570,3 @@
   animation: pulse-glow 2.5s infinite ease-in-out;
   opacity: 0;
 }
-
-@keyframes blink {
-  from, to { border-color: transparent }
-  50% { border-color: hsl(var(--foreground)); }
-}
-
-.animate-blink {
-  animation: blink 1s step-end infinite;
-}
