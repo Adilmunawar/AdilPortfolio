@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useCallback, useMemo } from "react";
+import React, { useEffect, useRef, useCallback, useMemo, useState } from "react";
 import "./ProfileCard.css";
 interface ProfileCardProps {
   avatarUrl: string;
@@ -51,8 +51,14 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 }) => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const animationHandlers = useMemo(() => {
-    if (!enableTilt) return null;
+    if (!enableTilt || !isMounted) return null;
     let rafId: number | null = null;
     const updateCardTransform = (offsetX: number, offsetY: number, card: HTMLElement, wrap: HTMLElement) => {
       const width = card.clientWidth;
@@ -103,7 +109,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         }
       }
     };
-  }, [enableTilt]);
+  }, [enableTilt, isMounted]);
   const handlePointerMove = useCallback((event: PointerEvent) => {
     const card = cardRef.current;
     const wrap = wrapRef.current;
@@ -128,7 +134,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     card.classList.remove("active");
   }, [animationHandlers]);
   useEffect(() => {
-    if (!enableTilt || !animationHandlers) return;
+    if (!enableTilt || !animationHandlers || !isMounted) return;
     const card = cardRef.current;
     const wrap = wrapRef.current;
     if (!card || !wrap) return;
@@ -139,17 +145,22 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     card.addEventListener("pointerenter", pointerEnterHandler);
     card.addEventListener("pointermove", pointerMoveHandler);
     card.addEventListener("pointerleave", pointerLeaveHandler);
-    const initialX = wrap.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
-    const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
-    animationHandlers.updateCardTransform(initialX, initialY, card, wrap);
-    animationHandlers.createSmoothAnimation(ANIMATION_CONFIG.INITIAL_DURATION, initialX, initialY, card, wrap);
+    
+    // Only run initial animation on mount
+    if (isMounted) {
+      const initialX = wrap.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
+      const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
+      animationHandlers.updateCardTransform(initialX, initialY, card, wrap);
+      animationHandlers.createSmoothAnimation(ANIMATION_CONFIG.INITIAL_DURATION, initialX, initialY, card, wrap);
+    }
+    
     return () => {
       card.removeEventListener("pointerenter", pointerEnterHandler);
       card.removeEventListener("pointermove", pointerMoveHandler);
       card.removeEventListener("pointerleave", pointerLeaveHandler);
       animationHandlers.cancelAnimation();
     };
-  }, [enableTilt, animationHandlers, handlePointerMove, handlePointerEnter, handlePointerLeave]);
+  }, [enableTilt, animationHandlers, handlePointerMove, handlePointerEnter, handlePointerLeave, isMounted]);
   const cardStyle = useMemo(() => ({
     "--icon": iconUrl ? `url(${iconUrl})` : "none",
     "--grain": grainUrl ? `url(${grainUrl})` : "none",
