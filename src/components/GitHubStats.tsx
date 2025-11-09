@@ -28,22 +28,51 @@ const GitHubStats = () => {
       return [];
     }
     
-    const weeks: (ContributionDay | null)[][] = Array(53).fill(null).map(() => Array(7).fill(null));
-    
-    contributions.forEach((day) => {
-      const date = new Date(day.date);
-      const dayOfWeek = date.getUTCDay(); // 0 (Sun) to 6 (Sat)
-      
-      const oneJan = new Date(date.getFullYear(), 0, 1);
-      const numberOfDays = Math.floor((date.getTime() - oneJan.getTime()) / (24 * 60 * 60 * 1000));
-      const weekIndex = Math.floor((numberOfDays + oneJan.getUTCDay()) / 7);
-
-      if (weekIndex >= 0 && weekIndex < 53 && dayOfWeek >= 0 && dayOfWeek < 7) {
-        weeks[weekIndex][dayOfWeek] = day;
-      }
+    // Create a Map for quick lookup of contributions by date
+    const contributionsMap = new Map<string, ContributionDay>();
+    contributions.forEach(day => {
+        // Normalize date to YYYY-MM-DD format without time
+        const dateKey = day.date.split('T')[0];
+        contributionsMap.set(dateKey, day);
     });
 
-    return weeks;
+    const weeks: (ContributionDay | null)[][] = [];
+    const today = new Date();
+    // Go back 371 days (approx 53 weeks) to fill the graph
+    const startDate = new Date();
+    startDate.setDate(today.getDate() - 370); 
+
+    // Adjust startDate to be a Sunday
+    startDate.setDate(startDate.getDate() - startDate.getUTCDay());
+
+    let currentWeek: (ContributionDay | null)[] = [];
+
+    for (let i = 0; i < 371; i++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + i);
+
+        // Format date to 'YYYY-MM-DD' to match map keys
+        const dateKey = currentDate.toISOString().split('T')[0];
+        const dayData = contributionsMap.get(dateKey) || null;
+        
+        currentWeek.push(dayData);
+
+        if (currentWeek.length === 7) {
+            weeks.push(currentWeek);
+            currentWeek = [];
+        }
+    }
+    
+    if (currentWeek.length > 0) {
+      weeks.push(currentWeek);
+    }
+    
+    // Ensure we have exactly 53 weeks for a consistent grid
+    while (weeks.length < 53) {
+      weeks.push(Array(7).fill(null));
+    }
+
+    return weeks.slice(0, 53);
   };
   
   const weekColumns = getWeeks();
