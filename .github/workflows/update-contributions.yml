@@ -25,7 +25,7 @@ jobs:
         run: npm install
 
       - name: Run update script
-        run: node scripts/update-github-stats.mjs
+        run: node scripts/scaffold-github-stats.mjs
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
 
@@ -33,7 +33,6 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add src/lib/github-contributions.json
+          git add src/components/GitHubStats.tsx
           git diff --staged --quiet || git commit -m "chore: update GitHub contribution stats"
           git push
-
