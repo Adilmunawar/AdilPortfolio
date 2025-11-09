@@ -56,13 +56,15 @@ const MilestoneCard = ({ event, isVisible }: { event: typeof milestoneEvents[0],
       )}
       style={{ transitionDelay: event.animationDelay }}
     >
-      <div className="flex items-start gap-4">
-        <div className={cn("p-3 rounded-lg", event.bgColor)}>
-          <event.icon className={cn("w-6 h-6", event.color)} />
-        </div>
-        <div>
-          <h4 className="font-bold text-lg text-gray-200 mb-2">{event.title}</h4>
-          <p className="text-sm text-gray-400 leading-relaxed">{event.description}</p>
+      <div className="relative z-10">
+        <div className="flex items-start gap-4">
+          <div className={cn("p-3 rounded-lg", event.bgColor)}>
+            <event.icon className={cn("w-6 h-6", event.color)} />
+          </div>
+          <div>
+            <h4 className="font-bold text-lg text-gray-200 mb-2">{event.title}</h4>
+            <p className="text-sm text-gray-400 leading-relaxed">{event.description}</p>
+          </div>
         </div>
       </div>
        <div 
