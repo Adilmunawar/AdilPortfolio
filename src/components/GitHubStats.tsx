@@ -22,9 +22,9 @@ const GitHubStats = () => {
   const getLevelColor = (level: number) => {
     switch (level) {
       case 0: return 'bg-gray-800/60';
-      case 1: return 'bg-indigo-900/80';
-      case 2: return 'bg-indigo-800';
-      case 3: return 'bg-indigo-600';
+      case 1: return 'bg-indigo-900';
+      case 2: return 'bg-indigo-700';
+      case 3: return 'bg-indigo-500';
       case 4: return 'bg-indigo-400';
       default: return 'bg-gray-800/60';
     }
@@ -64,12 +64,12 @@ const GitHubStats = () => {
     return weeks;
   };
   
-  if (totalContributions === 0) {
+  if (!totalContributions || totalContributions === 0) {
       return (
           <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl">
               <div className="text-center text-gray-400">
                   <p className="font-semibold text-lg mb-2">Loading GitHub Contributions...</p>
-                  <p className="text-sm">Or run the 'Update GitHub Contribution Stats' action in your repository's Actions tab.</p>
+                  <p className="text-sm">If this persists, run the 'Update GitHub Contribution Stats' action in your repository's Actions tab.</p>
               </div>
           </Card>
       )
