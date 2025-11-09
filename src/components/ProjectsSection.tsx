@@ -1,7 +1,7 @@
 'use client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Github, ExternalLink, Play, Pause, Code2, Sparkles } from 'lucide-react';
+import { Github, ExternalLink, Play, Pause, Code2, Sparkles, Bot, ImageIcon, Users } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
 
@@ -10,13 +10,31 @@ const ProjectsSection = () => {
 
   const projects = [
     {
+      title: 'Adicorp',
+      description: 'A comprehensive Human Resource Management System (HRMS) to automate HR processes.',
+      longDescription: 'Adicorp is a full-featured HRMS designed to streamline and automate critical HR processes including employee management, attendance tracking, and salary calculation. Built for efficiency and scalability.',
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      tech: ['React', 'Node.js', 'PostgreSQL', 'Docker'],
+      github: 'https://github.com/adilmunawar/Adicorp',
+      live: 'https://adicorp.vercel.app',
+      status: 'development',
+      statusColor: 'text-blue-400',
+      statusBg: 'bg-blue-500/10',
+      statusBorder: 'border-blue-400/20',
+      statusIcon: Code2,
+      gradient: 'from-blue-800/5 to-cyan-800/5',
+      hoverGradient: 'hover:from-blue-800/15 hover:to-cyan-800/15',
+      borderColor: 'border-blue-700/20 hover:border-blue-700/40',
+      accentColor: 'text-blue-400'
+    },
+    {
       title: 'AdiNox',
-      description: 'A cutting-edge web application built with modern technologies featuring responsive design and advanced functionality.',
-      longDescription: 'AdiNox is a comprehensive web platform that showcases modern development practices with React, TypeScript, and advanced UI components. Features include real-time data processing, responsive design, and optimized performance.',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
-      tech: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js'],
-      github: 'https://github.com/adilmunawar/adinox',
-      live: 'https://adinox.vercel.app',
+      description: 'An open-source Android authenticator app for secure two-factor authentication (2FA).',
+      longDescription: 'AdiNox is a free, open-source Android authenticator app supporting TOTP and HOTP algorithms. It features a high-quality, animated UI for a seamless and secure user experience.',
+      image: 'https://images.unsplash.com/photo-1633989464081-16ccd75b5a7a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      tech: ['Android', 'Java', '2FA', 'Security'],
+      github: 'https://github.com/adilmunawar/Adinox',
+      live: 'https://play.google.com/store/apps/details?id=com.adinox',
       status: 'live',
       statusColor: 'text-emerald-400',
       statusBg: 'bg-emerald-500/10',
@@ -28,40 +46,94 @@ const ProjectsSection = () => {
       accentColor: 'text-emerald-400'
     },
     {
-      title: 'Aditron',
-      description: 'An innovative platform showcasing advanced web technologies with sleek design and powerful features.',
-      longDescription: 'Aditron demonstrates expertise in full-stack development with advanced features like real-time updates, interactive dashboards, and seamless user experience across all devices.',
-      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80',
-      tech: ['Next.js', 'React', 'MongoDB', 'Express'],
-      github: 'https://github.com/adilmunawar/aditron',
-      live: 'https://aditron.vercel.app',
-      status: 'paused',
+      title: 'AdiGon',
+      description: 'An AI assistant with a specialized \'developer mode\' and multi-file format capabilities.',
+      longDescription: 'AdiGon is an advanced AI assistant built with unique functionalities. It includes a \'developer mode\' for coding tasks and has the ability to understand and respond to multiple file formats, making it a versatile tool.',
+      image: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1972&q=80',
+      tech: ['Python', 'AI', 'Gemini API', 'Next.js'],
+      github: 'https://github.com/adilmunawar/AdiGon',
+      live: 'https://adigon.vercel.app',
+      status: 'live',
+      statusColor: 'text-purple-400',
+      statusBg: 'bg-purple-500/10',
+      statusBorder: 'border-purple-400/20',
+      statusIcon: Bot,
+      gradient: 'from-purple-800/5 to-pink-800/5',
+      hoverGradient: 'hover:from-purple-800/15 hover:to-pink-800/15',
+      borderColor: 'border-purple-700/20 hover:border-purple-700/40',
+      accentColor: 'text-purple-400'
+    },
+    {
+      title: 'AdiFlux',
+      description: 'An AI-powered web application for generating high-quality images from text prompts.',
+      longDescription: 'AdiFlux leverages the power of AI to transform text into stunning visuals. This web application allows users to create new, unique images directly from text prompts, opening up endless creative possibilities.',
+      image: 'https://images.unsplash.com/photo-1694033783331-bda9244f6999?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      tech: ['Next.js', 'AI', 'Image Generation', 'Vercel'],
+      github: 'https://github.com/adilmunawar/AdiFlux',
+      live: 'https://adiflux.vercel.app',
+      status: 'live',
+      statusColor: 'text-emerald-400',
+      statusBg: 'bg-emerald-500/10',
+      statusBorder: 'border-emerald-400/20',
+      statusIcon: ImageIcon,
+      gradient: 'from-sky-800/5 to-cyan-800/5',
+      hoverGradient: 'hover:from-sky-800/15 hover:to-cyan-800/15',
+      borderColor: 'border-sky-700/20 hover:border-sky-700/40',
+      accentColor: 'text-sky-400'
+    },
+    {
+      title: 'AdiMage',
+      description: 'A multi-functional AI image editing suite for advanced photo manipulation and enhancement.',
+      longDescription: 'AdiMage is a powerful AI image editing suite using the Gemini API. Its tools include AI Photo Restoration, Profile Picture Pro, AI Product Studio for background replacement, and AI Style Transfer.',
+      image: 'https://images.unsplash.com/photo-1579541629929-a18de8fb3828?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      tech: ['Gemini API', 'React', 'AI', 'Image Editing'],
+      github: 'https://github.com/adilmunawar/Adimage',
+      live: 'https://adimage.vercel.app',
+      status: 'development',
       statusColor: 'text-amber-400',
       statusBg: 'bg-amber-500/10',
       statusBorder: 'border-amber-400/20',
-      statusIcon: Pause,
+      statusIcon: Code2,
       gradient: 'from-amber-800/5 to-orange-800/5',
       hoverGradient: 'hover:from-amber-800/15 hover:to-orange-800/15',
       borderColor: 'border-amber-700/20 hover:border-amber-700/40',
       accentColor: 'text-amber-400'
     },
     {
-      title: 'AdiCorp',
-      description: 'A sophisticated corporate platform featuring modern design principles and enterprise-level functionality.',
-      longDescription: 'AdiCorp represents enterprise-grade development with advanced authentication, data visualization, and comprehensive admin panels. Built with scalability and performance in mind.',
-      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      tech: ['React', 'Python', 'PostgreSQL', 'Docker'],
-      github: 'https://github.com/adilmunawar/adicorp',
-      live: 'https://adicorp.vercel.app',
-      status: 'development',
-      statusColor: 'text-blue-400',
-      statusBg: 'bg-blue-500/10',
-      statusBorder: 'border-blue-400/20',
-      statusIcon: Code2,
-      gradient: 'from-blue-800/5 to-cyan-800/5',
-      hoverGradient: 'hover:from-blue-800/15 hover:to-cyan-800/15',
-      borderColor: 'border-blue-700/20 hover:border-blue-700/40',
-      accentColor: 'text-blue-400'
+      title: 'AdiTron (AditronDev)',
+      description: 'A social chatting application with a high-standard UI/UX for real-time interaction.',
+      longDescription: 'AdiTron (AditronDev) is a modern social chatting application built with TypeScript. It focuses on a high-standard UI/UX and sophisticated features for seamless, real-time social interaction.',
+      image: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      tech: ['TypeScript', 'React', 'WebSockets', 'UI/UX'],
+      github: 'https://github.com/adilmunawar/Aditron',
+      live: 'https://aditron.vercel.app',
+      status: 'live',
+      statusColor: 'text-rose-400',
+      statusBg: 'bg-rose-500/10',
+      statusBorder: 'border-rose-400/20',
+      statusIcon: Play,
+      gradient: 'from-rose-800/5 to-pink-800/5',
+      hoverGradient: 'hover:from-rose-800/15 hover:to-pink-800/15',
+      borderColor: 'border-rose-700/20 hover:border-rose-700/40',
+      accentColor: 'text-rose-400'
+    },
+    {
+      title: 'Adify',
+      description: 'An AI-powered recruitment tool to automatically rank candidates from a resume database.',
+      longDescription: 'Adify is an intelligent recruitment tool that uses the Gemini API to parse job descriptions and automatically rank the top candidates from a resume database based on skill and experience alignment.',
+      image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      tech: ['Gemini API', 'AI', 'Recruitment', 'React'],
+      github: 'https://github.com/adilmunawar/Adify',
+      live: 'https://adify.vercel.app',
+      status: 'paused',
+      statusColor: 'text-gray-400',
+      statusBg: 'bg-gray-500/10',
+      statusBorder: 'border-gray-400/20',
+      statusIcon: Pause,
+      gradient: 'from-gray-800/5 to-slate-800/5',
+      hoverGradient: 'hover:from-gray-800/15 hover:to-slate-800/15',
+      borderColor: 'border-gray-700/20 hover:border-gray-700/40',
+      accentColor: 'text-gray-400'
     }
   ];
 
@@ -77,7 +149,6 @@ const ProjectsSection = () => {
   return (
     <section id="projects" className="min-h-screen py-20 px-4 relative">
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Enhanced header */}
         <div className="text-center mb-20 animate-fade-in-up">
           <div className="inline-block mb-8">
             <span className="text-gray-400 text-sm font-semibold tracking-widest uppercase bg-cyber-purple/5 px-6 py-3 rounded-full border border-cyber-purple/20 backdrop-blur-sm">
@@ -95,8 +166,7 @@ const ProjectsSection = () => {
           </p>
         </div>
 
-        {/* Enhanced projects grid */}
-        <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 mb-16">
           {projects.map((project, index) => (
             <Card 
               key={index}
@@ -105,7 +175,6 @@ const ProjectsSection = () => {
               onMouseEnter={() => setHoveredProject(index)}
               onMouseLeave={() => setHoveredProject(null)}
             >
-              {/* Status badge */}
               <div className="absolute top-4 right-4 z-20">
                 <div className={`flex items-center gap-2 px-3 py-1 rounded-full ${project.statusBg} border ${project.statusBorder} backdrop-blur-sm`}>
                   <project.statusIcon size={12} className={project.statusColor} />
@@ -115,7 +184,6 @@ const ProjectsSection = () => {
                 </div>
               </div>
 
-              {/* Enhanced image container */}
               <div className="relative h-64 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent z-10"></div>
                 <Image 
@@ -125,10 +193,8 @@ const ProjectsSection = () => {
                   className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
                 />
                 
-                {/* Overlay effects */}
                 <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                 
-                {/* Floating action buttons */}
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 flex gap-4 z-20">
                   <Button
                     size="sm"
@@ -156,9 +222,7 @@ const ProjectsSection = () => {
                 </div>
               </div>
 
-              {/* Enhanced content */}
               <div className="p-8 relative">
-                {/* Tech stack pills */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tech.map((tech, techIndex) => (
                     <span
@@ -178,7 +242,6 @@ const ProjectsSection = () => {
                   {hoveredProject === index ? project.longDescription : project.description}
                 </p>
 
-                {/* Action buttons */}
                 <div className="flex gap-3 pt-4 border-t border-gray-700/30">
                   <Button
                     size="sm"
@@ -200,10 +263,8 @@ const ProjectsSection = () => {
                 </div>
               </div>
 
-              {/* Hover glow effect */}
               <div className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-r ${project.gradient} blur-xl`}></div>
               
-              {/* Animated border */}
               <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                 <div className={`absolute inset-0 rounded-3xl border-2 ${project.borderColor} animate-pulse`}></div>
               </div>
@@ -211,7 +272,6 @@ const ProjectsSection = () => {
           ))}
         </div>
 
-        {/* Enhanced CTA section */}
         <div className="text-center animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
           <div className="relative inline-block">
             <Button 
@@ -224,7 +284,6 @@ const ProjectsSection = () => {
                 <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
               </span>
               
-              {/* Animated background */}
               <div className="absolute inset-0 bg-gradient-to-r from-cyber-blue to-cyber-purple transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
             </Button>
           </div>
