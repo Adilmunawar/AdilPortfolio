@@ -51,7 +51,7 @@ const MilestoneCard = ({ event, isVisible }: { event: typeof milestoneEvents[0],
   return (
     <Card
       className={cn(
-        "relative p-6 bg-cyber-gray/30 border border-cyber-purple/20 backdrop-blur-sm transition-all duration-500 hover:border-cyber-purple/40 hover:scale-105",
+        "relative p-6 bg-cyber-gray/30 border border-cyber-purple/20 backdrop-blur-sm transition-all duration-500 hover:border-cyber-purple/40 hover:scale-105 hover-glow-effect",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       )}
       style={{ transitionDelay: event.animationDelay }}

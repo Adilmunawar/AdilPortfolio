@@ -119,6 +119,11 @@
     0 0 40px rgba(59, 29, 138, 0.2);
 }
 
+.hover-glow-effect:hover {
+  box-shadow: 0 0 25px rgba(88, 77, 211, 0.4), 0 0 45px rgba(55, 48, 163, 0.2);
+  transition: box-shadow 0.4s ease-in-out;
+}
+
 /* Smooth and professional animations */
 .animate-fade-in-up {
   animation: fadeInUp 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
