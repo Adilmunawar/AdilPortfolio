@@ -1,5 +1,4 @@
 'use client';
-import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import contributionData from '@/lib/github-contributions.json';
 
@@ -59,15 +58,15 @@ const GitHubStats = () => {
     
     // Transpose the data to be column-major (weeks as columns)
     const columns: (ContributionDay | null)[][] = [];
-    for (let i = 0; i < 7; i++) {
-        const column = weeks.map(week => week[i]).filter(day => day !== undefined);
+    for (let i = 0; i < weeks.length; i++) {
+        const column = weeks[i];
         columns.push(column);
     }
 
     return columns;
   };
 
-  const dayColumns = getWeeks();
+  const weekColumns = getWeeks();
   
   if (!totalContributions || totalContributions === 0) {
     return (
@@ -106,11 +105,11 @@ const GitHubStats = () => {
         
         <div className="overflow-x-auto pb-2">
            <div className="grid grid-flow-col auto-cols-max gap-1">
-            {dayColumns.map((col, colIndex) => (
-              <div key={colIndex} className="grid grid-rows-7 gap-1">
-                {col.map((day, dayIndex) => {
+            {weekColumns.map((week, weekIndex) => (
+              <div key={weekIndex} className="grid grid-rows-7 gap-1">
+                {week.map((day, dayIndex) => {
                   if (!day) {
-                    return <div key={`empty-${colIndex}-${dayIndex}`} className="w-3 h-3" />;
+                    return <div key={`empty-${weekIndex}-${dayIndex}`} className="w-3 h-3" />;
                   }
                   return (
                     <div
