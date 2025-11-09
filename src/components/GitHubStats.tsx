@@ -1,207 +1,123 @@
+
 'use client';
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 
+// Type definitions for the data we expect from our API
 interface ContributionDay {
   date: string;
   count: number;
   level: number;
 }
 
-interface GitHubContributionResponse {
-  data: {
-    user: {
-      contributionsCollection: {
-        contributionCalendar: {
-          totalContributions: number;
-          weeks: Array<{
-            contributionDays: Array<{
-              date: string;
-              contributionCount: number;
-              contributionLevel: string;
-            }>;
-          }>;
-        };
-      };
-    };
-  };
+interface ApiData {
+  totalContributions: number;
+  contributions: ContributionDay[];
 }
+
 const GitHubStats = () => {
   const [contributions, setContributions] = useState<ContributionDay[]>([]);
   const [totalContributions, setTotalContributions] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [animateStats, setAnimateStats] = useState(false);
+
   useEffect(() => {
+    // This function fetches the data from our own API route
     const fetchGitHubContributions = async () => {
+      setIsLoading(true);
       try {
-        const username = 'AdilMunawar';
+        // Fetch data from the internal API route created in Step 2
+        const response = await fetch('/api/github-stats');
         
-        // Try to fetch user's repos to get some activity data
-        const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`);
-        
-        if (reposResponse.ok) {
-          const repos = await reposResponse.json();
-          // Use real total contributions from your actual stats
-          const actualTotal = 5846;
-          
-          // Generate realistic contribution pattern based on actual total
-          const data: ContributionDay[] = [];
-          const today = new Date();
-          const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-          
-          // Calculate average contributions per day
-          const totalDays = Math.ceil((today.getTime() - oneYearAgo.getTime()) / (1000 * 60 * 60 * 24));
-          const avgPerDay = actualTotal / totalDays;
-          
-          let runningTotal = 0;
-          const targetTotal = actualTotal;
-          
-          for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
-            const dayOfWeek = d.getDay();
-            const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-            const daysRemaining = Math.ceil((today.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
-            const contributionsNeeded = targetTotal - runningTotal;
-            
-            let count = 0;
-            const randomFactor = Math.random();
-            
-            if (daysRemaining > 0) {
-              const targetForDay = Math.max(0, contributionsNeeded / Math.max(1, daysRemaining));
-              
-              if (isWeekend) {
-                // Lower activity on weekends
-                count = randomFactor < 0.4 ? 0 : Math.floor(targetForDay * (0.3 + randomFactor * 0.7));
-              } else {
-                // Higher activity on weekdays
-                if (randomFactor < 0.1) count = 0; // Some days off
-                else count = Math.floor(targetForDay * (0.8 + randomFactor * 1.2));
-              }
-              
-              // Add some realistic variation
-              count = Math.max(0, Math.min(25, count + Math.floor((Math.random() - 0.5) * 4)));
-            }
-            
-            const level = count === 0 ? 0 : count <= 3 ? 1 : count <= 8 ? 2 : count <= 15 ? 3 : 4;
-            
-            data.push({
-              date: new Date(d).toISOString().split('T')[0],
-              count,
-              level
-            });
-            runningTotal += count;
-          }
-          
-          setContributions(data);
-          setTotalContributions(actualTotal);
-        } else {
-          throw new Error('Failed to fetch GitHub data');
+        if (!response.ok) {
+          throw new Error('Failed to fetch stats from API');
         }
+
+        const data: ApiData = await response.json();
+
+        setContributions(data.contributions);
+        setTotalContributions(data.totalContributions);
         
       } catch (error) {
         console.error('Error fetching GitHub data:', error);
-        // Use your actual stats as fallback
-        generateEnhancedFallbackData(5846);
+        // You could set error state here or let it show 0 contributions
+        setTotalContributions(0); // Set to 0 on error
+        setContributions([]); // Clear contributions on error
       }
       
       setIsLoading(false);
       setTimeout(() => setAnimateStats(true), 100);
     };
 
-    const generateEnhancedFallbackData = (targetTotal: number = 5846) => {
-      const data: ContributionDay[] = [];
-      const today = new Date();
-      const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-      
-      // Calculate total days and target per day
-      const totalDays = Math.ceil((today.getTime() - oneYearAgo.getTime()) / (1000 * 60 * 60 * 24));
-      let runningTotal = 0;
-      
-      for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
-        const dayOfWeek = d.getDay();
-        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-        const daysRemaining = Math.ceil((today.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
-        const contributionsNeeded = targetTotal - runningTotal;
-        
-        let count = 0;
-        const randomFactor = Math.random();
-        
-        if (daysRemaining > 0) {
-          const targetForDay = Math.max(0, contributionsNeeded / Math.max(1, daysRemaining));
-          
-          if (isWeekend) {
-            count = randomFactor < 0.6 ? 0 : Math.floor(targetForDay * (0.3 + randomFactor * 0.5));
-          } else {
-            if (randomFactor < 0.15) count = 0;
-            else count = Math.floor(targetForDay * (0.8 + randomFactor * 1.2));
-          }
-          
-          // Add realistic variation and clamp
-          count = Math.max(0, Math.min(25, count + Math.floor((Math.random() - 0.5) * 3)));
-        }
-        
-        const level = count === 0 ? 0 : count <= 3 ? 1 : count <= 8 ? 2 : count <= 15 ? 3 : 4;
-        
-        data.push({
-          date: new Date(d).toISOString().split('T')[0],
-          count,
-          level
-        });
-        runningTotal += count;
-      }
-      
-      setContributions(data);
-      setTotalContributions(targetTotal);
-    };
-
     fetchGitHubContributions();
-  }, []);
+  }, []); // Runs once on component mount
 
+  // Helper function to map contribution level to a color class
   const getLevelColor = (level: number) => {
     switch (level) {
       case 0: return 'bg-gray-800/60';
-      case 1: return 'bg-indigo-900/80';
+      case 1: return 'bg-indigo-900/80'; // Low contributions
       case 2: return 'bg-indigo-800';
       case 3: return 'bg-indigo-600';
-      case 4: return 'bg-indigo-400';
+      case 4: return 'bg-indigo-400'; // High contributions
       default: return 'bg-gray-800/60';
     }
   };
 
+  // Organizes the flat list of days into weeks for the grid display
   const getWeeks = () => {
+    if (contributions.length === 0) {
+      return [];
+    }
+
     const weeks: ContributionDay[][] = [];
     let currentWeek: ContributionDay[] = [];
+
+    // The GitHub API starts the first week on a Sunday.
+    // We need to pad the first week with empty days if it doesn't.
+    const firstDay = new Date(contributions[0].date);
+    const dayOfWeek = firstDay.getUTCDay(); // Use UTC day
     
-    contributions.forEach((day, index) => {
-      const dayOfWeek = new Date(day.date).getDay();
-      
-      if (dayOfWeek === 0 && currentWeek.length > 0) {
+    // Add empty padding days
+    for (let i = 0; i < dayOfWeek; i++) {
+      currentWeek.push({
+        date: `padding-${i}`,
+        count: 0,
+        level: -1, // Use -1 to render an empty/invisible box
+      });
+    }
+
+    // Process all contribution days
+    contributions.forEach((day) => {
+      currentWeek.push(day);
+      // 6 is Saturday (end of the week)
+      if (new Date(day.date).getUTCDay() === 6) { 
         weeks.push(currentWeek);
         currentWeek = [];
       }
-      
-      currentWeek.push(day);
-      
-      if (index === contributions.length - 1) {
-        weeks.push(currentWeek);
-      }
     });
-    
+
+    // Push any remaining days in the last week
+    if (currentWeek.length > 0) {
+      weeks.push(currentWeek);
+    }
+
     return weeks;
   };
 
+  // Loading state
   if (isLoading) {
     return (
       <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl relative overflow-hidden">
-        {/* Advanced loading animation */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyber-purple/10 to-transparent animate-pulse"></div>
         <div className="animate-pulse relative z-10">
           <div className="h-6 bg-gradient-to-r from-gray-700 to-gray-600 rounded w-1/3 mb-6 animate-shimmer"></div>
-          <div className="grid grid-cols-52 gap-1">
-            {Array.from({ length: 365 }).map((_, i) => (
+          <div className="grid grid-flow-col auto-cols-max gap-1">
+            {/* Render ~53 weeks * 7 days = 371 squares for the loading skeleton */}
+            {Array.from({ length: 371 }).map((_, i) => (
               <div 
                 key={i} 
-                className="w-3 h-3 bg-gray-800/40 rounded-sm animate-pulse" 
-                style={{ animationDelay: `${i * 2}ms` }}
+                className="w-3 h-3 bg-gray-800/40 rounded-sm" 
               ></div>
             ))}
           </div>
@@ -210,27 +126,11 @@ const GitHubStats = () => {
     );
   }
 
+  // Loaded state
   return (
     <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl hover:border-cyber-purple/60 transition-all duration-500 group overflow-hidden relative">
-      {/* Advanced background effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-cyber-purple/5 via-cyber-blue/5 to-indigo-900/5 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-purple via-cyber-blue to-indigo-900 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-left"></div>
-      
-      {/* Floating particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(5)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-cyber-blue rounded-full animate-float opacity-30"
-            style={{
-              left: `${20 + i * 20}%`,
-              top: `${30 + i % 3 * 20}%`,
-              animationDelay: `${i * 0.5}s`,
-              animationDuration: `${3 + i}s`
-            }}
-          ></div>
-        ))}
-      </div>
       
       <div className="relative z-10">
         <div className="flex justify-between items-center mb-6">
@@ -251,23 +151,31 @@ const GitHubStats = () => {
           </div>
         </div>
         
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto pb-2">
           <div className="grid grid-flow-col auto-cols-max gap-1 min-w-full">
             {getWeeks().map((week, weekIndex) => (
               <div key={weekIndex} className="grid grid-rows-7 gap-1">
-                {week.map((day, dayIndex) => (
-                  <div
-                    key={day.date}
-                    className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-cyber-blue/50 transition-all duration-300 cursor-pointer group/day hover:scale-125 animate-scale-in`}
-                    title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString()}`}
-                    style={{ 
-                      animationDelay: `${(weekIndex * 7 + dayIndex) * 10}ms`,
-                      animationDuration: '0.5s'
-                    }}
-                  >
-                    <div className="w-full h-full rounded-sm group-hover/day:animate-pulse transition-all duration-200"></div>
-                  </div>
-                ))}
+                {/* Ensure all 7 days are rendered, even if empty */}
+                {Array.from({ length: 7 }).map((_, dayIndex) => {
+                  const day = week[dayIndex];
+                  if (!day || day.level === -1) {
+                    // Render an empty, invisible box for padding
+                    return <div key={`empty-${weekIndex}-${dayIndex}`} className="w-3 h-3" />;
+                  }
+                  return (
+                    <div
+                      key={day.date}
+                      className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-cyber-blue/50 transition-all duration-300 cursor-pointer group/day hover:scale-125 animate-scale-in`}
+                      title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}`}
+                      style={{ 
+                        animationDelay: `${(weekIndex * 7 + dayIndex) * 2}ms`,
+                        animationDuration: '0.5s'
+                      }}
+                    >
+                      <div className="w-full h-full rounded-sm group-hover/day:animate-pulse transition-all duration-200"></div>
+                    </div>
+                  );
+                })}
               </div>
             ))}
           </div>
