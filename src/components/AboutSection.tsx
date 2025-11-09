@@ -51,11 +51,18 @@ const MilestoneCard = ({ event, isVisible }: { event: typeof milestoneEvents[0],
   return (
     <Card
       className={cn(
-        "relative p-6 bg-cyber-gray/30 border border-cyber-purple/20 backdrop-blur-sm transition-all duration-700 hover:border-cyber-purple/40 hover:scale-105 hover:-translate-y-2 hover-glow-effect group",
+        "relative p-6 bg-cyber-gray/30 border border-cyber-purple/20 backdrop-blur-sm transition-all duration-700 hover:border-cyber-purple/40 hover:scale-105 hover:-translate-y-2 group",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       )}
       style={{ transitionDelay: event.animationDelay }}
     >
+       <div 
+        className={cn(
+          "absolute -inset-px rounded-lg bg-gradient-to-r from-cyber-purple to-cyber-blue opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-hover:animate-pulse-glow",
+          isVisible ? "animate-pulse-glow" : ""
+        )}
+        style={{ animationIterationCount: isVisible ? 1 : 'infinite', animationDuration: isVisible ? '1.5s' : '2.5s' }}
+       ></div>
       <div className="relative z-10">
         <div className="flex items-start gap-4">
           <div className={cn("p-3 rounded-lg", event.bgColor)}>
@@ -67,13 +74,6 @@ const MilestoneCard = ({ event, isVisible }: { event: typeof milestoneEvents[0],
           </div>
         </div>
       </div>
-       <div 
-        className={cn(
-          "absolute -inset-px rounded-lg bg-gradient-to-r from-cyber-purple to-cyber-blue opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-hover:animate-pulse-glow",
-          isVisible ? "animate-pulse-glow" : "opacity-0"
-        )}
-        style={{ animationDelay: event.animationDelay, animationIterationCount: isVisible ? 1 : 'infinite', animationDuration: isVisible ? '1.5s' : '2.5s' }}
-       ></div>
     </Card>
   );
 };
