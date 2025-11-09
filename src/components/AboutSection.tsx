@@ -1,3 +1,4 @@
+
 'use client';
 import { Card } from '@/components/ui/card';
 import ProfileCard from './ProfileCard';
@@ -52,8 +53,8 @@ const MilestoneCard = ({ event, isVisible }: { event: typeof milestoneEvents[0],
     <div className="relative group">
       <div 
         className={cn(
-          "absolute -inset-0.5 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-lg blur-lg opacity-0 group-hover:opacity-75 transition-opacity duration-500",
-          isVisible ? "opacity-20" : "opacity-0"
+          "absolute -inset-1.5 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-xl blur-xl opacity-0 group-hover:opacity-60 transition-all duration-700",
+          isVisible ? "opacity-10" : "opacity-0"
         )}
       ></div>
       <Card
