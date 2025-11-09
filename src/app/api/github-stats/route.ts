@@ -32,11 +32,11 @@ interface GitHubGraphQLResponse {
 
 export async function GET() {
   const GITHUB_USERNAME = "AdilMunawar";
-  const GITHUB_PAT = process.env.GITHUB_PAT; // Securely reads the secret from Vercel
+  const GITHUB_PAT = process.env.GH_PAT; // Securely reads the secret from Vercel
 
   if (!GITHUB_PAT) {
     console.error('GitHub PAT not configured in environment variables.');
-    return NextResponse.json({ error: 'Server configuration error: GITHUB_PAT is not set.' }, { status: 500 });
+    return NextResponse.json({ error: 'Server configuration error: GH_PAT is not set.' }, { status: 500 });
   }
 
   const query = `
@@ -80,7 +80,7 @@ export async function GET() {
         json = JSON.parse(text);
     } catch(e) {
         console.error('Failed to parse GitHub API response as JSON:', text);
-        return NextResponse.json({ error: "The GitHub API returned an invalid response. This may be due to an invalid Personal Access Token." }, { status: 500 });
+        return NextResponse.json({ error: "The GitHub API returned an invalid response. This may be due to an invalid Personal Access Token (GH_PAT)." }, { status: 500 });
     }
 
     if (!res.ok || json.errors) {
