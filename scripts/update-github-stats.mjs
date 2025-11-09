@@ -1,15 +1,11 @@
 
 import fs from 'fs';
-import path from 'path';
+import fetch from 'node-fetch';
 
 const GITHUB_USERNAME = "AdilMunawar";
 const GITHUB_PAT = process.env.GH_PAT;
 
-if (!GITHUB_PAT) {
-  console.error('Error: GH_PAT environment variable not set.');
-  process.exit(1);
-}
-
+// The GraphQL query to fetch contribution data
 const query = `
   query($userName: String!) {
     user(login: $userName) {
@@ -29,9 +25,35 @@ const query = `
   }
 `;
 
+/**
+ * Maps GitHub's contribution level enum to a number from 0 to 4.
+ * @param {string} level - e.g., "NONE", "FIRST_QUARTILE"
+ * @returns {number}
+ */
+function mapLevelToNumber(level) {
+  switch (level) {
+    case 'NONE':
+      return 0;
+    case 'FIRST_QUARTILE':
+      return 1;
+    case 'SECOND_QUARTILE':
+      return 2;
+    case 'THIRD_QUARTILE':
+      return 3;
+    case 'FOURTH_QUARTILE':
+      return 4;
+    default:
+      return 0;
+  }
+}
+
 async function fetchGitHubStats() {
+  if (!GITHUB_PAT) {
+    throw new Error('GitHub PAT not found in environment variables. Please set the GH_PAT secret.');
+  }
+
   try {
-    const res = await fetch('https://api.github.com/graphql', {
+    const response = await fetch('https://api.github.com/graphql', {
       method: 'POST',
       headers: {
         'Authorization': `bearer ${GITHUB_PAT}`,
@@ -45,55 +67,45 @@ async function fetchGitHubStats() {
       }),
     });
 
-    if (!res.ok) {
-      throw new Error(`GitHub API responded with ${res.status}`);
+    const textResponse = await response.text();
+
+    if (!response.ok) {
+      console.error('GitHub API request failed:', response.status, textResponse);
+      throw new Error(`GitHub API responded with status ${response.status}`);
     }
 
-    const json = await res.json();
+    const json = JSON.parse(textResponse);
 
-    if (json.errors) {
-      console.error('GitHub API returned errors:', json.errors);
-      throw new Error('Error fetching data from GitHub GraphQL API.');
+    if (json.errors || !json.data || !json.data.user) {
+        console.error('Invalid GitHub API response:', json.errors || 'No data.user found');
+        throw new Error('Invalid data structure from GitHub API. Check if the GH_PAT is valid and has the `read:user` scope.');
     }
     
-    if (!json.data || !json.data.user) {
-        throw new Error('Invalid data structure from GitHub API');
-    }
-
     const { contributionCalendar } = json.data.user.contributionsCollection;
-
+    
+    // Flatten the weeks array and map the contribution levels to numbers
     const contributions = contributionCalendar.weeks.flatMap(
       (week) => week.contributionDays.map(day => ({
         date: day.date,
         count: day.contributionCount,
-        level: parseInt(day.contributionLevel.replace('LEVEL_', '')) || 0,
+        level: mapLevelToNumber(day.contributionLevel),
       }))
     );
     
     const totalContributions = contributionCalendar.totalContributions;
 
-    return {
+    const data = {
       totalContributions,
       contributions,
     };
 
+    fs.writeFileSync('src/lib/github-contributions.json', JSON.stringify(data, null, 2));
+    console.log('Successfully wrote GitHub stats to src/lib/github-contributions.json');
+
   } catch (error) {
-    console.error('Failed to fetch GitHub stats:', error);
-    process.exit(1);
+    console.error('Error in fetchGitHubStats:', error);
+    process.exit(1); // Exit with an error code to fail the GitHub Action
   }
 }
 
-async function main() {
-  const stats = await fetchGitHubStats();
-  const outputPath = path.resolve(process.cwd(), 'src/lib/github-contributions.json');
-  
-  try {
-    fs.writeFileSync(outputPath, JSON.stringify(stats, null, 2));
-    console.log(`Successfully wrote GitHub stats to ${outputPath}`);
-  } catch (error) {
-    console.error(`Failed to write to ${outputPath}:`, error);
-    process.exit(1);
-  }
-}
-
-main();
+fetchGitHubStats();
