@@ -49,32 +49,33 @@ const milestoneEvents = [
 
 const MilestoneCard = ({ event, isVisible }: { event: typeof milestoneEvents[0], isVisible: boolean }) => {
   return (
-    <Card
-      className={cn(
-        "relative p-6 bg-cyber-gray/30 border border-cyber-purple/20 backdrop-blur-sm transition-all duration-700 hover:border-cyber-purple/40 hover:scale-105 hover:-translate-y-2 group",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      )}
-      style={{ transitionDelay: event.animationDelay }}
-    >
-       <div 
+    <div className="relative group">
+      <div 
         className={cn(
-          "absolute -inset-px rounded-lg bg-gradient-to-r from-cyber-purple to-cyber-blue opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-hover:animate-pulse-glow",
-          isVisible ? "animate-pulse-glow" : ""
+          "absolute -inset-0.5 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-lg blur-lg opacity-0 group-hover:opacity-75 transition-opacity duration-500",
+          isVisible ? "opacity-20" : "opacity-0"
         )}
-        style={{ animationIterationCount: isVisible ? 1 : 'infinite', animationDuration: isVisible ? '1.5s' : '2.5s' }}
-       ></div>
-      <div className="relative z-10">
-        <div className="flex items-start gap-4">
-          <div className={cn("p-3 rounded-lg", event.bgColor)}>
-            <event.icon className={cn("w-6 h-6", event.color)} />
-          </div>
-          <div>
-            <h4 className="font-bold text-lg text-gray-200 mb-2">{event.title}</h4>
-            <p className="text-sm text-gray-400 leading-relaxed">{event.description}</p>
+      ></div>
+      <Card
+        className={cn(
+          "relative p-6 bg-cyber-gray/40 border border-cyber-purple/20 backdrop-blur-sm transition-all duration-700 group-hover:border-cyber-purple/40 group-hover:scale-105 group-hover:-translate-y-2",
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        )}
+        style={{ transitionDelay: event.animationDelay }}
+      >
+        <div className="relative z-10">
+          <div className="flex items-start gap-4">
+            <div className={cn("p-3 rounded-lg", event.bgColor)}>
+              <event.icon className={cn("w-6 h-6", event.color)} />
+            </div>
+            <div>
+              <h4 className="font-bold text-lg text-gray-200 mb-2">{event.title}</h4>
+              <p className="text-sm text-gray-400 leading-relaxed">{event.description}</p>
+            </div>
           </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </div>
   );
 };
 
