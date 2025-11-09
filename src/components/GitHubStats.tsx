@@ -10,23 +10,17 @@ interface ContributionDay {
 }
 
 const GitHubStats = () => {
-  const [animateStats, setAnimateStats] = useState(false);
   const { totalContributions, contributions } = contributionData;
-
-  useEffect(() => {
-    // Animate stats shortly after component mounts
-    const timer = setTimeout(() => setAnimateStats(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   const getLevelColor = (level: number) => {
     switch (level) {
-      case 0: return 'bg-gray-800/60';
       case 1: return 'bg-indigo-900';
       case 2: return 'bg-indigo-700';
       case 3: return 'bg-indigo-500';
       case 4: return 'bg-indigo-400';
-      default: return 'bg-gray-800/60';
+      case 0:
+      default:
+        return 'bg-gray-800/60';
     }
   };
 
@@ -35,44 +29,55 @@ const GitHubStats = () => {
       return [];
     }
 
-    const weeks: ContributionDay[][] = [];
-    let currentWeek: ContributionDay[] = [];
+    const weeks: (ContributionDay | null)[][] = [];
+    let currentWeek: (ContributionDay | null)[] = [];
 
+    // Get the day of the week for the first contribution day (0=Sun, 1=Mon, ...)
     const firstDay = new Date(contributions[0].date);
-    const dayOfWeek = firstDay.getUTCDay();
-    
-    for (let i = 0; i < dayOfWeek; i++) {
-      currentWeek.push({
-        date: `padding-${i}`,
-        count: 0,
-        level: -1,
-      });
+    const startDayOfWeek = firstDay.getUTCDay();
+
+    // Add padding for the first week if it doesn't start on Sunday
+    for (let i = 0; i < startDayOfWeek; i++) {
+      currentWeek.push(null);
     }
 
     contributions.forEach((day) => {
       currentWeek.push(day);
-      if (new Date(day.date).getUTCDay() === 6) { 
+      if (currentWeek.length === 7) {
         weeks.push(currentWeek);
         currentWeek = [];
       }
     });
 
+    // Push any remaining days in the last week
     if (currentWeek.length > 0) {
-      weeks.push(currentWeek);
+       while (currentWeek.length < 7) {
+         currentWeek.push(null);
+       }
+       weeks.push(currentWeek);
+    }
+    
+    // Transpose the data to be column-major (weeks as columns)
+    const columns: (ContributionDay | null)[][] = [];
+    for (let i = 0; i < 7; i++) {
+        const column = weeks.map(week => week[i]).filter(day => day !== undefined);
+        columns.push(column);
     }
 
-    return weeks;
+    return columns;
   };
+
+  const dayColumns = getWeeks();
   
   if (!totalContributions || totalContributions === 0) {
-      return (
-          <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl">
-              <div className="text-center text-gray-400">
-                  <p className="font-semibold text-lg mb-2">Loading GitHub Contributions...</p>
-                  <p className="text-sm">If this persists, run the 'Update GitHub Contribution Stats' action in your repository's Actions tab.</p>
-              </div>
-          </Card>
-      )
+    return (
+      <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl">
+        <div className="text-center text-gray-400">
+          <p className="font-semibold text-lg mb-2">Loading GitHub Contributions...</p>
+          <p className="text-sm">If this persists, run the 'Update GitHub Contribution Stats' action in your repository's Actions tab.</p>
+        </div>
+      </Card>
+    );
   }
 
   return (
@@ -82,11 +87,11 @@ const GitHubStats = () => {
       
       <div className="relative z-10">
         <div className="flex justify-between items-center mb-6">
-          <h3 className={`text-2xl font-bold text-white transition-all duration-500 ${animateStats ? 'animate-fade-in-up' : 'opacity-0'}`}>
+          <h3 className="text-2xl font-bold text-white animate-fade-in-up">
             GitHub Contributions
           </h3>
-          <div className={`text-gray-300 font-mono text-lg font-bold transition-all duration-700 ${animateStats ? 'animate-scale-in' : 'opacity-0'}`}>
-            <span className="inline-block animate-bounce text-indigo-400">
+          <div className="text-gray-300 font-mono text-lg font-bold animate-scale-in">
+            <span className="inline-block text-indigo-400">
               {totalContributions.toLocaleString()}
             </span>
             <span className="ml-2 text-sm text-gray-400">contributions</span>
@@ -94,29 +99,24 @@ const GitHubStats = () => {
         </div>
         
         <div className="mb-6">
-          <div className={`text-sm text-gray-400 mb-3 transition-all duration-500 ${animateStats ? 'animate-fade-in-up' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
+          <div className="text-sm text-gray-400 mb-3 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
             @AdilMunawar - Last 12 months
           </div>
         </div>
         
         <div className="overflow-x-auto pb-2">
-          <div className="grid grid-flow-col auto-cols-max gap-1 min-w-full">
-            {getWeeks().map((week, weekIndex) => (
-              <div key={weekIndex} className="grid grid-rows-7 gap-1">
-                {Array.from({ length: 7 }).map((_, dayIndex) => {
-                  const day = week[dayIndex];
-                  if (!day || day.level === -1) {
-                    return <div key={`empty-${weekIndex}-${dayIndex}`} className="w-3 h-3" />;
+           <div className="grid grid-flow-col auto-cols-max gap-1">
+            {dayColumns.map((col, colIndex) => (
+              <div key={colIndex} className="grid grid-rows-7 gap-1">
+                {col.map((day, dayIndex) => {
+                  if (!day) {
+                    return <div key={`empty-${colIndex}-${dayIndex}`} className="w-3 h-3" />;
                   }
                   return (
                     <div
                       key={day.date}
-                      className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-cyber-blue/50 transition-all duration-300 cursor-pointer group/day hover:scale-125 animate-scale-in`}
+                      className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-cyber-blue/50 transition-all duration-300 cursor-pointer group/day hover:scale-125`}
                       title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}`}
-                      style={{ 
-                        animationDelay: `${(weekIndex * 7 + dayIndex) * 2}ms`,
-                        animationDuration: '0.5s'
-                      }}
                     >
                       <div className="w-full h-full rounded-sm group-hover/day:animate-pulse transition-all duration-200"></div>
                     </div>
@@ -127,14 +127,13 @@ const GitHubStats = () => {
           </div>
         </div>
         
-        <div className={`flex justify-between items-center mt-6 text-xs text-gray-400 transition-all duration-700 ${animateStats ? 'animate-fade-in-up' : 'opacity-0'}`} style={{ animationDelay: '400ms' }}>
+        <div className="flex justify-between items-center mt-6 text-xs text-gray-400 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
           <span className="hover:text-gray-300 transition-colors">Less</span>
           <div className="flex gap-1">
             {[0, 1, 2, 3, 4].map(level => (
               <div 
                 key={level} 
-                className={`w-3 h-3 rounded-sm ${getLevelColor(level)} hover:scale-125 transition-transform duration-200 animate-scale-in`}
-                style={{ animationDelay: `${500 + level * 100}ms` }}
+                className={`w-3 h-3 rounded-sm ${getLevelColor(level)}`}
               ></div>
             ))}
           </div>
