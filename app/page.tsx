@@ -10,7 +10,6 @@ import ContactSection from '@/components/ContactSection';
 export default function Home() {
   return (
     <div className="relative min-h-screen bg-cyber-dark">
-      <div className="bg-aurora fixed inset-0 z-0 opacity-30" />
       <Navigation />
       
       <main className="relative z-10">

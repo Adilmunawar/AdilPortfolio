@@ -579,27 +579,3 @@
 .animate-blink {
   animation: blink 1s step-end infinite;
 }
-
-/* NEW AURORA BACKGROUND */
-@keyframes aurora {
-  from {
-    background-position: 50% 50%, 50% 50%;
-  }
-  to {
-    background-position: 350% 50%, 350% 50%;
-  }
-}
-
-.bg-aurora {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-image: radial-gradient(
-      ellipse at top left,
-      var(--cyber-green) 0%,
-      transparent 50%
-    ),
-    radial-gradient(ellipse at top right, var(--cyber-purple) 0%, transparent 50%);
-  background-size: 600% 600%;
-  animation: aurora 15s ease-in-out infinite;
-}
