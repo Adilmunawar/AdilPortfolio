@@ -1854,28 +1854,22 @@ const GitHubStats = () => {
       return [];
     }
   
-    const today = new Date();
-    const endDate = new Date(today);
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - 365);
-  
-    const contributionsMap = new Map();
-    contributions.forEach(day => {
-      contributionsMap.set(day.date, day);
-    });
-  
+    const contributionsMap = new Map(contributions.map(day => [day.date, day]));
     const days = [];
-    const firstDay = new Date(contributions[0].date);
-    const firstDayOfWeek = firstDay.getDay();
-
-    // Add padding for days before the first contribution day
+    const today = new Date();
+    const oneYearAgo = new Date(today);
+    oneYearAgo.setDate(today.getDate() - 365);
+    
+    // Add padding for days before the first day of the week
+    const firstDayOfWeek = oneYearAgo.getDay();
     for (let i = 0; i < firstDayOfWeek; i++) {
         days.push(null);
     }
-  
-    for (let i = 0; i < contributions.length; i++) {
-        const day = contributions[i];
-        days.push(day);
+    
+    for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
+        const dateStr = d.toISOString().split('T')[0];
+        const dayData = contributionsMap.get(dateStr);
+        days.push(dayData || { date: dateStr, count: 0, level: 0 });
     }
   
     return days;
@@ -1918,7 +1912,7 @@ const GitHubStats = () => {
           </div>
         </div>
         
-        <div className="overflow-x-auto pb-2">
+        <div className="overflow-x-auto pb-2 custom-scrollbar">
            <div className="grid grid-flow-col grid-rows-7 gap-1">
             {contributionDays.map((day, dayIndex) => {
               if (!day) {
@@ -1927,7 +1921,7 @@ const GitHubStats = () => {
               return (
                 <div
                   key={day.date}
-                  className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-cyber-blue/50 transition-all duration-300 cursor-pointer group/day hover:scale-125`}
+                  className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-white/50 transition-all duration-300 cursor-pointer group/day hover:scale-125`}
                   title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}`}
                 >
                   <div className="w-full h-full rounded-sm group-hover/day:animate-pulse transition-all duration-200"></div>
