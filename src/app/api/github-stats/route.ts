@@ -14,7 +14,7 @@ interface GitHubContributionDay {
 }
 
 interface GitHubGraphQLResponse {
-  data: {
+  data?: {
     user: {
       contributionsCollection: {
         contributionCalendar: {
@@ -26,6 +26,8 @@ interface GitHubGraphQLResponse {
       };
     };
   };
+  errors?: Array<{ message: string }>;
+  message?: string;
 }
 
 export async function GET() {
@@ -34,7 +36,7 @@ export async function GET() {
 
   if (!GITHUB_PAT) {
     console.error('GitHub PAT not configured in environment variables.');
-    return NextResponse.json({ error: 'GitHub PAT not configured' }, { status: 500 });
+    return NextResponse.json({ error: 'Server configuration error: GITHUB_PAT is not set.' }, { status: 500 });
   }
 
   const query = `
@@ -70,18 +72,26 @@ export async function GET() {
         },
       }),
     });
+    
+    const text = await res.text();
+    let json: GitHubGraphQLResponse;
 
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error('GitHub API request failed:', res.status, errorText);
-      throw new Error(`GitHub API responded with ${res.status}`);
+    try {
+        json = JSON.parse(text);
+    } catch(e) {
+        console.error('Failed to parse GitHub API response as JSON:', text);
+        return NextResponse.json({ error: "The GitHub API returned an invalid response. This may be due to an invalid Personal Access Token." }, { status: 500 });
     }
 
-    const json: GitHubGraphQLResponse = await res.json();
+    if (!res.ok || json.errors) {
+      console.error('GitHub API request failed:', json.errors || json.message);
+      const errorMessage = json.errors?.[0]?.message || json.message || `GitHub API responded with ${res.status}`;
+      return NextResponse.json({ error: `GitHub API Error: ${errorMessage}` }, { status: 500 });
+    }
 
     if (!json.data || !json.data.user) {
-      console.error('Invalid GitHub API response:', json);
-      throw new Error('Invalid data structure from GitHub API');
+      console.error('Invalid data structure from GitHub API:', json);
+      return NextResponse.json({ error: 'Invalid data structure from GitHub API' }, { status: 500 });
     }
 
     const { contributionCalendar } = json.data.user.contributionsCollection;
@@ -105,7 +115,8 @@ export async function GET() {
     });
 
   } catch (error) {
-    console.error('Error fetching GitHub stats:', error);
-    return NextResponse.json({ error: 'Failed to fetch GitHub stats' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    console.error('Error fetching GitHub stats:', errorMessage);
+    return NextResponse.json({ error: `Failed to fetch GitHub stats: ${errorMessage}` }, { status: 500 });
   }
 }

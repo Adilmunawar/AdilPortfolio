@@ -16,6 +16,10 @@ interface ApiData {
   contributions: ContributionDay[];
 }
 
+interface ApiError {
+    error: string;
+}
+
 const GitHubStats = () => {
   const [contributions, setContributions] = useState<ContributionDay[]>([]);
   const [totalContributions, setTotalContributions] = useState(0);
@@ -29,15 +33,14 @@ const GitHubStats = () => {
       setIsLoading(true);
       setError(null);
       try {
-        // Fetch data from the internal API route created in Step 2
+        // Fetch data from the internal API route
         const response = await fetch('/api/github-stats');
         
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to fetch stats from API');
-        }
+        const data: ApiData | ApiError = await response.json();
 
-        const data: ApiData = await response.json();
+        if (!response.ok || 'error' in data) {
+          throw new Error((data as ApiError).error || 'Failed to fetch stats from API');
+        }
 
         if (!data.contributions || !data.hasOwnProperty('totalContributions')) {
             throw new Error('Invalid data structure from API');
@@ -46,12 +49,11 @@ const GitHubStats = () => {
         setContributions(data.contributions);
         setTotalContributions(data.totalContributions);
         
-      } catch (error: any) {
-        console.error('Error fetching GitHub data:', error);
-        setError(error.message || 'An unexpected error occurred.');
-        // You could set error state here or let it show 0 contributions
-        setTotalContributions(0); // Set to 0 on error
-        setContributions([]); // Clear contributions on error
+      } catch (err: any) {
+        console.error('Error fetching GitHub data:', err);
+        setError(err.message || 'An unexpected error occurred.');
+        setTotalContributions(0);
+        setContributions([]);
       }
       
       setIsLoading(false);
@@ -143,7 +145,7 @@ const GitHubStats = () => {
           <AlertTriangle className="w-10 h-10 mb-4" />
           <h3 className="text-xl font-bold mb-2">Could not load GitHub stats</h3>
           <p className="text-sm text-red-300/80 max-w-sm">
-            {error} Please ensure the `GITHUB_PAT` is correctly configured in your environment variables.
+            {error} Please regenerate your GitHub PAT, ensure it has the `read:user` scope, and update it in your Vercel environment variables.
           </p>
         </div>
       </Card>
