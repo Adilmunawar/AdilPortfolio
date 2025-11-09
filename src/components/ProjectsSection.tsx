@@ -119,10 +119,10 @@ const ProjectsSection = () => {
     },
     {
       title: 'Adify',
-      description: 'An AI-powered recruitment tool to automatically rank candidates from a resume database.',
-      longDescription: 'Adify is an intelligent recruitment tool that uses the Gemini API to parse job descriptions and automatically rank the top candidates from a resume database based on skill and experience alignment.',
+      description: 'An AI-powered resume builder to help you craft the perfect resume.',
+      longDescription: 'Adify is an intelligent resume builder that leverages the Gemini API to help users create professional, polished resumes. It can assist with wording, formatting, and tailoring your resume to specific job descriptions.',
       image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      tech: ['Gemini API', 'AI', 'Recruitment', 'React'],
+      tech: ['Gemini API', 'AI', 'Resume', 'React'],
       github: 'https://github.com/adilmunawar/Adify',
       live: 'https://adify.vercel.app',
       status: 'paused',
