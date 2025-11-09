@@ -2,158 +2,80 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
-import { AlertTriangle } from 'lucide-react';
+import contributionData from '@/lib/github-contributions.json';
 
-// Type definitions for the data we expect from our API
 interface ContributionDay {
   date: string;
   count: number;
   level: number;
 }
 
-interface ApiData {
-  totalContributions: number;
-  contributions: ContributionDay[];
-}
-
-interface ApiError {
-    error: string;
-}
-
 const GitHubStats = () => {
-  const [contributions, setContributions] = useState<ContributionDay[]>([]);
-  const [totalContributions, setTotalContributions] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [animateStats, setAnimateStats] = useState(false);
+  const { totalContributions, contributions } = contributionData;
 
   useEffect(() => {
-    // This function fetches the data from our own API route
-    const fetchGitHubContributions = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        // Fetch data from the internal API route
-        const response = await fetch('/api/github-stats');
-        
-        const data: ApiData | ApiError = await response.json();
+    // Animate stats shortly after component mounts
+    const timer = setTimeout(() => setAnimateStats(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
-        if (!response.ok || 'error' in data) {
-          throw new Error((data as ApiError).error || 'Failed to fetch stats from API');
-        }
-
-        if (!data.contributions || !data.hasOwnProperty('totalContributions')) {
-            throw new Error('Invalid data structure from API');
-        }
-
-        setContributions(data.contributions);
-        setTotalContributions(data.totalContributions);
-        
-      } catch (err: any) {
-        console.error('Error fetching GitHub data:', err);
-        setError(err.message || 'An unexpected error occurred.');
-        setTotalContributions(0);
-        setContributions([]);
-      }
-      
-      setIsLoading(false);
-      setTimeout(() => setAnimateStats(true), 100);
-    };
-
-    fetchGitHubContributions();
-  }, []); // Runs once on component mount
-
-  // Helper function to map contribution level to a color class
   const getLevelColor = (level: number) => {
     switch (level) {
       case 0: return 'bg-gray-800/60';
-      case 1: return 'bg-indigo-900/80'; // Low contributions
+      case 1: return 'bg-indigo-900/80';
       case 2: return 'bg-indigo-800';
       case 3: return 'bg-indigo-600';
-      case 4: return 'bg-indigo-400'; // High contributions
+      case 4: return 'bg-indigo-400';
       default: return 'bg-gray-800/60';
     }
   };
 
-  // Organizes the flat list of days into weeks for the grid display
   const getWeeks = () => {
-    if (contributions.length === 0) {
+    if (!contributions || contributions.length === 0) {
       return [];
     }
 
     const weeks: ContributionDay[][] = [];
     let currentWeek: ContributionDay[] = [];
 
-    // The GitHub API starts the first week on a Sunday.
-    // We need to pad the first week with empty days if it doesn't.
     const firstDay = new Date(contributions[0].date);
-    const dayOfWeek = firstDay.getUTCDay(); // Use UTC day
+    const dayOfWeek = firstDay.getUTCDay();
     
-    // Add empty padding days
     for (let i = 0; i < dayOfWeek; i++) {
       currentWeek.push({
         date: `padding-${i}`,
         count: 0,
-        level: -1, // Use -1 to render an empty/invisible box
+        level: -1,
       });
     }
 
-    // Process all contribution days
     contributions.forEach((day) => {
       currentWeek.push(day);
-      // 6 is Saturday (end of the week)
       if (new Date(day.date).getUTCDay() === 6) { 
         weeks.push(currentWeek);
         currentWeek = [];
       }
     });
 
-    // Push any remaining days in the last week
     if (currentWeek.length > 0) {
       weeks.push(currentWeek);
     }
 
     return weeks;
   };
-
-  // Loading state
-  if (isLoading) {
-    return (
-      <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyber-purple/10 to-transparent animate-pulse"></div>
-        <div className="animate-pulse relative z-10">
-          <div className="h-6 bg-gradient-to-r from-gray-700 to-gray-600 rounded w-1/3 mb-6 animate-shimmer"></div>
-          <div className="grid grid-flow-col auto-cols-max gap-1">
-            {/* Render ~53 weeks * 7 days = 371 squares for the loading skeleton */}
-            {Array.from({ length: 371 }).map((_, i) => (
-              <div 
-                key={i} 
-                className="w-3 h-3 bg-gray-800/40 rounded-sm" 
-              ></div>
-            ))}
-          </div>
-        </div>
-      </Card>
-    );
+  
+  if (totalContributions === 0) {
+      return (
+          <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl">
+              <div className="text-center text-gray-400">
+                  <p className="font-semibold text-lg mb-2">Loading GitHub Contributions...</p>
+                  <p className="text-sm">Or run the 'Update GitHub Contribution Stats' action in your repository's Actions tab.</p>
+              </div>
+          </Card>
+      )
   }
 
-  // Error state
-  if (error) {
-    return (
-      <Card className="p-8 bg-red-900/20 border-red-500/30 backdrop-blur-xl">
-        <div className="flex flex-col items-center justify-center text-center text-red-300">
-          <AlertTriangle className="w-10 h-10 mb-4" />
-          <h3 className="text-xl font-bold mb-2">Could not load GitHub stats</h3>
-          <p className="text-sm text-red-300/80 max-w-sm">
-            {error} Please regenerate your GitHub PAT, ensure it has the `read:user` scope, and update it in your Vercel environment variables as `GH_PAT`.
-          </p>
-        </div>
-      </Card>
-    );
-  }
-
-
-  // Loaded state
   return (
     <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl hover:border-cyber-purple/60 transition-all duration-500 group overflow-hidden relative">
       <div className="absolute inset-0 bg-gradient-to-br from-cyber-purple/5 via-cyber-blue/5 to-indigo-900/5 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
@@ -182,11 +104,9 @@ const GitHubStats = () => {
           <div className="grid grid-flow-col auto-cols-max gap-1 min-w-full">
             {getWeeks().map((week, weekIndex) => (
               <div key={weekIndex} className="grid grid-rows-7 gap-1">
-                {/* Ensure all 7 days are rendered, even if empty */}
                 {Array.from({ length: 7 }).map((_, dayIndex) => {
                   const day = week[dayIndex];
                   if (!day || day.level === -1) {
-                    // Render an empty, invisible box for padding
                     return <div key={`empty-${weekIndex}-${dayIndex}`} className="w-3 h-3" />;
                   }
                   return (
@@ -227,5 +147,3 @@ const GitHubStats = () => {
 };
 
 export default GitHubStats;
-
-    

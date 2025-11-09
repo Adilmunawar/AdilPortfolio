@@ -1,0 +1,37 @@
+
+name: Update GitHub Contribution Stats
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at midnight UTC
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run update script
+        run: node scripts/update-github-stats.mjs
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add src/lib/github-contributions.json
+          git diff --staged --quiet || git commit -m "chore: update GitHub contribution stats"
+          git push
+
