@@ -5,6 +5,7 @@ import ProfileCard from './ProfileCard';
 import { useState, useEffect, useRef } from 'react';
 import { Sparkles, Users, Rocket, Cpu } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const dynamicTexts = [
   "Passionate Developer",
@@ -49,25 +50,43 @@ const milestoneEvents = [
 ];
 
 const MilestoneCard = ({ event, isVisible, isActive }: { event: typeof milestoneEvents[0], isVisible: boolean, isActive: boolean }) => {
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.98 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: { duration: 0.5, ease: 'easeOut' }
+    }
+  };
+
   return (
-    <div className="relative group">
-      <div 
-        className={cn(
-          "absolute -inset-1.5 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-xl blur-xl opacity-0 group-hover:opacity-60 transition-all duration-1000",
-          isActive && !isVisible && "group-hover:opacity-60",
-          isActive && isVisible ? "opacity-25" : "opacity-0"
+    <motion.div
+      className="relative group"
+      variants={cardVariants}
+      initial="hidden"
+      animate={isVisible ? "visible" : "hidden"}
+      style={{ transitionDelay: event.animationDelay }}
+    >
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.7 } }}
+            exit={{ opacity: 0, transition: { duration: 0.7 } }}
+            className="absolute -inset-2 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-xl blur-lg"
+          />
         )}
-      ></div>
+      </AnimatePresence>
       <Card
         className={cn(
-          "relative p-6 bg-cyber-gray/40 border border-cyber-purple/20 backdrop-blur-sm transition-all duration-700 group-hover:border-cyber-purple/40 group-hover:scale-105 group-hover:-translate-y-2",
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          "relative p-6 bg-cyber-gray/50 border border-cyber-purple/20 backdrop-blur-sm transition-all duration-300 group-hover:border-cyber-purple/40 group-hover:scale-105 group-hover:-translate-y-1 h-full",
+          isActive && "scale-105 -translate-y-1 border-cyber-purple/40"
         )}
-        style={{ transitionDelay: event.animationDelay }}
       >
         <div className="relative z-10">
           <div className="flex items-start gap-4">
-            <div className={cn("p-3 rounded-lg", event.bgColor)}>
+            <div className={cn("p-3 rounded-lg shadow-inner", event.bgColor, "border", event.color.replace('text-', 'border-') + '/30')}>
               <event.icon className={cn("w-6 h-6", event.color)} />
             </div>
             <div>
@@ -77,7 +96,7 @@ const MilestoneCard = ({ event, isVisible, isActive }: { event: typeof milestone
           </div>
         </div>
       </Card>
-    </div>
+    </motion.div>
   );
 };
 
@@ -122,7 +141,7 @@ const AboutSection = () => {
     if (isVisible) {
       const glowInterval = setInterval(() => {
         setActiveMilestoneIndex((prevIndex) => (prevIndex + 1) % milestoneEvents.length);
-      }, 1600); // 0.8s glow + 0.8s off
+      }, 2000); // Cycle every 2 seconds
 
       return () => clearInterval(glowInterval);
     }
@@ -142,8 +161,13 @@ const AboutSection = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
-            <div className={cn("lg:col-span-2 flex justify-center transition-all duration-1000", isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90')} style={{ transitionDelay: '200ms' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+            <motion.div 
+              className="lg:col-span-2 flex justify-center"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={isVisible ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
               <ProfileCard
                 name="Adil Munawar"
                 title="Web Developer"
@@ -156,7 +180,7 @@ const AboutSection = () => {
                 enableTilt={true}
                 onContactClick={() => console.log('Contact clicked')}
               />
-            </div>
+            </motion.div>
           
             <div className="lg:col-span-3 relative">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
