@@ -148,20 +148,6 @@ const AboutSection = () => {
                         <MilestoneCard key={index} event={event} isVisible={isVisible} />
                     ))}
                 </div>
-                
-                {/* Connecting Lines */}
-                {isVisible && (
-                    <>
-                        {/* Line 1 -> 2 */}
-                        <div className="hidden md:block absolute top-1/2 left-[calc(50%-1rem)] w-8 h-[2px] bg-gradient-to-r from-cyber-purple/50 to-cyber-blue/50 animate-draw-line" style={{ transformOrigin: 'left', animationDelay: '0.6s' }}></div>
-
-                        {/* Line 2 -> 3 */}
-                        <div className="hidden md:block absolute left-[calc(75%)] top-[calc(25%_+_2rem)] w-[2px] h-[calc(50%_-_4rem)] bg-gradient-to-b from-cyber-purple/50 to-cyber-blue/50 animate-draw-line" style={{ transformOrigin: 'top', animationDelay: '0.8s' }}></div>
-
-                        {/* Line 3 -> 4 */}
-                        <div className="hidden md:block absolute top-1/2 right-[calc(50%-1rem)] w-8 h-[2px] bg-gradient-to-l from-cyber-purple/50 to-cyber-blue/50 animate-draw-line" style={{ transformOrigin: 'right', animationDelay: '1s' }}></div>
-                    </>
-                )}
             </div>
         </div>
       </div>
