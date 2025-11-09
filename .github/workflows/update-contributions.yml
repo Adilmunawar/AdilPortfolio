@@ -9,6 +9,8 @@ on:
 jobs:
   update-stats:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Grants the action write permissions to the repository
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
