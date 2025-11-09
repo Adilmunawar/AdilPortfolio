@@ -48,13 +48,14 @@ const milestoneEvents = [
   },
 ];
 
-const MilestoneCard = ({ event, isVisible }: { event: typeof milestoneEvents[0], isVisible: boolean }) => {
+const MilestoneCard = ({ event, isVisible, isActive }: { event: typeof milestoneEvents[0], isVisible: boolean, isActive: boolean }) => {
   return (
     <div className="relative group">
       <div 
         className={cn(
-          "absolute -inset-1.5 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-xl blur-xl opacity-0 group-hover:opacity-60 transition-all duration-700",
-          isVisible ? "opacity-10" : "opacity-0"
+          "absolute -inset-1.5 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-xl blur-xl opacity-0 group-hover:opacity-60 transition-all duration-1000",
+          isActive && !isVisible && "group-hover:opacity-60",
+          isActive && isVisible ? "opacity-25" : "opacity-0"
         )}
       ></div>
       <Card
@@ -85,6 +86,7 @@ const AboutSection = () => {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const [activeMilestoneIndex, setActiveMilestoneIndex] = useState(-1);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -115,6 +117,16 @@ const AboutSection = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (isVisible) {
+      const glowInterval = setInterval(() => {
+        setActiveMilestoneIndex((prevIndex) => (prevIndex + 1) % milestoneEvents.length);
+      }, 1600); // 0.8s glow + 0.8s off
+
+      return () => clearInterval(glowInterval);
+    }
+  }, [isVisible]);
 
   return (
     <section id="about" ref={sectionRef} className="min-h-screen py-20 px-4 flex flex-col justify-center items-center relative overflow-hidden bg-transparent">
@@ -149,7 +161,7 @@ const AboutSection = () => {
             <div className="lg:col-span-3 relative">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {milestoneEvents.map((event, index) => (
-                        <MilestoneCard key={index} event={event} isVisible={isVisible} />
+                        <MilestoneCard key={index} event={event} isVisible={isVisible} isActive={activeMilestoneIndex === index} />
                     ))}
                 </div>
             </div>
