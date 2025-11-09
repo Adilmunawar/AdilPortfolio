@@ -27,47 +27,27 @@ const GitHubStats = () => {
     if (!contributions || contributions.length === 0) {
       return [];
     }
-
-    const weeks: (ContributionDay | null)[][] = [];
-    let currentWeek: (ContributionDay | null)[] = [];
-
-    // Get the day of the week for the first contribution day (0=Sun, 1=Mon, ...)
-    const firstDay = new Date(contributions[0].date);
-    const startDayOfWeek = firstDay.getUTCDay();
-
-    // Add padding for the first week if it doesn't start on Sunday
-    for (let i = 0; i < startDayOfWeek; i++) {
-      currentWeek.push(null);
-    }
-
+    
+    const weeks: (ContributionDay | null)[][] = Array(53).fill(null).map(() => Array(7).fill(null));
+    
     contributions.forEach((day) => {
-      currentWeek.push(day);
-      if (currentWeek.length === 7) {
-        weeks.push(currentWeek);
-        currentWeek = [];
+      const date = new Date(day.date);
+      const dayOfWeek = date.getUTCDay(); // 0 (Sun) to 6 (Sat)
+      
+      const oneJan = new Date(date.getFullYear(), 0, 1);
+      const numberOfDays = Math.floor((date.getTime() - oneJan.getTime()) / (24 * 60 * 60 * 1000));
+      const weekIndex = Math.floor((numberOfDays + oneJan.getUTCDay()) / 7);
+
+      if (weekIndex >= 0 && weekIndex < 53 && dayOfWeek >= 0 && dayOfWeek < 7) {
+        weeks[weekIndex][dayOfWeek] = day;
       }
     });
 
-    // Push any remaining days in the last week
-    if (currentWeek.length > 0) {
-       while (currentWeek.length < 7) {
-         currentWeek.push(null);
-       }
-       weeks.push(currentWeek);
-    }
-    
-    // Transpose the data to be column-major (weeks as columns)
-    const columns: (ContributionDay | null)[][] = [];
-    for (let i = 0; i < weeks.length; i++) {
-        const column = weeks[i];
-        columns.push(column);
-    }
-
-    return columns;
+    return weeks;
   };
-
-  const weekColumns = getWeeks();
   
+  const weekColumns = getWeeks();
+
   if (!totalContributions || totalContributions === 0) {
     return (
       <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl">
@@ -78,7 +58,7 @@ const GitHubStats = () => {
       </Card>
     );
   }
-
+  
   return (
     <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl hover:border-cyber-purple/60 transition-all duration-500 group overflow-hidden relative">
       <div className="absolute inset-0 bg-gradient-to-br from-cyber-purple/5 via-cyber-blue/5 to-indigo-900/5 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
@@ -109,7 +89,7 @@ const GitHubStats = () => {
               <div key={weekIndex} className="grid grid-rows-7 gap-1">
                 {week.map((day, dayIndex) => {
                   if (!day) {
-                    return <div key={`empty-${weekIndex}-${dayIndex}`} className="w-3 h-3" />;
+                    return <div key={`empty-${weekIndex}-${dayIndex}`} className="w-3 h-3 rounded-sm bg-gray-800/20" />;
                   }
                   return (
                     <div
