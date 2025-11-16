@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import GitHubStats from './GitHubStats';
 import { LogoLoop } from './LogoLoop';
-import './LogoLoop.css';
 
 const SkillsSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -62,7 +61,7 @@ const SkillsSection = () => {
         { name: "Figma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" },
         { name: "Webpack", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/webpack/webpack-original.svg" },
         { name: "Azure", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" },
-        { name: "Vercel", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" }
+        { name: "Vercel", icon: "https://cdn.jsdelivrnet/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" }
       ]
     }
   ];
@@ -121,14 +120,14 @@ const SkillsSection = () => {
         >
           <LogoLoop 
             logos={frontendSkills} 
-            speed={60} 
+            speed={40} 
             fadeOut={true} 
             logoHeight={60}
             gap={64}
             scaleOnHover={true}
             fadeOutColor='var(--cyber-dark)'
             renderItem={(item) => (
-              'src' in item ? <img src={item.src} alt={item.alt} className="frontend-skill-icon" /> : null
+              'src' in item ? <img src={item.src} alt={item.alt || ''} className="frontend-skill-icon" /> : null
             )}
           />
         </div>
