@@ -9,43 +9,8 @@ interface ContributionDay {
 }
 
 const contributionData = {
-  "totalContributions": 3375,
+  "totalContributions": 3412,
   "contributions": [
-    {
-      "date": "2024-11-10",
-      "count": 4,
-      "level": 1
-    },
-    {
-      "date": "2024-11-11",
-      "count": 8,
-      "level": 1
-    },
-    {
-      "date": "2024-11-12",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2024-11-13",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2024-11-14",
-      "count": 10,
-      "level": 1
-    },
-    {
-      "date": "2024-11-15",
-      "count": 4,
-      "level": 1
-    },
-    {
-      "date": "2024-11-16",
-      "count": 0,
-      "level": 0
-    },
     {
       "date": "2024-11-17",
       "count": 3,
@@ -273,12 +238,12 @@ const contributionData = {
     },
     {
       "date": "2025-01-01",
-      "count": 13,
+      "count": 12,
       "level": 1
     },
     {
       "date": "2025-01-02",
-      "count": 23,
+      "count": 24,
       "level": 2
     },
     {
@@ -413,12 +378,12 @@ const contributionData = {
     },
     {
       "date": "2025-01-29",
-      "count": 22,
-      "level": 2
+      "count": 21,
+      "level": 1
     },
     {
       "date": "2025-01-30",
-      "count": 18,
+      "count": 19,
       "level": 1
     },
     {
@@ -503,12 +468,12 @@ const contributionData = {
     },
     {
       "date": "2025-02-16",
-      "count": 13,
+      "count": 12,
       "level": 1
     },
     {
       "date": "2025-02-17",
-      "count": 20,
+      "count": 21,
       "level": 1
     },
     {
@@ -723,13 +688,13 @@ const contributionData = {
     },
     {
       "date": "2025-04-01",
-      "count": 4,
+      "count": 3,
       "level": 1
     },
     {
       "date": "2025-04-02",
-      "count": 0,
-      "level": 0
+      "count": 1,
+      "level": 1
     },
     {
       "date": "2025-04-03",
@@ -918,12 +883,12 @@ const contributionData = {
     },
     {
       "date": "2025-05-10",
-      "count": 6,
+      "count": 5,
       "level": 1
     },
     {
       "date": "2025-05-11",
-      "count": 17,
+      "count": 18,
       "level": 1
     },
     {
@@ -953,12 +918,12 @@ const contributionData = {
     },
     {
       "date": "2025-05-17",
-      "count": 25,
+      "count": 24,
       "level": 2
     },
     {
       "date": "2025-05-18",
-      "count": 5,
+      "count": 6,
       "level": 1
     },
     {
@@ -993,12 +958,12 @@ const contributionData = {
     },
     {
       "date": "2025-05-25",
-      "count": 1,
-      "level": 1
+      "count": 0,
+      "level": 0
     },
     {
       "date": "2025-05-26",
-      "count": 1,
+      "count": 2,
       "level": 1
     },
     {
@@ -1079,7 +1044,7 @@ const contributionData = {
     {
       "date": "2025-06-11",
       "count": 21,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2025-06-12",
@@ -1123,8 +1088,8 @@ const contributionData = {
     },
     {
       "date": "2025-06-20",
-      "count": 1,
-      "level": 1
+      "count": 0,
+      "level": 0
     },
     {
       "date": "2025-06-21",
@@ -1133,7 +1098,7 @@ const contributionData = {
     },
     {
       "date": "2025-06-22",
-      "count": 25,
+      "count": 26,
       "level": 2
     },
     {
@@ -1168,18 +1133,18 @@ const contributionData = {
     },
     {
       "date": "2025-06-29",
-      "count": 17,
+      "count": 14,
       "level": 1
     },
     {
       "date": "2025-06-30",
-      "count": 20,
-      "level": 1
+      "count": 25,
+      "level": 2
     },
     {
       "date": "2025-07-01",
-      "count": 0,
-      "level": 0
+      "count": 7,
+      "level": 1
     },
     {
       "date": "2025-07-02",
@@ -1193,12 +1158,12 @@ const contributionData = {
     },
     {
       "date": "2025-07-04",
-      "count": 7,
+      "count": 6,
       "level": 1
     },
     {
       "date": "2025-07-05",
-      "count": 21,
+      "count": 22,
       "level": 2
     },
     {
@@ -1243,12 +1208,12 @@ const contributionData = {
     },
     {
       "date": "2025-07-14",
-      "count": 3,
+      "count": 2,
       "level": 1
     },
     {
       "date": "2025-07-15",
-      "count": 4,
+      "count": 5,
       "level": 1
     },
     {
@@ -1508,12 +1473,12 @@ const contributionData = {
     },
     {
       "date": "2025-09-05",
-      "count": 78,
+      "count": 77,
       "level": 4
     },
     {
       "date": "2025-09-06",
-      "count": 83,
+      "count": 84,
       "level": 4
     },
     {
@@ -1548,12 +1513,12 @@ const contributionData = {
     },
     {
       "date": "2025-09-13",
-      "count": 30,
+      "count": 29,
       "level": 2
     },
     {
       "date": "2025-09-14",
-      "count": 35,
+      "count": 36,
       "level": 2
     },
     {
@@ -1694,7 +1659,7 @@ const contributionData = {
     {
       "date": "2025-10-12",
       "count": 21,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2025-10-13",
@@ -1703,12 +1668,12 @@ const contributionData = {
     },
     {
       "date": "2025-10-14",
-      "count": 2,
+      "count": 1,
       "level": 1
     },
     {
       "date": "2025-10-15",
-      "count": 6,
+      "count": 7,
       "level": 1
     },
     {
@@ -1743,12 +1708,12 @@ const contributionData = {
     },
     {
       "date": "2025-10-22",
-      "count": 3,
+      "count": 2,
       "level": 1
     },
     {
       "date": "2025-10-23",
-      "count": 4,
+      "count": 5,
       "level": 1
     },
     {
@@ -1850,6 +1815,26 @@ const contributionData = {
       "date": "2025-11-12",
       "count": 0,
       "level": 0
+    },
+    {
+      "date": "2025-11-13",
+      "count": 0,
+      "level": 0
+    },
+    {
+      "date": "2025-11-14",
+      "count": 1,
+      "level": 1
+    },
+    {
+      "date": "2025-11-15",
+      "count": 0,
+      "level": 0
+    },
+    {
+      "date": "2025-11-16",
+      "count": 27,
+      "level": 2
     }
   ]
 };
