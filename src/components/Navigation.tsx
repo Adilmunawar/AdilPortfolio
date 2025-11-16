@@ -54,6 +54,12 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [navItems]);
 
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    if(isOpen) setIsOpen(false);
+  };
+
   return (
     <nav className={cn(
       "fixed top-0 left-0 right-0 z-50 border-b border-[var(--cyber-purple)]/20 transition-all duration-300",
@@ -62,17 +68,18 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
-            <Link href="#home" className="text-2xl font-bold text-gradient animate-shimmer">
+            <a href="#home" onClick={(e) => handleLinkClick(e, '#home')} className="text-2xl font-bold text-gradient animate-shimmer">
               ADILMUNAWAR
-            </Link>
+            </a>
           </div>
           
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               {navItems.map((item) => (
-                <Link
+                <a
                   key={item.name}
                   href={item.href}
+                  onClick={(e) => handleLinkClick(e, item.href)}
                   className={cn(
                     "text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-all duration-300 relative group",
                     activeSection === getSectionIdFromHref(item.href) && "text-white"
@@ -85,7 +92,7 @@ const Navigation = () => {
                   )}></span>
                   
                   <div className="absolute inset-0 bg-gradient-to-r from-[var(--cyber-purple)]/10 to-[var(--cyber-blue)]/10 rounded opacity-0 group-hover:opacity-100 transition-all duration-300 -z-10"></div>
-                </Link>
+                </a>
               ))}
             </div>
           </div>
@@ -106,15 +113,15 @@ const Navigation = () => {
         <div className="md:hidden transform transition-transform duration-300 ease-in-out">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-cyber-dark/90 backdrop-blur-lg border-t border-[var(--cyber-purple)]/20">
             {navItems.map((item, index) => (
-              <Link
+              <a
                 key={item.name}
                 href={item.href}
+                onClick={(e) => handleLinkClick(e, item.href)}
                 className="text-gray-300 hover:text-white block px-3 py-2 text-base font-medium transition-all duration-300 hover:bg-gradient-to-r from-[var(--cyber-purple)]/10 to-[var(--cyber-blue)]/10 rounded animate-fade-in-up"
                 style={{ animationDelay: `${index * 100}ms` }}
-                onClick={() => setIsOpen(false)}
               >
                 {item.name}
-              </Link>
+              </a>
             ))}
           </div>
         </div>

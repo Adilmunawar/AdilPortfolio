@@ -133,7 +133,7 @@ const HeroSection = () => {
         <div className="animate-fade-in-up">
           {/* Professional name with subtle effects */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 drop-shadow-lg relative">
-            <span className="text-gradient-slow relative z-10">Adil Munawar</span>
+            <span className="text-gradient-slow relative z-10">Adil Munawar - Full-Stack Developer</span>
           </h1>
           
           {/* Professional subtitle */}
