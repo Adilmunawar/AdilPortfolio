@@ -77,7 +77,7 @@ const SkillsSection = () => {
       </svg>
 
       <style jsx>{`
-        .frontend-skill-icon {
+        .skill-icon {
           filter: url(#purple-gradient-map);
         }
       `}</style>
@@ -105,7 +105,7 @@ const SkillsSection = () => {
         </div>
 
         {/* Scrolling Frontend Banner */}
-        <div className={`transition-all duration-1000 delay-200 mb-8 ${
+        <div className={`transition-all duration-1000 delay-200 mb-12 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
@@ -118,13 +118,13 @@ const SkillsSection = () => {
             scaleOnHover={true}
             fadeOutColor='var(--cyber-dark)'
             renderItem={(item) => (
-              'src' in item ? <img src={item.src} alt={item.alt || ''} className="frontend-skill-icon" /> : null
+              'src' in item ? <img src={item.src} alt={item.alt || ''} className="skill-icon" /> : null
             )}
           />
         </div>
 
         {/* Scrolling Backend Banner */}
-        <div className={`transition-all duration-1000 delay-300 mb-16 ${
+        <div className={`transition-all duration-1000 delay-300 mb-12 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
@@ -138,7 +138,7 @@ const SkillsSection = () => {
             scaleOnHover={true}
             fadeOutColor='var(--cyber-dark)'
             renderItem={(item) => (
-              'src' in item ? <img src={item.src} alt={item.alt || ''} className="frontend-skill-icon" /> : null
+              'src' in item ? <img src={item.src} alt={item.alt || ''} className="skill-icon" /> : null
             )}
           />
         </div>
@@ -158,7 +158,7 @@ const SkillsSection = () => {
             scaleOnHover={true}
             fadeOutColor='var(--cyber-dark)'
             renderItem={(item) => (
-              'src' in item ? <img src={item.src} alt={item.alt || ''} className="frontend-skill-icon" /> : null
+              'src' in item ? <img src={item.src} alt={item.alt || ''} className="skill-icon" /> : null
             )}
           />
         </div>
