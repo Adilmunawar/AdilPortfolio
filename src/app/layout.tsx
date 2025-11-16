@@ -8,10 +8,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Adil Munawar - Full-Stack Developer",
+  title: "Adil Munawar",
   description: "Adil Munawar Portfolio - Passionate Full-Stack Developer",
   openGraph: {
-    title: "Adil Munawar - Full-Stack Developer",
+    title: "Adil Munawar",
     description: "Adil Munawar Portfolio - Passionate Full-Stack Developer",
     url: "https://adilmunawar.vercel.app/",
     type: "website",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Adil Munawar - Full-Stack Developer",
+    title: "Adil Munawar",
     description: "Adil Munawar Portfolio - Passionate Full-Stack Developer",
     images: ["https://adilmunawar.vercel.app/your-preview-image.png"],
   },

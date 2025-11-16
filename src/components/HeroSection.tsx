@@ -133,7 +133,7 @@ const HeroSection = () => {
         <div className="animate-fade-in-up">
           {/* Professional name with subtle effects */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 drop-shadow-lg relative">
-            <span className="text-gradient-slow relative z-10">Adil Munawar - Full-Stack Developer</span>
+            <span className="text-gradient-slow relative z-10">Adil Munawar</span>
           </h1>
           
           {/* Professional subtitle */}
@@ -170,7 +170,7 @@ const HeroSection = () => {
           {socialLinks.map((social, index) => (
             <Tooltip key={index}>
               <TooltipTrigger asChild>
-                <Link 
+                <a 
                   href={social.href} 
                   target="_blank" 
                   rel="noopener noreferrer" 
@@ -192,7 +192,7 @@ const HeroSection = () => {
                     
                     <social.Icon size={26} className={`${social.color} transition-all duration-300 group-hover:scale-125 group-hover:text-white relative z-10`} />
                   </div>
-                </Link>
+                </a>
               </TooltipTrigger>
               <TooltipContent>
                 <p>{social.label}</p>
