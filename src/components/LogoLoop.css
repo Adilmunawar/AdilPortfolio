@@ -90,8 +90,8 @@
   overflow: visible;
 }
 
-.logoloop--scale-hover.logoloop--frozen .logoloop__item:hover img,
-.logoloop--scale-hover.logoloop--frozen .logoloop__item:hover .logoloop__node {
+.logoloop--scale-hover .logoloop__item:hover img,
+.logoloop--scale-hover .logoloop__item:hover .logoloop__node {
   transform: scale(1.2);
   transform-origin: center center;
 }

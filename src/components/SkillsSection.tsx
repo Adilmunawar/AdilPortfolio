@@ -121,9 +121,10 @@ const SkillsSection = () => {
         >
           <LogoLoop 
             logos={frontendSkills} 
-            speed={100} 
+            speed={60} 
             fadeOut={true} 
             logoHeight={60}
+            gap={64}
             scaleOnHover={true}
             fadeOutColor='var(--cyber-dark)'
             renderItem={(item) => (
