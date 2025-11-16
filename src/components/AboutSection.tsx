@@ -1,4 +1,3 @@
-
 'use client';
 import { Card } from '@/components/ui/card';
 import ProfileCard from './ProfileCard';
@@ -175,7 +174,7 @@ const AboutSection = () => {
                 status="Online"
                 contactText="Contact Me"
                 avatarUrl="/lovable-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
-                miniAvatarUrl="https://picsum.photos/seed/profile-avatar-mini/100/100"
+                miniAvatarUrl="/lovable-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
                 showUserInfo={true}
                 enableTilt={true}
                 onContactClick={() => console.log('Contact clicked')}
