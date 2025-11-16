@@ -67,6 +67,23 @@ const SkillsSection = () => {
 
   return (
     <section id="skills" className="py-20 px-4 relative overflow-hidden">
+      {/* Define SVG filter for the icons */}
+      <svg className="absolute w-0 h-0">
+        <defs>
+          <filter id="purple-gradient-map">
+            <feColorMatrix type="matrix" values="0.33 0.33 0.33 0 0
+                                                 0.33 0.33 0.33 0 0
+                                                 0.33 0.33 0.33 0 0
+                                                 0 0 0 1 0" />
+            <feComponentTransfer colorInterpolationFilters="sRGB">
+              <feFuncR type="table" tableValues="0.23 0.53" />
+              <feFuncG type="table" tableValues="0.11 0.49" />
+              <feFuncB type="table" tableValues="0.54 0.76" />
+            </feComponentTransfer>
+          </filter>
+        </defs>
+      </svg>
+
       <div id="skills-section-observer" className="max-w-7xl mx-auto relative z-10">
         {/* Section Title */}
         <div className="text-center mb-16">
@@ -102,7 +119,7 @@ const SkillsSection = () => {
                   src={skill.icon} 
                   alt={skill.name}
                   className="h-10 w-10 object-contain"
-                  style={{ filter: 'grayscale(1) invert(56%) sepia(99%) saturate(300%) hue-rotate(220deg) brightness(95%) contrast(140%)' }}
+                  style={{ filter: 'url(#purple-gradient-map)' }}
                 />
               </div>
             ))}
