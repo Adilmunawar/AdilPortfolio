@@ -90,9 +90,9 @@ const MilestoneCard = ({ event, isVisible, isActive }: { event: typeof milestone
               event.bgColor, 
               "border", 
               event.color.replace('text-', 'border-') + '/30',
-              (isActive || 'group-hover:') + "scale-110"
+              (isActive ? "scale-110" : "group-hover:scale-110")
             )}>
-              <event.icon className={cn("w-6 h-6 transition-all duration-300", event.color, (isActive || 'group-hover:') + "scale-110")} />
+              <event.icon className={cn("w-6 h-6 transition-all duration-300", event.color, (isActive ? "scale-110" : "group-hover:scale-110"))} />
             </div>
             <div>
               <h4 className="font-bold text-lg text-gray-200 mb-2">{event.title}</h4>
