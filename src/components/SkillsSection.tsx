@@ -34,22 +34,19 @@ const SkillsSection = () => {
     { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg", alt: "Tailwind" },
     { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg", alt: "Vue.js" }
   ];
+
+  const backendSkills = [
+    { name: "Node.js", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
+    { name: "Python", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
+    { name: "Express", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" },
+    { name: "SQL", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuresqldatabase/azuresqldatabase-original.svg" },
+    { name: "PostgreSQL", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
+    { name: "Firebase", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" },
+    { name: "Supabase", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" },
+    { name: "Redis", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" }
+  ];
   
   const skillCategories = [
-    {
-      title: "Backend",
-      color: "from-emerald-500 to-teal-500",
-      skills: [
-        { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
-        { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
-        { name: "Express", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" },
-        { name: "SQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuresqldatabase/azuresqldatabase-original.svg" },
-        { name: "PostgreSQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
-        { name: "Firebase", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" },
-        { name: "Supabase", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" },
-        { name: "Redis", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" }
-      ]
-    },
     {
       title: "Tools & Environment",
       color: "from-purple-500 to-pink-500",
@@ -114,7 +111,7 @@ const SkillsSection = () => {
         </div>
 
         {/* Scrolling Frontend Banner */}
-        <div className={`transition-all duration-1000 delay-200 mb-16 ${
+        <div className={`transition-all duration-1000 delay-200 mb-8 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
@@ -132,8 +129,28 @@ const SkillsSection = () => {
           />
         </div>
 
+        {/* Scrolling Backend Banner */}
+        <div className={`transition-all duration-1000 delay-300 mb-16 ${
+            isVisible ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <LogoLoop 
+            logos={backendSkills} 
+            speed={40}
+            direction="right"
+            fadeOut={true} 
+            logoHeight={60}
+            gap={64}
+            scaleOnHover={true}
+            fadeOutColor='var(--cyber-dark)'
+            renderItem={(item) => (
+              'src' in item ? <img src={item.src} alt={item.name || ''} className="frontend-skill-icon" /> : null
+            )}
+          />
+        </div>
+
         {/* Skills Categories */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
           {skillCategories.map((category, categoryIndex) => (
             <div
               key={category.title}
@@ -160,7 +177,7 @@ const SkillsSection = () => {
                   </div>
 
                   {/* Skills grid */}
-                  <div className="grid grid-cols-4 gap-2.5 flex-grow content-start">
+                  <div className="grid grid-cols-4 sm:grid-cols-8 gap-2.5 flex-grow content-start">
                     {category.skills.map((skill, skillIndex) => (
                       <div
                         key={skill.name}
