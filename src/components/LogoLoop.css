@@ -125,7 +125,6 @@
   bottom: 0;
   width: clamp(24px, 8%, 120px);
   pointer-events: none;
-  z-index: 10;
 }
 
 .logoloop--fade::before {
