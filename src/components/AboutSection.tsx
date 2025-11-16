@@ -80,7 +80,7 @@ const MilestoneCard = ({ event, isVisible, isActive }: { event: typeof milestone
       </AnimatePresence>
       <Card
         className={cn(
-          "relative p-6 bg-cyber-gray/50 border border-cyber-purple/20 backdrop-blur-sm transition-all duration-300 group-hover:border-cyber-purple/40 group-hover:scale-105 group-hover:-translate-y-1 h-full",
+          "relative p-6 bg-cyber-gray border border-cyber-purple/20 transition-all duration-300 group-hover:border-cyber-purple/40 group-hover:scale-105 group-hover:-translate-y-1 h-full",
           isActive && "scale-105 -translate-y-1 border-cyber-purple/40"
         )}
       >
@@ -174,8 +174,8 @@ const AboutSection = () => {
                 handle="Adil Munawar"
                 status="Online"
                 contactText="Contact Me"
-                avatarUrl="/lovable-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
-                miniAvatarUrl="/lovable-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
+                avatarUrl="https://picsum.photos/seed/profile-avatar/600/800"
+                miniAvatarUrl="https://picsum.photos/seed/profile-avatar-mini/100/100"
                 showUserInfo={true}
                 enableTilt={true}
                 onContactClick={() => console.log('Contact clicked')}
