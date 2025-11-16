@@ -59,31 +59,6 @@ const SkillsSection = () => {
 
   return (
     <section id="skills" className="py-20 px-4 relative overflow-hidden">
-      {/* Define SVG filter for the icons */}
-      <svg className="absolute w-0 h-0">
-        <defs>
-          <filter id="purple-gradient-map">
-            <feColorMatrix type="matrix" values="0.33 0.33 0.33 0 0
-                                                 0.33 0.33 0.33 0 0
-                                                 0.33 0.33 0.33 0 0
-                                                 0 0 0 1 0" />
-            <feComponentTransfer colorInterpolationFilters="sRGB">
-              <feFuncR type="table" tableValues="0.23 0.53" />
-              <feFuncG type="table" tableValues="0.11 0.49" />
-              <feFuncB type="table" tableValues="0.54 0.76" />
-            </feComponentTransfer>
-          </filter>
-        </defs>
-      </svg>
-
-      <style jsx>{`
-        .skill-icon {
-          filter: url(#purple-gradient-map);
-          height: 60px;
-          width: 60px;
-        }
-      `}</style>
-
       <div id="skills-section-observer" className="max-w-7xl mx-auto relative z-10">
         {/* Section Title */}
         <div className="text-center mb-16">
@@ -122,7 +97,7 @@ const SkillsSection = () => {
             renderItem={(item) => (
               'src' in item ? (
                 <div className="flex flex-col items-center justify-center text-center gap-2">
-                  <img src={item.src} alt={item.alt || ''} className="skill-icon" />
+                  <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
                   <span className="text-xs text-gray-400">{item.alt}</span>
                 </div>
               ) : null
@@ -147,7 +122,7 @@ const SkillsSection = () => {
             renderItem={(item) => (
                'src' in item ? (
                 <div className="flex flex-col items-center justify-center text-center gap-2">
-                  <img src={item.src} alt={item.alt || ''} className="skill-icon" />
+                  <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
                   <span className="text-xs text-gray-400">{item.alt}</span>
                 </div>
               ) : null
@@ -172,7 +147,7 @@ const SkillsSection = () => {
             renderItem={(item) => (
                'src' in item ? (
                 <div className="flex flex-col items-center justify-center text-center gap-2">
-                  <img src={item.src} alt={item.alt || ''} className="skill-icon" />
+                  <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
                   <span className="text-xs text-gray-400">{item.alt}</span>
                 </div>
               ) : null
