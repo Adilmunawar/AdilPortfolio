@@ -4,6 +4,7 @@ import "@/app/globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,6 +46,18 @@ export default function RootLayout({
           <Sonner />
           {children}
         </TooltipProvider>
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-8L6JGGFF0R"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-8L6JGGFF0R');
+          `}
+        </Script>
       </body>
     </html>
   );
