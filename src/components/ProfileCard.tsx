@@ -33,8 +33,8 @@ const adjust = (value: number, fromMin: number, fromMax: number, toMin: number, 
 const easeInOutCubic = (x: number): number => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   avatarUrl = "/lovable-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png",
-  iconUrl = "<Placeholder for icon URL>",
-  grainUrl = "<Placeholder for grain URL>",
+  iconUrl,
+  grainUrl,
   behindGradient,
   innerGradient,
   showBehindGradient = true,
