@@ -102,7 +102,7 @@ const SkillsSection = () => {
                   src={skill.icon} 
                   alt={skill.name}
                   className="h-10 w-10 object-contain"
-                  style={{ filter: 'grayscale(1) invert(1) brightness(1.5)' }}
+                  style={{ filter: 'grayscale(1) invert(56%) sepia(99%) saturate(300%) hue-rotate(220deg) brightness(95%) contrast(140%)' }}
                 />
               </div>
             ))}
