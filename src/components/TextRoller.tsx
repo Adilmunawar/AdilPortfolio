@@ -18,17 +18,53 @@ const TextRoller: React.FC<TextRollerProps> = ({ roles, interval = 3000 }) => {
     return () => clearInterval(timer);
   }, [roles.length, interval]);
 
+  const text = roles[index];
+
+  const letterVariants = {
+    initial: { y: 20, opacity: 0, rotateX: -90, transformOrigin: 'bottom center' },
+    animate: (i: number) => ({
+      y: 0,
+      opacity: 1,
+      rotateX: 0,
+      transition: {
+        duration: 0.5,
+        ease: 'easeOut',
+        delay: i * 0.05, // Stagger delay for each letter
+      },
+    }),
+    exit: (i: number) => ({
+      y: -20,
+      opacity: 0,
+      rotateX: 90,
+      transition: {
+        duration: 0.5,
+        ease: 'easeIn',
+        delay: i * 0.05, // Stagger delay for exit
+      },
+    }),
+  };
+
   return (
-    <div className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-200 drop-shadow-md">
+    <div className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-200 drop-shadow-md h-12 flex items-center justify-center">
       <AnimatePresence mode="wait">
         <motion.h3
-          key={roles[index]}
-          initial={{ y: 20, opacity: 0, rotateX: -90, transformOrigin: 'bottom center' }}
-          animate={{ y: 0, opacity: 1, rotateX: 0, transition: { duration: 0.5, ease: 'easeOut' } }}
-          exit={{ y: -20, opacity: 0, rotateX: 90, transition: { duration: 0.5, ease: 'easeIn' } }}
+          key={text}
           className="whitespace-nowrap"
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={{ staggerChildren: 0.05 }}
         >
-          {roles[index]}
+          {text.split('').map((char, i) => (
+            <motion.span
+              key={`${char}-${i}`}
+              custom={i}
+              variants={letterVariants}
+              className="inline-block"
+            >
+              {char === ' ' ? '\u00A0' : char}
+            </motion.span>
+          ))}
         </motion.h3>
       </AnimatePresence>
     </div>
