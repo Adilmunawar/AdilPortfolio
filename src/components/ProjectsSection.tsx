@@ -34,7 +34,7 @@ const ProjectsSection = () => {
       image: '/AdiNox.png',
       tech: ['Android', 'Java', '2FA', 'Security'],
       github: 'https://github.com/adilmunawar/Adinox',
-      live: 'https://play.google.com/store/apps/details?id=com.adinox',
+      live: 'https://adinox.vercel.app',
       status: 'live',
       statusColor: 'text-emerald-400',
       statusBg: 'bg-emerald-500/10',
@@ -80,24 +80,6 @@ const ProjectsSection = () => {
       hoverGradient: 'hover:from-sky-800/15 hover:to-cyan-800/15',
       borderColor: 'border-sky-700/20 hover:border-sky-700/40',
       accentColor: 'text-sky-400'
-    },
-    {
-      title: 'AdiMage',
-      description: 'A multi-functional AI image editing suite for advanced photo manipulation and enhancement.',
-      longDescription: 'AdiMage is a powerful AI image editing suite using the Gemini API. Its tools include AI Photo Restoration, Profile Picture Pro, AI Product Studio for background replacement, and AI Style Transfer.',
-      image: 'https://images.unsplash.com/photo-1579541629929-a18de8fb3828?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      tech: ['Gemini API', 'React', 'AI', 'Image Editing'],
-      github: 'https://github.com/adilmunawar/Adimage',
-      live: 'https://adimage.vercel.app',
-      status: 'development',
-      statusColor: 'text-amber-400',
-      statusBg: 'bg-amber-500/10',
-      statusBorder: 'border-amber-400/20',
-      statusIcon: Code2,
-      gradient: 'from-amber-800/5 to-orange-800/5',
-      hoverGradient: 'hover:from-amber-800/15 hover:to-orange-800/15',
-      borderColor: 'border-amber-700/20 hover:border-amber-700/40',
-      accentColor: 'text-amber-400'
     },
     {
       title: 'AdiTron (AditronDev)',
