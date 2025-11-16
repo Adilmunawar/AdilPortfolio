@@ -79,6 +79,8 @@ const SkillsSection = () => {
       <style jsx>{`
         .skill-icon {
           filter: url(#purple-gradient-map);
+          height: 60px;
+          width: 60px;
         }
       `}</style>
 
@@ -113,12 +115,17 @@ const SkillsSection = () => {
             logos={frontendSkills} 
             speed={40} 
             fadeOut={true} 
-            logoHeight={60}
+            logoHeight={80}
             gap={64}
             scaleOnHover={true}
             fadeOutColor='var(--cyber-dark)'
             renderItem={(item) => (
-              'src' in item ? <img src={item.src} alt={item.alt || ''} className="skill-icon" /> : null
+              'src' in item ? (
+                <div className="flex flex-col items-center justify-center text-center gap-2">
+                  <img src={item.src} alt={item.alt || ''} className="skill-icon" />
+                  <span className="text-xs text-gray-400">{item.alt}</span>
+                </div>
+              ) : null
             )}
           />
         </div>
@@ -133,12 +140,17 @@ const SkillsSection = () => {
             speed={40}
             direction="right"
             fadeOut={true} 
-            logoHeight={60}
+            logoHeight={80}
             gap={64}
             scaleOnHover={true}
             fadeOutColor='var(--cyber-dark)'
             renderItem={(item) => (
-              'src' in item ? <img src={item.src} alt={item.alt || ''} className="skill-icon" /> : null
+               'src' in item ? (
+                <div className="flex flex-col items-center justify-center text-center gap-2">
+                  <img src={item.src} alt={item.alt || ''} className="skill-icon" />
+                  <span className="text-xs text-gray-400">{item.alt}</span>
+                </div>
+              ) : null
             )}
           />
         </div>
@@ -153,12 +165,17 @@ const SkillsSection = () => {
             speed={40}
             direction="left"
             fadeOut={true} 
-            logoHeight={60}
+            logoHeight={80}
             gap={64}
             scaleOnHover={true}
             fadeOutColor='var(--cyber-dark)'
             renderItem={(item) => (
-              'src' in item ? <img src={item.src} alt={item.alt || ''} className="skill-icon" /> : null
+               'src' in item ? (
+                <div className="flex flex-col items-center justify-center text-center gap-2">
+                  <img src={item.src} alt={item.alt || ''} className="skill-icon" />
+                  <span className="text-xs text-gray-400">{item.alt}</span>
+                </div>
+              ) : null
             )}
           />
         </div>
