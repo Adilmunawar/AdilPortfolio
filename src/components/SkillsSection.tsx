@@ -82,11 +82,17 @@ const SkillsSection = () => {
           </p>
         </div>
         
+        {/* GitHub Stats */}
+        <div className={`mb-16 transition-all duration-1000 delay-200 ${
+          isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-12'
+        }`}>
+          <GitHubStats />
+        </div>
+
         {/* Scrolling Frontend Banner */}
         <div className={`relative w-full overflow-hidden mb-16 transition-all duration-1000 delay-200 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
-          style={{'--scroll-speed': '40s'} as React.CSSProperties}
         >
           <div className="absolute inset-0 z-10" style={{background: 'linear-gradient(to right, var(--cyber-dark) 0%, transparent 10%, transparent 90%, var(--cyber-dark) 100%)'}}></div>
           <div className="flex animate-scroll-horizontal will-change-transform">
@@ -96,18 +102,11 @@ const SkillsSection = () => {
                   src={skill.icon} 
                   alt={skill.name}
                   className="h-10 w-10 object-contain"
-                  style={{ filter: 'grayscale(1) brightness(1.5)' }}
+                  style={{ filter: 'grayscale(1) invert(1) brightness(1.5)' }}
                 />
               </div>
             ))}
           </div>
-        </div>
-
-        {/* GitHub Stats */}
-        <div className={`mb-16 transition-all duration-1000 delay-200 ${
-          isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-12'
-        }`}>
-          <GitHubStats />
         </div>
 
         {/* Skills Categories */}
