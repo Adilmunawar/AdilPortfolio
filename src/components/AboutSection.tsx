@@ -73,20 +73,26 @@ const MilestoneCard = ({ event, isVisible, isActive }: { event: typeof milestone
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { duration: 0.7 } }}
             exit={{ opacity: 0, transition: { duration: 0.7 } }}
-            className="absolute -inset-2 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-xl blur-lg"
+            className="absolute -inset-2.5 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-xl blur-lg"
           />
         )}
       </AnimatePresence>
       <Card
         className={cn(
-          "relative p-6 bg-cyber-gray border border-cyber-purple/20 transition-all duration-300 group-hover:border-cyber-purple/40 group-hover:scale-105 group-hover:-translate-y-1 h-full",
-          isActive && "scale-105 -translate-y-1 border-cyber-purple/40"
+          "relative p-6 bg-cyber-gray border border-cyber-purple/20 transition-all duration-300 group-hover:border-cyber-purple/60 group-hover:scale-105 group-hover:-translate-y-2 h-full shadow-lg",
+          isActive && "scale-105 -translate-y-2 border-cyber-purple/60"
         )}
       >
         <div className="relative z-10">
           <div className="flex items-start gap-4">
-            <div className={cn("p-3 rounded-lg shadow-inner", event.bgColor, "border", event.color.replace('text-', 'border-') + '/30')}>
-              <event.icon className={cn("w-6 h-6", event.color)} />
+            <div className={cn(
+              "p-3 rounded-lg shadow-inner transition-all duration-300", 
+              event.bgColor, 
+              "border", 
+              event.color.replace('text-', 'border-') + '/30',
+              (isActive || 'group-hover:') + "scale-110"
+            )}>
+              <event.icon className={cn("w-6 h-6 transition-all duration-300", event.color, (isActive || 'group-hover:') + "scale-110")} />
             </div>
             <div>
               <h4 className="font-bold text-lg text-gray-200 mb-2">{event.title}</h4>
@@ -173,8 +179,8 @@ const AboutSection = () => {
                 handle="Adil Munawar"
                 status="Online"
                 contactText="Contact Me"
-                avatarUrl="/lovable-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
-                miniAvatarUrl="/lovable-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
+                avatarUrl="https://picsum.photos/seed/profile-pic/600/800"
+                miniAvatarUrl="https://picsum.photos/seed/profile-pic/100/100"
                 showUserInfo={true}
                 enableTilt={true}
                 onContactClick={() => console.log('Contact clicked')}
