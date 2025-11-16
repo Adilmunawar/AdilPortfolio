@@ -36,31 +36,25 @@ const SkillsSection = () => {
   ];
 
   const backendSkills = [
-    { name: "Node.js", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
-    { name: "Python", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
-    { name: "Express", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" },
-    { name: "SQL", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuresqldatabase/azuresqldatabase-original.svg" },
-    { name: "PostgreSQL", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
-    { name: "Firebase", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" },
-    { name: "Supabase", src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" },
-    { name: "Redis", src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" }
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg", alt: "Node.js" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg", alt: "Python" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg", alt: "Express" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuresqldatabase/azuresqldatabase-original.svg", alt: "SQL" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg", alt: "PostgreSQL" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg", alt: "Firebase" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg", alt: "Supabase" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg", alt: "Redis" }
   ];
-  
-  const skillCategories = [
-    {
-      title: "Tools & Environment",
-      color: "from-purple-500 to-pink-500",
-      skills: [
-        { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
-        { name: "GitHub", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" },
-        { name: "VS Code", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" },
-        { name: "Docker", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
-        { name: "Figma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" },
-        { name: "Webpack", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/webpack/webpack-original.svg" },
-        { name: "Azure", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" },
-        { name: "Vercel", icon: "https://cdn.jsdelivrnet/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" }
-      ]
-    }
+
+  const toolsSkills = [
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg", alt: "Git" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg", alt: "GitHub" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg", alt: "VS Code" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg", alt: "Docker" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg", alt: "Figma" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/webpack/webpack-original.svg", alt: "Webpack" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg", alt: "Azure" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg", alt: "Vercel" }
   ];
 
   return (
@@ -144,74 +138,29 @@ const SkillsSection = () => {
             scaleOnHover={true}
             fadeOutColor='var(--cyber-dark)'
             renderItem={(item) => (
-              'src' in item ? <img src={item.src} alt={item.name || ''} className="frontend-skill-icon" /> : null
+              'src' in item ? <img src={item.src} alt={item.alt || ''} className="frontend-skill-icon" /> : null
             )}
           />
         </div>
 
-        {/* Skills Categories */}
-        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
-          {skillCategories.map((category, categoryIndex) => (
-            <div
-              key={category.title}
-              className={`transition-all duration-1000 will-change-transform ${
-                isVisible 
-                  ? 'opacity-100 transform translate-y-0' 
-                  : 'opacity-0 transform translate-y-12'
-              }`}
-              style={{ transitionDelay: `${(categoryIndex + 1) * 300}ms` }}
-            >
-              {/* Category Card with hover tilt effect */}
-              <div className="relative group h-full animate-subtle-tilt hover:animate-none">
-                {/* Slower, smoother glow effect */}
-                <div className={`absolute -inset-1 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-2xl blur opacity-10 group-hover:opacity-20 transition-all duration-[2000ms] ease-in-out`}></div>
-                
-                {/* Main card */}
-                <div className="relative bg-cyber-gray/30 backdrop-blur-xl rounded-2xl border border-white/10 p-5 hover:border-white/30 transition-all duration-700 h-full flex flex-col group-hover:transform group-hover:scale-[1.01] group-hover:rotate-1">
-                  {/* Category header */}
-                  <div className="mb-5">
-                    <h3 className={`text-xl font-bold bg-gradient-to-r from-cyber-purple to-cyber-blue bg-clip-text text-transparent mb-2`}>
-                      {category.title}
-                    </h3>
-                    <div className={`h-0.5 w-12 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-full group-hover:w-20 transition-all duration-500`}></div>
-                  </div>
-
-                  {/* Skills grid */}
-                  <div className="grid grid-cols-4 sm:grid-cols-8 gap-2.5 flex-grow content-start">
-                    {category.skills.map((skill, skillIndex) => (
-                      <div
-                        key={skill.name}
-                        className="group/skill relative flex flex-col items-center p-2.5 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/25 hover:bg-white/10 transition-all duration-500 cursor-pointer will-change-transform hover:rotate-2"
-                        style={{ 
-                          animationDelay: `${skillIndex * 100}ms`
-                        }}
-                      >
-                        {/* Skill icon */}
-                        <div className="relative w-8 h-8 mb-1.5 transition-all duration-500 group-hover/skill:scale-105">
-                          <img 
-                            src={skill.icon} 
-                            alt={skill.name}
-                            className="w-full h-full object-contain filter brightness-90 group-hover/skill:brightness-110 transition-all duration-500"
-                          />
-                          
-                          {/* Subtle glow effect on hover */}
-                          <div className={`absolute inset-0 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-lg opacity-0 group-hover/skill:opacity-20 blur-lg transition-all duration-700`}></div>
-                        </div>
-
-                        {/* Skill name */}
-                        <span className="text-xs text-center text-gray-300 group-hover/skill:text-white transition-colors duration-500 font-medium leading-tight">
-                          {skill.name}
-                        </span>
-
-                        {/* Subtle hover indicator */}
-                        <div className={`absolute inset-0 rounded-lg bg-gradient-to-r from-cyber-purple to-cyber-blue opacity-0 group-hover/skill:opacity-5 transition-all duration-700`}></div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+        {/* Scrolling Tools Banner */}
+        <div className={`transition-all duration-1000 delay-400 ${
+            isVisible ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <LogoLoop 
+            logos={toolsSkills} 
+            speed={40}
+            direction="left"
+            fadeOut={true} 
+            logoHeight={60}
+            gap={64}
+            scaleOnHover={true}
+            fadeOutColor='var(--cyber-dark)'
+            renderItem={(item) => (
+              'src' in item ? <img src={item.src} alt={item.alt || ''} className="frontend-skill-icon" /> : null
+            )}
+          />
         </div>
       </div>
 
