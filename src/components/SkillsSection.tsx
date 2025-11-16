@@ -123,7 +123,8 @@ const SkillsSection = () => {
             logos={frontendSkills} 
             speed={100} 
             fadeOut={true} 
-            logoHeight={40}
+            logoHeight={60}
+            scaleOnHover={true}
             fadeOutColor='var(--cyber-dark)'
             renderItem={(item) => (
               'src' in item ? <img src={item.src} alt={item.alt} className="frontend-skill-icon" /> : null
