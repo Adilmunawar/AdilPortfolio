@@ -15,7 +15,7 @@ const SkillsSection = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
     observer.observe(skillsSection);
@@ -23,21 +23,18 @@ const SkillsSection = () => {
     return () => observer.disconnect();
   }, []);
 
+  const frontendSkills = [
+    { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+    { name: "Next.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
+    { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
+    { name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
+    { name: "HTML5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
+    { name: "CSS3", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" },
+    { name: "Tailwind", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" },
+    { name: "Vue.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" }
+  ];
+  
   const skillCategories = [
-    {
-      title: "Frontend",
-      color: "from-cyan-500 to-blue-500",
-      skills: [
-        { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-        { name: "Next.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
-        { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
-        { name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
-        { name: "HTML5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
-        { name: "CSS3", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" },
-        { name: "Tailwind", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" },
-        { name: "Vue.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" }
-      ]
-    },
     {
       title: "Backend",
       color: "from-emerald-500 to-teal-500",
@@ -69,7 +66,7 @@ const SkillsSection = () => {
   ];
 
   return (
-    <section id="skills" className="min-h-screen py-20 px-4 relative overflow-hidden">
+    <section id="skills" className="py-20 px-4 relative overflow-hidden">
       <div id="skills-section-observer" className="max-w-7xl mx-auto relative z-10">
         {/* Section Title */}
         <div className="text-center mb-16">
@@ -84,6 +81,27 @@ const SkillsSection = () => {
             Mastering the latest technologies to build exceptional digital experiences
           </p>
         </div>
+        
+        {/* Scrolling Frontend Banner */}
+        <div className={`relative w-full overflow-hidden mb-16 transition-all duration-1000 delay-200 ${
+            isVisible ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{'--scroll-speed': '40s'} as React.CSSProperties}
+        >
+          <div className="absolute inset-0 z-10" style={{background: 'linear-gradient(to right, var(--cyber-dark) 0%, transparent 10%, transparent 90%, var(--cyber-dark) 100%)'}}></div>
+          <div className="flex animate-scroll-horizontal will-change-transform">
+            {[...frontendSkills, ...frontendSkills].map((skill, index) => (
+              <div key={index} className="flex-shrink-0 w-36 h-24 flex items-center justify-center">
+                <img 
+                  src={skill.icon} 
+                  alt={skill.name}
+                  className="h-10 w-10 object-contain"
+                  style={{ filter: 'grayscale(1) brightness(1.5)' }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* GitHub Stats */}
         <div className={`mb-16 transition-all duration-1000 delay-200 ${
@@ -93,7 +111,7 @@ const SkillsSection = () => {
         </div>
 
         {/* Skills Categories */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {skillCategories.map((category, categoryIndex) => (
             <div
               key={category.title}
@@ -102,10 +120,10 @@ const SkillsSection = () => {
                   ? 'opacity-100 transform translate-y-0' 
                   : 'opacity-0 transform translate-y-12'
               }`}
-              style={{ transitionDelay: `${(categoryIndex + 1) * 200}ms` }}
+              style={{ transitionDelay: `${(categoryIndex + 1) * 300}ms` }}
             >
               {/* Category Card with hover tilt effect */}
-              <div className="relative group h-[280px] animate-subtle-tilt hover:animate-none">
+              <div className="relative group h-full animate-subtle-tilt hover:animate-none">
                 {/* Slower, smoother glow effect */}
                 <div className={`absolute -inset-1 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-2xl blur opacity-10 group-hover:opacity-20 transition-all duration-[2000ms] ease-in-out`}></div>
                 

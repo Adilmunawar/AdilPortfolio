@@ -575,3 +575,16 @@
   animation: pulse-glow 2.5s infinite ease-in-out;
   opacity: 0;
 }
+
+@keyframes scroll-horizontal {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-horizontal {
+  animation: scroll-horizontal 40s linear infinite;
+}
