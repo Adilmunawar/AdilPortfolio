@@ -106,12 +106,12 @@ const SkillsSection = () => {
           />
         </div>
 
-        {/* Backend */}
+        {/* Backend & Databases */}
         <div className={`transition-all duration-1000 delay-300 mb-12 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <h3 className="text-2xl font-bold text-center text-gray-300 mb-8">Backend</h3>
+          <h3 className="text-2xl font-bold text-center text-gray-300 mb-8">Backend & Databases</h3>
           <LogoLoop 
             logos={backendSkills} 
             speed={40}
