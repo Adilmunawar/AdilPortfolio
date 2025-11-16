@@ -1,6 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import GitHubStats from './GitHubStats';
+import { LogoLoop } from './LogoLoop';
+import './LogoLoop.css';
 
 const SkillsSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -24,14 +26,14 @@ const SkillsSection = () => {
   }, []);
 
   const frontendSkills = [
-    { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-    { name: "Next.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
-    { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
-    { name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
-    { name: "HTML5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
-    { name: "CSS3", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" },
-    { name: "Tailwind", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" },
-    { name: "Vue.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" }
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg", alt: "React" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg", alt: "Next.js" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg", alt: "TypeScript" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg", alt: "JavaScript" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg", alt: "HTML5" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg", alt: "CSS3" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg", alt: "Tailwind" },
+    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg", alt: "Vue.js" }
   ];
   
   const skillCategories = [
@@ -84,6 +86,12 @@ const SkillsSection = () => {
         </defs>
       </svg>
 
+      <style jsx>{`
+        .frontend-skill-icon {
+          filter: url(#purple-gradient-map);
+        }
+      `}</style>
+
       <div id="skills-section-observer" className="max-w-7xl mx-auto relative z-10">
         {/* Section Title */}
         <div className="text-center mb-16">
@@ -107,23 +115,20 @@ const SkillsSection = () => {
         </div>
 
         {/* Scrolling Frontend Banner */}
-        <div className={`relative w-full overflow-hidden mb-16 transition-all duration-1000 delay-200 ${
+        <div className={`transition-all duration-1000 delay-200 mb-16 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <div className="absolute inset-0 z-10" style={{background: 'linear-gradient(to right, var(--cyber-dark) 0%, transparent 10%, transparent 90%, var(--cyber-dark) 100%)'}}></div>
-          <div className="flex animate-scroll-horizontal will-change-transform">
-            {[...frontendSkills, ...frontendSkills].map((skill, index) => (
-              <div key={index} className="flex-shrink-0 w-36 h-24 flex items-center justify-center">
-                <img 
-                  src={skill.icon} 
-                  alt={skill.name}
-                  className="h-10 w-10 object-contain"
-                  style={{ filter: 'url(#purple-gradient-map)' }}
-                />
-              </div>
-            ))}
-          </div>
+          <LogoLoop 
+            logos={frontendSkills} 
+            speed={100} 
+            fadeOut={true} 
+            logoHeight={40}
+            fadeOutColor='var(--cyber-dark)'
+            renderItem={(item) => (
+              'src' in item ? <img src={item.src} alt={item.alt} className="frontend-skill-icon" /> : null
+            )}
+          />
         </div>
 
         {/* Skills Categories */}
