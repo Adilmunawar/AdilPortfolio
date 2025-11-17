@@ -578,3 +578,14 @@
 .animate-scroll-horizontal {
   animation: scroll-horizontal 40s linear infinite;
 }
+
+/* Mermaid Diagram Animation Styles */
+.mermaid-animate.mermaid-active-node .node-rect {
+    animation: pulse-glow 1.5s ease-in-out;
+}
+
+.mermaid-animate.mermaid-active-edge {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: draw-line 1.5s ease-out forwards;
+}

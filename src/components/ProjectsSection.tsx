@@ -1,135 +1,226 @@
 'use client';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Github, ExternalLink, Play, Pause, Code2, Sparkles, Bot, ImageIcon, Users } from 'lucide-react';
-import { useState } from 'react';
-import Image from 'next/image';
+import { Sparkles } from 'lucide-react';
+import ProjectCard from './ProjectCard';
 
-const ProjectsSection = () => {
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
-
-  const projects = [
+const projects = [
     {
       title: 'Adicorp',
-      description: 'A comprehensive Human Resource Management System (HRMS) to automate HR processes.',
-      longDescription: 'Adicorp is a full-featured HRMS designed to streamline and automate critical HR processes including employee management, attendance tracking, and salary calculation. Built for efficiency and scalability.',
+      description: 'A comprehensive Human Resource Management System (HRMS) designed to streamline and automate critical HR processes including employee management, attendance tracking, and salary calculation. Built for efficiency and scalability.',
       image: '/AdiCorp.png',
       tech: ['React', 'Node.js', 'PostgreSQL', 'Docker'],
       github: 'https://github.com/adilmunawar/Adicorp',
       live: 'https://adicorp.vercel.app',
-      status: 'development',
-      statusColor: 'text-blue-400',
-      statusBg: 'bg-blue-500/10',
-      statusBorder: 'border-blue-400/20',
-      statusIcon: Code2,
-      gradient: 'from-blue-800/5 to-cyan-800/5',
-      hoverGradient: 'hover:from-blue-800/15 hover:to-cyan-800/15',
-      borderColor: 'border-blue-700/20 hover:border-blue-700/40',
-      accentColor: 'text-blue-400'
+      mermaidCode: `
+        flowchart TB
+            subgraph "UI Layer" 
+                direction TB
+                subgraph "Pages (src/pages)"
+                    direction TB
+                    Index["Index.tsx"]:::ui
+                    AuthPage["Auth.tsx"]:::ui
+                    DashboardPage["Dashboard.tsx"]:::ui
+                    AttendancePage["Attendance.tsx"]:::ui
+                    EmployeesPage["Employees.tsx"]:::ui
+                    ReportsPage["Reports.tsx"]:::ui
+                    SalaryPage["Salary.tsx"]:::ui
+                    SettingsPage["Settings.tsx"]:::ui
+                    NotFoundPage["NotFound.tsx"]:::ui
+                end
+                subgraph "Domain Components (src/components)"
+                    direction TB
+                    AuthForm["AuthForm.tsx"]:::ui
+                    AttendanceTable["AttendanceTable.tsx"]:::ui
+                    CompanySetupForm["CompanySetupForm.tsx"]:::ui
+                    CompanySetupModal["CompanySetupModal.tsx"]:::ui
+                    EmployeeList["EmployeeList.tsx"]:::ui
+                    EmployeeForm["EmployeeForm.tsx"]:::ui
+                    Header["Header.tsx"]:::ui
+                    Sidebar["Sidebar.tsx"]:::ui
+                    DashboardLayout["Dashboard.tsx"]:::ui
+                    PrivateRouteGuard["PrivateRoute.tsx"]:::ui
+                end
+                subgraph "UI Primitives (src/components/ui)"
+                    direction TB
+                    UIPrimitives["UI Primitives"]:::ui
+                end
+            end
+
+            subgraph "State & Services" 
+                direction TB
+                AuthContext["AuthContext.tsx"]:::svc
+                subgraph "Hooks (src/hooks)"
+                    direction TB
+                    UseMobile["use-mobile.tsx"]:::svc
+                    UseToast["use-toast.ts"]:::svc
+                end
+                subgraph "Utils"
+                    direction TB
+                    GeneralUtils["utils.ts"]:::svc
+                    CacheUtils["cache.ts"]:::svc
+                    SalaryUtils["salaryCalculations.ts"]:::svc
+                end
+            end
+
+            subgraph "Data Integration (Orange)" 
+                direction TB
+                SupabaseClient["client.ts"]:::int
+                SupabaseTypes["types.ts"]:::int
+                SharedTypes["supabase.ts"]:::int
+            end
+
+            subgraph "Build & Static Assets"
+                direction TB
+                MainTSX["main.tsx"]:::build
+                ViteConfig["vite.config.ts"]:::build
+                TailwindConfig["tailwind.config.ts"]:::build
+                IndexHTML["index.html"]:::build
+                PublicAssets["public/"]:::build
+            end
+
+            subgraph "External Services"
+                direction TB
+                Supabase["Supabase"]:::ext
+            end
+
+            %% Relationships
+            Index -->|renders| AuthForm
+            AuthPage -->|renders| AuthForm
+            DashboardPage -->|renders| DashboardLayout
+            AttendancePage -->|renders| AttendanceTable
+            EmployeesPage -->|renders| EmployeeList
+            ReportsPage -->|uses| UIPrimitives
+            SalaryPage -->|uses| UIPrimitives
+            SettingsPage -->|uses| UIPrimitives
+
+            AuthForm -->|uses| UIPrimitives
+            AttendanceTable -->|uses| UIPrimitives
+            CompanySetupForm -->|uses| UIPrimitives
+            CompanySetupModal -->|uses| UIPrimitives
+            EmployeeList -->|uses| UIPrimitives
+            EmployeeForm -->|uses| UIPrimitives
+            Header -->|uses| UIPrimitives
+            Sidebar -->|uses| UIPrimitives
+            DashboardLayout -->|uses| UIPrimitives
+            PrivateRouteGuard -->|uses| UIPrimitives
+            
+
+            AuthForm -->|reads/writes| AuthContext
+            PrivateRouteGuard -->|reads| AuthContext
+
+            DashboardLayout -->|calls| SupabaseClient
+            AuthContext -->|calls| SupabaseClient
+            AttendanceTable -->|calls| SupabaseClient
+            EmployeeList -->|calls| SupabaseClient
+
+            SupabaseClient -->|API calls| Supabase
+
+            %% Click Events
+            click Index "https://github.com/adilmunawar/adicorp/blob/main/src/pages/Index.tsx" _blank
+            click AuthPage "https://github.com/adilmunawar/adicorp/blob/main/src/pages/Auth.tsx" _blank
+            click DashboardPage "https://github.com/adilmunawar/adicorp/blob/main/src/pages/Dashboard.tsx" _blank
+            click AttendancePage "https://github.com/adilmunawar/adicorp/blob/main/src/pages/Attendance.tsx" _blank
+            click EmployeesPage "https://github.com/adilmunawar/adicorp/blob/main/src/pages/Employees.tsx" _blank
+            click ReportsPage "https://github.com/adilmunawar/adicorp/blob/main/src/pages/Reports.tsx" _blank
+            click SalaryPage "https://github.com/adilmunawar/adicorp/blob/main/src/pages/Salary.tsx" _blank
+            click SettingsPage "https://github.com/adilmunawar/adicorp/blob/main/src/pages/Settings.tsx" _blank
+            click NotFoundPage "https://github.com/adilmunawar/adicorp/blob/main/src/pages/NotFound.tsx" _blank
+
+            click AuthForm "https://github.com/adilmunawar/adicorp/blob/main/src/components/auth/AuthForm.tsx" _blank
+            click AttendanceTable "https://github.com/adilmunawar/adicorp/blob/main/src/components/attendance/AttendanceTable.tsx" _blank
+            click CompanySetupForm "https://github.com/adilmunawar/adicorp/blob/main/src/components/company/CompanySetupForm.tsx" _blank
+            click CompanySetupModal "https://github.com/adilmunawar/adicorp/blob/main/src/components/company/CompanySetupModal.tsx" _blank
+            click EmployeeList "https://github.com/adilmunawar/adicorp/blob/main/src/components/employees/EmployeeList.tsx" _blank
+            click EmployeeForm "https://github.com/adilmunawar/adicorp/blob/main/src/components/employees/EmployeeForm.tsx" _blank
+            click Header "https://github.com/adilmunawar/adicorp/blob/main/src/components/layout/Header.tsx" _blank
+            click Sidebar "https://github.com/adilmunawar/adicorp/blob/main/src/components/layout/Sidebar.tsx" _blank
+            click DashboardLayout "https://github.com/adilmunawar/adicorp/blob/main/src/components/layout/Dashboard.tsx" _blank
+            click PrivateRouteGuard "https://github.com/adilmunawar/adicorp/blob/main/src/components/layout/PrivateRoute.tsx" _blank
+
+            click UIPrimitives "https://github.com/adilmunawar/adicorp/tree/main/src/components/ui" _blank
+
+            click AuthContext "https://github.com/adilmunawar/adicorp/blob/main/src/context/AuthContext.tsx" _blank
+            click UseMobile "https://github.com/adilmunawar/adicorp/blob/main/src/hooks/use-mobile.tsx" _blank
+            click UseToast "https://github.com/adilmunawar/adicorp/blob/main/src/hooks/use-toast.ts" _blank
+
+            click GeneralUtils "https://github.com/adilmunawar/adicorp/blob/main/src/lib/utils.ts" _blank
+            click CacheUtils "https://github.com/adilmunawar/adicorp/blob/main/src/utils/cache.ts" _blank
+            click SalaryUtils "https://github.com/adilmunawar/adicorp/blob/main/src/utils/salaryCalculations.ts" _blank
+
+            click SupabaseClient "https://github.com/adilmunawar/adicorp/blob/main/src/integrations/supabase/client.ts" _blank
+            click SupabaseTypes "https://github.com/adilmunawar/adicorp/blob/main/src/integrations/supabase/types.ts" _blank
+            click SharedTypes "https://github.com/adilmunawar/adicorp/blob/main/src/types/supabase.ts" _blank
+
+            click MainTSX "https://github.com/adilmunawar/adicorp/blob/main/src/main.tsx" _blank
+            click ViteConfig "https://github.com/adilmunawar/adicorp/blob/main/vite.config.ts" _blank
+            click TailwindConfig "https://github.com/adilmunawar/adicorp/blob/main/tailwind.config.ts" _blank
+            click IndexHTML "https://github.com/adilmunawar/adicorp/blob/main/index.html" _blank
+            click PublicAssets "https://github.com/adilmunawar/adicorp/tree/main/public/" _blank
+
+            classDef ui fill:#D0E8FF,stroke:#0366d6,color:#0366d6,stroke-width:2px;
+            classDef svc fill:#e0f7e0,stroke:#2e7d32,color:#2e7d32,stroke-width:2px;
+            classDef int fill:#ffe0b2,stroke:#ef6c00,color:#ef6c00,stroke-width:2px;
+            classDef ext fill:#e1bee7,stroke:#6a1b9a,color:#6a1b9a,stroke-width:2px;
+            classDef build fill:#f0f0f0,stroke:#888,color:#333,stroke-width:2px;
+      `,
+      animationOrder: [
+        'AuthPage', 'AuthForm', 'AuthContext', 'SupabaseClient', 'Supabase'
+      ],
     },
     {
       title: 'AdiNox',
-      description: 'An open-source Android authenticator app for secure two-factor authentication (2FA).',
-      longDescription: 'AdiNox is a free, open-source Android authenticator app supporting TOTP and HOTP algorithms. It features a high-quality, animated UI for a seamless and secure user experience.',
+      description: 'An open-source Android authenticator app supporting TOTP and HOTP algorithms. It features a high-quality, animated UI for a seamless and secure user experience.',
       image: '/AdiNox.png',
       tech: ['Android', 'Java', '2FA', 'Security'],
       github: 'https://github.com/adilmunawar/Adinox',
       live: 'https://adinox.vercel.app',
-      status: 'live',
-      statusColor: 'text-emerald-400',
-      statusBg: 'bg-emerald-500/10',
-      statusBorder: 'border-emerald-400/20',
-      statusIcon: Play,
-      gradient: 'from-emerald-800/5 to-green-800/5',
-      hoverGradient: 'hover:from-emerald-800/15 hover:to-green-800/15',
-      borderColor: 'border-emerald-700/20 hover:border-emerald-700/40',
-      accentColor: 'text-emerald-400'
+      mermaidCode: null,
+      animationOrder: [],
     },
     {
       title: 'AdiGon',
-      description: 'An AI assistant with a specialized \'developer mode\' and multi-file format capabilities.',
-      longDescription: 'AdiGon is an advanced AI assistant built with unique functionalities. It includes a \'developer mode\' for coding tasks and has the ability to understand and respond to multiple file formats, making it a versatile tool.',
+      description: 'An advanced AI assistant with a specialized \'developer mode\' and multi-file format capabilities. It can understand and respond to multiple file formats, making it a versatile tool.',
       image: '/AdiGon.png',
       tech: ['Python', 'AI', 'Gemini API', 'Next.js'],
       github: 'https://github.com/adilmunawar/AdiGon',
       live: 'https://adigon.vercel.app',
-      status: 'live',
-      statusColor: 'text-purple-400',
-      statusBg: 'bg-purple-500/10',
-      statusBorder: 'border-purple-400/20',
-      statusIcon: Bot,
-      gradient: 'from-purple-800/5 to-pink-800/5',
-      hoverGradient: 'hover:from-purple-800/15 hover:to-pink-800/15',
-      borderColor: 'border-purple-700/20 hover:border-purple-700/40',
-      accentColor: 'text-purple-400'
+      mermaidCode: null,
+      animationOrder: [],
     },
     {
       title: 'AdiFlux',
-      description: 'An AI-powered web application for generating high-quality images from text prompts.',
-      longDescription: 'AdiFlux leverages the power of AI to transform text into stunning visuals. This web application allows users to create new, unique images directly from text prompts, opening up endless creative possibilities.',
+      description: 'An AI-powered web application for generating high-quality images from text prompts. It allows users to create new, unique images directly from text, opening up endless creative possibilities.',
       image: '/AdiFlux.png',
       tech: ['Next.js', 'AI', 'Image Generation', 'Vercel'],
       github: 'https://github.com/adilmunawar/AdiFlux',
       live: 'https://adiflux.vercel.app',
-      status: 'live',
-      statusColor: 'text-emerald-400',
-      statusBg: 'bg-emerald-500/10',
-      statusBorder: 'border-emerald-400/20',
-      statusIcon: ImageIcon,
-      gradient: 'from-sky-800/5 to-cyan-800/5',
-      hoverGradient: 'hover:from-sky-800/15 hover:to-cyan-800/15',
-      borderColor: 'border-sky-700/20 hover:border-sky-700/40',
-      accentColor: 'text-sky-400'
+      mermaidCode: null,
+      animationOrder: [],
     },
     {
       title: 'AdiTron (AditronDev)',
-      description: 'A social chatting application with a high-standard UI/UX for real-time interaction.',
-      longDescription: 'AdiTron (AditronDev) is a modern social chatting application built with TypeScript. It focuses on a high-standard UI/UX and sophisticated features for seamless, real-time social interaction.',
+      description: 'A modern social chatting application built with TypeScript. It focuses on a high-standard UI/UX and sophisticated features for seamless, real-time social interaction.',
       image: '/AdiTron.png',
       tech: ['TypeScript', 'React', 'WebSockets', 'UI/UX'],
       github: 'https://github.com/adilmunawar/Aditron',
       live: 'https://aditron.vercel.app',
-      status: 'live',
-      statusColor: 'text-rose-400',
-      statusBg: 'bg-rose-500/10',
-      statusBorder: 'border-rose-400/20',
-      statusIcon: Play,
-      gradient: 'from-rose-800/5 to-pink-800/5',
-      hoverGradient: 'hover:from-rose-800/15 hover:to-pink-800/15',
-      borderColor: 'border-rose-700/20 hover:border-rose-700/40',
-      accentColor: 'text-rose-400'
+      mermaidCode: null,
+      animationOrder: [],
     },
     {
       title: 'Adify',
-      description: 'An AI-powered resume builder to help you craft the perfect resume.',
-      longDescription: 'Adify is an intelligent resume builder that leverages the Gemini API to help users create professional, polished resumes. It can assist with wording, formatting, and tailoring your resume to specific job descriptions.',
+      description: 'An intelligent resume builder that leverages the Gemini API to help users create professional, polished resumes. It can assist with wording, formatting, and tailoring your resume to specific job descriptions.',
       image: '/Adify.png',
       tech: ['Gemini API', 'AI', 'Resume', 'React'],
       github: 'https://github.com/adilmunawar/Adify',
       live: 'https://adify.vercel.app',
-      status: 'paused',
-      statusColor: 'text-gray-400',
-      statusBg: 'bg-gray-500/10',
-      statusBorder: 'border-gray-400/20',
-      statusIcon: Pause,
-      gradient: 'from-gray-800/5 to-slate-800/5',
-      hoverGradient: 'hover:from-gray-800/15 hover:to-slate-800/15',
-      borderColor: 'border-gray-700/20 hover:border-gray-700/40',
-      accentColor: 'text-gray-400'
+      mermaidCode: null,
+      animationOrder: [],
     }
   ];
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'live': return 'Live';
-      case 'paused': return 'Paused';
-      case 'development': return 'In Development';
-      default: return status;
-    }
-  };
-
+const ProjectsSection = () => {
   return (
-    <section id="projects" className="min-h-screen py-20 px-4 relative">
+    <section id="projects" className="min-h-screen py-20 px-4 relative bg-cyber-dark">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-20 animate-fade-in-up">
           <div className="inline-block mb-8">
@@ -148,127 +239,10 @@ const ProjectsSection = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 mb-16">
+        <div className="flex flex-col gap-32">
           {projects.map((project, index) => (
-            <Card 
-              key={index}
-              className={`group relative bg-gray-900/40 backdrop-blur-xl border-2 ${project.borderColor} rounded-3xl overflow-hidden transition-all duration-700 hover:scale-[1.02] cursor-pointer animate-scale-in shadow-2xl hover:shadow-3xl`}
-              style={{ animationDelay: `${index * 0.2}s` }}
-              onMouseEnter={() => setHoveredProject(index)}
-              onMouseLeave={() => setHoveredProject(null)}
-            >
-              <div className="absolute top-4 right-4 z-20">
-                <div className={`flex items-center gap-2 px-3 py-1 rounded-full ${project.statusBg} border ${project.statusBorder} backdrop-blur-sm`}>
-                  <project.statusIcon size={12} className={project.statusColor} />
-                  <span className={`text-xs font-semibold ${project.statusColor}`}>
-                    {getStatusText(project.status)}
-                  </span>
-                </div>
-              </div>
-
-              <div className="relative h-64 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent z-10"></div>
-                <Image 
-                  src={project.image} 
-                  alt={project.title}
-                  layout="fill"
-                  className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
-                />
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-                
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 flex gap-4 z-20">
-                  <Button
-                    size="sm"
-                    className="bg-cyber-blue/90 text-white hover:bg-cyber-blue rounded-full px-4 py-2 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:scale-110"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.open(project.live, '_blank');
-                    }}
-                  >
-                    <ExternalLink size={16} className="mr-2" />
-                    Live
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="bg-gray-800/60 text-gray-200 border-gray-600/30 hover:bg-gray-700/60 rounded-full px-4 py-2 backdrop-blur-sm transition-all duration-300 hover:scale-110"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.open(project.github, '_blank');
-                    }}
-                  >
-                    <Github size={16} className="mr-2" />
-                    Code
-                  </Button>
-                </div>
-              </div>
-
-              <div className="p-8 relative">
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech.map((tech, techIndex) => (
-                    <span
-                      key={techIndex}
-                      className={`px-3 py-1 text-xs rounded-full bg-gray-800/40 border border-gray-700/50 text-gray-300 backdrop-blur-sm transition-all duration-300 hover:bg-gray-700/60 hover:scale-105`}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                
-                <h3 className="text-2xl font-bold text-gray-200 mb-3 group-hover:text-gray-100 transition-colors duration-500">
-                  {project.title}
-                </h3>
-                
-                <p className="text-gray-400 text-sm mb-4 group-hover:text-gray-300 transition-colors duration-500 leading-relaxed min-h-[40px]">
-                  {hoveredProject === index ? project.longDescription : project.description}
-                </p>
-
-                <div className="flex gap-3 pt-4 border-t border-gray-700/30">
-                  <Button
-                    size="sm"
-                    className={`flex-1 bg-gray-800/40 border border-gray-700/50 text-gray-300 hover:bg-gray-700/60 hover:text-white transition-all duration-500 hover:scale-105 backdrop-blur-sm rounded-xl`}
-                    onClick={() => window.open(project.live, '_blank')}
-                  >
-                    <ExternalLink size={16} className="mr-2" />
-                    View Live
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="flex-1 border-gray-700/50 text-gray-400 hover:bg-gray-800/40 hover:text-gray-200 transition-all duration-500 hover:scale-105 backdrop-blur-sm rounded-xl"
-                    onClick={() => window.open(project.github, '_blank')}
-                  >
-                    <Github size={16} className="mr-2" />
-                    GitHub
-                  </Button>
-                </div>
-              </div>
-
-              <div className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-r ${project.gradient} blur-xl`}></div>
-              
-              <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                <div className={`absolute inset-0 rounded-3xl border-2 ${project.borderColor} animate-pulse-slow`}></div>
-              </div>
-            </Card>
+            <ProjectCard key={index} project={project} />
           ))}
-        </div>
-
-        <div className="text-center animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-          <div className="relative inline-block">
-            <Button 
-              className="bg-gradient-to-r from-cyber-purple to-cyber-blue text-white hover:from-cyber-blue hover:to-cyber-purple px-8 py-4 text-lg font-semibold rounded-full transition-all duration-700 hover:scale-110 shadow-2xl shadow-cyber-purple/20 hover:shadow-cyber-blue/30 backdrop-blur-sm border border-white/20 group relative overflow-hidden"
-              onClick={() => window.open('https://github.com/adilmunawar', '_blank')}
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                <Github size={20} />
-                View All Projects
-                <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-              </span>
-              
-              <div className="absolute inset-0 bg-gradient-to-r from-cyber-blue to-cyber-purple transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-            </Button>
-          </div>
         </div>
       </div>
     </section>
