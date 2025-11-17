@@ -1,6 +1,6 @@
 
 'use client';
-import { useEffect, useRef, useState, useId } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
 
 interface MermaidDiagramProps {
@@ -12,7 +12,8 @@ interface MermaidDiagramProps {
 const MermaidDiagram = ({ chart, animationOrder, play }: MermaidDiagramProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string | null>(null);
-  const chartId = `mermaid-chart-${useId()}`;
+  // Using a simpler, client-side only ID to avoid hydration mismatch
+  const [chartId] = useState(() => `mermaid-chart-${Math.random().toString(36).substr(2, 9)}`);
   const [currentIndex, setCurrentIndex] = useState(-1);
 
   useEffect(() => {
@@ -32,10 +33,14 @@ const MermaidDiagram = ({ chart, animationOrder, play }: MermaidDiagramProps) =>
 
     const renderMermaid = async () => {
       try {
-        const { svg } = await mermaid.render(chartId, chart);
-        setSvg(svg);
+        if (ref.current && chart) {
+          const { svg } = await mermaid.render(chartId, chart);
+          setSvg(svg);
+        }
       } catch (error) {
         console.error('Mermaid render error:', error);
+        // Fallback to show an error message
+        setSvg('<div class="text-white">Error rendering diagram.</div>');
       }
     };
 
@@ -58,7 +63,7 @@ const MermaidDiagram = ({ chart, animationOrder, play }: MermaidDiagramProps) =>
         if (nextIndex >= animationOrder.length) {
             // Reset animation
             if (ref.current) {
-                const elements = ref.current.querySelectorAll('.node, .edge-path');
+                const elements = ref.current.querySelectorAll('.mermaid-active-node, .mermaid-active-edge');
                 elements.forEach(el => el.classList.remove('mermaid-animate', 'mermaid-active-node', 'mermaid-active-edge'));
             }
             return -1;
@@ -98,7 +103,7 @@ const MermaidDiagram = ({ chart, animationOrder, play }: MermaidDiagramProps) =>
       ref={ref}
       className="flex justify-center items-center w-full"
       style={{ minHeight: '400px' }}
-      dangerouslySetInnerHTML={{ __html: svg ?? '<div class="text-white">Loading Diagram...</div>' }}
+      dangerouslySetInnerHTML={{ __html: svg ?? '<div class="text-white animate-pulse">Loading Diagram...</div>' }}
     />
   );
 };
