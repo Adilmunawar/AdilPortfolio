@@ -46,51 +46,61 @@ const MermaidDiagram = ({ chart, animationOrder, play }: MermaidDiagramProps) =>
   }, [chart, chartId]);
   
   useEffect(() => {
-    if (!play || !svg || !ref.current || animationOrder.length === 0) {
-      if (ref.current) {
-        const elements = ref.current.querySelectorAll('.node, .edge-path');
-        elements.forEach(el => el.classList.remove('mermaid-animate', 'mermaid-active-node', 'mermaid-active-edge'));
+    const container = ref.current;
+    if (!play || !svg || !container || animationOrder.length === 0) {
+      if (container) {
+        // Clear all animations if not playing
+        container.querySelectorAll('.mermaid-active-node, .mermaid-active-edge').forEach(el => {
+          el.classList.remove('mermaid-active-node', 'mermaid-active-edge');
+        });
       }
       setCurrentIndex(-1);
       return;
     }
     
     const interval = setInterval(() => {
-      setCurrentIndex(prevIndex => {
-        const nextIndex = (prevIndex + 1);
-        if (nextIndex >= animationOrder.length) {
-            if (ref.current) {
-                const elements = ref.current.querySelectorAll('.mermaid-active-node, .mermaid-active-edge');
-                elements.forEach(el => el.classList.remove('mermaid-animate', 'mermaid-active-node', 'mermaid-active-edge'));
-            }
-            return -1;
-        }
-        return nextIndex;
-      });
+      setCurrentIndex(prevIndex => (prevIndex + 1));
     }, 1500);
 
     return () => clearInterval(interval);
-  }, [play, svg, animationOrder]);
+  }, [play, svg, animationOrder.length]);
   
   useEffect(() => {
-     if (!ref.current || currentIndex < 0) return;
+     const container = ref.current;
+     if (!container || !play) return;
+     
+     if (currentIndex >= animationOrder.length) {
+       // Reset animation
+        container.querySelectorAll('.mermaid-active-node, .mermaid-active-edge').forEach(el => {
+            el.classList.remove('mermaid-active-node', 'mermaid-active-edge');
+        });
+        setCurrentIndex(0);
+        return;
+     }
+
+     if (currentIndex < 0) return;
 
       const currentNodeId = animationOrder[currentIndex];
       const prevNodeId = currentIndex > 0 ? animationOrder[currentIndex - 1] : null;
 
-      const currentNodeElement = ref.current.querySelector(`#${chartId}-${currentNodeId}`);
+      // Activate current node
+      const currentNodeElement = container.querySelector(`#${chartId}-${currentNodeId}`);
       if (currentNodeElement) {
         currentNodeElement.classList.add('mermaid-animate', 'mermaid-active-node');
       }
-
+      
+      // Activate edge from previous node
       if (prevNodeId) {
-        const edge = ref.current.querySelector(`[id*="${chartId}-edge-"][id$="-${currentNodeId}"]`);
-        if (edge && edge.id.includes(prevNodeId)) {
-          edge.classList.add('mermaid-animate', 'mermaid-active-edge');
-        }
+        // MermaidJS creates edge IDs like `L-prevNodeId-currentNodeId` within a subgraph, or just `L-prevNodeId-currentNodeId` at the root
+        const edgeElements = container.querySelectorAll(`[id*="-${prevNodeId}-"][id*="-${currentNodeId}"]`);
+        edgeElements.forEach(edge => {
+            if (edge.id.includes(`${chartId}-`)) { // ensure it's for the current chart
+                edge.classList.add('mermaid-animate', 'mermaid-active-edge');
+            }
+        });
       }
 
-  }, [currentIndex, animationOrder, chartId]);
+  }, [currentIndex, animationOrder, chartId, play]);
 
 
   return (
