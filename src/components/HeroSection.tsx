@@ -1,49 +1,11 @@
 'use client';
 import { Github, Instagram, Linkedin, Phone } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import React, { useRef, useState, useEffect } from 'react';
+import TextRoller from './TextRoller';
 
 const HeroSection = () => {
-  const [text, setText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [loopNum, setLoopNum] = useState(0);
-  const [typingSpeed, setTypingSpeed] = useState(100);
-
   const toRotate = [ "Vibe Coder", "Frontend Engineer", "UI/UX Enthusiast" ];
-  const period = 1500;
-
-  useEffect(() => {
-    let ticker = setInterval(() => {
-      tick();
-    }, typingSpeed);
-
-    return () => { clearInterval(ticker) };
-  }, [text, typingSpeed])
-
-  const tick = () => {
-    let i = loopNum % toRotate.length;
-    let fullText = toRotate[i];
-    let updatedText = isDeleting ? fullText.substring(0, text.length - 1) : fullText.substring(0, text.length + 1);
-
-    setText(updatedText);
-
-    if (isDeleting) {
-      setTypingSpeed(prevSpeed => prevSpeed / 2);
-    }
-
-    if (!isDeleting && updatedText === fullText) {
-      setIsDeleting(true);
-      setTypingSpeed(period);
-    } else if (isDeleting && updatedText === '') {
-      setIsDeleting(false);
-      setLoopNum(loopNum + 1);
-      setTypingSpeed(50);
-    } else if (!isDeleting) {
-        setTypingSpeed(100);
-    }
-  }
 
   const socialLinks = [
     {
@@ -133,16 +95,12 @@ const HeroSection = () => {
         <div className="animate-fade-in-up">
           {/* Professional name with subtle effects */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 drop-shadow-lg relative">
-            <span className="text-gradient-slow relative z-10">Adil Munawar</span>
+            <a href="#home" className="text-gradient-slow relative z-10">Adil Munawar</a>
           </h1>
           
           {/* Professional subtitle */}
-          <div className="relative mb-8 h-10">
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-200 drop-shadow-md animate-fade-in-up" style={{
-              animationDelay: '0.3s'
-            }}>
-              <span className="typing-cursor">{text}</span>
-            </h3>
+          <div className="relative mb-8 h-12 flex items-center justify-center">
+            <TextRoller roles={toRotate} />
           </div>
 
           {/* Skills preview */}

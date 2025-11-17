@@ -81,11 +81,12 @@ const SkillsSection = () => {
           <GitHubStats />
         </div>
 
-        {/* Scrolling Frontend Banner */}
+        {/* Frontend Frameworks */}
         <div className={`transition-all duration-1000 delay-200 mb-12 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
+          <h3 className="text-2xl font-bold text-center text-gray-300 mb-8">Frontend Frameworks</h3>
           <LogoLoop 
             logos={frontendSkills} 
             speed={40} 
@@ -105,11 +106,12 @@ const SkillsSection = () => {
           />
         </div>
 
-        {/* Scrolling Backend Banner */}
+        {/* Backend & Databases */}
         <div className={`transition-all duration-1000 delay-300 mb-12 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
+          <h3 className="text-2xl font-bold text-center text-gray-300 mb-8">Backend & Databases</h3>
           <LogoLoop 
             logos={backendSkills} 
             speed={40}
@@ -130,11 +132,12 @@ const SkillsSection = () => {
           />
         </div>
 
-        {/* Scrolling Tools Banner */}
+        {/* Tools & Technologies */}
         <div className={`transition-all duration-1000 delay-400 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
+          <h3 className="text-2xl font-bold text-center text-gray-300 mb-8">Tools & Technologies</h3>
           <LogoLoop 
             logos={toolsSkills} 
             speed={40}
