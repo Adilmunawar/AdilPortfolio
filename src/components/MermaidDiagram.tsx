@@ -2,7 +2,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
-import panzoom from 'panzoom';
 
 interface MermaidDiagramProps {
   chart: string;
@@ -44,29 +43,11 @@ const MermaidDiagram = ({ chart }: MermaidDiagramProps) => {
 
     renderMermaid();
   }, [chart, chartId]);
-
-  useEffect(() => {
-    if (svg && ref.current) {
-      const diagramContainer = ref.current.querySelector('div');
-      if (diagramContainer) {
-        const instance = panzoom(diagramContainer, {
-          maxZoom: 3,
-          minZoom: 0.5,
-          autocenter: true,
-          bounds: true,
-          boundsPadding: 0.1,
-        });
-        return () => {
-          instance.dispose();
-        };
-      }
-    }
-  }, [svg]);
   
   return (
     <div
       ref={ref}
-      className="flex justify-center items-center w-full mermaid-container cursor-grab"
+      className="flex justify-center items-center w-full mermaid-container"
       style={{ minHeight: '400px' }}
       dangerouslySetInnerHTML={{ __html: svg ? `<div>${svg}</div>` : '<div class="text-white animate-pulse">Loading Diagram...</div>' }}
     />

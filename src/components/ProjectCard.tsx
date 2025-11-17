@@ -99,8 +99,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                  <MermaidDiagram 
                     key={project.title} 
                     chart={project.mermaidCode} 
-                    animationOrder={project.animationOrder}
-                    play={isVisible}
                 />
             </div>
         </div>
