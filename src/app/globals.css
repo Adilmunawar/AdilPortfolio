@@ -1,3 +1,4 @@
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
@@ -580,12 +581,33 @@
 }
 
 /* Mermaid Diagram Animation Styles */
-.mermaid-animate.mermaid-active-node .node-rect {
-    animation: pulse-glow 1.5s ease-in-out;
+.mermaid-container .edgePath .path {
+    stroke-dasharray: 10, 5;
+    animation: flowAnimation 1.5s linear infinite;
+    stroke-width: 2px;
 }
 
-.mermaid-animate.mermaid-active-edge {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: draw-line 1.5s ease-out forwards;
+@keyframes flowAnimation {
+    from {
+        stroke-dashoffset: 20;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
 }
+
+.mermaid-container .node rect, 
+.mermaid-container .node polygon, 
+.mermaid-container .node circle {
+    transition: all 0.3s ease;
+}
+
+.mermaid-container .node:hover rect, 
+.mermaid-container .node:hover polygon, 
+.mermaid-container .node:hover circle {
+    filter: drop-shadow(0px 0px 8px rgba(0,0,0,0.2));
+    stroke-width: 3px !important;
+}
+
+
+    
