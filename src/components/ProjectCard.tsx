@@ -51,15 +51,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         {project.title}
       </h3>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center mb-8">
-        <div className="lg:col-span-2 rounded-2xl overflow-hidden shadow-2xl hover:shadow-cyber-purple/40 transition-shadow duration-500">
-           <Image 
-              src={project.image} 
-              alt={project.title}
-              width={600}
-              height={400}
-              className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
-            />
-        </div>
         <div className="lg:col-span-3">
           <p className="text-gray-300 text-lg leading-relaxed mb-6">{project.description}</p>
           <div className="flex flex-wrap gap-3 mb-6">
@@ -89,6 +80,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 Source Code
               </Button>
             </div>
+        </div>
+        <div className="lg:col-span-2 rounded-2xl overflow-hidden shadow-2xl hover:shadow-cyber-purple/40 transition-shadow duration-500">
+           <Image 
+              src={project.image} 
+              alt={project.title}
+              width={500}
+              height={350}
+              className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
+            />
         </div>
       </div>
 
