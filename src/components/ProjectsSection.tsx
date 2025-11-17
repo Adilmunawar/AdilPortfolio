@@ -6,7 +6,7 @@ const projects = [
     {
       title: 'Adicorp',
       description: 'A comprehensive Human Resource Management System (HRMS) designed to streamline and automate critical HR processes including employee management, attendance tracking, and salary calculation. Built for efficiency and scalability.',
-      image: '/AdiCorp.png',
+      image: '/projects/adicorp.png',
       tech: ['React', 'Node.js', 'PostgreSQL', 'Docker'],
       github: 'https://github.com/adilmunawar/Adicorp',
       live: 'https://adicorp.vercel.app',
@@ -156,11 +156,11 @@ const projects = [
             click IndexHTML "https://github.com/adilmunawar/adicorp/blob/main/index.html" _blank
             click PublicAssets "https://github.com/adilmunawar/adicorp/tree/main/public/" _blank
 
-            classDef ui fill:#D0E8FF,stroke:#0366d6,color:#0366d6,stroke-width:2px;
-            classDef svc fill:#e0f7e0,stroke:#2e7d32,color:#2e7d32,stroke-width:2px;
-            classDef int fill:#ffe0b2,stroke:#ef6c00,color:#ef6c00,stroke-width:2px;
-            classDef ext fill:#e1bee7,stroke:#6a1b9a,color:#6a1b9a,stroke-width:2px;
-            classDef build fill:#f0f0f0,stroke:#888,color:#333,stroke-width:2px;
+            classDef ui fill:#D0E8FF,stroke:#0366d6,color:#000,stroke-width:2px;
+            classDef svc fill:#e0f7e0,stroke:#2e7d32,color:#000,stroke-width:2px;
+            classDef int fill:#ffe0b2,stroke:#ef6c00,color:#000,stroke-width:2px;
+            classDef ext fill:#e1bee7,stroke:#6a1b9a,color:#000,stroke-width:2px;
+            classDef build fill:#f0f0f0,stroke:#888,color:#000,stroke-width:2px;
       `,
       animationOrder: [
         'AuthPage', 'AuthForm', 'AuthContext', 'SupabaseClient', 'Supabase'
@@ -169,9 +169,9 @@ const projects = [
     {
       title: 'AdiNox',
       description: 'An open-source Android authenticator app supporting TOTP and HOTP algorithms. It features a high-quality, animated UI for a seamless and secure user experience.',
-      image: '/AdiNox.png',
+      image: '/projects/adinox.png',
       tech: ['Android', 'Java', '2FA', 'Security'],
-      github: 'https://github.com/adilmunawar/Adinox',
+      github: 'https://github.com/adilmunawar/adinox',
       live: 'https://adinox.vercel.app',
       mermaidCode: null,
       animationOrder: [],
@@ -179,9 +179,9 @@ const projects = [
     {
       title: 'AdiGon',
       description: 'An advanced AI assistant with a specialized \'developer mode\' and multi-file format capabilities. It can understand and respond to multiple file formats, making it a versatile tool.',
-      image: '/AdiGon.png',
+      image: '/projects/adigon.png',
       tech: ['Python', 'AI', 'Gemini API', 'Next.js'],
-      github: 'https://github.com/adilmunawar/AdiGon',
+      github: 'https://github.com/adilmunawar/adigon',
       live: 'https://adigon.vercel.app',
       mermaidCode: null,
       animationOrder: [],
@@ -189,9 +189,9 @@ const projects = [
     {
       title: 'AdiFlux',
       description: 'An AI-powered web application for generating high-quality images from text prompts. It allows users to create new, unique images directly from text, opening up endless creative possibilities.',
-      image: '/AdiFlux.png',
+      image: '/projects/adiflux.png',
       tech: ['Next.js', 'AI', 'Image Generation', 'Vercel'],
-      github: 'https://github.com/adilmunawar/AdiFlux',
+      github: 'https://github.com/adilmunawar/adiflux',
       live: 'https://adiflux.vercel.app',
       mermaidCode: null,
       animationOrder: [],
@@ -199,9 +199,9 @@ const projects = [
     {
       title: 'AdiTron (AditronDev)',
       description: 'A modern social chatting application built with TypeScript. It focuses on a high-standard UI/UX and sophisticated features for seamless, real-time social interaction.',
-      image: '/AdiTron.png',
+      image: '/projects/aditron.png',
       tech: ['TypeScript', 'React', 'WebSockets', 'UI/UX'],
-      github: 'https://github.com/adilmunawar/Aditron',
+      github: 'https://github.com/adilmunawar/aditron',
       live: 'https://aditron.vercel.app',
       mermaidCode: null,
       animationOrder: [],
@@ -209,9 +209,9 @@ const projects = [
     {
       title: 'Adify',
       description: 'An intelligent resume builder that leverages the Gemini API to help users create professional, polished resumes. It can assist with wording, formatting, and tailoring your resume to specific job descriptions.',
-      image: '/Adify.png',
+      image: '/projects/adify.png',
       tech: ['Gemini API', 'AI', 'Resume', 'React'],
-      github: 'https://github.com/adilmunawar/Adify',
+      github: 'https://github.com/adilmunawar/adify',
       live: 'https://adify.vercel.app',
       mermaidCode: null,
       animationOrder: [],

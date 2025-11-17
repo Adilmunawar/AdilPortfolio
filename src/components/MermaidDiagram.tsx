@@ -12,7 +12,6 @@ interface MermaidDiagramProps {
 const MermaidDiagram = ({ chart, animationOrder, play }: MermaidDiagramProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string | null>(null);
-  // Using a simpler, client-side only ID to avoid hydration mismatch
   const [chartId] = useState(() => `mermaid-chart-${Math.random().toString(36).substr(2, 9)}`);
   const [currentIndex, setCurrentIndex] = useState(-1);
 
@@ -21,7 +20,7 @@ const MermaidDiagram = ({ chart, animationOrder, play }: MermaidDiagramProps) =>
       startOnLoad: false,
       theme: 'base',
       themeVariables: {
-        background: '#1E1E39',
+        background: 'transparent',
         primaryColor: '#2a2a3e',
         primaryTextColor: '#fff',
         primaryBorderColor: '#3b1d8a',
@@ -39,7 +38,6 @@ const MermaidDiagram = ({ chart, animationOrder, play }: MermaidDiagramProps) =>
         }
       } catch (error) {
         console.error('Mermaid render error:', error);
-        // Fallback to show an error message
         setSvg('<div class="text-white">Error rendering diagram.</div>');
       }
     };
@@ -61,7 +59,6 @@ const MermaidDiagram = ({ chart, animationOrder, play }: MermaidDiagramProps) =>
       setCurrentIndex(prevIndex => {
         const nextIndex = (prevIndex + 1);
         if (nextIndex >= animationOrder.length) {
-            // Reset animation
             if (ref.current) {
                 const elements = ref.current.querySelectorAll('.mermaid-active-node, .mermaid-active-edge');
                 elements.forEach(el => el.classList.remove('mermaid-animate', 'mermaid-active-node', 'mermaid-active-edge'));
@@ -81,21 +78,19 @@ const MermaidDiagram = ({ chart, animationOrder, play }: MermaidDiagramProps) =>
       const currentNodeId = animationOrder[currentIndex];
       const prevNodeId = currentIndex > 0 ? animationOrder[currentIndex - 1] : null;
 
-      // Animate current node
-      const currentNodeElement = ref.current.querySelector(`#${currentNodeId}`);
+      const currentNodeElement = ref.current.querySelector(`#${chartId}-${currentNodeId}`);
       if (currentNodeElement) {
         currentNodeElement.classList.add('mermaid-animate', 'mermaid-active-node');
       }
 
-      // Animate edge from previous to current
       if (prevNodeId) {
-        const edge = ref.current.querySelector(`.edge-path[data-from="${prevNodeId}"][data-to="${currentNodeId}"] path`);
-        if (edge) {
-            edge.classList.add('mermaid-animate', 'mermaid-active-edge');
+        const edge = ref.current.querySelector(`[id*="${chartId}-edge-"][id$="-${currentNodeId}"]`);
+        if (edge && edge.id.includes(prevNodeId)) {
+          edge.classList.add('mermaid-animate', 'mermaid-active-edge');
         }
       }
 
-  }, [currentIndex, animationOrder]);
+  }, [currentIndex, animationOrder, chartId]);
 
 
   return (
