@@ -2,6 +2,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
+import panzoom from 'panzoom';
 
 interface MermaidDiagramProps {
   chart: string;
@@ -10,7 +11,7 @@ interface MermaidDiagramProps {
 const MermaidDiagram = ({ chart }: MermaidDiagramProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string | null>(null);
-  const [chartId] = useState(() => `mermaid-chart-${Math.random().toString(36).substr(2, 9)}`);
+  const chartId = `mermaid-chart-${Math.random().toString(36).substr(2, 9)}`;
 
   useEffect(() => {
     mermaid.initialize({
@@ -43,17 +44,33 @@ const MermaidDiagram = ({ chart }: MermaidDiagramProps) => {
 
     renderMermaid();
   }, [chart, chartId]);
+
+  useEffect(() => {
+    if (svg && ref.current) {
+      const diagramContainer = ref.current.querySelector('div');
+      if (diagramContainer) {
+        const instance = panzoom(diagramContainer, {
+          maxZoom: 3,
+          minZoom: 0.5,
+          autocenter: true,
+          bounds: true,
+          boundsPadding: 0.1,
+        });
+        return () => {
+          instance.dispose();
+        };
+      }
+    }
+  }, [svg]);
   
   return (
     <div
       ref={ref}
-      className="flex justify-center items-center w-full mermaid-container"
+      className="flex justify-center items-center w-full mermaid-container cursor-grab"
       style={{ minHeight: '400px' }}
-      dangerouslySetInnerHTML={{ __html: svg ?? '<div class="text-white animate-pulse">Loading Diagram...</div>' }}
+      dangerouslySetInnerHTML={{ __html: svg ? `<div>${svg}</div>` : '<div class="text-white animate-pulse">Loading Diagram...</div>' }}
     />
   );
 };
 
 export default MermaidDiagram;
-
-    
