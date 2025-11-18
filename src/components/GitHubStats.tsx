@@ -9,7 +9,7 @@ interface ContributionDay {
 }
 
 const contributionData = {
-  "totalContributions": 3402,
+  "totalContributions": 3404,
   "contributions": [
     {
       "date": "2024-11-17",
@@ -1838,8 +1838,13 @@ const contributionData = {
     },
     {
       "date": "2025-11-17",
-      "count": 1,
+      "count": 3,
       "level": 1
+    },
+    {
+      "date": "2025-11-18",
+      "count": 0,
+      "level": 0
     }
   ]
 };
