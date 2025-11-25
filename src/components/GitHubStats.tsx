@@ -1840,6 +1840,11 @@ const contributionData = {
       "date": "2025-11-24",
       "count": 0,
       "level": 0
+    },
+    {
+      "date": "2025-11-25",
+      "count": 0,
+      "level": 0
     }
   ]
 };
