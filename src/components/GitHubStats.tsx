@@ -9,43 +9,8 @@ interface ContributionDay {
 }
 
 const contributionData = {
-  "totalContributions": 3406,
+  "totalContributions": 3431,
   "contributions": [
-    {
-      "date": "2024-11-24",
-      "count": 9,
-      "level": 1
-    },
-    {
-      "date": "2024-11-25",
-      "count": 14,
-      "level": 1
-    },
-    {
-      "date": "2024-11-26",
-      "count": 9,
-      "level": 1
-    },
-    {
-      "date": "2024-11-27",
-      "count": 11,
-      "level": 1
-    },
-    {
-      "date": "2024-11-28",
-      "count": 2,
-      "level": 1
-    },
-    {
-      "date": "2024-11-29",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2024-11-30",
-      "count": 0,
-      "level": 0
-    },
     {
       "date": "2024-12-01",
       "count": 15,
@@ -1848,7 +1813,27 @@ const contributionData = {
     },
     {
       "date": "2025-11-26",
-      "count": 1,
+      "count": 2,
+      "level": 1
+    },
+    {
+      "date": "2025-11-27",
+      "count": 5,
+      "level": 1
+    },
+    {
+      "date": "2025-11-28",
+      "count": 11,
+      "level": 1
+    },
+    {
+      "date": "2025-11-29",
+      "count": 2,
+      "level": 1
+    },
+    {
+      "date": "2025-11-30",
+      "count": 6,
       "level": 1
     }
   ]
