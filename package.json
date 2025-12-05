@@ -46,7 +46,6 @@
     "framer-motion": "^11.3.10",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.462.0",
-    "mermaid": "^10.9.1",
     "next": "^14.2.5",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
