@@ -9,7 +9,7 @@ interface ContributionDay {
 }
 
 const contributionData = {
-  "totalContributions": 3762,
+  "totalContributions": 5238,
   "contributions": [
     {
       "date": "2024-12-01",
