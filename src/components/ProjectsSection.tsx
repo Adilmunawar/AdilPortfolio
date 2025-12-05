@@ -9,7 +9,7 @@ const projects = [
     {
       title: 'Adicorp',
       description: 'A comprehensive Human Resource Management System (HRMS) designed to streamline and automate critical HR processes including employee management, attendance tracking, and salary calculation.',
-      image: '/adicorp.png',
+      image: '/AdiCorp.png',
       tech: ['React', 'Node.js', 'PostgreSQL', 'Docker'],
       github: 'https://github.com/adilmunawar/Adicorp',
       live: 'https://adicorp.vercel.app',
@@ -17,7 +17,7 @@ const projects = [
     {
       title: 'AdiNox',
       description: 'An open-source Android authenticator app supporting TOTP and HOTP algorithms. It features a high-quality, animated UI for a seamless and secure user experience.',
-      image: '/adinox.png',
+      image: '/AdiNox.png',
       tech: ['Android', 'Java', '2FA', 'Security'],
       github: 'https://github.com/adilmunawar/adinox',
       live: 'https://adinox.vercel.app',
@@ -25,7 +25,7 @@ const projects = [
     {
       title: 'AdiGon',
       description: 'An advanced AI assistant with a specialized \'developer mode\' and multi-file format capabilities, making it a versatile tool for various tasks.',
-      image: '/adigon.png',
+      image: '/AdiGon.png',
       tech: ['Python', 'AI', 'Gemini API', 'Next.js'],
       github: 'https://github.com/adilmunawar/adigon',
       live: 'https://adigon.vercel.app',
@@ -33,7 +33,7 @@ const projects = [
     {
       title: 'AdiFlux',
       description: 'An AI-powered web application for generating high-quality images from text prompts, opening up endless creative possibilities for users.',
-      image: '/adiflux.png',
+      image: '/AdiFlux.png',
       tech: ['Next.js', 'AI', 'Image Generation', 'Vercel'],
       github: 'https://github.com/adilmunawar/adiflux',
       live: 'https://adiflux.vercel.app',
@@ -41,7 +41,7 @@ const projects = [
     {
       title: 'AdiTron (AditronDev)',
       description: 'A modern social chatting application built with TypeScript, focusing on a high-standard UI/UX and sophisticated features for seamless, real-time social interaction.',
-      image: '/aditron.png',
+      image: '/AdiTron.png',
       tech: ['TypeScript', 'React', 'WebSockets', 'UI/UX'],
       github: 'https://github.com/adilmunawar/aditron',
       live: 'https://aditron.vercel.app',
@@ -49,7 +49,7 @@ const projects = [
     {
       title: 'Adify',
       description: 'An intelligent resume builder that leverages the Gemini API to help users create professional, polished resumes tailored to specific job descriptions.',
-      image: '/adify.png',
+      image: '/Adify.png',
       tech: ['Gemini API', 'AI', 'Resume', 'React'],
       github: 'https://github.com/adilmunawar/adify',
       live: 'https://adify.vercel.app',
