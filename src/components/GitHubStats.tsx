@@ -12,41 +12,6 @@ const contributionData = {
   "totalContributions": 3780,
   "contributions": [
     {
-      "date": "2024-12-01",
-      "count": 15,
-      "level": 1
-    },
-    {
-      "date": "2024-12-02",
-      "count": 3,
-      "level": 1
-    },
-    {
-      "date": "2024-12-03",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2024-12-04",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2024-12-05",
-      "count": 15,
-      "level": 1
-    },
-    {
-      "date": "2024-12-06",
-      "count": 11,
-      "level": 1
-    },
-    {
-      "date": "2024-12-07",
-      "count": 1,
-      "level": 1
-    },
-    {
       "date": "2024-12-08",
       "count": 12,
       "level": 1
@@ -1865,6 +1830,11 @@ const contributionData = {
       "date": "2025-12-06",
       "count": 2,
       "level": 1
+    },
+    {
+      "date": "2025-12-07",
+      "count": 0,
+      "level": 0
     }
   ]
 };
