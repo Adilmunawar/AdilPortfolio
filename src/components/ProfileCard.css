@@ -71,7 +71,7 @@
       hsla(195, 100%, 80%, calc(var(--card-opacity) * 0.5)) 50%, /* frost-cyan */
       hsla(240, 0%, 30%, 0) 100%),
     radial-gradient(35% 52% at 55% 20%, var(--neon-cyan) 0%, #1e1b4b00 100%),
-    conic-gradient(from 124deg at 50% 50%, var(--neon-cyan) 0%, #1e40af 40%, #0891b2 60%, var(--neon-cyan) 100%);
+    conic-gradient(from 124deg at 50% 50%, var(--neon-cyan) 0%, #0f172a 40%, #0891b2 60%, var(--neon-cyan) 100%);
   overflow: hidden;
 }
 
@@ -478,4 +478,3 @@
     border-radius: 8px;
   }
 }
-
