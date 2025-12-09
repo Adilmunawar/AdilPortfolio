@@ -46,7 +46,7 @@ const HeroSection = () => {
     },
   ];
 
-  const skills = ['React', 'TypeScript', 'Framer Motion', 'Vite', 'Azure'];
+  const skills = ['React', 'TypeScript', 'Next.js', 'Vite', 'Azure'];
   const skillRefs = useRef<(HTMLDivElement | null)[]>([]);
   
   useEffect(() => {
