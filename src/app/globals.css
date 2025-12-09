@@ -87,7 +87,7 @@
 
 /* Professional gradient text - slower and more subtle */
 .text-gradient {
-  background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue), var(--cyber-cyan));
+  background: linear-gradient(90deg, theme("colors.frost-white"), theme("colors.neon-cyan"));
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -97,7 +97,7 @@
 
 /* Slower professional gradient text */
 .text-gradient-slow {
-  background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue), var(--cyber-cyan));
+  background: linear-gradient(90deg, theme("colors.frost-white"), theme("colors.neon-cyan"));
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -108,18 +108,18 @@
 /* Subtle glow effect */
 .glow-effect {
   box-shadow: 
-    0 0 15px rgba(59, 29, 138, 0.2),
-    0 0 30px rgba(59, 29, 138, 0.1);
+    0 0 15px rgba(34, 211, 238, 0.2),
+    0 0 30px rgba(34, 211, 238, 0.1);
 }
 
 .hover-glow:hover {
   box-shadow: 
-    0 0 20px rgba(59, 29, 138, 0.3),
-    0 0 40px rgba(59, 29, 138, 0.2);
+    0 0 20px rgba(34, 211, 238, 0.3),
+    0 0 40px rgba(34, 211, 238, 0.2);
 }
 
 .hover-glow-effect:hover {
-  box-shadow: 0 0 25px rgba(88, 77, 211, 0.4), 0 0 45px rgba(55, 48, 163, 0.2);
+  box-shadow: 0 0 25px rgba(34, 211, 238, 0.4), 0 0 45px rgba(34, 211, 238, 0.2);
   transition: box-shadow 0.4s ease-in-out;
 }
 
@@ -161,8 +161,8 @@
 
 .bg-grid-pattern {
   background-image: 
-    linear-gradient(rgba(59, 29, 138, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 29, 138, 0.02) 1px, transparent 1px);
+    linear-gradient(rgba(34, 211, 238, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.02) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -257,7 +257,7 @@
 
 .hover-lift:hover {
   transform: translateY(-4px) translateZ(0);
-  box-shadow: 0 15px 30px rgba(59, 29, 138, 0.2);
+  box-shadow: 0 15px 30px rgba(34, 211, 238, 0.2);
 }
 
 /* More subtle morphing backgrounds */
@@ -282,7 +282,7 @@
 
 .contact-field-focus:focus {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(59, 29, 138, 0.15);
+  box-shadow: 0 8px 25px rgba(34, 211, 238, 0.15);
 }
 
 /* Smooth pulse animation */
@@ -414,15 +414,15 @@
   0%,
   100% {
     transform: scale(1);
-    box-shadow: 0 0 10px 2px var(--cyber-purple, rgba(59, 29, 138, 0.4)), 0 0 20px 5px var(--cyber-purple-transparent, rgba(59, 29, 138, 0.2));
+    box-shadow: 0 0 10px 2px var(--cyber-purple, rgba(34, 211, 238, 0.4)), 0 0 20px 5px var(--cyber-purple-transparent, rgba(34, 211, 238, 0.2));
   }
   50% {
     transform: scale(1.02);
-    box-shadow: 0 0 20px 5px var(--cyber-purple, rgba(59, 29, 138, 0.6)), 0 0 40px 10px var(--cyber-purple-transparent, rgba(59, 29, 138, 0.4));
+    box-shadow: 0 0 20px 5px var(--cyber-purple, rgba(34, 211, 238, 0.6)), 0 0 40px 10px var(--cyber-purple-transparent, rgba(34, 211, 238, 0.4));
   }
 }
 .animate-pulse-glow {
-  --cyber-purple-transparent: rgba(59, 29, 138, 0.3);
+  --cyber-purple-transparent: rgba(34, 211, 238, 0.3);
   animation: pulse-glow 2.5s infinite ease-in-out;
   opacity: 0;
 }
