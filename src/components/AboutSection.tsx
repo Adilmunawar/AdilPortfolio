@@ -73,14 +73,14 @@ const MilestoneCard = ({ event, isVisible, isActive }: { event: typeof milestone
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { duration: 0.7 } }}
             exit={{ opacity: 0, transition: { duration: 0.7 } }}
-            className="absolute -inset-2.5 bg-gradient-to-r from-cyber-purple to-cyber-blue rounded-xl blur-lg"
+            className="absolute -inset-2.5 bg-gradient-to-r from-neon-cyan to-cyber-blue rounded-xl blur-lg opacity-60"
           />
         )}
       </AnimatePresence>
       <Card
         className={cn(
-          "relative p-6 bg-cyber-gray border border-cyber-purple/20 transition-all duration-300 group-hover:border-cyber-purple/60 group-hover:scale-105 group-hover:-translate-y-2 h-full shadow-lg",
-          isActive && "scale-105 -translate-y-2 border-cyber-purple/60"
+          "relative p-6 bg-cyber-dark/80 border border-frost-cyan/20 transition-all duration-300 group-hover:border-neon-cyan/60 group-hover:scale-105 group-hover:-translate-y-2 h-full shadow-lg backdrop-blur-sm",
+          isActive && "scale-105 -translate-y-2 border-neon-cyan/60"
         )}
       >
         <div className="relative z-10">
@@ -89,14 +89,14 @@ const MilestoneCard = ({ event, isVisible, isActive }: { event: typeof milestone
               "p-3 rounded-lg shadow-inner transition-all duration-300", 
               event.bgColor, 
               "border", 
-              event.color.replace('text-', 'border-') + '/30',
+              'border-neon-cyan/30',
               (isActive ? "scale-110" : "group-hover:scale-110")
             )}>
               <event.icon className={cn("w-6 h-6 transition-all duration-300", event.color, (isActive ? "scale-110" : "group-hover:scale-110"))} />
             </div>
             <div>
-              <h4 className="font-bold text-lg text-gray-200 mb-2">{event.title}</h4>
-              <p className="text-sm text-gray-400 leading-relaxed">{event.description}</p>
+              <h4 className="font-bold text-lg text-frost-white mb-2">{event.title}</h4>
+              <p className="text-sm text-frost-cyan leading-relaxed">{event.description}</p>
             </div>
           </div>
         </div>
@@ -160,7 +160,7 @@ const AboutSection = () => {
             About Me
           </h2>
           <div className="h-10 mb-8">
-            <h3 className="text-2xl md:text-3xl font-medium text-gray-400">
+            <h3 className="text-2xl md:text-3xl font-medium text-frost-cyan">
               {dynamicTexts[currentTextIndex]}
             </h3>
           </div>
