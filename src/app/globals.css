@@ -495,3 +495,13 @@
     text-shadow: 0 0 12px theme("colors.neon-cyan"), 0 0 24px theme("colors.neon-cyan"), 0 0 32px theme("colors.neon-cyan");
   }
 }
+
+.typing-cursor {
+  border-right: 2px solid hsl(var(--foreground));
+  animation: blink 0.75s step-end infinite;
+}
+
+@keyframes blink {
+  from, to { border-color: transparent }
+  50% { border-color: hsl(var(--foreground)); }
+}

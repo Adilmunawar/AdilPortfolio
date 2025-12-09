@@ -5,7 +5,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import TextRoller from './TextRoller';
 
 const HeroSection = () => {
-  const toRotate = [ "Vibe Coder", "Frontend Engineer", "UI/UX Enthusiast" ];
+  const toRotate = [ "Frontend Engineer", "UI/UX Enthusiast", "Vibe Coder" ];
 
   const socialLinks = [
     {

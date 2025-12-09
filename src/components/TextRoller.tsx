@@ -1,72 +1,62 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useCallback } from 'react';
 
 interface TextRollerProps {
   roles: string[];
-  interval?: number;
+  typingSpeed?: number;
+  deletingSpeed?: number;
+  pauseDuration?: number;
 }
 
-const TextRoller: React.FC<TextRollerProps> = ({ roles, interval = 3000 }) => {
+const TextRoller: React.FC<TextRollerProps> = ({ 
+  roles, 
+  typingSpeed = 100, 
+  deletingSpeed = 50, 
+  pauseDuration = 2000 
+}) => {
   const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [text, setText] = useState('');
+
+  const tick = useCallback(() => {
+    const currentRole = roles[index];
+    
+    // Typing logic
+    if (!isDeleting && subIndex < currentRole.length) {
+      setText(prev => prev + currentRole[subIndex]);
+      setSubIndex(prev => prev + 1);
+    }
+
+    // Pause at end of typing
+    if (!isDeleting && subIndex === currentRole.length) {
+      setTimeout(() => setIsDeleting(true), pauseDuration);
+    }
+
+    // Deleting logic
+    if (isDeleting && subIndex > 0) {
+      setText(prev => prev.slice(0, -1));
+      setSubIndex(prev => prev - 1);
+    }
+
+    // Switch to next role
+    if (isDeleting && subIndex === 0) {
+      setIsDeleting(false);
+      setIndex(prev => (prev + 1) % roles.length);
+    }
+  }, [subIndex, isDeleting, index, roles, pauseDuration]);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % roles.length);
-    }, interval);
-
-    return () => clearInterval(timer);
-  }, [roles.length, interval]);
-
-  const text = roles[index];
-
-  const letterVariants = {
-    initial: { y: 20, opacity: 0, rotateX: -90, transformOrigin: 'bottom center' },
-    animate: (i: number) => ({
-      y: 0,
-      opacity: 1,
-      rotateX: 0,
-      transition: {
-        duration: 0.5,
-        ease: 'easeOut',
-        delay: i * 0.05, // Stagger delay for each letter
-      },
-    }),
-    exit: (i: number) => ({
-      y: -20,
-      opacity: 0,
-      rotateX: 90,
-      transition: {
-        duration: 0.5,
-        ease: 'easeIn',
-        delay: i * 0.05, // Stagger delay for exit
-      },
-    }),
-  };
+    const timer = setTimeout(tick, isDeleting ? deletingSpeed : typingSpeed);
+    return () => clearTimeout(timer);
+  }, [tick, text, isDeleting, deletingSpeed, typingSpeed]);
 
   return (
     <div className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-200 drop-shadow-md h-12 flex items-center justify-center">
-      <AnimatePresence mode="wait">
-        <motion.h3
-          key={text}
-          className="whitespace-nowrap"
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition={{ staggerChildren: 0.05 }}
-        >
-          {text.split('').map((char, i) => (
-            <motion.span
-              key={`${char}-${i}`}
-              custom={i}
-              variants={letterVariants}
-              className="inline-block"
-            >
-              {char === ' ' ? '\u00A0' : char}
-            </motion.span>
-          ))}
-        </motion.h3>
-      </AnimatePresence>
+      <h3 className="whitespace-nowrap">
+        {text}
+        <span className="typing-cursor"></span>
+      </h3>
     </div>
   );
 };
