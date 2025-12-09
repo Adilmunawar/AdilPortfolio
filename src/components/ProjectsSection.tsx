@@ -62,17 +62,17 @@ const ProjectsSection = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-20 animate-fade-in-up">
           <div className="inline-block mb-8">
-            <span className="text-gray-400 text-sm font-semibold tracking-widest uppercase bg-cyber-purple/5 px-6 py-3 rounded-full border border-cyber-purple/20 backdrop-blur-sm animate-pulse-slow">
-              <Sparkles className="inline w-4 h-4 mr-2 text-cyber-purple animate-pulse" />
+            <span className="text-frost-cyan text-sm font-semibold tracking-widest uppercase bg-cyber-dark/50 px-6 py-3 rounded-full border border-neon-cyan/30 backdrop-blur-sm animate-pulse-slow">
+              <Sparkles className="inline w-4 h-4 mr-2 text-neon-cyan animate-pulse" />
               Featured Work
             </span>
           </div>
           <h2 className="text-5xl md:text-7xl font-bold mb-8 text-gradient-slow drop-shadow-2xl">
             My Projects
           </h2>
-          <p className="text-xl text-gray-400 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl text-frost-cyan max-w-4xl mx-auto leading-relaxed">
             Explore my latest creations showcasing modern web technologies, 
-            <span className="text-gray-300 font-semibold"> innovative solutions</span>, and 
+            <span className="text-frost-white font-semibold"> innovative solutions</span>, and 
             cutting-edge design principles
           </p>
         </div>
@@ -81,7 +81,7 @@ const ProjectsSection = () => {
           {projects.map((project, index) => (
             <Card 
               key={index}
-              className="group relative bg-cyber-gray/40 border-2 border-cyber-purple/20 rounded-2xl overflow-hidden transition-all duration-500 hover:border-cyber-blue/60 hover:shadow-2xl hover:shadow-cyber-blue/20 hover:-translate-y-2 animate-scale-in"
+              className="group relative glass-card rounded-2xl overflow-hidden transition-all duration-500 hover:border-neon-cyan/80 hover:shadow-2xl hover:shadow-neon-cyan/20 hover:-translate-y-2 animate-scale-in"
               style={{ animationDelay: `${index * 150}ms` }}
             >
               <div className="relative overflow-hidden">
@@ -92,29 +92,29 @@ const ProjectsSection = () => {
                   height={400}
                   className="object-cover w-full h-48 transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-cyber-gray via-cyber-gray/50 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/50 to-transparent"></div>
               </div>
               <CardHeader className="relative pt-4">
-                <CardTitle className="text-2xl font-bold text-gray-100 group-hover:text-white transition-colors">
+                <CardTitle className="text-2xl font-bold text-frost-white group-hover:text-white transition-colors">
                   {project.title}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400 mb-6 min-h-[100px]">{project.description}</p>
+                <p className="text-frost-cyan mb-6 min-h-[100px]">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tech.map((techItem) => (
                     <span
                       key={techItem}
-                      className="px-3 py-1 text-xs rounded-full bg-cyber-blue/10 border border-cyber-blue/20 text-cyber-blue/80 group-hover:bg-cyber-blue/20 transition-colors"
+                      className="px-3 py-1 text-xs rounded-full bg-neon-cyan/10 border border-neon-cyan/20 text-neon-cyan group-hover:bg-neon-cyan/20 transition-colors"
                     >
                       {techItem}
                     </span>
                   ))}
                 </div>
               </CardContent>
-              <CardFooter className="flex gap-4 p-4 bg-cyber-gray/20">
+              <CardFooter className="flex gap-4 p-4 bg-cyber-dark/30">
                   <Button
-                    className="flex-1 bg-cyber-blue/80 text-white hover:bg-cyber-blue rounded-lg transition-all duration-300 hover:scale-105"
+                    className="flex-1 bg-neon-cyan/20 text-frost-white hover:bg-neon-cyan/40 rounded-lg transition-all duration-300 hover:scale-105 border border-neon-cyan/40"
                     onClick={() => window.open(project.live, '_blank')}
                   >
                     <ExternalLink size={16} className="mr-2" />
@@ -122,7 +122,7 @@ const ProjectsSection = () => {
                   </Button>
                   <Button
                     variant="outline"
-                    className="flex-1 bg-transparent text-gray-300 border-gray-600/50 hover:bg-gray-700/60 hover:text-white rounded-lg transition-all duration-300 hover:scale-105"
+                    className="flex-1 bg-transparent text-frost-cyan border-frost-cyan/30 hover:bg-frost-cyan/10 hover:text-frost-white hover:border-frost-cyan/60 rounded-lg transition-all duration-300 hover:scale-105"
                     onClick={() => window.open(project.github, '_blank')}
                   >
                     <Github size={16} className="mr-2" />
