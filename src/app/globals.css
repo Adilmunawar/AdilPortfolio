@@ -42,25 +42,23 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* PRIMARY is White/Frost (Buttons & Highlights) */
+    --primary: 195 100% 97%;     /* #f0f9ff */
+    --primary-foreground: 195 90% 10%; /* Dark text on white buttons */
+
+    /* SECONDARY is Dark Slate (Card Backgrounds) */
+    --secondary: 215 28% 17%;
+    --secondary-foreground: 195 100% 97%;
+
+    /* ACCENT is the Cyan Glow */
+    --accent: 189 84% 53%;       /* #22d3ee */
+    --accent-foreground: 195 90% 10%;
+
+    /* BORDERS are faint cyan/white */
+    --border: 189 84% 53%;       /* Cyan border for that "tron" look */
+    --input: 215 28% 17%;
+    --ring: 189 84% 53%;         /* Focus rings are cyan */
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 94.1%;
@@ -360,7 +358,7 @@
   @apply relative inline-block text-lg font-bold text-white no-underline cursor-pointer;
   padding: 1px; /* Creates space for the gradient border */
   border-radius: 9999px; /* Fully rounded */
-  background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue));
+  background: linear-gradient(90deg, #22d3ee, #0f172a);
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -368,7 +366,7 @@
   @apply absolute rounded-full;
   content: '';
   inset: -3px;
-  background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue), var(--cyber-cyan));
+  background: linear-gradient(90deg, #22d3ee, #cffafe);
   z-index: -1;
   transition: all 0.4s ease;
   filter: blur(8px);
@@ -469,4 +467,18 @@
 .mermaid-container .node:hover circle {
     filter: drop-shadow(0px 0px 8px rgba(0,0,0,0.2));
     stroke-width: 3px !important;
+}
+
+/* Add a utility class for the glass cards seen in the image */
+.glass-card {
+  background: rgba(15, 23, 42, 0.6); /* Semi-transparent dark */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 211, 238, 0.3); /* Faint cyan border */
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.1); /* Subtle ambient glow */
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: #22d3ee;
+  box-shadow: 0 0 25px rgba(34, 211, 238, 0.4); /* Stronger glow on hover */
 }

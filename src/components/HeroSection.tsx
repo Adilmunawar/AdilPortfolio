@@ -12,37 +12,37 @@ const HeroSection = () => {
       Icon: Instagram,
       href: 'https://instagram.com/adilmunawarx',
       label: 'Instagram',
-      color: 'text-gray-400',
-      glowColorStart: 'rgba(59, 29, 138, 0.4)',
-      glowColorEnd: 'rgba(59, 29, 138, 0.7)',
-      gradientColor: 'var(--cyber-purple)',
+      color: 'text-frost-cyan',
+      glowColorStart: 'rgba(34, 211, 238, 0.4)',
+      glowColorEnd: 'rgba(34, 211, 238, 0.7)',
+      gradientColor: 'var(--neon-cyan)',
     },
     {
       Icon: Github,
       href: 'https://github.com/adilmunawar',
       label: 'GitHub',
-      color: 'text-gray-400',
-      glowColorStart: 'rgba(59, 29, 138, 0.4)',
-      glowColorEnd: 'rgba(59, 29, 138, 0.7)',
-      gradientColor: 'var(--cyber-purple)',
+      color: 'text-frost-cyan',
+      glowColorStart: 'rgba(34, 211, 238, 0.4)',
+      glowColorEnd: 'rgba(34, 211, 238, 0.7)',
+      gradientColor: 'var(--neon-cyan)',
     },
     {
       Icon: Linkedin,
       href: 'https://linkedin.com/in/adilmunawar',
       label: 'LinkedIn',
-      color: 'text-gray-400',
-      glowColorStart: 'rgba(67, 56, 202, 0.4)',
-      glowColorEnd: 'rgba(67, 56, 202, 0.7)',
-      gradientColor: 'var(--cyber-blue)',
+      color: 'text-frost-cyan',
+      glowColorStart: 'rgba(34, 211, 238, 0.4)',
+      glowColorEnd: 'rgba(34, 211, 238, 0.7)',
+      gradientColor: 'var(--neon-cyan)',
     },
     {
       Icon: Phone,
       href: 'tel:+923244965220',
       label: 'Phone',
-      color: 'text-gray-400',
-      glowColorStart: 'rgba(74, 222, 128, 0.4)',
-      glowColorEnd: 'rgba(34, 197, 94, 0.7)',
-      gradientColor: 'var(--cyber-blue)',
+      color: 'text-frost-cyan',
+      glowColorStart: 'rgba(34, 211, 238, 0.4)',
+      glowColorEnd: 'rgba(34, 211, 238, 0.7)',
+      gradientColor: 'var(--neon-cyan)',
     },
   ];
 
@@ -95,7 +95,7 @@ const HeroSection = () => {
         <div className="animate-fade-in-up">
           {/* Professional name with subtle effects */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 drop-shadow-lg relative">
-            <a href="#home" className="text-gradient-slow relative z-10">Adil Munawar</a>
+            <a href="#home" className="text-frost-white relative z-10">Adil Munawar</a>
           </h1>
           
           {/* Professional subtitle */}
@@ -112,8 +112,8 @@ const HeroSection = () => {
                 className="group relative px-4 py-2 rounded-full transition-all duration-300 bg-gray-800/40 border border-white/10 backdrop-blur-sm hover:bg-gray-700/60"
                 style={{ transition: 'transform 0.1s ease-out' }}
               >
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[var(--cyber-purple)] to-[var(--cyber-blue)] opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md"></div>
-                <span className="relative text-gray-300 text-sm font-medium transition-colors duration-300 group-hover:text-white">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-neon-cyan to-frost-cyan opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md"></div>
+                <span className="relative text-frost-cyan text-sm font-medium transition-colors duration-300 group-hover:text-frost-white">
                   {skill}
                 </span>
               </div>
@@ -136,19 +136,19 @@ const HeroSection = () => {
                   aria-label={social.label}
                 >
                   <div 
-                    className="absolute -inset-0.5 rounded-full bg-transparent group-hover:bg-[conic-gradient(from_90deg_at_50%_50%,var(--cyber-purple)_50%,var(--gradient-color)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-rotate"
+                    className="absolute -inset-0.5 rounded-full bg-transparent group-hover:bg-[conic-gradient(from_90deg_at_50%_50%,var(--neon-cyan)_50%,var(--gradient-color)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-rotate"
                     style={{ '--gradient-color': social.gradientColor } as React.CSSProperties}
                   ></div>
                   <div 
-                    className="relative w-14 h-14 bg-cyber-dark rounded-full transition-all duration-300 group-hover:scale-110 flex items-center justify-center border-2 border-gray-700/60 group-hover:border-transparent animate-social-icon-pulse"
+                    className="relative w-14 h-14 bg-cyber-dark rounded-full transition-all duration-300 group-hover:scale-110 flex items-center justify-center border-2 border-neon-cyan/50 group-hover:border-neon-cyan animate-social-icon-pulse"
                     style={{
-                      '--glow-color-start': 'var(--cyber-purple)',
-                      '--glow-color-end': 'var(--cyber-blue)',
+                      '--glow-color-start': 'var(--neon-cyan)',
+                      '--glow-color-end': 'rgba(34, 211, 238, 0.7)',
                     } as React.CSSProperties}
                   >
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 opacity-80 group-hover:opacity-50 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyber-dark to-slate-800 opacity-80 group-hover:opacity-50 transition-opacity duration-300"></div>
                     
-                    <social.Icon size={26} className={`${social.color} transition-all duration-300 group-hover:scale-125 group-hover:text-white relative z-10`} />
+                    <social.Icon size={26} className={`${social.color} transition-all duration-300 group-hover:scale-125 group-hover:text-frost-white relative z-10`} />
                   </div>
                 </a>
               </TooltipTrigger>
