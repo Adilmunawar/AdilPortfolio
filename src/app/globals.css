@@ -482,3 +482,16 @@
   border-color: #22d3ee;
   box-shadow: 0 0 25px rgba(34, 211, 238, 0.4); /* Stronger glow on hover */
 }
+
+.animate-text-glow {
+  animation: text-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes text-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px theme("colors.neon-cyan"), 0 0 16px theme("colors.neon-cyan");
+  }
+  50% {
+    text-shadow: 0 0 12px theme("colors.neon-cyan"), 0 0 24px theme("colors.neon-cyan"), 0 0 32px theme("colors.neon-cyan");
+  }
+}
