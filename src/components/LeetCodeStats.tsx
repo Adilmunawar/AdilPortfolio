@@ -16,7 +16,8 @@ const LeetCodeStats = () => {
         ranking,
     } = leetCodeStats;
 
-    if (!totalQuestions) {
+    // Check if the component has meaningful data to display, not just if totalQuestions is non-zero
+    if (!totalSolved && !ranking) {
         return (
           <Card className="p-8 bg-cyber-gray/20 border-neon-cyan/30 backdrop-blur-xl">
             <div className="text-center text-gray-400">
@@ -124,8 +125,8 @@ const LeetCodeStats = () => {
                                             dataKey="value"
                                             stroke="none"
                                         >
-                                           <Cell fill={`url(#gradient-${data.name})`} cornerRadius={10} />
-                                           <Cell fill="#334155" cornerRadius={10} />
+                                           <Cell fill={`url(#gradient-${data.name})`} />
+                                           <Cell fill="#334155" />
                                         </Pie>
                                         <Tooltip content={<CustomTooltip />} />
                                     </PieChart>
