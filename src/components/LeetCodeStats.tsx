@@ -30,11 +30,13 @@ const LeetCodeStats = () => {
         { name: 'Easy', value: easy.solved, color: '#00B8A3' },
         { name: 'Medium', value: medium.solved, color: '#FFC01E' },
         { name: 'Hard', value: hard.solved, color: '#FF375F' },
+        { name: 'Unsolved', value: totalQuestions - totalSolved, color: 'transparent' }
     ];
 
     const CustomTooltip = ({ active, payload }: any) => {
         if (active && payload && payload.length) {
             const data = payload[0];
+            if (data.name === 'Unsolved') return null;
             return (
                 <div className="p-2 bg-cyber-dark/80 border border-neon-cyan/30 rounded-lg text-frost-white text-sm backdrop-blur-sm">
                     <p className="font-bold" style={{ color: data.payload.color }}>
@@ -70,15 +72,6 @@ const LeetCodeStats = () => {
                     <div className="relative w-full h-64 md:h-72">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
-                                <defs>
-                                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                                        <feMerge>
-                                            <feMergeNode in="coloredBlur" />
-                                            <feMergeNode in="SourceGraphic" />
-                                        </feMerge>
-                                    </filter>
-                                </defs>
                                 <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'none', fill: 'transparent' }}/>
                                 <Pie
                                     data={[{ value: totalQuestions }]}
@@ -107,13 +100,15 @@ const LeetCodeStats = () => {
                                     paddingAngle={2}
                                 >
                                     {solvedData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={entry.color} className="transition-all duration-300 hover:opacity-80" style={{ filter: 'url(#glow)' }}/>
+                                        <Cell key={`cell-${index}`} fill={entry.color} className="transition-all duration-300 hover:opacity-80"/>
                                     ))}
                                 </Pie>
                             </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                            <p className="text-5xl font-bold text-white drop-shadow-lg">{totalSolved}</p>
+                            <p className="text-4xl font-bold text-white drop-shadow-lg">
+                                {totalSolved}<span className="text-2xl text-gray-400">/{totalQuestions}</span>
+                            </p>
                             <p className="text-lg text-frost-cyan mt-1">Solved</p>
                         </div>
                     </div>
