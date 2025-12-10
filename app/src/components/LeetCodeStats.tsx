@@ -125,8 +125,8 @@ const LeetCodeStats = () => {
                                             dataKey="value"
                                             stroke="none"
                                         >
-                                           <Cell fill={`url(#gradient-${data.name})`} cornerRadius={10} />
-                                           <Cell fill="#334155" cornerRadius={10} />
+                                           <Cell fill={`url(#gradient-${data.name})`} />
+                                           <Cell fill="#334155" />
                                         </Pie>
                                         <Tooltip content={<CustomTooltip />} />
                                     </PieChart>
