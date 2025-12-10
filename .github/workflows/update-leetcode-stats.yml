@@ -36,3 +36,4 @@ jobs:
           git add src/lib/leetcode-stats.json
           git diff --staged --quiet || git commit -m "chore: update LeetCode stats"
           git push
+
