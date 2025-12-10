@@ -1,0 +1,19 @@
+
+{
+  "totalSolved": 0,
+  "totalQuestions": 0,
+  "acceptanceRate": 0,
+  "ranking": 0,
+  "easy": {
+    "total": 0,
+    "solved": 0
+  },
+  "medium": {
+    "total": 0,
+    "solved": 0
+  },
+  "hard": {
+    "total": 0,
+    "solved": 0
+  }
+}

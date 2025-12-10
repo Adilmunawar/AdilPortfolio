@@ -1,6 +1,8 @@
+
 'use client';
 import { useState, useEffect } from 'react';
 import GitHubStats from './GitHubStats';
+import LeetCodeStats from './LeetCodeStats'; // Import the new component
 import { LogoLoop } from './LogoLoop';
 
 const SkillsSection = () => {
@@ -79,6 +81,13 @@ const SkillsSection = () => {
           isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-12'
         }`}>
           <GitHubStats />
+        </div>
+        
+        {/* LeetCode Stats */}
+        <div className={`mb-16 transition-all duration-1000 delay-300 ${
+          isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-12'
+        }`}>
+          <LeetCodeStats />
         </div>
 
         {/* Frontend Frameworks */}
