@@ -9,7 +9,7 @@ interface ContributionDay {
 }
 
 const contributionData = {
-  "totalContributions": 3735,
+  "totalContributions": 3747,
   "contributions": [
     {
       "date": "2024-12-08",
@@ -1843,6 +1843,11 @@ const contributionData = {
     },
     {
       "date": "2025-12-09",
+      "count": 12,
+      "level": 1
+    },
+    {
+      "date": "2025-12-10",
       "count": 0,
       "level": 0
     }
@@ -1854,13 +1859,13 @@ const GitHubStats = () => {
 
   const getLevelColor = (level: number) => {
     switch (level) {
-      case 1: return 'bg-cyan-900';
-      case 2: return 'bg-cyan-700';
-      case 3: return 'bg-cyan-500';
-      case 4: return 'bg-cyan-400';
+      case 1: return 'bg-indigo-900';
+      case 2: return 'bg-indigo-700';
+      case 3: return 'bg-indigo-500';
+      case 4: return 'bg-indigo-400';
       case 0:
       default:
-        return 'bg-cyber-dark/50';
+        return 'bg-gray-800/80';
     }
   };
 
@@ -1903,8 +1908,8 @@ const GitHubStats = () => {
 
   if (!totalContributions) {
     return (
-      <Card className="p-8 bg-cyber-dark/60 border border-neon-cyan/30 backdrop-blur-xl">
-        <div className="text-center text-frost-cyan">
+      <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl">
+        <div className="text-center text-gray-400">
           <p className="font-semibold text-lg mb-2">Generating GitHub Contributions...</p>
           <p className="text-sm">Run the 'Update GitHub Contribution Stats' action in your repository's Actions tab to populate data.</p>
         </div>
@@ -1913,25 +1918,25 @@ const GitHubStats = () => {
   }
   
   return (
-    <Card className="p-8 glass-card hover:border-neon-cyan/80 transition-all duration-500 group overflow-hidden relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/5 via-frost-cyan/5 to-cyber-dark/5 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-cyan/50 via-frost-cyan/50 to-neon-cyan/50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-left"></div>
+    <Card className="p-8 bg-cyber-gray/20 border-cyber-purple/30 backdrop-blur-xl hover:border-cyber-purple/60 transition-all duration-500 group overflow-hidden relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-cyber-purple/5 via-cyber-blue/5 to-indigo-900/5 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-purple via-cyber-blue to-indigo-900 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-left"></div>
       
       <div className="relative z-10">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-2xl font-bold text-frost-white animate-fade-in-up">
+          <h3 className="text-2xl font-bold text-white animate-fade-in-up">
             GitHub Contributions
           </h3>
-          <div className="text-frost-cyan font-mono text-lg font-bold animate-scale-in">
-            <span className="inline-block text-neon-cyan">
+          <div className="text-gray-300 font-mono text-lg font-bold animate-scale-in">
+            <span className="inline-block text-indigo-400">
               {totalContributions.toLocaleString()}
             </span>
-            <span className="ml-2 text-sm text-frost-cyan/80">contributions</span>
+            <span className="ml-2 text-sm text-gray-400">contributions</span>
           </div>
         </div>
         
         <div className="mb-6">
-          <div className="text-sm text-frost-cyan/80 mb-3 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+          <div className="text-sm text-gray-400 mb-3 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
             @AdilMunawar - Last 12 months
           </div>
         </div>
@@ -1942,12 +1947,12 @@ const GitHubStats = () => {
               <div key={weekIndex} className="grid grid-cols-1 gap-1">
                 {week.map((day, dayIndex) => {
                   if (!day) {
-                    return <div key={`empty-${weekIndex}-${dayIndex}`} className="w-3 h-3 rounded-sm bg-cyber-dark/30" />;
+                    return <div key={`empty-${weekIndex}-${dayIndex}`} className="w-3 h-3 rounded-sm bg-gray-800/20" />;
                   }
                   return (
                     <div
                       key={day.date}
-                      className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-neon-cyan/70 transition-all duration-300 cursor-pointer group/day hover:scale-125`}
+                      className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-cyber-blue/50 transition-all duration-300 cursor-pointer group/day hover:scale-125`}
                       title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}`}
                     >
                       <div className="w-full h-full rounded-sm group-hover/day:animate-pulse transition-all duration-200"></div>
@@ -1959,8 +1964,8 @@ const GitHubStats = () => {
           </div>
         </div>
         
-        <div className="flex justify-between items-center mt-6 text-xs text-frost-cyan/80 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
-          <span className="hover:text-frost-cyan transition-colors">Less</span>
+        <div className="flex justify-between items-center mt-6 text-xs text-gray-400 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
+          <span className="hover:text-gray-300 transition-colors">Less</span>
           <div className="flex gap-1">
             {[0, 1, 2, 3, 4].map(level => (
               <div 
@@ -1969,7 +1974,7 @@ const GitHubStats = () => {
               ></div>
             ))}
           </div>
-          <span className="hover:text-frost-cyan transition-colors">More</span>
+          <span className="hover:text-gray-300 transition-colors">More</span>
         </div>
       </div>
     </Card>
@@ -1977,5 +1982,3 @@ const GitHubStats = () => {
 };
 
 export default GitHubStats;
-
-    
