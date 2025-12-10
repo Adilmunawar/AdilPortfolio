@@ -1,9 +1,9 @@
-
 'use client';
 import { Card } from '@/components/ui/card';
 import leetCodeStats from '@/lib/leetcode-stats.json';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { Trophy, CheckCircle, Target } from 'lucide-react';
+import { Trophy, CheckCircle, Target, Percent } from 'lucide-react';
+import { useState } from 'react';
 
 const LeetCodeStats = () => {
     const {
@@ -15,6 +15,8 @@ const LeetCodeStats = () => {
         acceptanceRate,
         ranking,
     } = leetCodeStats;
+
+    const [isHovered, setIsHovered] = useState(false);
 
     if (!totalSolved && !ranking) {
         return (
@@ -138,11 +140,26 @@ const LeetCodeStats = () => {
 
                             </PieChart>
                         </ResponsiveContainer>
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                            <p className="text-4xl font-bold text-white drop-shadow-lg animate-scale-in">
-                                {totalSolved}
-                            </p>
-                            <p className="text-sm text-frost-cyan mt-1 animate-fade-in-up" style={{ animationDelay: '100ms' }}>Solved</p>
+                        <div 
+                            className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-auto cursor-pointer"
+                            onMouseEnter={() => setIsHovered(true)}
+                            onMouseLeave={() => setIsHovered(false)}
+                        >
+                            {isHovered ? (
+                                <>
+                                    <p className="text-4xl font-bold text-white drop-shadow-lg animate-scale-in">
+                                        {acceptanceRate.toFixed(2)}%
+                                    </p>
+                                    <p className="text-sm text-frost-cyan mt-1 animate-fade-in-up" style={{ animationDelay: '100ms' }}>Acceptance</p>
+                                </>
+                            ) : (
+                                <>
+                                    <p className="text-4xl font-bold text-white drop-shadow-lg animate-scale-in">
+                                        {totalSolved}
+                                    </p>
+                                    <p className="text-sm text-frost-cyan mt-1 animate-fade-in-up" style={{ animationDelay: '100ms' }}>Solved</p>
+                                </>
+                            )}
                         </div>
                     </div>
 
@@ -153,11 +170,6 @@ const LeetCodeStats = () => {
                                 <Trophy className="w-7 h-7 text-neon-cyan mb-2" />
                                 <p className="text-2xl font-bold text-white">{ranking.toLocaleString()}</p>
                                 <p className="text-xs text-frost-cyan">Ranking</p>
-                            </div>
-                            <div className="flex flex-col items-center animate-scale-in" style={{animationDelay: '300ms'}}>
-                                <Target className="w-7 h-7 text-neon-cyan mb-2" />
-                                <p className="text-2xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
-                                <p className="text-xs text-frost-cyan">Acceptance</p>
                             </div>
                         </div>
 
