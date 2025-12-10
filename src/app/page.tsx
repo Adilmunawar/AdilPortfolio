@@ -1,3 +1,4 @@
+
 'use client';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
@@ -10,7 +11,7 @@ import { GradientDots } from '@/components/ui/gradient-dots';
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-cyber-dark">
+    <div className="relative min-h-screen">
       <GradientDots backgroundColor="var(--cyber-dark)" />
       <Navigation />
       
@@ -25,3 +26,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

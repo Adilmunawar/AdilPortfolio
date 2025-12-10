@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const dynamicTexts = [
-  "Passionate Developer",
+  "Frontend Engineer",
   "Web Developer",
   "Problem Solver",
   "Innovation Driver"
