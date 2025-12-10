@@ -3,7 +3,7 @@
 import { Card } from '@/components/ui/card';
 import leetCodeStats from '@/lib/leetcode-stats.json';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { Trophy, CheckCircle, Target, TrendingUp } from 'lucide-react';
+import { Trophy, CheckCircle, Target } from 'lucide-react';
 
 const LeetCodeStats = () => {
     const {
@@ -16,7 +16,6 @@ const LeetCodeStats = () => {
         ranking,
     } = leetCodeStats;
 
-    // Check if the component has meaningful data to display, not just if totalQuestions is non-zero
     if (!totalSolved && !ranking) {
         return (
           <Card className="p-8 bg-cyber-gray/20 border-neon-cyan/30 backdrop-blur-xl">
@@ -29,36 +28,35 @@ const LeetCodeStats = () => {
     }
     
     const difficultyData = [
-        { name: 'Easy', solved: easy.solved, total: easy.total, color: '#00C49F' },
-        { name: 'Medium', solved: medium.solved, total: medium.total, color: '#FFBB28' },
-        { name: 'Hard', solved: hard.solved, total: hard.total, color: '#FF8042' },
+        { name: 'Easy', solved: easy.solved, total: easy.total, color: '#00B8A3' },
+        { name: 'Medium', solved: medium.solved, total: medium.total, color: '#FFC01E' },
+        { name: 'Hard', solved: hard.solved, total: hard.total, color: '#FF375F' },
     ];
     
-    const RADIAN = Math.PI / 180;
-    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, payload }: any) => {
-        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-        const x = cx + radius * Math.cos(-midAngle * RADIAN);
-        const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-        return (
-            <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" className="text-xs font-bold">
-                {`${payload.solved}`}
-            </text>
-        );
+    const chartData = {
+        easy: [{ value: easy.solved }, { value: easy.total - easy.solved }],
+        medium: [{ value: medium.solved }, { value: medium.total - medium.solved }],
+        hard: [{ value: hard.solved }, { value: hard.total - hard.solved }],
     };
 
-    const CustomTooltip = ({ active, payload, label }: any) => {
+    const CustomTooltip = ({ active, payload }: any) => {
         if (active && payload && payload.length) {
-          const data = payload[0].payload;
-          return (
-            <div className="p-2 bg-cyber-dark/80 border border-neon-cyan/30 rounded-lg text-frost-white text-sm backdrop-blur-sm">
-              <p className="font-bold">{`${data.name}: ${data.solved} / ${data.total}`}</p>
-            </div>
-          );
+            const data = payload[0].payload;
+            const parentName = payload[0].name.split('-')[0]; // Easy, Medium, or Hard
+            const solvedValue = data.value;
+            const parentData = difficultyData.find(d => d.name === parentName);
+            if (!parentData || payload[0].name.includes('remaining')) return null;
+
+            return (
+                <div className="p-2 bg-cyber-dark/80 border border-neon-cyan/30 rounded-lg text-frost-white text-sm backdrop-blur-sm">
+                    <p className="font-bold" style={{ color: parentData.color }}>
+                        {parentName}: {solvedValue} / {parentData.total}
+                    </p>
+                </div>
+            );
         }
         return null;
     };
-
 
     return (
         <Card className="p-8 glass-card hover:border-neon-cyan/60 transition-all duration-500 group overflow-hidden relative">
@@ -79,62 +77,111 @@ const LeetCodeStats = () => {
                         @AdilMunawar
                     </a>
                 </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    {/* Left side: Chart */}
+                    <div className="relative w-full h-60">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Tooltip content={<CustomTooltip />} cursor={{fill: 'transparent'}}/>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10 text-center">
-                    <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-cyber-dark/40 border border-neon-cyan/20 animate-scale-in" style={{animationDelay: '200ms'}}>
-                        <CheckCircle className="w-8 h-8 text-neon-cyan mb-3" />
-                        <p className="text-3xl font-bold text-white">{totalSolved}</p>
-                        <p className="text-sm text-frost-cyan">Total Solved</p>
-                    </div>
-                    <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-cyber-dark/40 border border-neon-cyan/20 animate-scale-in" style={{animationDelay: '300ms'}}>
-                        <Target className="w-8 h-8 text-neon-cyan mb-3" />
-                        <p className="text-3xl font-bold text-white">{acceptanceRate.toFixed(2)}%</p>
-                        <p className="text-sm text-frost-cyan">Acceptance Rate</p>
-                    </div>
-                    <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-cyber-dark/40 border border-neon-cyan/20 animate-scale-in" style={{animationDelay: '400ms'}}>
-                        <Trophy className="w-8 h-8 text-neon-cyan mb-3" />
-                        <p className="text-3xl font-bold text-white">~{Math.round(ranking / 1000)}k</p>
-                        <p className="text-sm text-frost-cyan">Global Ranking</p>
-                    </div>
-                </div>
+                                {/* Hard Arc */}
+                                <Pie
+                                    data={chartData.hard}
+                                    dataKey="value"
+                                    cx="50%"
+                                    cy="50%"
+                                    innerRadius="85%"
+                                    outerRadius="100%"
+                                    startAngle={90}
+                                    endAngle={-270}
+                                    paddingAngle={-10}
+                                    stroke="none"
+                                >
+                                    <Cell fill={difficultyData[2].color} />
+                                    <Cell fill="hsl(var(--muted) / 0.3)" />
+                                </Pie>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {difficultyData.map((data, index) => (
-                        <div key={data.name} className={`flex flex-col items-center animate-fade-in-up`} style={{ animationDelay: `${500 + index * 100}ms` }}>
-                            <h4 className="font-bold text-lg mb-4" style={{ color: data.color }}>{data.name}</h4>
-                            <div style={{ width: '100%', height: 150 }}>
-                                <ResponsiveContainer>
-                                    <PieChart>
-                                        <defs>
-                                            <linearGradient id={`gradient-${data.name}`} x1="0" y1="0" x2="1" y2="1">
-                                                <stop offset="0%" stopColor={data.color} stopOpacity={0.8}/>
-                                                <stop offset="100%" stopColor={data.color} stopOpacity={1}/>
-                                            </linearGradient>
-                                        </defs>
-                                        <Pie
-                                            data={[{ value: data.solved }, { value: data.total - data.solved }]}
-                                            cx="50%"
-                                            cy="50%"
-                                            labelLine={false}
-                                            label={renderCustomizedLabel}
-                                            innerRadius={45}
-                                            outerRadius={60}
-                                            startAngle={90}
-                                            endAngle={-270}
-                                            paddingAngle={-10}
-                                            dataKey="value"
-                                            stroke="none"
-                                        >
-                                           <Cell fill={`url(#gradient-${data.name})`} />
-                                           <Cell fill="#334155" />
-                                        </Pie>
-                                        <Tooltip content={<CustomTooltip />} />
-                                    </PieChart>
-                                </ResponsiveContainer>
-                            </div>
-                            <p className="text-frost-white font-semibold mt-2">{data.solved} / {data.total}</p>
+                                {/* Medium Arc */}
+                                <Pie
+                                    data={chartData.medium}
+                                    dataKey="value"
+                                    cx="50%"
+                                    cy="50%"
+                                    innerRadius="65%"
+                                    outerRadius="80%"
+                                    startAngle={90}
+                                    endAngle={-270}
+                                    paddingAngle={-10}
+                                    stroke="none"
+                                >
+                                    <Cell fill={difficultyData[1].color} />
+                                    <Cell fill="hsl(var(--muted) / 0.3)" />
+                                </Pie>
+
+                                {/* Easy Arc */}
+                                <Pie
+                                    data={chartData.easy}
+                                    dataKey="value"
+                                    cx="50%"
+                                    cy="50%"
+                                    innerRadius="45%"
+                                    outerRadius="60%"
+                                    startAngle={90}
+                                    endAngle={-270}
+                                    paddingAngle={-10}
+                                    stroke="none"
+                                >
+                                    <Cell fill={difficultyData[0].color} />
+                                    <Cell fill="hsl(var(--muted) / 0.3)" />
+                                </Pie>
+
+                            </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                            <p className="text-4xl font-bold text-white drop-shadow-lg animate-scale-in">
+                                {totalSolved}
+                            </p>
+                            <p className="text-sm text-frost-cyan mt-1 animate-fade-in-up" style={{ animationDelay: '100ms' }}>Solved</p>
                         </div>
-                    ))}
+                    </div>
+
+                    {/* Right side: Stats */}
+                    <div className="flex flex-col gap-6">
+                        <div className="flex justify-around text-center">
+                            <div className="flex flex-col items-center animate-scale-in" style={{animationDelay: '200ms'}}>
+                                <Trophy className="w-7 h-7 text-neon-cyan mb-2" />
+                                <p className="text-2xl font-bold text-white">{ranking.toLocaleString()}</p>
+                                <p className="text-xs text-frost-cyan">Ranking</p>
+                            </div>
+                            <div className="flex flex-col items-center animate-scale-in" style={{animationDelay: '300ms'}}>
+                                <Target className="w-7 h-7 text-neon-cyan mb-2" />
+                                <p className="text-2xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
+                                <p className="text-xs text-frost-cyan">Acceptance</p>
+                            </div>
+                        </div>
+
+                        <div className="space-y-3">
+                            {difficultyData.map((data, index) => (
+                                <div key={data.name} className="animate-fade-in-up" style={{animationDelay: `${400 + index * 100}ms`}}>
+                                    <div className="flex justify-between items-center text-sm mb-1">
+                                        <span className="font-semibold" style={{color: data.color}}>{data.name}</span>
+                                        <span className="font-mono text-white">{data.solved} <span className="text-gray-400">/ {data.total}</span></span>
+                                    </div>
+                                    <div className="w-full bg-cyber-dark/40 rounded-full h-2.5 border border-neon-cyan/20">
+                                        <div 
+                                            className="h-full rounded-full" 
+                                            style={{ 
+                                                width: `${(data.solved / data.total) * 100}%`,
+                                                backgroundColor: data.color,
+                                                boxShadow: `0 0 8px ${data.color}80`
+                                            }}
+                                        ></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         </Card>
