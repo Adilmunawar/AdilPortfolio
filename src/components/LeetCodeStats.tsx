@@ -2,8 +2,7 @@
 'use client';
 import { Card } from '@/components/ui/card';
 import leetCodeStats from '@/lib/leetcode-stats.json';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
-import { Target } from 'lucide-react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 const LeetCodeStats = () => {
     const {
@@ -33,8 +32,19 @@ const LeetCodeStats = () => {
         { name: 'Hard', value: hard.solved, color: '#FF375F' },
     ];
 
-    const totalPercentage = totalSolved / totalQuestions;
-    const endAngle = 90 - (360 * totalPercentage);
+    const CustomTooltip = ({ active, payload }: any) => {
+        if (active && payload && payload.length) {
+            const data = payload[0];
+            return (
+                <div className="p-2 bg-cyber-dark/80 border border-neon-cyan/30 rounded-lg text-frost-white text-sm backdrop-blur-sm">
+                    <p className="font-bold" style={{ color: data.payload.color }}>
+                        {data.name}: {data.value} Solved
+                    </p>
+                </div>
+            );
+        }
+        return null;
+    };
 
     return (
         <Card className="p-8 glass-card hover:border-neon-cyan/60 transition-all duration-500 group overflow-hidden relative">
@@ -57,45 +67,53 @@ const LeetCodeStats = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                    <div className="relative w-full h-64 md:h-80">
+                    <div className="relative w-full h-64 md:h-72">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
+                                <defs>
+                                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur" />
+                                            <feMergeNode in="SourceGraphic" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                                <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'none', fill: 'transparent' }}/>
                                 <Pie
-                                    data={solvedData}
+                                    data={[{ value: totalQuestions }]}
                                     cx="50%"
                                     cy="50%"
-                                    innerRadius="70%"
-                                    outerRadius="90%"
+                                    innerRadius="80%"
+                                    outerRadius="100%"
                                     startAngle={90}
                                     endAngle={-270}
                                     dataKey="value"
                                     stroke="none"
+                                    isAnimationActive={false}
                                 >
-                                    {solvedData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={entry.color} />
-                                    ))}
+                                     <Cell fill="hsl(var(--muted) / 0.3)" />
                                 </Pie>
-                                 <Pie
-                                    data={[{ value: 1 }]}
+                                <Pie
+                                    data={solvedData}
                                     cx="50%"
                                     cy="50%"
-                                    innerRadius="70%"
-                                    outerRadius="90%"
+                                    innerRadius="80%"
+                                    outerRadius="100%"
                                     startAngle={90}
-                                    endAngle={endAngle}
+                                    endAngle={-270}
                                     dataKey="value"
-                                    isAnimationActive={false}
-                                    fill="transparent"
-                                    stroke="hsl(var(--background))"
-                                    strokeWidth={18}
-                                    strokeLinejoin="round"
-                                />
+                                    stroke="none"
+                                    paddingAngle={2}
+                                >
+                                    {solvedData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.color} className="transition-all duration-300 hover:opacity-80" style={{ filter: 'url(#glow)' }}/>
+                                    ))}
+                                </Pie>
                             </PieChart>
                         </ResponsiveContainer>
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                            <p className="text-5xl font-bold text-white">{totalSolved}
-                                <span className="text-2xl text-gray-400">/{totalQuestions}</span>
-                            </p>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                            <p className="text-5xl font-bold text-white drop-shadow-lg">{totalSolved}</p>
                             <p className="text-lg text-frost-cyan mt-1">Solved</p>
                         </div>
                     </div>
@@ -104,31 +122,31 @@ const LeetCodeStats = () => {
                        <div className="flex justify-around text-center">
                             <div className="animate-scale-in" style={{animationDelay: '200ms'}}>
                                 <p className="text-3xl font-bold text-white">{ranking.toLocaleString()}</p>
-                                <p className="text-sm text-frost-cyan">Global Ranking</p>
+                                <p className="text-sm text-frost-cyan">Ranking</p>
                             </div>
                             <div className="animate-scale-in" style={{animationDelay: '300ms'}}>
                                 <p className="text-3xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
-                                <p className="text-sm text-frost-cyan">Acceptance Rate</p>
+                                <p className="text-sm text-frost-cyan">Acceptance</p>
                             </div>
                         </div>
 
                         <div className="space-y-4">
                             <div className="p-4 rounded-lg bg-cyber-dark/40 border border-neon-cyan/20 animate-fade-in-up" style={{animationDelay: '400ms'}}>
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center text-sm">
                                     <span className="font-semibold" style={{color: solvedData[0].color}}>Easy</span>
-                                    <span className="font-mono text-white">{easy.solved} / {easy.total}</span>
+                                    <span className="font-mono text-white">{easy.solved} <span className="text-gray-400">/ {easy.total}</span></span>
                                 </div>
                             </div>
                             <div className="p-4 rounded-lg bg-cyber-dark/40 border border-neon-cyan/20 animate-fade-in-up" style={{animationDelay: '500ms'}}>
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center text-sm">
                                     <span className="font-semibold" style={{color: solvedData[1].color}}>Medium</span>
-                                    <span className="font-mono text-white">{medium.solved} / {medium.total}</span>
+                                    <span className="font-mono text-white">{medium.solved} <span className="text-gray-400">/ {medium.total}</span></span>
                                 </div>
                             </div>
                             <div className="p-4 rounded-lg bg-cyber-dark/40 border border-neon-cyan/20 animate-fade-in-up" style={{animationDelay: '600ms'}}>
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center text-sm">
                                     <span className="font-semibold" style={{color: solvedData[2].color}}>Hard</span>
-                                    <span className="font-mono text-white">{hard.solved} / {hard.total}</span>
+                                    <span className="font-mono text-white">{hard.solved} <span className="text-gray-400">/ {hard.total}</span></span>
                                 </div>
                             </div>
                         </div>
