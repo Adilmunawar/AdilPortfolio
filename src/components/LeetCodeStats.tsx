@@ -10,8 +10,8 @@ import {
   PolarRadiusAxis, 
   ResponsiveContainer 
 } from 'recharts';
-import { Trophy, ExternalLink, Activity, Terminal, Zap, Cpu } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Trophy, Activity, Cpu, Terminal } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 
 // Cyber Palette
@@ -25,10 +25,35 @@ const THEME = {
 const LeetCodeStats = () => {
     const { totalSolved, easy, medium, hard, ranking, acceptanceRate } = leetCodeStats;
     const [mounted, setMounted] = useState(false);
+    const [hoveredSkill, setHoveredSkill] = useState<'Easy' | 'Medium' | 'Hard' | null>(null);
 
     useEffect(() => {
         setMounted(true);
     }, []);
+    
+    // Data for Radar Chart
+    const radarData = useMemo(() => {
+        const fullData = {
+            Easy: (easy.solved / easy.total) * 100,
+            Medium: (medium.solved / medium.total) * 100,
+            Hard: (hard.solved / hard.total) * 100,
+        };
+
+        if (hoveredSkill) {
+            return [
+                { subject: 'Easy', A: hoveredSkill === 'Easy' ? fullData.Easy : 0, fullMark: 100 },
+                { subject: 'Medium', A: hoveredSkill === 'Medium' ? fullData.Medium : 0, fullMark: 100 },
+                { subject: 'Hard', A: hoveredSkill === 'Hard' ? fullData.Hard : 0, fullMark: 100 },
+            ];
+        }
+
+        return [
+            { subject: 'Easy', A: fullData.Easy, fullMark: 100 },
+            { subject: 'Medium', A: fullData.Medium, fullMark: 100 },
+            { subject: 'Hard', A: fullData.Hard, fullMark: 100 },
+        ];
+    }, [hoveredSkill, easy, medium, hard]);
+
 
     // Fallback loading state
     if (!totalSolved && !ranking) {
@@ -41,14 +66,6 @@ const LeetCodeStats = () => {
           </Card>
         );
     }
-
-    // Data for Radar Chart
-    // We normalize data to 100 to make the shape look good regardless of total numbers
-    const radarData = [
-        { subject: 'Easy', A: (easy.solved / easy.total) * 100, fullMark: 100 },
-        { subject: 'Medium', A: (medium.solved / medium.total) * 100, fullMark: 100 },
-        { subject: 'Hard', A: (hard.solved / hard.total) * 100, fullMark: 100 },
-    ];
 
     return (
         <motion.div
@@ -110,6 +127,7 @@ const LeetCodeStats = () => {
                                     fill={THEME.cyan}
                                     fillOpacity={0.2}
                                     className="group-hover:animate-pulse"
+                                    animationDuration={300}
                                 />
                             </RadarChart>
                         </ResponsiveContainer>
@@ -121,14 +139,17 @@ const LeetCodeStats = () => {
                     {/* RIGHT: Segmented Power Bars */}
                     <div className="lg:col-span-3 flex flex-col justify-center space-y-5">
                         
-                        {/* Easy Bar */}
-                        <SkillBar label="EASY" value={easy.solved} total={easy.total} color="bg-emerald-400" />
+                        <div onMouseEnter={() => setHoveredSkill('Easy')} onMouseLeave={() => setHoveredSkill(null)}>
+                            <SkillBar label="EASY" value={easy.solved} total={easy.total} color="bg-emerald-400" />
+                        </div>
                         
-                        {/* Medium Bar */}
-                        <SkillBar label="MED" value={medium.solved} total={medium.total} color="bg-amber-400" />
+                        <div onMouseEnter={() => setHoveredSkill('Medium')} onMouseLeave={() => setHoveredSkill(null)}>
+                            <SkillBar label="MED" value={medium.solved} total={medium.total} color="bg-amber-400" />
+                        </div>
                         
-                        {/* Hard Bar */}
-                        <SkillBar label="HARD" value={hard.solved} total={hard.total} color="bg-rose-500" />
+                        <div onMouseEnter={() => setHoveredSkill('Hard')} onMouseLeave={() => setHoveredSkill(null)}>
+                            <SkillBar label="HARD" value={hard.solved} total={hard.total} color="bg-rose-500" />
+                        </div>
 
                         {/* Footer Stats */}
                         <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-neon-cyan/20">
@@ -191,5 +212,3 @@ const SkillBar = ({ label, value, total, color }: { label: string, value: number
 };
 
 export default LeetCodeStats;
-
-    
