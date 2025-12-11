@@ -52,7 +52,7 @@ const projects = [
       image: '/Adify.png',
       tech: ['Gemini API', 'AI', 'Resume', 'React'],
       github: 'https://github.com/adilmunawar/adify',
-      live: 'https://adify.vercel.app',
+      live: 'https://adifyai.vercel.app',
     }
   ];
 
