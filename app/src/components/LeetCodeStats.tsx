@@ -67,7 +67,7 @@ const LeetCodeStats = () => {
                 {/* 2. Header Area */}
                 <div className="relative z-10 flex justify-between items-start border-b border-neon-cyan/20 pb-4 mb-6">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-neon-cyan/10 border border-neon-cyan/50 rounded-lg">
+                        <div className="p-2 bg-neon-cyan/10 border border-neon-cyan/50 rounded-lg group-hover:animate-pulse">
                             <Cpu className="w-5 h-5 text-neon-cyan" />
                         </div>
                         <div>
@@ -109,6 +109,7 @@ const LeetCodeStats = () => {
                                     strokeWidth={2}
                                     fill={THEME.cyan}
                                     fillOpacity={0.2}
+                                    className="group-hover:animate-pulse"
                                 />
                             </RadarChart>
                         </ResponsiveContainer>
@@ -161,7 +162,11 @@ const SkillBar = ({ label, value, total, color }: { label: string, value: number
     const filledSegments = Math.round((percentage / 100) * 20);
 
     return (
-        <div className="flex items-center gap-4">
+        <motion.div
+            className="flex items-center gap-4"
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+        >
             <div className="w-12 text-xs font-bold text-neon-cyan font-mono">{label}</div>
             
             {/* The Bar */}
@@ -181,7 +186,7 @@ const SkillBar = ({ label, value, total, color }: { label: string, value: number
             <div className="w-16 text-right text-xs font-mono text-gray-400">
                 <span className="text-white">{value}</span>/{total}
             </div>
-        </div>
+        </motion.div>
     );
 };
 
