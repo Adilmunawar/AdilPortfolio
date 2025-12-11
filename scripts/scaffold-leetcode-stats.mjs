@@ -1,45 +1,33 @@
-
+import fs from 'fs/promises';
+import path from 'path';
 import fetch from 'node-fetch';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
 
-const leetcodeApiUrl = 'https://leetcode.com/graphql';
-const username = process.env.LEETCODE_USERNAME;
+const LEETCODE_API_URL = 'https://leetcode.com/graphql';
 
-if (!username) {
-  console.error('LEETCODE_USERNAME environment variable is not set.');
-  process.exit(1);
-}
+const GITHUB_STATS_FILE = path.join(process.cwd(), 'src', 'lib', 'leetcode-stats.json');
 
-const problemsQuery = `
-  query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {
-    problemsetQuestionList: questionList(
-      categorySlug: $categorySlug
-      limit: $limit
-      skip: $skip
-      filters: $filters
-    ) {
-      total: totalNum
-      questions: data {
-        difficulty
-      }
-    }
-  }
-`;
-
-const userProfileQuery = `
-  query userProblemsSolved($username: String!) {
+const GET_USER_PROFILE_QUERY = `
+  query getUserProfile($username: String!) {
     allQuestionsCount {
       difficulty
       count
     }
     matchedUser(username: $username) {
-      problemsSolvedBeatsStats {
-        difficulty
-        percentage
+      contributions {
+        points
       }
-      submitStatsGlobal {
+      profile {
+        reputation
+        ranking
+      }
+      submissionCalendar
+      submitStats: submitStatsGlobal {
         acSubmissionNum {
+          difficulty
+          count
+          submissions
+        }
+        totalSubmissionNum {
           difficulty
           count
           submissions
@@ -49,102 +37,101 @@ const userProfileQuery = `
   }
 `;
 
-const userContestRankingQuery = `
-  query userContestRankingInfo($username: String!) {
-    userContestRanking(username: $username) {
-      attendedContestsCount
-      rating
-      globalRanking
-      totalParticipants
-      topPercentage
-    }
-  }
-`;
-
-const fetchLeetCodeData = async (query: string, variables: object) => {
+const fetchLeetCodeData = async (query, variables) => {
   try {
-    const response = await fetch(leetcodeApiUrl, {
+    const response = await fetch(LEETCODE_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Referer': 'https://leetcode.com/',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+        'Referer': `https://leetcode.com/${variables.username}/`,
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
       },
       body: JSON.stringify({ query, variables }),
     });
 
     if (!response.ok) {
-      console.error(`HTTP error! status: ${response.status}`);
-      console.error(await response.text());
-      throw new Error(`Failed to fetch data from LeetCode API. Status: ${response.status}`);
+      const errorBody = await response.text();
+      console.error(`Error fetching LeetCode data: ${response.status} ${response.statusText}`, errorBody);
+      throw new Error(`Failed to fetch LeetCode data. Status: ${response.status}`);
     }
-
+    
     const data = await response.json();
     if (data.errors) {
-      console.error('GraphQL Errors:', data.errors);
-      throw new Error('Error in GraphQL response.');
+        console.error("GraphQL Errors:", data.errors);
+        throw new Error("Error in GraphQL response from LeetCode API.");
     }
     return data;
   } catch (error) {
-    console.error('Error fetching LeetCode data:', error);
+    console.error('An error occurred during fetch:', error);
     throw error;
   }
 };
 
-const getStats = async () => {
+async function getLeetCodeStats(username) {
+  if (!username) {
+    throw new Error("LeetCode username is not provided in environment variables.");
+  }
+
+  const variables = { username };
+  const data = await fetchLeetCodeData(GET_USER_PROFILE_QUERY, variables);
+
+  const user = data.data.matchedUser;
+  if (!user) {
+    throw new Error(`User with username '${username}' not found on LeetCode.`);
+  }
+
+  const allQuestions = data.data.allQuestionsCount;
+  const totalQuestions = allQuestions.find(q => q.difficulty === 'All')?.count || 0;
+
+  const totalSolved = user.submitStats.acSubmissionNum.find(s => s.difficulty === 'All')?.count || 0;
+  
+  const totalSubmissions = user.submitStats.totalSubmissionNum.find(s => s.difficulty === 'All')?.submissions || 0;
+  const acSubmissions = user.submitStats.acSubmissionNum.find(s => s.difficulty === 'All')?.submissions || 0;
+  
+  const acceptanceRate = totalSubmissions > 0 ? (acSubmissions / totalSubmissions) * 100 : 0;
+  
+  const ranking = user.profile.ranking || 0;
+
+  const easy = {
+    total: allQuestions.find(q => q.difficulty === 'Easy')?.count || 0,
+    solved: user.submitStats.acSubmissionNum.find(s => s.difficulty === 'Easy')?.count || 0
+  };
+
+  const medium = {
+    total: allQuestions.find(q => q.difficulty === 'Medium')?.count || 0,
+    solved: user.submitStats.acSubmissionNum.find(s => s.difficulty === 'Medium')?.count || 0
+  };
+
+  const hard = {
+    total: allQuestions.find(q => q.difficulty === 'Hard')?.count || 0,
+    solved: user.submitStats.acSubmissionNum.find(s => s.difficulty === 'Hard')?.count || 0
+  };
+
+  return {
+    totalSolved,
+    totalQuestions,
+    acceptanceRate,
+    ranking,
+    easy,
+    medium,
+    hard
+  };
+}
+
+async function main() {
   try {
-    console.log('Fetching total question counts...');
-    const allProblemsData = await fetchLeetCodeData(problemsQuery, { categorySlug: "all-code-essentials" });
-    const totalQuestions = allProblemsData.data.problemsetQuestionList.total;
-
-    console.log('Fetching user profile data...');
-    const userProfileData = await fetchLeetCodeData(userProfileQuery, { username });
+    console.log('Fetching LeetCode stats...');
+    const stats = await getLeetCodeStats(process.env.LEETCODE_USERNAME);
     
-    console.log('Fetching user contest ranking...');
-    const contestRankingData = await fetchLeetCodeData(userContestRankingQuery, { username });
-    
-    const { allQuestionsCount, matchedUser } = userProfileData.data;
-    const { userContestRanking } = contestRankingData.data;
+    console.log('Successfully fetched stats:', JSON.stringify(stats, null, 2));
 
-    const totalSolved = matchedUser.submitStatsGlobal.acSubmissionNum.find(s => s.difficulty === 'All').count;
-    const totalAccepted = matchedUser.submitStatsGlobal.acSubmissionNum.find(s => s.difficulty === 'All').submissions;
-    const totalSubmissions = matchedUser.submitStatsGlobal.acSubmissionNum.reduce((acc: number, s: any) => acc + s.submissions, 0);
-
-    const calculatedAcceptanceRate = totalSubmissions > 0 ? (totalAccepted / totalSubmissions) * 100 : 0;
-
-    const easy = {
-      total: allQuestionsCount.find(q => q.difficulty === 'Easy').count,
-      solved: matchedUser.submitStatsGlobal.acSubmissionNum.find(s => s.difficulty === 'Easy').count,
-    };
-    const medium = {
-      total: allQuestionsCount.find(q => q.difficulty === 'Medium').count,
-      solved: matchedUser.submitStatsGlobal.acSubmissionNum.find(s => s.difficulty === 'Medium').count,
-    };
-    const hard = {
-      total: allQuestionsCount.find(q => q.difficulty === 'Hard').count,
-      solved: matchedUser.submitStatsGlobal.acSubmissionNum.find(s => s.difficulty === 'Hard').count,
-    };
-
-    const stats = {
-      totalSolved,
-      totalQuestions,
-      acceptanceRate: userContestRanking.topPercentage ? (100 - userContestRanking.topPercentage) : calculatedAcceptanceRate,
-      ranking: userContestRanking.globalRanking,
-      easy,
-      medium,
-      hard,
-    };
-
-    const filePath = join(process.cwd(), 'src', 'lib', 'leetcode-stats.json');
-    await writeFile(filePath, JSON.stringify(stats, null, 2));
-
-    console.log('Successfully updated LeetCode stats.');
-    console.log(JSON.stringify(stats, null, 2));
+    await fs.writeFile(GITHUB_STATS_FILE, JSON.stringify(stats, null, 2));
+    console.log(`Successfully wrote LeetCode stats to ${GITHUB_STATS_FILE}`);
 
   } catch (error) {
-    console.error('Failed to update LeetCode stats:', error);
-    process.exit(1);
+    console.error('Error updating LeetCode stats:', error.message);
+    process.exit(1); // Exit with error code to fail the GitHub Action
   }
-};
+}
 
-getStats();
+main();
