@@ -191,3 +191,5 @@ const SkillBar = ({ label, value, total, color }: { label: string, value: number
 };
 
 export default LeetCodeStats;
+
+    
