@@ -22,6 +22,39 @@ const THEME = {
   grid: 'rgba(34, 211, 238, 0.15)',
 };
 
+// Custom animated dot with ripple effect for the Radar chart
+const AnimatedRadarDot = (props: any) => {
+    const { cx, cy, stroke, payload, value } = props;
+
+    // Don't render a dot if the point's value is 0 or low, to avoid clutter
+    if (!value || value < 5) {
+        return null;
+    }
+
+    return (
+        <g>
+            {/* The ripple effect */}
+            <motion.circle
+                cx={cx}
+                cy={cy}
+                r="6"
+                fill={stroke}
+                initial={{ scale: 1, opacity: 0.6 }}
+                animate={{ scale: [1, 2.5, 1], opacity: [0.6, 0, 0.6] }}
+                transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    ease: "easeInOut",
+                }}
+            />
+            {/* The main dot */}
+            <circle cx={cx} cy={cy} r="4" fill={stroke} />
+        </g>
+    );
+};
+
+
 const LeetCodeStats = () => {
     const { totalSolved, easy, medium, hard, ranking, acceptanceRate } = leetCodeStats;
     const [mounted, setMounted] = useState(false);
@@ -128,6 +161,7 @@ const LeetCodeStats = () => {
                                     fillOpacity={0.2}
                                     className="group-hover:animate-pulse"
                                     animationDuration={300}
+                                    dot={<AnimatedRadarDot />}
                                 />
                             </RadarChart>
                         </ResponsiveContainer>
