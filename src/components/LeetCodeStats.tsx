@@ -1,203 +1,189 @@
 'use client';
+
 import { Card } from '@/components/ui/card';
 import leetCodeStats from '@/lib/leetcode-stats.json';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { Trophy, CheckCircle, Target, Percent } from 'lucide-react';
-import { useState } from 'react';
+import { 
+  Radar, 
+  RadarChart, 
+  PolarGrid, 
+  PolarAngleAxis, 
+  PolarRadiusAxis, 
+  ResponsiveContainer 
+} from 'recharts';
+import { Trophy, ExternalLink, Activity, Terminal, Zap, Cpu } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+
+// Cyber Palette
+const THEME = {
+  cyan: '#22d3ee',   // Main Glow
+  white: '#f0f9ff',  // Text
+  slate: '#0f172a',  // Dark BG
+  grid: 'rgba(34, 211, 238, 0.15)',
+};
 
 const LeetCodeStats = () => {
-    const {
-        totalQuestions,
-        totalSolved,
-        easy,
-        medium,
-        hard,
-        acceptanceRate,
-        ranking,
-    } = leetCodeStats;
+    const { totalSolved, easy, medium, hard, ranking, acceptanceRate } = leetCodeStats;
+    const [mounted, setMounted] = useState(false);
 
-    const [isHovered, setIsHovered] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
+    // Fallback loading state
     if (!totalSolved && !ranking) {
         return (
-          <Card className="p-8 bg-cyber-gray/20 border-neon-cyan/30 backdrop-blur-xl">
-            <div className="text-center text-gray-400">
-              <p className="font-semibold text-lg mb-2">Generating LeetCode Stats...</p>
-              <p className="text-sm">Run the 'Update LeetCode Stats' action in your repository's Actions tab to populate data.</p>
-            </div>
+          <Card className="p-8 border border-white/10 bg-black/40 backdrop-blur-xl">
+             <div className="flex flex-col items-center text-neon-cyan animate-pulse">
+                <Terminal className="w-10 h-10 mb-4" />
+                <p className="font-mono text-sm">INITIALIZING DATA STREAM...</p>
+             </div>
           </Card>
         );
     }
-    
-    const difficultyData = [
-        { name: 'Easy', solved: easy.solved, total: easy.total, color: '#00B8A3' },
-        { name: 'Medium', solved: medium.solved, total: medium.total, color: '#FFC01E' },
-        { name: 'Hard', solved: hard.solved, total: hard.total, color: '#FF375F' },
+
+    // Data for Radar Chart
+    // We normalize data to 100 to make the shape look good regardless of total numbers
+    const radarData = [
+        { subject: 'Easy', A: (easy.solved / easy.total) * 100, fullMark: 100 },
+        { subject: 'Medium', A: (medium.solved / medium.total) * 100, fullMark: 100 },
+        { subject: 'Hard', A: (hard.solved / hard.total) * 100, fullMark: 100 },
     ];
-    
-    const chartData = {
-        easy: [{ value: easy.solved }, { value: easy.total - easy.solved }],
-        medium: [{ value: medium.solved }, { value: medium.total - medium.solved }],
-        hard: [{ value: hard.solved }, { value: hard.total - hard.solved }],
-    };
-
-    const CustomTooltip = ({ active, payload }: any) => {
-        if (active && payload && payload.length) {
-            const data = payload[0].payload;
-            const parentName = payload[0].name.split('-')[0]; // Easy, Medium, or Hard
-            const solvedValue = data.value;
-            const parentData = difficultyData.find(d => d.name === parentName);
-            if (!parentData || payload[0].name.includes('remaining')) return null;
-
-            return (
-                <div className="p-2 bg-cyber-dark/80 border border-neon-cyan/30 rounded-lg text-frost-white text-sm backdrop-blur-sm">
-                    <p className="font-bold" style={{ color: parentData.color }}>
-                        {parentName}: {solvedValue} / {parentData.total}
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
 
     return (
-        <Card className="p-8 glass-card hover:border-neon-cyan/60 transition-all duration-500 group overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/5 via-frost-cyan/5 to-cyber-dark/5 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-cyan via-frost-cyan to-cyber-dark transform scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-left"></div>
-
-            <div className="relative z-10">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-                    <h3 className="text-2xl font-bold text-frost-white animate-fade-in-up mb-4 md:mb-0">
-                        LeetCode Stats
-                    </h3>
-                    <a 
-                        href="https://leetcode.com/AdilMunawar/" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-sm text-frost-cyan hover:text-white transition-colors animate-fade-in-up" 
-                        style={{animationDelay: '100ms'}}>
-                        @AdilMunawar
-                    </a>
-                </div>
+        <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="w-full"
+        >
+            <Card className="relative w-full p-6 overflow-hidden bg-[#0a0f1e]/80 border border-neon-cyan/30 rounded-xl shadow-[0_0_40px_-10px_rgba(34,211,238,0.15)] group backdrop-blur-md">
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                    {/* Left side: Chart */}
-                    <div className="relative w-full h-60">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <PieChart>
-                                <Tooltip content={<CustomTooltip />} cursor={{fill: 'transparent'}}/>
+                {/* 1. Background Grid & Scanline */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-cyan/5 to-transparent h-[10px] w-full animate-scanline pointer-events-none"></div>
 
-                                {/* Hard Arc */}
-                                <Pie
-                                    data={chartData.hard}
-                                    dataKey="value"
-                                    cx="50%"
-                                    cy="50%"
-                                    innerRadius="85%"
-                                    outerRadius="100%"
-                                    startAngle={90}
-                                    endAngle={-270}
-                                    paddingAngle={-10}
-                                    stroke="none"
-                                >
-                                    <Cell fill={difficultyData[2].color} />
-                                    <Cell fill="hsl(var(--muted) / 0.3)" />
-                                </Pie>
-
-                                {/* Medium Arc */}
-                                <Pie
-                                    data={chartData.medium}
-                                    dataKey="value"
-                                    cx="50%"
-                                    cy="50%"
-                                    innerRadius="65%"
-                                    outerRadius="80%"
-                                    startAngle={90}
-                                    endAngle={-270}
-                                    paddingAngle={-10}
-                                    stroke="none"
-                                >
-                                    <Cell fill={difficultyData[1].color} />
-                                    <Cell fill="hsl(var(--muted) / 0.3)" />
-                                </Pie>
-
-                                {/* Easy Arc */}
-                                <Pie
-                                    data={chartData.easy}
-                                    dataKey="value"
-                                    cx="50%"
-                                    cy="50%"
-                                    innerRadius="45%"
-                                    outerRadius="60%"
-                                    startAngle={90}
-                                    endAngle={-270}
-                                    paddingAngle={-10}
-                                    stroke="none"
-                                >
-                                    <Cell fill={difficultyData[0].color} />
-                                    <Cell fill="hsl(var(--muted) / 0.3)" />
-                                </Pie>
-
-                            </PieChart>
-                        </ResponsiveContainer>
-                        <div 
-                            className="absolute inset-0 flex flex-col items-center justify-center text-center cursor-pointer"
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
-                        >
-                            {isHovered ? (
-                                <>
-                                    <p className="text-4xl font-bold text-white drop-shadow-lg animate-scale-in">
-                                        {acceptanceRate.toFixed(2)}%
-                                    </p>
-                                    <p className="text-sm text-frost-cyan mt-1 animate-fade-in-up" style={{ animationDelay: '100ms' }}>Acceptance</p>
-                                </>
-                            ) : (
-                                <>
-                                    <p className="text-4xl font-bold text-white drop-shadow-lg animate-scale-in">
-                                        {totalSolved}
-                                    </p>
-                                    <p className="text-sm text-frost-cyan mt-1 animate-fade-in-up" style={{ animationDelay: '100ms' }}>Solved</p>
-                                </>
-                            )}
+                {/* 2. Header Area */}
+                <div className="relative z-10 flex justify-between items-start border-b border-neon-cyan/20 pb-4 mb-6">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-neon-cyan/10 border border-neon-cyan/50 rounded-lg">
+                            <Cpu className="w-5 h-5 text-neon-cyan" />
                         </div>
-                    </div>
-
-                    {/* Right side: Stats */}
-                    <div className="flex flex-col gap-6">
-                        <div className="flex justify-around text-center">
-                            <div className="flex flex-col items-center animate-scale-in" style={{animationDelay: '200ms'}}>
-                                <Trophy className="w-7 h-7 text-neon-cyan mb-2" />
-                                <p className="text-2xl font-bold text-white">{ranking.toLocaleString()}</p>
-                                <p className="text-xs text-frost-cyan">Ranking</p>
+                        <div>
+                            <h3 className="text-lg font-bold text-white tracking-widest uppercase font-mono">
+                                System_Metrics
+                            </h3>
+                            <div className="flex items-center gap-2 text-xs text-neon-cyan/70 font-mono">
+                                <span className="relative flex h-2 w-2">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
+                                  <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-cyan"></span>
+                                </span>
+                                ONLINE // LeetCode
                             </div>
                         </div>
+                    </div>
+                    
+                    <div className="text-right">
+                        <p className="text-xs text-gray-400 font-mono uppercase mb-1">Total Solved</p>
+                        <p className="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] font-mono">
+                            {totalSolved}
+                        </p>
+                    </div>
+                </div>
 
-                        <div className="space-y-3">
-                            {difficultyData.map((data, index) => (
-                                <div key={data.name} className="animate-fade-in-up" style={{animationDelay: `${400 + index * 100}ms`}}>
-                                    <div className="flex justify-between items-center text-sm mb-1">
-                                        <span className="font-semibold" style={{color: data.color}}>{data.name}</span>
-                                        <span className="font-mono text-white">{data.solved} <span className="text-gray-400">/ {data.total}</span></span>
-                                    </div>
-                                    <div className="w-full bg-cyber-dark/40 rounded-full h-2.5 border border-neon-cyan/20">
-                                        <div 
-                                            className="h-full rounded-full" 
-                                            style={{ 
-                                                width: `${(data.solved / data.total) * 100}%`,
-                                                backgroundColor: data.color,
-                                                boxShadow: `0 0 8px ${data.color}80`
-                                            }}
-                                        ></div>
-                                    </div>
+                {/* 3. Main Content Grid */}
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    
+                    {/* LEFT: Radar Chart (The "Skill Shape") */}
+                    <div className="lg:col-span-2 h-[200px] relative">
+                         <ResponsiveContainer width="100%" height="100%">
+                            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
+                                <PolarGrid stroke={THEME.grid} strokeDasharray="4 4" />
+                                <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
+                                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                                <Radar
+                                    name="Skills"
+                                    dataKey="A"
+                                    stroke={THEME.cyan}
+                                    strokeWidth={2}
+                                    fill={THEME.cyan}
+                                    fillOpacity={0.2}
+                                />
+                            </RadarChart>
+                        </ResponsiveContainer>
+                        {/* Decorative corners for the chart area */}
+                        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-neon-cyan"></div>
+                        <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-neon-cyan"></div>
+                    </div>
+
+                    {/* RIGHT: Segmented Power Bars */}
+                    <div className="lg:col-span-3 flex flex-col justify-center space-y-5">
+                        
+                        {/* Easy Bar */}
+                        <SkillBar label="EASY" value={easy.solved} total={easy.total} color="bg-emerald-400" />
+                        
+                        {/* Medium Bar */}
+                        <SkillBar label="MED" value={medium.solved} total={medium.total} color="bg-amber-400" />
+                        
+                        {/* Hard Bar */}
+                        <SkillBar label="HARD" value={hard.solved} total={hard.total} color="bg-rose-500" />
+
+                        {/* Footer Stats */}
+                        <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-neon-cyan/20">
+                            <div className="flex items-center gap-3">
+                                <Trophy className="w-4 h-4 text-yellow-500" />
+                                <div>
+                                    <p className="text-[10px] text-gray-400 font-mono uppercase">Global Rank</p>
+                                    <p className="text-sm font-bold text-white font-mono">{ranking.toLocaleString()}</p>
                                 </div>
-                            ))}
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <Activity className="w-4 h-4 text-neon-cyan" />
+                                <div>
+                                    <p className="text-[10px] text-gray-400 font-mono uppercase">Acceptance</p>
+                                    <p className="text-sm font-bold text-white font-mono">{acceptanceRate.toFixed(1)}%</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </Card>
+        </motion.div>
+    );
+};
+
+// Segmented Bar Component (The "Battery" Look)
+const SkillBar = ({ label, value, total, color }: { label: string, value: number, total: number, color: string }) => {
+    const percentage = (value / total) * 100;
+    // Create 20 segments
+    const segments = Array.from({ length: 20 });
+    const filledSegments = Math.round((percentage / 100) * 20);
+
+    return (
+        <div className="flex items-center gap-4">
+            <div className="w-12 text-xs font-bold text-neon-cyan font-mono">{label}</div>
+            
+            {/* The Bar */}
+            <div className="flex-1 flex gap-[2px] h-3">
+                {segments.map((_, i) => (
+                    <div 
+                        key={i}
+                        className={`flex-1 rounded-[1px] transition-all duration-500 ${
+                            i < filledSegments 
+                                ? `${color} shadow-[0_0_8px_currentColor] opacity-100` 
+                                : 'bg-gray-800 opacity-30'
+                        }`}
+                    />
+                ))}
             </div>
-        </Card>
+
+            <div className="w-16 text-right text-xs font-mono text-gray-400">
+                <span className="text-white">{value}</span>/{total}
+            </div>
+        </div>
     );
 };
 
 export default LeetCodeStats;
+    
