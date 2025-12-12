@@ -1,145 +1,175 @@
-
-import 'dotenv/config';
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import fetch from 'node-fetch';
 
-// --- Configuration ---
-const GITHUB_USERNAME = process.env.GH_USERNAME;
-const GITHUB_TOKEN = process.env.GH_PAT;
-const OUTPUT_FILE = path.join(process.cwd(), 'src', 'lib', 'github-contributions.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// --- GraphQL Query ---
-// This query now fetches the total contribution count across all years,
-// as well as the detailed calendar for the last year.
-const GITHUB_GRAPHQL_QUERY = `
-  query($userName:String!) {
-    user(login: $userName) {
-      contributionsCollection {
-        contributionCalendar {
-          totalContributions
-          weeks {
-            contributionDays {
-              contributionCount
-              date
-              weekday
-              color
+const GH_USERNAME = process.env.GH_USERNAME;
+const GH_PAT = process.env.GH_PAT; // Ensure this is set in your GitHub Actions secrets
+const OUTPUT_PATH = path.join(__dirname, '../src/lib/github-contributions.json');
+
+const fetchAllTimeContributions = async () => {
+    const query = `
+      query($username: String!) {
+        user(login: $username) {
+          contributionsCollection {
+            contributionYears
+          }
+        }
+      }
+    `;
+
+    const contributionsByYear = {};
+    let totalContributions = 0;
+
+    const userResponse = await fetch('https://api.github.com/graphql', {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${GH_PAT}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            query,
+            variables: { username: GH_USERNAME },
+        }),
+    });
+
+    if (!userResponse.ok) {
+        throw new Error(`Failed to fetch user data: ${userResponse.statusText}`);
+    }
+
+    const userData = await userResponse.json();
+    const years = userData.data.user.contributionsCollection.contributionYears;
+
+    for (const year of years) {
+        const yearQuery = `
+          query($username: String!, $from: DateTime!, $to: DateTime!) {
+            user(login: $username) {
+              contributionsCollection(from: $from, to: $to) {
+                contributionCalendar {
+                  totalContributions
+                }
+              }
+            }
+          }
+        `;
+        const from = new Date(year, 0, 1).toISOString();
+        const to = new Date(year, 11, 31).toISOString();
+
+        const yearResponse = await fetch('https://api.github.com/graphql', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${GH_PAT}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                query: yearQuery,
+                variables: { username: GH_USERNAME, from, to },
+            }),
+        });
+
+        if (!yearResponse.ok) {
+            console.warn(`Failed to fetch contributions for year ${year}: ${yearResponse.statusText}`);
+            continue;
+        }
+
+        const yearData = await yearResponse.json();
+        const yearlyContributions = yearData.data.user.contributionsCollection.contributionCalendar.totalContributions;
+        contributionsByYear[year] = yearlyContributions;
+        totalContributions += yearlyContributions;
+    }
+
+    return totalContributions;
+};
+
+
+const fetchLastYearContributions = async () => {
+  const query = `
+    query($username: String!) {
+      user(login: $username) {
+        contributionsCollection {
+          contributionCalendar {
+            totalContributions
+            weeks {
+              contributionDays {
+                date
+                contributionCount
+                weekday
+                contributionLevel
+              }
             }
           }
         }
       }
     }
-  }
-`;
-
-// --- Helper Functions ---
-
-/**
- * Fetches contribution data from the GitHub GraphQL API.
- * @returns {Promise<any>} The user's contribution data.
- */
-async function fetchContributionData() {
-  if (!GITHUB_USERNAME || !GITHUB_TOKEN) {
-    throw new Error('Missing GitHub username or token in environment variables.');
-  }
+  `;
 
   const response = await fetch('https://api.github.com/graphql', {
     method: 'POST',
     headers: {
-      Authorization: `bearer ${GITHUB_TOKEN}`,
+      Authorization: `Bearer ${GH_PAT}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      query: GITHUB_GRAPHQL_QUERY,
-      variables: { userName: GITHUB_USERNAME },
+      query,
+      variables: { username: GH_USERNAME },
     }),
   });
 
   if (!response.ok) {
-    const errorBody = await response.text();
-    throw new Error(`GitHub API request failed with status ${response.status}: ${errorBody}`);
+    throw new Error(`GitHub API request failed: ${response.statusText}`);
   }
 
-  return response.json();
-}
+  const data = await response.json();
+  const calendar = data.data.user.contributionsCollection.contributionCalendar;
 
-/**
- * Maps the color from the GitHub API to a numeric level for the UI.
- * @param {string} color - The hex color string from the API.
- * @returns {number} The corresponding level (0-4).
- */
-function mapColorToLevel(color) {
-  const levelMap = {
-    '#ebedf0': 0, // No contributions
-    '#9be9a8': 1,
-    '#40c463': 2,
-    '#30a14e': 3,
-    '#216e39': 4,
-    // New color scheme from GitHub
-    '#161b22': 0, // No contributions
-    '#0e4429': 1,
-    '#006d32': 2,
-    '#26a641': 3,
-    '#39d353': 4,
-  };
-  return levelMap[color.toLowerCase()] ?? 0;
-}
-
-
-/**
- * Transforms the raw API data into the desired JSON structure.
- * @param {any} apiData - The raw data from the GitHub API.
- * @returns {object} The transformed data.
- */
-function transformData(apiData) {
-  const contributionCalendar = apiData.data.user.contributionsCollection.contributionCalendar;
-
-  if (!contributionCalendar) {
-    throw new Error('Could not find contribution calendar in API response.');
-  }
-  
-  const totalContributions = contributionCalendar.totalContributions;
-
-  const contributions = contributionCalendar.weeks.flatMap(week => 
-    week.contributionDays.map(day => ({
+  const contributions = calendar.weeks.flatMap((week) =>
+    week.contributionDays.map((day) => ({
       date: day.date,
       count: day.contributionCount,
-      level: mapColorToLevel(day.color),
+      level: mapContributionLevel(day.contributionLevel),
     }))
   );
 
-  return { totalContributions, contributions };
-}
+  return { contributions };
+};
 
-/**
- * Writes the data to the specified output file.
- * @param {object} data - The data to write.
- */
-async function writeDataToFile(data) {
+const mapContributionLevel = (level) => {
+  switch (level) {
+    case 'FIRST_QUARTILE': return 1;
+    case 'SECOND_QUARTILE': return 2;
+    case 'THIRD_QUARTILE': return 3;
+    case 'FOURTH_QUARTILE': return 4;
+    case 'NONE':
+    default: return 0;
+  }
+};
+
+const run = async () => {
+  if (!GH_USERNAME || !GH_PAT) {
+    throw new Error('GH_USERNAME and GH_PAT environment variables are required.');
+  }
+
   try {
-    await fs.writeFile(OUTPUT_FILE, JSON.stringify(data, null, 2));
-    console.log(`Successfully wrote GitHub stats to ${OUTPUT_FILE}`);
+    console.log('Fetching all-time GitHub contributions...');
+    const totalContributions = await fetchAllTimeContributions();
+
+    console.log('Fetching last year GitHub contributions...');
+    const { contributions } = await fetchLastYearContributions();
+
+    const stats = {
+      totalContributions,
+      contributions,
+    };
+
+    fs.writeFileSync(OUTPUT_PATH, JSON.stringify(stats, null, 2));
+    console.log(`Successfully wrote GitHub stats to ${OUTPUT_PATH}`);
   } catch (error) {
-    console.error(`Error writing to file: ${error.message}`);
+    console.error('Error fetching GitHub stats:', error);
     process.exit(1);
   }
-}
+};
 
-// --- Main Execution ---
-
-/**
- * Main function to orchestrate fetching, transforming, and writing the data.
- */
-async function main() {
-  console.log('Starting GitHub contribution data fetch...');
-  try {
-    const apiData = await fetchContributionData();
-    const transformedData = transformData(apiData);
-    await writeDataToFile(transformedData);
-    console.log('GitHub contribution data updated successfully.');
-  } catch (error) {
-    console.error(`An error occurred: ${error.message}`);
-    process.exit(1);
-  }
-}
-
-main();
+run();
