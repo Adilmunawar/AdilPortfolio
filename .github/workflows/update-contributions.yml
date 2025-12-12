@@ -34,6 +34,7 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add src/components/GitHubStats.tsx
+          git add src/lib/github-contributions.json
           git diff --staged --quiet || git commit -m "chore: update GitHub contribution stats"
           git push
+
