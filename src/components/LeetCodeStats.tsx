@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card } from '@/components/ui/card';
@@ -11,8 +12,8 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 import { Trophy, Activity, Cpu, Terminal } from 'lucide-react';
-import { useState, useEffect, useMemo } from 'react';
-import { motion, useInView, useAnimate } from 'framer-motion';
+import { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 
 // Cyber Palette
 const THEME = {
@@ -53,19 +54,6 @@ const AnimatedRadarDot = (props: any) => {
         </g>
     );
 };
-
-const AnimatedNumber = ({ value }: { value: number }) => {
-  const [scope, animate] = useAnimate();
-  const isInView = useInView(scope, { once: true });
-
-  useEffect(() => {
-    if (isInView) {
-      animate(scope.current, { innerHTML: value }, { duration: 1.5, ease: 'easeOut' });
-    }
-  }, [isInView, value, animate, scope]);
-
-  return <span ref={scope}>0</span>;
-}
 
 
 const LeetCodeStats = () => {
@@ -108,47 +96,20 @@ const LeetCodeStats = () => {
         );
     }
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.2,
-            },
-        },
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.5,
-                ease: 'easeOut'
-            },
-        },
-    };
-
     return (
         <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
             className="w-full"
         >
             <Card className="relative w-full p-6 overflow-hidden bg-[#0a0f1e]/80 border border-neon-cyan/30 rounded-xl shadow-[0_0_40px_-10px_rgba(34,211,238,0.15)] group backdrop-blur-md">
                 
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
-                <motion.div 
-                    className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-cyan/5 to-transparent h-[10px] w-full pointer-events-none"
-                    initial={{ y: '-100%' }}
-                    animate={{ y: '500%' }}
-                    transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-cyan/5 to-transparent h-[10px] w-full animate-scanline pointer-events-none"></div>
 
-                <motion.div variants={itemVariants} className="relative z-10 flex justify-between items-start border-b border-neon-cyan/20 pb-4 mb-6">
+                <div className="relative z-10 flex justify-between items-start border-b border-neon-cyan/20 pb-4 mb-6">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-neon-cyan/10 border border-neon-cyan/50 rounded-lg group-hover:animate-pulse">
                             <Cpu className="w-5 h-5 text-neon-cyan" />
@@ -170,43 +131,37 @@ const LeetCodeStats = () => {
                     <div className="text-right">
                         <p className="text-xs text-gray-400 font-mono uppercase mb-1">Total Solved</p>
                         <p className="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] font-mono">
-                           <AnimatedNumber value={totalSolved} />
+                            {totalSolved}
                         </p>
                     </div>
-                </motion.div>
+                </div>
 
                 <div className="relative z-10 grid grid-cols-1 lg:grid-cols-5 gap-8">
                     
-                    <motion.div variants={itemVariants} className="lg:col-span-2 h-[200px] relative">
+                    <div className="lg:col-span-2 h-[200px] relative">
                          <ResponsiveContainer width="100%" height="100%">
                             <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
                                 <PolarGrid stroke={THEME.grid} strokeDasharray="4 4" />
                                 <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
                                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                                <motion.g
-                                     initial={{ pathLength: 0 }}
-                                     animate={{ pathLength: 1 }}
-                                     transition={{ duration: 1.5, ease: "easeInOut", delay: 0.5 }}
-                                >
-                                    <Radar
-                                        name="Skills"
-                                        dataKey="A"
-                                        stroke={THEME.cyan}
-                                        strokeWidth={2}
-                                        fill={THEME.cyan}
-                                        fillOpacity={0.2}
-                                        className="group-hover:animate-pulse"
-                                        animationDuration={300}
-                                        dot={<AnimatedRadarDot />}
-                                    />
-                                </motion.g>
+                                <Radar
+                                    name="Skills"
+                                    dataKey="A"
+                                    stroke={THEME.cyan}
+                                    strokeWidth={2}
+                                    fill={THEME.cyan}
+                                    fillOpacity={0.2}
+                                    className="group-hover:animate-pulse"
+                                    animationDuration={300}
+                                    dot={<AnimatedRadarDot />}
+                                />
                             </RadarChart>
                         </ResponsiveContainer>
                         <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-neon-cyan"></div>
                         <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-neon-cyan"></div>
-                    </motion.div>
+                    </div>
 
-                    <motion.div variants={itemVariants} className="lg:col-span-3 flex flex-col justify-center space-y-5">
+                    <div className="lg:col-span-3 flex flex-col justify-center space-y-5">
                         
                         <div onMouseEnter={() => setHoveredSkill('Easy')} onMouseLeave={() => setHoveredSkill(null)}>
                             <SkillBar label="EASY" value={easy.solved} total={easy.total} color="bg-emerald-400" />
@@ -220,7 +175,7 @@ const LeetCodeStats = () => {
                             <SkillBar label="HARD" value={hard.solved} total={hard.total} color="bg-rose-500" />
                         </div>
 
-                        <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-neon-cyan/20">
+                        <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-neon-cyan/20">
                             <div className="flex items-center gap-3">
                                 <Trophy className="w-4 h-4 text-yellow-500" />
                                 <div>
@@ -235,8 +190,8 @@ const LeetCodeStats = () => {
                                     <p className="text-sm font-bold text-white font-mono">{acceptanceRate.toFixed(1)}%</p>
                                 </div>
                             </div>
-                        </motion.div>
-                    </motion.div>
+                        </div>
+                    </div>
                 </div>
             </Card>
         </motion.div>
@@ -261,16 +216,13 @@ const SkillBar = ({ label, value, total, color }: { label: string, value: number
             {/* The Bar */}
             <div className="flex-1 flex gap-[2px] h-3">
                 {segments.map((_, i) => (
-                    <motion.div 
+                    <div 
                         key={i}
                         className={`flex-1 rounded-[1px] transition-all duration-500 ${
                             i < filledSegments 
                                 ? `${color} shadow-[0_0_8px_currentColor] opacity-100` 
                                 : 'bg-gray-800 opacity-30'
                         }`}
-                        initial={{ opacity: 0, scaleX: 0 }}
-                        animate={{ opacity: i < filledSegments ? 1 : 0.3, scaleX: 1 }}
-                        transition={{ duration: 0.5, delay: 0.5 + i * 0.02 }}
                     />
                 ))}
             </div>
@@ -283,5 +235,3 @@ const SkillBar = ({ label, value, total, color }: { label: string, value: number
 };
 
 export default LeetCodeStats;
-
-    
