@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card } from '@/components/ui/card';
@@ -12,7 +11,7 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 import { Trophy, Activity, Cpu, Terminal } from 'lucide-react';
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 
 // Cyber Palette
@@ -23,43 +22,15 @@ const THEME = {
   grid: 'rgba(34, 211, 238, 0.15)',
 };
 
-// Custom animated dot with ripple effect for the Radar chart
-const AnimatedRadarDot = (props: any) => {
-    const { cx, cy, stroke, payload, value } = props;
-
-    // Don't render a dot if the point's value is 0 or low, to avoid clutter
-    if (!value || value < 5) {
-        return null;
-    }
-
-    return (
-        <g>
-            {/* The ripple effect */}
-            <motion.circle
-                cx={cx}
-                cy={cy}
-                r="6"
-                fill={stroke}
-                initial={{ scale: 1, opacity: 0.6 }}
-                animate={{ scale: [1, 2.5, 1], opacity: [0.6, 0, 0.6] }}
-                transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatType: "loop",
-                    ease: "easeInOut",
-                }}
-            />
-            {/* The main dot */}
-            <circle cx={cx} cy={cy} r="4" fill={stroke} />
-        </g>
-    );
-};
-
-
 const LeetCodeStats = () => {
     const { totalSolved, easy, medium, hard, ranking, acceptanceRate } = leetCodeStats;
+    const [mounted, setMounted] = useState(false);
     const [hoveredSkill, setHoveredSkill] = useState<'Easy' | 'Medium' | 'Hard' | null>(null);
 
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+    
     // Data for Radar Chart
     const radarData = useMemo(() => {
         const fullData = {
@@ -106,9 +77,11 @@ const LeetCodeStats = () => {
         >
             <Card className="relative w-full p-6 overflow-hidden bg-[#0a0f1e]/80 border border-neon-cyan/30 rounded-xl shadow-[0_0_40px_-10px_rgba(34,211,238,0.15)] group backdrop-blur-md">
                 
+                {/* 1. Background Grid & Scanline */}
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-cyan/5 to-transparent h-[10px] w-full animate-scanline pointer-events-none"></div>
 
+                {/* 2. Header Area */}
                 <div className="relative z-10 flex justify-between items-start border-b border-neon-cyan/20 pb-4 mb-6">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-neon-cyan/10 border border-neon-cyan/50 rounded-lg group-hover:animate-pulse">
@@ -136,8 +109,10 @@ const LeetCodeStats = () => {
                     </div>
                 </div>
 
+                {/* 3. Main Content Grid */}
                 <div className="relative z-10 grid grid-cols-1 lg:grid-cols-5 gap-8">
                     
+                    {/* LEFT: Radar Chart (The "Skill Shape") */}
                     <div className="lg:col-span-2 h-[200px] relative">
                          <ResponsiveContainer width="100%" height="100%">
                             <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
@@ -153,14 +128,15 @@ const LeetCodeStats = () => {
                                     fillOpacity={0.2}
                                     className="group-hover:animate-pulse"
                                     animationDuration={300}
-                                    dot={<AnimatedRadarDot />}
                                 />
                             </RadarChart>
                         </ResponsiveContainer>
+                        {/* Decorative corners for the chart area */}
                         <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-neon-cyan"></div>
                         <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-neon-cyan"></div>
                     </div>
 
+                    {/* RIGHT: Segmented Power Bars */}
                     <div className="lg:col-span-3 flex flex-col justify-center space-y-5">
                         
                         <div onMouseEnter={() => setHoveredSkill('Easy')} onMouseLeave={() => setHoveredSkill(null)}>
@@ -175,6 +151,7 @@ const LeetCodeStats = () => {
                             <SkillBar label="HARD" value={hard.solved} total={hard.total} color="bg-rose-500" />
                         </div>
 
+                        {/* Footer Stats */}
                         <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-neon-cyan/20">
                             <div className="flex items-center gap-3">
                                 <Trophy className="w-4 h-4 text-yellow-500" />
