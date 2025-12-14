@@ -2,10 +2,7 @@
 import { Card } from '@/components/ui/card';
 import ProfileCard from './ProfileCard';
 import { useState, useEffect, useRef } from 'react';
-import { Sparkles, Users, Rocket, Cpu, ChevronLeft, ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from './ui/button';
 
 const dynamicTexts = [
   "Frontend Engineer",
@@ -46,7 +43,7 @@ const milestoneBatches = [
 
 const variants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 100 : -100,
+    x: direction > 0 ? 300 : -300,
     opacity: 0,
   }),
   center: {
@@ -56,9 +53,14 @@ const variants = {
   },
   exit: (direction: number) => ({
     zIndex: 0,
-    x: direction < 0 ? 100 : -100,
+    x: direction < 0 ? 300 : -300,
     opacity: 0,
   }),
+};
+
+const swipeConfidenceThreshold = 10000;
+const swipePower = (offset: number, velocity: number) => {
+  return Math.abs(offset) * velocity;
 };
 
 const AboutSection = () => {
@@ -146,10 +148,11 @@ const AboutSection = () => {
               />
             </motion.div>
           
-            <div className="lg:col-span-3 relative h-[420px] md:h-[350px] flex flex-col justify-center">
-              <AnimatePresence initial={false} custom={direction} mode="wait">
+            <div className="lg:col-span-3 relative h-[420px] md:h-[350px] flex flex-col justify-center overflow-hidden">
+              <AnimatePresence initial={false} custom={direction}>
                 <motion.div
                   key={page}
+                  className="w-full absolute"
                   custom={direction}
                   variants={variants}
                   initial="enter"
@@ -159,34 +162,42 @@ const AboutSection = () => {
                     x: { type: "spring", stiffness: 300, damping: 30 },
                     opacity: { duration: 0.3 }
                   }}
-                  className="w-full absolute"
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={1}
+                  onDragEnd={(e, { offset, velocity }) => {
+                    const swipe = swipePower(offset.x, velocity.x);
+                    if (swipe < -swipeConfidenceThreshold) {
+                      paginate(1);
+                    } else if (swipe > swipeConfidenceThreshold) {
+                      paginate(-1);
+                    }
+                  }}
                 >
                   <h3 className="text-xl font-bold text-frost-white mb-4 text-center">{activeBatch.title}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {activeBatch.events.map((milestone, index) => (
-                      <Card
+                      <motion.div
                         key={index}
-                        className="relative p-6 bg-cyber-dark/80 border border-neon-cyan/30 transition-all duration-300 shadow-lg backdrop-blur-sm h-full"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 + index * 0.15 }}
                       >
-                         <div className="relative z-10">
-                            <div>
-                              <h4 className="font-bold text-lg text-frost-white mb-2">{milestone.title}</h4>
-                              <p className="text-sm text-frost-cyan leading-relaxed">{milestone.description}</p>
+                        <Card
+                          className="p-6 bg-cyber-dark/80 border border-neon-cyan/30 transition-all duration-300 shadow-lg backdrop-blur-sm h-full"
+                        >
+                          <div className="relative z-10">
+                              <div>
+                                <h4 className="font-bold text-lg text-frost-white mb-2">{milestone.title}</h4>
+                                <p className="text-sm text-frost-cyan leading-relaxed">{milestone.description}</p>
+                              </div>
                             </div>
-                          </div>
-                      </Card>
+                        </Card>
+                      </motion.div>
                     ))}
                   </div>
                 </motion.div>
               </AnimatePresence>
-              <div className="absolute -bottom-10 right-0 z-20 flex gap-2">
-                <Button variant="outline" size="icon" onClick={() => paginate(-1)} className="bg-cyber-dark/50 hover:bg-neon-cyan/20 border-neon-cyan/30">
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="icon" onClick={() => paginate(1)} className="bg-cyber-dark/50 hover:bg-neon-cyan/20 border-neon-cyan/30">
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
             </div>
         </div>
       </div>
