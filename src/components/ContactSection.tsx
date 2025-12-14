@@ -238,13 +238,13 @@ const ContactSection = () => {
         <div className="fixed bottom-8 right-8 z-50">
             <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="group relative w-16 h-16 bg-cyber-dark/50 text-neon-cyan rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg shadow-neon-cyan/20 hover:shadow-neon-cyan/40 backdrop-blur-sm border-2 border-neon-cyan/30 animate-float overflow-hidden"
+                className="group relative w-16 h-16 bg-cyber-dark/50 text-neon-cyan rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg shadow-neon-cyan/20 hover:shadow-neon-cyan/40 backdrop-blur-sm border-2 border-neon-cyan/30 animate-float overflow-hidden"
             >
                 <ArrowUp size={28} className="transition-transform duration-300 group-hover:-translate-y-1" />
                 
                 {/* Ripple Effect */}
-                <span className="absolute w-32 h-32 -top-16 -left-16 bg-neon-cyan rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
-                <span className="absolute w-32 h-32 -top-16 -left-16 bg-neon-cyan rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s 1s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
+                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-neon-cyan rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
+                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-neon-cyan rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s 1s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
             </button>
         </div>
       </div>
