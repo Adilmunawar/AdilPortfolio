@@ -17,55 +17,39 @@ import { motion } from 'framer-motion';
 // Cyber Palette
 const THEME = {
   cyan: '#22d3ee',   // Main Glow
+  red: '#f43f5e',     // For the second chart
+  amber: '#f59e0b',
   white: '#f0f9ff',  // Text
   slate: '#0f172a',  // Dark BG
   grid: 'rgba(34, 211, 238, 0.15)',
+  grid2: 'rgba(244, 63, 94, 0.15)',
 };
 
 const LeetCodeStats = () => {
     const { totalSolved, easy, medium, hard, ranking, acceptanceRate } = leetCodeStats;
     const [mounted, setMounted] = useState(false);
-    const [hoveredSkill, setHoveredSkill] = useState<'Easy' | 'Medium' | 'Hard' | null>(null);
 
     useEffect(() => {
         setMounted(true);
     }, []);
     
-    // Data for Radar Chart
-    const radarData = useMemo(() => {
-        // Based on the provided screenshot of advanced skills
-        const advancedSkills = {
-            'Dyn. Prog.': 95, // Normalized from 164
-            'Backtracking': 75, // Normalized from 39
-            'Union Find': 60,   // Normalized from 20
-            'Div & Conquer': 55, // Normalized from 18
-            'Bitmask': 45,      // Normalized from 14
-        };
+    // Data for Radar Chart 1
+    const radarData1 = useMemo(() => [
+        { subject: 'Dyn. Prog.', A: 95, fullMark: 100 },
+        { subject: 'Backtracking', A: 75, fullMark: 100 },
+        { subject: 'Union Find', A: 60, fullMark: 100 },
+        { subject: 'Div & Conquer', A: 55, fullMark: 100 },
+        { subject: 'Bitmask', A: 45, fullMark: 100 },
+    ], []);
 
-        const skillData = [
-            { subject: 'Dyn. Prog.', A: advancedSkills['Dyn. Prog.'], fullMark: 100 },
-            { subject: 'Backtracking', A: advancedSkills['Backtracking'], fullMark: 100 },
-            { subject: 'Union Find', A: advancedSkills['Union Find'], fullMark: 100 },
-            { subject: 'Div & Conquer', A: advancedSkills['Div & Conquer'], fullMark: 100 },
-            { subject: 'Bitmask', A: advancedSkills['Bitmask'], fullMark: 100 },
-        ];
-
-        // Highlight a single skill on hover
-        if (hoveredSkill) {
-            const hoverMappings: { [key: string]: string[] } = {
-                'Easy': ['Backtracking', 'Union Find'],
-                'Medium': ['Div & Conquer', 'Bitmask'],
-                'Hard': ['Dyn. Prog.'],
-            };
-            const skillsToHighlight = hoverMappings[hoveredSkill] || [];
-            return skillData.map(skill => ({
-                ...skill,
-                A: skillsToHighlight.includes(skill.subject) ? skill.A : 0,
-            }));
-        }
-
-        return skillData;
-    }, [hoveredSkill]);
+    // Data for Radar Chart 2
+    const radarData2 = useMemo(() => [
+        { subject: 'Greedy', A: 88, fullMark: 100 },
+        { subject: 'Graph', A: 92, fullMark: 100 },
+        { subject: 'Trie', A: 70, fullMark: 100 },
+        { subject: 'Segment Tree', A: 65, fullMark: 100 },
+        { subject: 'Geometry', A: 50, fullMark: 100 },
+    ], []);
 
 
     // Fallback loading state
@@ -90,11 +74,9 @@ const LeetCodeStats = () => {
         >
             <Card className="relative w-full p-6 overflow-hidden bg-[#0a0f1e]/80 border border-neon-cyan/30 rounded-xl shadow-[0_0_40px_-10px_rgba(34,211,238,0.15)] group backdrop-blur-md">
                 
-                {/* 1. Background Grid & Scanline */}
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-cyan/5 to-transparent h-[10px] w-full animate-scanline pointer-events-none"></div>
 
-                {/* 2. Header Area */}
                 <div className="relative z-10 flex justify-between items-start border-b border-neon-cyan/20 pb-4 mb-6">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-neon-cyan/10 border border-neon-cyan/50 rounded-lg group-hover:animate-pulse">
@@ -122,49 +104,46 @@ const LeetCodeStats = () => {
                     </div>
                 </div>
 
-                {/* 3. Main Content Grid */}
-                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-5 gap-8">
+                {/* Main Content: Two Charts + Skill Bars */}
+                <div className="relative z-10 space-y-8">
                     
-                    {/* LEFT: Radar Chart (The "Skill Shape") */}
-                    <div className="lg:col-span-2 h-[200px] relative">
-                         <ResponsiveContainer width="100%" height="100%">
-                            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
-                                <PolarGrid stroke={THEME.grid} strokeDasharray="4 4" />
-                                <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
-                                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                                <Radar
-                                    name="Skills"
-                                    dataKey="A"
-                                    stroke={THEME.cyan}
-                                    strokeWidth={2}
-                                    fill={THEME.cyan}
-                                    fillOpacity={0.2}
-                                    className="group-hover:animate-pulse"
-                                    animationDuration={300}
-                                />
-                            </RadarChart>
-                        </ResponsiveContainer>
-                        {/* Decorative corners for the chart area */}
-                        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-neon-cyan"></div>
-                        <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-neon-cyan"></div>
+                    {/* Charts Area */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[220px]">
+                        {/* Chart 1 */}
+                        <div className="h-full relative">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData1}>
+                                    <PolarGrid stroke={THEME.grid} strokeDasharray="4 4" />
+                                    <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
+                                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                                    <Radar name="Core Skills" dataKey="A" stroke={THEME.cyan} strokeWidth={2} fill={THEME.cyan} fillOpacity={0.2} className="group-hover:animate-pulse" animationDuration={300} />
+                                </RadarChart>
+                            </ResponsiveContainer>
+                            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-neon-cyan"></div>
+                            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-neon-cyan"></div>
+                        </div>
+
+                        {/* Chart 2 */}
+                        <div className="h-full relative">
+                             <ResponsiveContainer width="100%" height="100%">
+                                <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData2}>
+                                    <PolarGrid stroke={THEME.grid2} strokeDasharray="4 4" />
+                                    <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
+                                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                                    <Radar name="Specialized Skills" dataKey="A" stroke={THEME.red} strokeWidth={2} fill={THEME.amber} fillOpacity={0.25} className="group-hover:animate-pulse" animationDuration={300} />
+                                </RadarChart>
+                            </ResponsiveContainer>
+                            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-rose-500"></div>
+                            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-rose-500"></div>
+                        </div>
                     </div>
 
-                    {/* RIGHT: Segmented Power Bars */}
-                    <div className="lg:col-span-3 flex flex-col justify-center space-y-5">
+                    {/* Skill Bars & Stats Area */}
+                    <div className="space-y-5 pt-8 border-t border-neon-cyan/20">
+                        <SkillBar label="EASY" value={easy.solved} total={easy.total} color="bg-emerald-400" />
+                        <SkillBar label="MED" value={medium.solved} total={medium.total} color="bg-amber-400" />
+                        <SkillBar label="HARD" value={hard.solved} total={hard.total} color="bg-rose-500" />
                         
-                        <div onMouseEnter={() => setHoveredSkill('Easy')} onMouseLeave={() => setHoveredSkill(null)}>
-                            <SkillBar label="EASY" value={easy.solved} total={easy.total} color="bg-emerald-400" />
-                        </div>
-                        
-                        <div onMouseEnter={() => setHoveredSkill('Medium')} onMouseLeave={() => setHoveredSkill(null)}>
-                            <SkillBar label="MED" value={medium.solved} total={medium.total} color="bg-amber-400" />
-                        </div>
-                        
-                        <div onMouseEnter={() => setHoveredSkill('Hard')} onMouseLeave={() => setHoveredSkill(null)}>
-                            <SkillBar label="HARD" value={hard.solved} total={hard.total} color="bg-rose-500" />
-                        </div>
-
-                        {/* Footer Stats */}
                         <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-neon-cyan/20">
                             <div className="flex items-center gap-3">
                                 <Trophy className="w-4 h-4 text-yellow-500" />
