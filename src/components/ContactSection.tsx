@@ -206,7 +206,7 @@ const ContactSection = () => {
                   <span className="text-gradient-slow ml-2">Adil Munawar</span>
                 </h4>
                 <p className="text-frost-cyan/80 mb-2">Full Stack Developer & UI/UX Enthusiast</p>
-                <p className="text-frost-cyan/60 text-sm">© 2025 All Rights Reserved. Built with Next.js & Tailwind CSS</p>
+                <p className="text-frost-cyan/60 text-sm">© 2025 All Rights Reserved.</p>
                 
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-neon-cyan to-frost-cyan group-hover:w-full transition-all duration-700"></div>
               </div>
