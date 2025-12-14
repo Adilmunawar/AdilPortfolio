@@ -102,12 +102,12 @@ const LeetCodeStats = () => {
             {/* Main Content: Three Charts */}
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 items-center gap-4 min-h-[220px]">
                 {/* Left Radar Chart */}
-                <motion.div className="h-full relative" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
+                <motion.div className="h-full relative group/radar" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
                     <ResponsiveContainer width="100%" height={200}>
                         <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData1}>
                             <PolarGrid stroke={THEME.grid} strokeDasharray="3 3" />
                             <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
-                            <Radar dataKey="A" stroke={THEME.cyan} strokeWidth={2} fill={THEME.cyan} fillOpacity={0.2} animationDuration={800} />
+                            <Radar dataKey="A" stroke={THEME.cyan} strokeWidth={2} fill={THEME.cyan} fillOpacity={0.2} animationDuration={800} className="group-hover/radar:animate-radar-ripple" />
                         </RadarChart>
                     </ResponsiveContainer>
                 </motion.div>
@@ -159,12 +159,12 @@ const LeetCodeStats = () => {
                 </motion.div>
                 
                 {/* Right Radar Chart */}
-                <motion.div className="h-full relative" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
+                <motion.div className="h-full relative group/radar" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
                      <ResponsiveContainer width="100%" height={200}>
                         <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData2}>
                             <PolarGrid stroke={THEME.grid2} strokeDasharray="3 3" />
                             <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
-                            <Radar dataKey="A" stroke={THEME.red} strokeWidth={2} fill={THEME.amber} fillOpacity={0.25} animationDuration={800} />
+                            <Radar dataKey="A" stroke={THEME.red} strokeWidth={2} fill={THEME.amber} fillOpacity={0.25} animationDuration={800} className="group-hover/radar:animate-radar-ripple" />
                         </RadarChart>
                     </ResponsiveContainer>
                 </motion.div>
