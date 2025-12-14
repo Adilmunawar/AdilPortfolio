@@ -14,54 +14,50 @@ const dynamicTexts = [
   "Innovation Driver"
 ];
 
-const milestoneEvents = [
+const milestoneBatches = [
   {
-    icon: Sparkles,
-    color: 'text-sky-400',
-    bgColor: 'bg-sky-900/20',
-    title: 'Spark of Curiosity',
-    description: 'My journey began with a childhood fascination for technology. Entirely self-taught, I dove into the digital world, earning numerous certifications and competing in coding contests to sharpen my skills.',
+    title: "The Beginning",
+    events: [
+      {
+        title: 'Spark of Curiosity',
+        description: 'My journey began with a childhood fascination for technology. Entirely self-taught, I dove into the digital world, earning numerous certifications and competing in coding contests to sharpen my skills.',
+      },
+      {
+        title: 'Building the Collective',
+        description: 'Driven by a passion to create, I forged a dedicated team to build custom SaaS and web solutions. We started by making a mark on the local stage, delivering quality and innovation to our first clients.',
+      }
+    ]
   },
   {
-    icon: Users,
-    color: 'text-emerald-400',
-    bgColor: 'bg-emerald-900/20',
-    title: 'Building the Collective',
-    description: 'Driven by a passion to create, I forged a dedicated team to build custom SaaS and web solutions. We started by making a mark on the local stage, delivering quality and innovation to our first clients.',
-  },
-  {
-    icon: Rocket,
-    color: 'text-purple-400',
-    bgColor: 'bg-purple-900/20',
-    title: 'Expanding Horizons',
-    description: 'Our reputation for excellence allowed us to transition from local projects to the international arena, collaborating with a diverse range of overseas clients and tackling more complex challenges.',
-  },
-  {
-    icon: Cpu,
-    color: 'text-amber-400',
-    bgColor: 'bg-amber-900/20',
-    title: 'The Nexus Mission',
-    description: "Today, as a co-founder of Nexus Orbits Pakistan, our mission is to provide cutting-edge digital services on a global scale. The journey is ongoing, and we're just getting started.",
-  },
+    title: "Current Progress",
+    events: [
+      {
+        title: 'Expanding Horizons',
+        description: 'Our reputation for excellence allowed us to transition from local projects to the international arena, collaborating with a diverse range of overseas clients and tackling more complex challenges.',
+      },
+      {
+        title: 'The Nexus Mission',
+        description: "Today, as a co-founder of Nexus Orbits Pakistan, our mission is to provide cutting-edge digital services on a global scale. The journey is ongoing, and we're just getting started.",
+      }
+    ]
+  }
 ];
+
 
 const variants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 50 : -50,
+    x: direction > 0 ? 100 : -100,
     opacity: 0,
-    scale: 0.95,
   }),
   center: {
     zIndex: 1,
     x: 0,
     opacity: 1,
-    scale: 1,
   },
   exit: (direction: number) => ({
     zIndex: 0,
-    x: direction < 0 ? 50 : -50,
+    x: direction < 0 ? 100 : -100,
     opacity: 0,
-    scale: 0.95,
   }),
 };
 
@@ -73,7 +69,7 @@ const AboutSection = () => {
   const [[page, direction], setPage] = useState([0, 0]);
 
   const paginate = (newDirection: number) => {
-    setPage([(page + newDirection + milestoneEvents.length) % milestoneEvents.length, newDirection]);
+    setPage([(page + newDirection + milestoneBatches.length) % milestoneBatches.length, newDirection]);
   };
   
   useEffect(() => {
@@ -108,13 +104,12 @@ const AboutSection = () => {
 
     const milestoneInterval = setInterval(() => {
       paginate(1);
-    }, 5000); // Auto-play every 5 seconds
+    }, 8000); // Auto-play every 8 seconds
 
     return () => clearInterval(milestoneInterval);
   }, [isVisible, page]);
 
-
-  const activeMilestone = milestoneEvents[page];
+  const activeBatch = milestoneBatches[page];
 
   return (
     <section id="about" ref={sectionRef} className="min-h-screen py-20 px-4 flex flex-col justify-center items-center relative overflow-hidden">
@@ -151,7 +146,7 @@ const AboutSection = () => {
               />
             </motion.div>
           
-            <div className="lg:col-span-3 relative h-[350px] md:h-[280px] flex flex-col justify-center">
+            <div className="lg:col-span-3 relative h-[420px] md:h-[350px] flex flex-col justify-center">
               <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
                   key={page}
@@ -166,20 +161,22 @@ const AboutSection = () => {
                   }}
                   className="w-full absolute"
                 >
-                  <Card
-                    className={cn(
-                      "relative p-6 bg-cyber-dark/80 border border-neon-cyan/30 transition-all duration-300 shadow-lg backdrop-blur-sm h-full"
-                    )}
-                  >
-                     <div className="relative z-10">
-                        <div>
-                          <div>
-                            <h4 className="font-bold text-lg text-frost-white mb-2">{activeMilestone.title}</h4>
-                            <p className="text-sm text-frost-cyan leading-relaxed">{activeMilestone.description}</p>
+                  <h3 className="text-xl font-bold text-frost-white mb-4 text-center">{activeBatch.title}</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {activeBatch.events.map((milestone, index) => (
+                      <Card
+                        key={index}
+                        className="relative p-6 bg-cyber-dark/80 border border-neon-cyan/30 transition-all duration-300 shadow-lg backdrop-blur-sm h-full"
+                      >
+                         <div className="relative z-10">
+                            <div>
+                              <h4 className="font-bold text-lg text-frost-white mb-2">{milestone.title}</h4>
+                              <p className="text-sm text-frost-cyan leading-relaxed">{milestone.description}</p>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                  </Card>
+                      </Card>
+                    ))}
+                  </div>
                 </motion.div>
               </AnimatePresence>
               <div className="absolute -bottom-10 right-0 z-20 flex gap-2">
