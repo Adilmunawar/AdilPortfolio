@@ -81,10 +81,10 @@ const LeetCodeStats = () => {
             {/* Header Area */}
             <div className="relative z-10 text-center border-b border-neon-cyan/20 pb-6 mb-6">
                 <motion.div initial={{ opacity: 0}} animate={{opacity: 1}} transition={{delay: 0.2}}>
-                    <h3 className="text-2xl font-bold text-white tracking-widest uppercase font-mono">
-                        LeetCode_Metrics
+                    <h3 className="text-2xl font-bold text-white tracking-widest uppercase">
+                        LeetCode Stats
                     </h3>
-                    <p className="text-sm text-neon-cyan/70 font-mono">@AdilMunawar</p>
+                    <p className="text-sm text-neon-cyan/70">@AdilMunawar</p>
                 </motion.div>
                 
                 <motion.div 
@@ -93,9 +93,8 @@ const LeetCodeStats = () => {
                     transition={{ delay: 0.4, type: 'spring' }}
                     className="mt-4 inline-flex items-center gap-3 bg-neon-cyan/10 border border-neon-cyan/20 px-4 py-2 rounded-full"
                 >
-                    <Users className="w-5 h-5 text-yellow-400" />
-                    <span className="text-xs text-gray-300 font-mono uppercase">Global Rank:</span>
-                    <span className="text-lg font-bold text-white font-mono">{ranking.toLocaleString()}</span>
+                    <span className="text-xs text-gray-300 uppercase">Global Rank:</span>
+                    <span className="text-lg font-bold text-white">{ranking.toLocaleString()}</span>
                 </motion.div>
             </div>
 
@@ -136,8 +135,8 @@ const LeetCodeStats = () => {
                                 transition={{ duration: 0.3 }}
                                 className="absolute inset-0 flex flex-col items-center justify-center text-center"
                             >
-                                <p className="text-3xl lg:text-4xl font-black text-white font-mono drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">{totalSolved}</p>
-                                <p className="text-sm text-gray-400 font-mono -mt-1">/{totalQuestions}</p>
+                                <p className="text-3xl lg:text-4xl font-black text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">{totalSolved}</p>
+                                <p className="text-sm text-gray-400 -mt-1">/{totalQuestions}</p>
                                 <p className="text-sm font-semibold text-emerald-400 mt-1">Solved</p>
                             </motion.div>
                         ) : (
@@ -150,7 +149,7 @@ const LeetCodeStats = () => {
                             >
                                 <div className="flex items-baseline gap-1.5">
                                     <Activity className="w-5 h-5 text-neon-cyan" />
-                                    <p className="text-3xl font-black text-white font-mono drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">{acceptanceRate.toFixed(1)}%</p>
+                                    <p className="text-3xl font-black text-white drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">{acceptanceRate.toFixed(1)}%</p>
                                 </div>
                                 <p className="text-sm font-semibold text-neon-cyan/80 mt-1">Acceptance</p>
                             </motion.div>
