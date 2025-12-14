@@ -6,12 +6,12 @@ import SkillsSection from '@/components/SkillsSection';
 import ServicesSection from '@/components/ServicesSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import ContactSection from '@/components/ContactSection';
-import { NeonOrbs } from '@/components/ui/NeonOrbs';
+import { GradientDots } from '@/components/ui/gradient-dots';
 
 export default function Home() {
   return (
     <div className="relative min-h-screen">
-      <NeonOrbs />
+      <GradientDots />
       <Navigation />
       
       <main className="relative z-10">
