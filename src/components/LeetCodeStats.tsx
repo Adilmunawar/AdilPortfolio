@@ -8,25 +8,28 @@ import {
   PolarGrid, 
   PolarAngleAxis, 
   PolarRadiusAxis, 
-  ResponsiveContainer 
+  ResponsiveContainer,
+  RadialBarChart,
+  RadialBar,
 } from 'recharts';
-import { Trophy, Activity, Cpu, Terminal } from 'lucide-react';
+import { Trophy, Activity, Cpu, Terminal, CheckCircle } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 
 // Cyber Palette
 const THEME = {
-  cyan: '#22d3ee',   // Main Glow
-  red: '#f43f5e',     // For the second chart
+  cyan: '#22d3ee',
+  red: '#f43f5e',
   amber: '#f59e0b',
-  white: '#f0f9ff',  // Text
-  slate: '#0f172a',  // Dark BG
+  emerald: '#34d399',
+  white: '#f0f9ff',
+  slate: '#0f172a',
   grid: 'rgba(34, 211, 238, 0.15)',
   grid2: 'rgba(244, 63, 94, 0.15)',
 };
 
 const LeetCodeStats = () => {
-    const { totalSolved, easy, medium, hard, ranking, acceptanceRate } = leetCodeStats;
+    const { totalSolved, easy, medium, hard, ranking, acceptanceRate, totalQuestions } = leetCodeStats;
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -50,6 +53,12 @@ const LeetCodeStats = () => {
         { subject: 'Segment Tree', A: 65, fullMark: 100 },
         { subject: 'Geometry', A: 50, fullMark: 100 },
     ], []);
+
+    const radialChartData = useMemo(() => [
+        { name: 'Hard', value: (hard.solved / totalQuestions) * 100, fill: THEME.red },
+        { name: 'Medium', value: (medium.solved / totalQuestions) * 100, fill: THEME.amber },
+        { name: 'Easy', value: (easy.solved / totalQuestions) * 100, fill: THEME.emerald },
+    ], [easy, medium, hard, totalQuestions]);
 
 
     // Fallback loading state
@@ -95,21 +104,14 @@ const LeetCodeStats = () => {
                             </div>
                         </div>
                     </div>
-                    
-                    <div className="text-right">
-                        <p className="text-xs text-gray-400 font-mono uppercase mb-1">Total Solved</p>
-                        <p className="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] font-mono">
-                            {totalSolved}
-                        </p>
-                    </div>
                 </div>
 
-                {/* Main Content: Two Charts + Skill Bars */}
+                {/* Main Content: Three Charts + Skill Bars */}
                 <div className="relative z-10 space-y-8">
                     
                     {/* Charts Area */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[220px]">
-                        {/* Chart 1 */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[220px]">
+                        {/* Chart 1: Left Radar */}
                         <div className="h-full relative">
                             <ResponsiveContainer width="100%" height="100%">
                                 <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData1}>
@@ -119,11 +121,41 @@ const LeetCodeStats = () => {
                                     <Radar name="Core Skills" dataKey="A" stroke={THEME.cyan} strokeWidth={2} fill={THEME.cyan} fillOpacity={0.2} className="group-hover:animate-pulse" animationDuration={300} />
                                 </RadarChart>
                             </ResponsiveContainer>
-                            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-neon-cyan"></div>
-                            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-neon-cyan"></div>
                         </div>
 
-                        {/* Chart 2 */}
+                        {/* Chart 2: Center Circular */}
+                        <div className="h-full relative flex items-center justify-center">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <RadialBarChart 
+                                    cx="50%" 
+                                    cy="50%" 
+                                    innerRadius="70%" 
+                                    outerRadius="100%" 
+                                    barSize={8}
+                                    data={radialChartData}
+                                    startAngle={90}
+                                    endAngle={-270}
+                                >
+                                    <RadialBar
+                                        minAngle={15}
+                                        background
+                                        dataKey="value"
+                                        cornerRadius={10}
+                                        className="group-hover:animate-pulse"
+                                        animationDuration={1500}
+                                    />
+                                </RadialBarChart>
+                            </ResponsiveContainer>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                                <p className="text-3xl font-black text-white font-mono">{totalSolved}<span className="text-lg text-gray-400 font-mono">/{totalQuestions}</span></p>
+                                <div className="flex items-center justify-center gap-1.5 text-emerald-400">
+                                    <CheckCircle size={14}/>
+                                    <p className="text-sm font-semibold">Solved</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Chart 3: Right Radar */}
                         <div className="h-full relative">
                              <ResponsiveContainer width="100%" height="100%">
                                 <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData2}>
@@ -133,8 +165,6 @@ const LeetCodeStats = () => {
                                     <Radar name="Specialized Skills" dataKey="A" stroke={THEME.red} strokeWidth={2} fill={THEME.amber} fillOpacity={0.25} className="group-hover:animate-pulse" animationDuration={300} />
                                 </RadarChart>
                             </ResponsiveContainer>
-                            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-rose-500"></div>
-                            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-rose-500"></div>
                         </div>
                     </div>
 
