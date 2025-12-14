@@ -66,20 +66,17 @@ const GitHubStats = () => {
 
   if (!totalContributions) {
     return (
-      <Card className="p-8 bg-cyber-dark/80 border-neon-cyan/30 backdrop-blur-xl">
+      <div className="p-8">
         <div className="text-center text-frost-cyan">
           <p className="font-semibold text-lg mb-2">Generating GitHub Contributions...</p>
           <p className="text-sm">Run the 'Update GitHub Contribution Stats' action in your repository's Actions tab to populate data.</p>
         </div>
-      </Card>
+      </div>
     );
   }
   
   return (
-    <Card className="p-8 bg-cyber-dark/80 border-neon-cyan/30 backdrop-blur-xl hover:border-neon-cyan/60 transition-all duration-500 group overflow-hidden relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-cyber-blue/5 via-sky-900/5 to-cyan-900/5 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-cyan via-sky-500 to-cyan-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-left"></div>
-      
+    <div className="p-8 group relative">
       <div className="relative z-10">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-2xl font-bold text-white animate-fade-in-up">
@@ -135,9 +132,8 @@ const GitHubStats = () => {
           <span className="hover:text-gray-300 transition-colors">More</span>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 
 export default GitHubStats;
-

@@ -1,7 +1,6 @@
+
 'use client';
 
-import { Card } from '@/components/ui/card';
-import leetCodeStats from '@/lib/leetcode-stats.json';
 import { 
   Radar, 
   RadarChart, 
@@ -12,6 +11,7 @@ import {
 import { Trophy, Activity, Cpu, Terminal, TrendingUp, Users } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import leetCodeStats from '@/lib/leetcode-stats.json';
 
 // Cyber Palette
 const THEME = {
@@ -61,12 +61,12 @@ const LeetCodeStats = () => {
     // Fallback loading state
     if (!mounted || (!totalSolved && !ranking)) {
         return (
-          <Card className="p-8 border border-white/10 bg-black/40 backdrop-blur-xl">
+          <div className="p-8">
              <div className="flex flex-col items-center text-neon-cyan animate-pulse">
                 <Terminal className="w-10 h-10 mb-4" />
                 <p className="font-mono text-sm">INITIALIZING DATA STREAM...</p>
              </div>
-          </Card>
+          </div>
         );
     }
 
@@ -76,105 +76,99 @@ const LeetCodeStats = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="w-full"
+            className="w-full p-8 group relative"
         >
-            <Card className="p-8 bg-cyber-dark/80 border-neon-cyan/30 backdrop-blur-xl hover:border-neon-cyan/60 transition-all duration-500 group overflow-hidden relative">
+            {/* Header Area */}
+            <div className="relative z-10 text-center border-b border-neon-cyan/20 pb-6 mb-6">
+                <motion.div initial={{ opacity: 0}} animate={{opacity: 1}} transition={{delay: 0.2}}>
+                    <h3 className="text-2xl font-bold text-white tracking-widest uppercase font-mono">
+                        LeetCode_Metrics
+                    </h3>
+                    <p className="text-sm text-neon-cyan/70 font-mono">@AdilMunawar</p>
+                </motion.div>
                 
-                <div className="absolute inset-0 bg-gradient-to-br from-cyber-blue/5 via-sky-900/5 to-cyan-900/5 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-cyan via-sky-500 to-cyan-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-left"></div>
+                <motion.div 
+                    initial={{ opacity: 0, scale: 0.8 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    transition={{ delay: 0.4, type: 'spring' }}
+                    className="mt-4 inline-flex items-center gap-3 bg-neon-cyan/10 border border-neon-cyan/20 px-4 py-2 rounded-full"
+                >
+                    <Users className="w-5 h-5 text-yellow-400" />
+                    <span className="text-xs text-gray-300 font-mono uppercase">Global Rank:</span>
+                    <span className="text-lg font-bold text-white font-mono">{ranking.toLocaleString()}</span>
+                </motion.div>
+            </div>
 
-                {/* Header Area */}
-                <div className="relative z-10 text-center border-b border-neon-cyan/20 pb-6 mb-6">
-                    <motion.div initial={{ opacity: 0}} animate={{opacity: 1}} transition={{delay: 0.2}}>
-                        <h3 className="text-2xl font-bold text-white tracking-widest uppercase font-mono">
-                            LeetCode_Metrics
-                        </h3>
-                        <p className="text-sm text-neon-cyan/70 font-mono">@AdilMunawar</p>
-                    </motion.div>
-                    
-                    <motion.div 
-                        initial={{ opacity: 0, scale: 0.8 }} 
-                        animate={{ opacity: 1, scale: 1 }} 
-                        transition={{ delay: 0.4, type: 'spring' }}
-                        className="mt-4 inline-flex items-center gap-3 bg-neon-cyan/10 border border-neon-cyan/20 px-4 py-2 rounded-full"
-                    >
-                        <Users className="w-5 h-5 text-yellow-400" />
-                        <span className="text-xs text-gray-300 font-mono uppercase">Global Rank:</span>
-                        <span className="text-lg font-bold text-white font-mono">{ranking.toLocaleString()}</span>
-                    </motion.div>
-                </div>
+            {/* Main Content: Three Charts */}
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 items-center gap-4 min-h-[220px]">
+                {/* Left Radar Chart */}
+                <motion.div className="h-full relative" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
+                    <ResponsiveContainer width="100%" height={200}>
+                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData1}>
+                            <PolarGrid stroke={THEME.grid} strokeDasharray="3 3" />
+                            <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
+                            <Radar dataKey="A" stroke={THEME.cyan} strokeWidth={2} fill={THEME.cyan} fillOpacity={0.2} animationDuration={800} />
+                        </RadarChart>
+                    </ResponsiveContainer>
+                </motion.div>
 
-                {/* Main Content: Three Charts */}
-                <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 items-center gap-4 min-h-[220px]">
-                    {/* Left Radar Chart */}
-                    <motion.div className="h-full relative" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
-                        <ResponsiveContainer width="100%" height={200}>
-                            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData1}>
-                                <PolarGrid stroke={THEME.grid} strokeDasharray="3 3" />
-                                <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
-                                <Radar dataKey="A" stroke={THEME.cyan} strokeWidth={2} fill={THEME.cyan} fillOpacity={0.2} animationDuration={800} />
-                            </RadarChart>
-                        </ResponsiveContainer>
-                    </motion.div>
-
-                    {/* Center Donut Chart */}
-                    <motion.div 
-                        className="h-full relative flex items-center justify-center"
-                        onMouseEnter={() => setIsHoveringCircular(true)}
-                        onMouseLeave={() => setIsHoveringCircular(false)}
-                        initial={{ opacity: 0, scale: 0.5 }} 
-                        animate={{ opacity: 1, scale: 1 }} 
-                        transition={{ delay: 0.6, type: 'spring' }}
-                    >
-                        <DonutChart
-                            easy={easy.solved}
-                            medium={medium.solved}
-                            hard={hard.solved}
-                            total={totalQuestions}
-                        />
-                        <AnimatePresence>
-                            {!isHoveringCircular ? (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.8 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="absolute inset-0 flex flex-col items-center justify-center text-center"
-                                >
-                                    <p className="text-3xl lg:text-4xl font-black text-white font-mono drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">{totalSolved}</p>
-                                    <p className="text-sm text-gray-400 font-mono -mt-1">/{totalQuestions}</p>
-                                    <p className="text-sm font-semibold text-emerald-400 mt-1">Solved</p>
-                                </motion.div>
-                            ) : (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.8 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="absolute inset-0 flex flex-col items-center justify-center text-center"
-                                >
-                                    <div className="flex items-baseline gap-1.5">
-                                        <Activity className="w-5 h-5 text-neon-cyan" />
-                                        <p className="text-3xl font-black text-white font-mono drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">{acceptanceRate.toFixed(1)}%</p>
-                                    </div>
-                                    <p className="text-sm font-semibold text-neon-cyan/80 mt-1">Acceptance</p>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </motion.div>
-                    
-                    {/* Right Radar Chart */}
-                    <motion.div className="h-full relative" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
-                         <ResponsiveContainer width="100%" height={200}>
-                            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData2}>
-                                <PolarGrid stroke={THEME.grid2} strokeDasharray="3 3" />
-                                <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
-                                <Radar dataKey="A" stroke={THEME.red} strokeWidth={2} fill={THEME.amber} fillOpacity={0.25} animationDuration={800} />
-                            </RadarChart>
-                        </ResponsiveContainer>
-                    </motion.div>
-                </div>
-            </Card>
+                {/* Center Donut Chart */}
+                <motion.div 
+                    className="h-full relative flex items-center justify-center"
+                    onMouseEnter={() => setIsHoveringCircular(true)}
+                    onMouseLeave={() => setIsHoveringCircular(false)}
+                    initial={{ opacity: 0, scale: 0.5 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    transition={{ delay: 0.6, type: 'spring' }}
+                >
+                    <DonutChart
+                        easy={easy.solved}
+                        medium={medium.solved}
+                        hard={hard.solved}
+                        total={totalQuestions}
+                    />
+                    <AnimatePresence>
+                        {!isHoveringCircular ? (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={{ duration: 0.3 }}
+                                className="absolute inset-0 flex flex-col items-center justify-center text-center"
+                            >
+                                <p className="text-3xl lg:text-4xl font-black text-white font-mono drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">{totalSolved}</p>
+                                <p className="text-sm text-gray-400 font-mono -mt-1">/{totalQuestions}</p>
+                                <p className="text-sm font-semibold text-emerald-400 mt-1">Solved</p>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={{ duration: 0.3 }}
+                                className="absolute inset-0 flex flex-col items-center justify-center text-center"
+                            >
+                                <div className="flex items-baseline gap-1.5">
+                                    <Activity className="w-5 h-5 text-neon-cyan" />
+                                    <p className="text-3xl font-black text-white font-mono drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">{acceptanceRate.toFixed(1)}%</p>
+                                </div>
+                                <p className="text-sm font-semibold text-neon-cyan/80 mt-1">Acceptance</p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.div>
+                
+                {/* Right Radar Chart */}
+                <motion.div className="h-full relative" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
+                     <ResponsiveContainer width="100%" height={200}>
+                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData2}>
+                            <PolarGrid stroke={THEME.grid2} strokeDasharray="3 3" />
+                            <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
+                            <Radar dataKey="A" stroke={THEME.red} strokeWidth={2} fill={THEME.amber} fillOpacity={0.25} animationDuration={800} />
+                        </RadarChart>
+                    </ResponsiveContainer>
+                </motion.div>
+            </div>
         </motion.div>
     );
 };
