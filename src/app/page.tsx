@@ -1,4 +1,3 @@
-
 'use client';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
@@ -7,12 +6,12 @@ import SkillsSection from '@/components/SkillsSection';
 import ServicesSection from '@/components/ServicesSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import ContactSection from '@/components/ContactSection';
-import { GradientDots } from '@/components/ui/gradient-dots';
+import { NeonOrbs } from '@/components/ui/NeonOrbs';
 
 export default function Home() {
   return (
     <div className="relative min-h-screen">
-      <GradientDots backgroundColor="var(--cyber-dark)" />
+      <NeonOrbs />
       <Navigation />
       
       <main className="relative z-10">
@@ -26,5 +25,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

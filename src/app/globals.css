@@ -18,7 +18,7 @@
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 189 84% 53%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -240,7 +240,7 @@
 
 /* Updated color definitions - darker theme */
 :root {
-  --cyber-dark: #1E1E39;
+  --cyber-dark: #050a18;
   --cyber-gray: #2a2a3e;
   --cyber-cyan: #3730a3; /* Darker Indigo */
   --cyber-blue: #4338ca; /* Darker Indigo */
@@ -505,6 +505,3 @@
   from, to { border-color: transparent }
   50% { border-color: hsl(var(--foreground)); }
 }
-
-
-    
