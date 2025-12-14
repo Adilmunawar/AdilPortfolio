@@ -148,7 +148,7 @@ const AboutSection = () => {
               />
             </motion.div>
           
-            <div className="lg:col-span-3 relative h-[420px] md:h-[350px] flex flex-col justify-center overflow-hidden">
+            <div className="lg:col-span-3 relative h-[420px] md:h-[380px] flex flex-col justify-center overflow-hidden">
               <AnimatePresence initial={false} custom={direction}>
                 <motion.div
                   key={page}
@@ -175,7 +175,7 @@ const AboutSection = () => {
                   }}
                 >
                   <h3 className="text-xl font-bold text-frost-white mb-4 text-center">{activeBatch.title}</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-4">
                     {activeBatch.events.map((milestone, index) => (
                       <motion.div
                         key={index}
