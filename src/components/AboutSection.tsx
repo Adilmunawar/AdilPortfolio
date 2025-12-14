@@ -2,9 +2,10 @@
 import { Card } from '@/components/ui/card';
 import ProfileCard from './ProfileCard';
 import { useState, useEffect, useRef } from 'react';
-import { Sparkles, Users, Rocket, Cpu } from 'lucide-react';
+import { Sparkles, Users, Rocket, Cpu, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from './ui/button';
 
 const dynamicTexts = [
   "Frontend Engineer",
@@ -20,7 +21,6 @@ const milestoneEvents = [
     bgColor: 'bg-sky-900/20',
     title: 'Spark of Curiosity',
     description: 'My journey began with a childhood fascination for technology. Entirely self-taught, I dove into the digital world, earning numerous certifications and competing in coding contests to sharpen my skills.',
-    animationDelay: '0.2s',
   },
   {
     icon: Users,
@@ -28,7 +28,6 @@ const milestoneEvents = [
     bgColor: 'bg-emerald-900/20',
     title: 'Building the Collective',
     description: 'Driven by a passion to create, I forged a dedicated team to build custom SaaS and web solutions. We started by making a mark on the local stage, delivering quality and innovation to our first clients.',
-    animationDelay: '0.4s',
   },
   {
     icon: Rocket,
@@ -36,7 +35,6 @@ const milestoneEvents = [
     bgColor: 'bg-purple-900/20',
     title: 'Expanding Horizons',
     description: 'Our reputation for excellence allowed us to transition from local projects to the international arena, collaborating with a diverse range of overseas clients and tackling more complex challenges.',
-    animationDelay: '0.6s',
   },
   {
     icon: Cpu,
@@ -44,113 +42,79 @@ const milestoneEvents = [
     bgColor: 'bg-amber-900/20',
     title: 'The Nexus Mission',
     description: "Today, as a co-founder of Nexus Orbits Pakistan, our mission is to provide cutting-edge digital services on a global scale. The journey is ongoing, and we're just getting started.",
-    animationDelay: '0.8s',
   },
 ];
 
-const MilestoneCard = ({ event, isVisible, isActive }: { event: typeof milestoneEvents[0], isVisible: boolean, isActive: boolean }) => {
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.98 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      scale: 1,
-      transition: { duration: 0.5, ease: 'easeOut' }
-    }
-  };
-
-  return (
-    <motion.div
-      className="relative group"
-      variants={cardVariants}
-      initial="hidden"
-      animate={isVisible ? "visible" : "hidden"}
-      style={{ transitionDelay: event.animationDelay }}
-    >
-      <AnimatePresence>
-        {isActive && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { duration: 0.7 } }}
-            exit={{ opacity: 0, transition: { duration: 0.7 } }}
-            className="absolute -inset-2.5 bg-gradient-to-r from-neon-cyan to-cyber-blue rounded-xl blur-lg opacity-60"
-          />
-        )}
-      </AnimatePresence>
-      <Card
-        className={cn(
-          "relative p-6 bg-cyber-dark/80 border border-frost-cyan/20 transition-all duration-300 group-hover:border-neon-cyan/60 group-hover:scale-105 group-hover:-translate-y-2 h-full shadow-lg backdrop-blur-sm",
-          isActive && "scale-105 -translate-y-2 border-neon-cyan/60"
-        )}
-      >
-        <div className="relative z-10">
-          <div className="flex items-start gap-4">
-            <div className={cn(
-              "p-3 rounded-lg shadow-inner transition-all duration-300", 
-              event.bgColor, 
-              "border", 
-              'border-neon-cyan/30',
-              (isActive ? "scale-110" : "group-hover:scale-110")
-            )}>
-              <event.icon className={cn("w-6 h-6 transition-all duration-300", event.color, (isActive ? "scale-110" : "group-hover:scale-110"))} />
-            </div>
-            <div>
-              <h4 className="font-bold text-lg text-frost-white mb-2">{event.title}</h4>
-              <p className="text-sm text-frost-cyan leading-relaxed">{event.description}</p>
-            </div>
-          </div>
-        </div>
-      </Card>
-    </motion.div>
-  );
+const variants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 50 : -50,
+    opacity: 0,
+    scale: 0.95,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+    scale: 1,
+  },
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? 50 : -50,
+    opacity: 0,
+    scale: 0.95,
+  }),
 };
-
 
 const AboutSection = () => {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const [activeMilestoneIndex, setActiveMilestoneIndex] = useState(-1);
+  
+  const [[page, direction], setPage] = useState([0, 0]);
 
+  const paginate = (newDirection: number) => {
+    setPage([(page + newDirection + milestoneEvents.length) % milestoneEvents.length, newDirection]);
+  };
+  
   useEffect(() => {
-    const interval = setInterval(() => {
+    const textInterval = setInterval(() => {
       setCurrentTextIndex((prev) => (prev + 1) % dynamicTexts.length);
     }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const aboutSection = sectionRef.current;
-    if (!aboutSection) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(aboutSection);
+          observer.unobserve(entry.target);
         }
       },
       { threshold: 0.1 }
     );
 
-    observer.observe(aboutSection);
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
 
     return () => {
-      if(aboutSection) {
-        observer.unobserve(aboutSection);
+      clearInterval(textInterval);
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
       }
     };
   }, []);
 
   useEffect(() => {
-    if (isVisible) {
-      const glowInterval = setInterval(() => {
-        setActiveMilestoneIndex((prevIndex) => (prevIndex + 1) % milestoneEvents.length);
-      }, 2000); // Cycle every 2 seconds
+    if (!isVisible) return;
 
-      return () => clearInterval(glowInterval);
-    }
-  }, [isVisible]);
+    const milestoneInterval = setInterval(() => {
+      paginate(1);
+    }, 5000); // Auto-play every 5 seconds
+
+    return () => clearInterval(milestoneInterval);
+  }, [isVisible, page]);
+
+
+  const activeMilestone = milestoneEvents[page];
 
   return (
     <section id="about" ref={sectionRef} className="min-h-screen py-20 px-4 flex flex-col justify-center items-center relative overflow-hidden">
@@ -166,7 +130,7 @@ const AboutSection = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
             <motion.div 
               className="lg:col-span-2 flex justify-center"
               initial={{ opacity: 0, scale: 0.9 }}
@@ -187,12 +151,54 @@ const AboutSection = () => {
               />
             </motion.div>
           
-            <div className="lg:col-span-3 relative">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {milestoneEvents.map((event, index) => (
-                        <MilestoneCard key={index} event={event} isVisible={isVisible} isActive={activeMilestoneIndex === index} />
-                    ))}
-                </div>
+            <div className="lg:col-span-3 relative h-[350px] md:h-[280px] flex flex-col justify-center">
+              <AnimatePresence initial={false} custom={direction} mode="wait">
+                <motion.div
+                  key={page}
+                  custom={direction}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.3 }
+                  }}
+                  className="w-full absolute"
+                >
+                  <Card
+                    className={cn(
+                      "relative p-6 bg-cyber-dark/80 border border-neon-cyan/30 transition-all duration-300 shadow-lg backdrop-blur-sm h-full"
+                    )}
+                  >
+                     <div className="absolute -inset-2.5 bg-gradient-to-r from-neon-cyan to-cyber-blue rounded-xl blur-lg opacity-60 animate-pulse-slow" />
+                     <div className="relative z-10">
+                        <div className="flex items-start gap-4">
+                          <div className={cn(
+                            "p-3 rounded-lg shadow-inner transition-all duration-300", 
+                            activeMilestone.bgColor, 
+                            "border", 
+                            'border-neon-cyan/30'
+                          )}>
+                            <activeMilestone.icon className={cn("w-6 h-6 transition-all duration-300", activeMilestone.color)} />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-lg text-frost-white mb-2">{activeMilestone.title}</h4>
+                            <p className="text-sm text-frost-cyan leading-relaxed">{activeMilestone.description}</p>
+                          </div>
+                        </div>
+                      </div>
+                  </Card>
+                </motion.div>
+              </AnimatePresence>
+              <div className="absolute -bottom-10 right-0 z-20 flex gap-2">
+                <Button variant="outline" size="icon" onClick={() => paginate(-1)} className="bg-cyber-dark/50 hover:bg-neon-cyan/20 border-neon-cyan/30">
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="icon" onClick={() => paginate(1)} className="bg-cyber-dark/50 hover:bg-neon-cyan/20 border-neon-cyan/30">
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
         </div>
       </div>
