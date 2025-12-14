@@ -1,6 +1,6 @@
 'use client';
 import { Card } from '@/components/ui/card';
-import { Mail, Phone, Github, Instagram, MessageSquare, Linkedin, Send, MapPin, Clock } from 'lucide-react';
+import { Mail, Phone, Github, Instagram, MessageSquare, Linkedin, Send, MapPin, Clock, ArrowUp } from 'lucide-react';
 import { useState } from 'react';
 
 const ContactSection = () => {
@@ -236,16 +236,16 @@ const ContactSection = () => {
         </div>
 
         <div className="fixed bottom-8 right-8 z-50">
-          <button 
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
-            className="group relative w-16 h-16 bg-gradient-to-br from-cyber-purple to-cyber-blue text-white rounded-2xl flex items-center justify-center transition-all duration-500 hover:scale-110 shadow-lg shadow-cyber-blue/20 hover:shadow-xl hover:shadow-cyber-blue/30 backdrop-blur-sm border-2 border-white/10 animate-float"
-          >
-            <span className="text-2xl font-bold group-hover:scale-110 transition-transform duration-500">↑</span>
-            
-            <div className="absolute inset-0 rounded-2xl border-2 border-cyber-blue/50 animate-ping opacity-0 group-hover:opacity-75"></div>
-            
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyber-purple/50 to-cyber-blue/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          </button>
+            <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="group relative w-16 h-16 bg-cyber-dark/50 text-neon-cyan rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg shadow-neon-cyan/20 hover:shadow-neon-cyan/40 backdrop-blur-sm border-2 border-neon-cyan/30 animate-float overflow-hidden"
+            >
+                <ArrowUp size={28} className="transition-transform duration-300 group-hover:-translate-y-1" />
+                
+                {/* Ripple Effect */}
+                <span className="absolute w-32 h-32 -top-16 -left-16 bg-neon-cyan rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
+                <span className="absolute w-32 h-32 -top-16 -left-16 bg-neon-cyan rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s 1s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
+            </button>
         </div>
       </div>
     </section>
