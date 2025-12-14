@@ -78,11 +78,11 @@ const GitHubStats = () => {
   return (
     <div className="p-8 group relative">
       <div className="relative z-10">
-        <div className="flex justify-between items-center mb-6">
+        <div className="text-center mb-6">
           <h3 className="text-2xl font-bold text-white animate-fade-in-up">
             GitHub Contributions
           </h3>
-          <div className="text-gray-300 font-mono text-lg font-bold animate-scale-in">
+          <div className="text-gray-300 text-lg font-bold animate-scale-in mt-2">
             <span className="inline-block text-neon-cyan">
               {totalContributions.toLocaleString()}
             </span>
@@ -90,36 +90,38 @@ const GitHubStats = () => {
           </div>
         </div>
         
-        <div className="mb-6">
+        <div className="text-center mb-6">
           <div className="text-sm text-gray-400 mb-3 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
             @AdilMunawar - Last 12 months
           </div>
         </div>
         
         <div className="overflow-x-auto pb-2">
-           <div className="grid grid-flow-col auto-cols-max gap-1">
-            {weekColumns.map((week, weekIndex) => (
-              <div key={weekIndex} className="grid grid-cols-1 gap-1">
-                {week.map((day, dayIndex) => {
-                  if (!day) {
-                    return <div key={`empty-${weekIndex}-${dayIndex}`} className="w-3 h-3 rounded-sm bg-gray-800/20" />;
-                  }
-                  return (
-                    <div
-                      key={day.date}
-                      className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-sky-400/50 transition-all duration-300 cursor-pointer group/day hover:scale-125`}
-                      title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}`}
-                    >
-                      <div className="w-full h-full rounded-sm group-hover/day:animate-pulse transition-all duration-200"></div>
-                    </div>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
+           <div className="flex justify-center">
+             <div className="grid grid-flow-col auto-cols-max gap-1">
+              {weekColumns.map((week, weekIndex) => (
+                <div key={weekIndex} className="grid grid-cols-1 gap-1">
+                  {week.map((day, dayIndex) => {
+                    if (!day) {
+                      return <div key={`empty-${weekIndex}-${dayIndex}`} className="w-3 h-3 rounded-sm bg-gray-800/20" />;
+                    }
+                    return (
+                      <div
+                        key={day.date}
+                        className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-sky-400/50 transition-all duration-300 cursor-pointer group/day hover:scale-125`}
+                        title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}`}
+                      >
+                        <div className="w-full h-full rounded-sm group-hover/day:animate-pulse transition-all duration-200"></div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+           </div>
         </div>
         
-        <div className="flex justify-between items-center mt-6 text-xs text-gray-400 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
+        <div className="flex justify-between items-center mt-6 text-xs text-gray-400 animate-fade-in-up max-w-lg mx-auto" style={{ animationDelay: '400ms' }}>
           <span className="hover:text-gray-300 transition-colors">Less</span>
           <div className="flex gap-1">
             {[0, 1, 2, 3, 4].map(level => (

@@ -79,7 +79,7 @@ const LeetCodeStats = () => {
             className="w-full p-8 group relative"
         >
             {/* Header Area */}
-            <div className="relative z-10 text-center border-b border-neon-cyan/20 pb-6 mb-6">
+            <div className="relative z-10 text-center pb-6 mb-6">
                 <motion.div initial={{ opacity: 0}} animate={{opacity: 1}} transition={{delay: 0.2}}>
                     <h3 className="text-2xl font-bold text-white tracking-widest uppercase">
                         LeetCode Stats
@@ -182,10 +182,6 @@ const DonutChart = ({ easy, medium, hard, total }: { easy: number, medium: numbe
     const easyPercent = (easy / total) * 100;
     const mediumPercent = (medium / total) * 100;
     const hardPercent = (hard / total) * 100;
-
-    const easyOffset = 0;
-    const mediumOffset = (easyPercent / 100) * circumference;
-    const hardOffset = ((easyPercent + mediumPercent) / 100) * circumference;
     
     const dashArray = `${circumference} ${circumference}`;
 
