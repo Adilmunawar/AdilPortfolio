@@ -106,7 +106,17 @@ const LeetCodeStats = () => {
                         <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData1}>
                             <PolarGrid stroke={THEME.grid} strokeDasharray="3 3" />
                             <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
-                            <Radar dataKey="A" stroke={THEME.cyan} strokeWidth={2} fill={THEME.cyan} fillOpacity={0.2} animationDuration={800} className="group-hover/radar:animate-radar-ripple" />
+                            <Radar 
+                                dataKey="A" 
+                                stroke={THEME.cyan} 
+                                strokeWidth={2} 
+                                fill={THEME.cyan} 
+                                fillOpacity={0.2} 
+                                animationDuration={800} 
+                                className="group-hover/radar:animate-radar-ripple" 
+                                dot={{ r: 3, fill: THEME.white, stroke: THEME.cyan, strokeWidth: 1 }} 
+                                activeDot={{ r: 5, stroke: THEME.white }}
+                            />
                         </RadarChart>
                     </ResponsiveContainer>
                 </motion.div>
@@ -163,7 +173,17 @@ const LeetCodeStats = () => {
                         <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData2}>
                             <PolarGrid stroke={THEME.grid2} strokeDasharray="3 3" />
                             <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
-                            <Radar dataKey="A" stroke={THEME.red} strokeWidth={2} fill={THEME.amber} fillOpacity={0.25} animationDuration={800} className="group-hover/radar:animate-radar-ripple" />
+                            <Radar 
+                                dataKey="A" 
+                                stroke={THEME.red} 
+                                strokeWidth={2} 
+                                fill={THEME.amber} 
+                                fillOpacity={0.25} 
+                                animationDuration={800} 
+                                className="group-hover/radar:animate-radar-ripple" 
+                                dot={{ r: 3, fill: THEME.white, stroke: THEME.red, strokeWidth: 1 }}
+                                activeDot={{ r: 5, stroke: THEME.white }}
+                            />
                         </RadarChart>
                     </ResponsiveContainer>
                 </motion.div>
