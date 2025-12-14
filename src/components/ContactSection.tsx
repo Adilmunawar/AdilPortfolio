@@ -238,13 +238,13 @@ const ContactSection = () => {
         <div className="fixed bottom-8 right-8 z-50">
           <button 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
-            className="group relative w-16 h-16 bg-gradient-to-r from-neon-cyan/80 to-frost-cyan/80 text-white rounded-2xl flex items-center justify-center transition-all duration-700 hover:scale-125 hover:rotate-12 shadow-2xl shadow-neon-cyan/30 hover:shadow-neon-cyan/50 backdrop-blur-sm border-2 border-white/20 animate-float"
+            className="group relative w-16 h-16 bg-gradient-to-br from-cyber-purple to-cyber-blue text-white rounded-2xl flex items-center justify-center transition-all duration-500 hover:scale-110 shadow-lg shadow-cyber-blue/20 hover:shadow-xl hover:shadow-cyber-blue/30 backdrop-blur-sm border-2 border-white/10 animate-float"
           >
             <span className="text-2xl font-bold group-hover:scale-110 transition-transform duration-500">↑</span>
             
-            <div className="absolute inset-0 rounded-2xl border-2 border-white/30 animate-ping opacity-75"></div>
+            <div className="absolute inset-0 rounded-2xl border-2 border-cyber-blue/50 animate-ping opacity-0 group-hover:opacity-75"></div>
             
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/20 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyber-purple/50 to-cyber-blue/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           </button>
         </div>
       </div>
