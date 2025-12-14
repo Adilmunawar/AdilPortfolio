@@ -171,17 +171,8 @@ const AboutSection = () => {
                       "relative p-6 bg-cyber-dark/80 border border-neon-cyan/30 transition-all duration-300 shadow-lg backdrop-blur-sm h-full"
                     )}
                   >
-                     <div className="absolute -inset-2.5 bg-gradient-to-r from-neon-cyan to-cyber-blue rounded-xl blur-lg opacity-60 animate-pulse-slow" />
                      <div className="relative z-10">
-                        <div className="flex items-start gap-4">
-                          <div className={cn(
-                            "p-3 rounded-lg shadow-inner transition-all duration-300", 
-                            activeMilestone.bgColor, 
-                            "border", 
-                            'border-neon-cyan/30'
-                          )}>
-                            <activeMilestone.icon className={cn("w-6 h-6 transition-all duration-300", activeMilestone.color)} />
-                          </div>
+                        <div>
                           <div>
                             <h4 className="font-bold text-lg text-frost-white mb-2">{activeMilestone.title}</h4>
                             <p className="text-sm text-frost-cyan leading-relaxed">{activeMilestone.description}</p>
