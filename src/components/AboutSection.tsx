@@ -153,7 +153,7 @@ const AboutSection = () => {
   }, [isVisible]);
 
   return (
-    <section id="about" ref={sectionRef} className="min-h-screen py-20 px-4 flex flex-col justify-center items-center relative overflow-hidden bg-transparent">
+    <section id="about" ref={sectionRef} className="min-h-screen py-20 px-4 flex flex-col justify-center items-center relative overflow-hidden">
       <div className="max-w-7xl w-full mx-auto relative z-10">
         <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <h2 className="text-5xl md:text-7xl font-bold mb-6 text-gradient-slow">

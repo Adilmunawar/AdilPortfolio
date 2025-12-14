@@ -50,9 +50,6 @@ const ServicesSection = () => {
 
   return (
     <section id="services" className="min-h-screen py-20 px-4 relative overflow-hidden">
-      {/* Enhanced background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-cyber-dark via-cyber-dark/80 to-cyber-dark"></div>
-      
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient-slow animate-fade-in-up drop-shadow-lg">

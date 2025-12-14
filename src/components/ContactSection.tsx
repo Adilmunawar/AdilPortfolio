@@ -124,7 +124,7 @@ const ContactSection = () => {
   ];
 
   return (
-    <section id="contact" className="min-h-screen py-20 px-4 relative bg-transparent">
+    <section id="contact" className="min-h-screen py-20 px-4 relative">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-20">
           <div className="inline-block mb-8">
@@ -253,5 +253,3 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
-
-    
