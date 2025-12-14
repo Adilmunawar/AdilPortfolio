@@ -33,26 +33,39 @@ const LeetCodeStats = () => {
     
     // Data for Radar Chart
     const radarData = useMemo(() => {
-        const fullData = {
-            Easy: (easy.solved / easy.total) * 100,
-            Medium: (medium.solved / medium.total) * 100,
-            Hard: (hard.solved / hard.total) * 100,
+        // Based on the provided screenshot of advanced skills
+        const advancedSkills = {
+            'Dyn. Prog.': 95, // Normalized from 164
+            'Backtracking': 75, // Normalized from 39
+            'Union Find': 60,   // Normalized from 20
+            'Div & Conquer': 55, // Normalized from 18
+            'Bitmask': 45,      // Normalized from 14
         };
 
+        const skillData = [
+            { subject: 'Dyn. Prog.', A: advancedSkills['Dyn. Prog.'], fullMark: 100 },
+            { subject: 'Backtracking', A: advancedSkills['Backtracking'], fullMark: 100 },
+            { subject: 'Union Find', A: advancedSkills['Union Find'], fullMark: 100 },
+            { subject: 'Div & Conquer', A: advancedSkills['Div & Conquer'], fullMark: 100 },
+            { subject: 'Bitmask', A: advancedSkills['Bitmask'], fullMark: 100 },
+        ];
+
+        // Highlight a single skill on hover
         if (hoveredSkill) {
-            return [
-                { subject: 'Easy', A: hoveredSkill === 'Easy' ? fullData.Easy : 0, fullMark: 100 },
-                { subject: 'Medium', A: hoveredSkill === 'Medium' ? fullData.Medium : 0, fullMark: 100 },
-                { subject: 'Hard', A: hoveredSkill === 'Hard' ? fullData.Hard : 0, fullMark: 100 },
-            ];
+            const hoverMappings: { [key: string]: string[] } = {
+                'Easy': ['Backtracking', 'Union Find'],
+                'Medium': ['Div & Conquer', 'Bitmask'],
+                'Hard': ['Dyn. Prog.'],
+            };
+            const skillsToHighlight = hoverMappings[hoveredSkill] || [];
+            return skillData.map(skill => ({
+                ...skill,
+                A: skillsToHighlight.includes(skill.subject) ? skill.A : 0,
+            }));
         }
 
-        return [
-            { subject: 'Easy', A: fullData.Easy, fullMark: 100 },
-            { subject: 'Medium', A: fullData.Medium, fullMark: 100 },
-            { subject: 'Hard', A: fullData.Hard, fullMark: 100 },
-        ];
-    }, [hoveredSkill, easy, medium, hard]);
+        return skillData;
+    }, [hoveredSkill]);
 
 
     // Fallback loading state
@@ -89,14 +102,14 @@ const LeetCodeStats = () => {
                         </div>
                         <div>
                             <h3 className="text-lg font-bold text-white tracking-widest uppercase font-mono">
-                                System_Metrics
+                                LeetCode_Metrics
                             </h3>
                             <div className="flex items-center gap-2 text-xs text-neon-cyan/70 font-mono">
                                 <span className="relative flex h-2 w-2">
                                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
                                   <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-cyan"></span>
                                 </span>
-                                ONLINE // LeetCode
+                                ADVANCED ALGORITHMS
                             </div>
                         </div>
                     </div>
