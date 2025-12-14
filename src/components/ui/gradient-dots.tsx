@@ -17,10 +17,10 @@ type GradientDotsProps = React.ComponentProps<typeof motion.div> & {
 };
 
 export function GradientDots({
-    dotSize = 2,
-    spacing = 20,
+    dotSize = 1,
+    spacing = 25,
     duration = 30,
-    colorCycleDuration = 6,
+    colorCycleDuration = 10,
     backgroundColor = 'var(--background)',
     className,
     ...props
@@ -42,16 +42,16 @@ export function GradientDots({
                     backgroundColor: 'transparent',
                     // The Neon Orbs (Moving Colors)
                     backgroundImage: `
-                        radial-gradient(circle at 50% 50%, var(--cyber-pink, #ff0080), transparent 60%),
-                        radial-gradient(circle at 50% 50%, var(--cyber-yellow, #ffff00), transparent 60%),
-                        radial-gradient(circle at 50% 50%, var(--cyber-green, #00ff80), transparent 60%),
-                        radial-gradient(circle at 50% 50%, var(--cyber-blue, #4338ca), transparent 60%)
+                        radial-gradient(circle at 50% 50%, var(--cyber-pink, #ff0080), transparent 40%),
+                        radial-gradient(circle at 50% 50%, var(--cyber-yellow, #ffff00), transparent 40%),
+                        radial-gradient(circle at 50% 50%, var(--cyber-green, #00ff80), transparent 40%),
+                        radial-gradient(circle at 50% 50%, var(--neon-cyan, #22d3ee), transparent 40%)
                     `,
                     backgroundSize: `
-                        200% 200%, 
-                        200% 200%, 
-                        200% 200%, 
-                        200% 200%
+                        300% 300%, 
+                        300% 300%, 
+                        300% 300%, 
+                        300% 300%
                     `,
                     // The Mask: Defines the Grid of Dots
                     // 'black' in mask = visible, 'transparent' = invisible
