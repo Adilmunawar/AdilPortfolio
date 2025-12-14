@@ -78,10 +78,10 @@ const LeetCodeStats = () => {
             transition={{ duration: 0.8 }}
             className="w-full"
         >
-            <Card className="relative w-full p-6 overflow-hidden bg-cyber-dark/80 border border-neon-cyan/30 rounded-xl shadow-neon/40 group backdrop-blur-md">
+            <Card className="p-8 bg-cyber-dark/80 border-neon-cyan/30 backdrop-blur-xl hover:border-neon-cyan/60 transition-all duration-500 group overflow-hidden relative">
                 
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.02)_1px,transparent_1px)] bg-[size:30px_30px] pointer-events-none"></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-cyan/5 to-transparent h-[15px] w-full animate-scanline pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-cyber-blue/5 via-sky-900/5 to-cyan-900/5 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-cyan via-sky-500 to-cyan-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-left"></div>
 
                 {/* Header Area */}
                 <div className="relative z-10 text-center border-b border-neon-cyan/20 pb-6 mb-6">
