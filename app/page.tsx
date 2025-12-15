@@ -6,6 +6,7 @@ import SkillsSection from '@/components/SkillsSection';
 import ServicesSection from '@/components/ServicesSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import ContactSection from '@/components/ContactSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import { NeonOrbs } from '@/components/ui/neon-orbs';
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
         <SkillsSection />
         <ServicesSection />
         <ProjectsSection />
+        <TestimonialsSection />
         <ContactSection />
       </main>
     </div>
