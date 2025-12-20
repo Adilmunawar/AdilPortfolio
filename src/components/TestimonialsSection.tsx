@@ -1,5 +1,4 @@
 'use client';
-import { TestimonialsMinimal } from '@/components/ui/minimal-testimonial';
 import { TestimonialsV2 } from '@/components/ui/testimonial-v2';
 
 const TestimonialsSection = () => {
@@ -15,7 +14,6 @@ const TestimonialsSection = () => {
           </p>
         </div>
         <div className="flex flex-col items-center justify-center">
-            <TestimonialsMinimal />
             <TestimonialsV2 />
         </div>
       </div>
