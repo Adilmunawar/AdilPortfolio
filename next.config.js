@@ -8,6 +8,12 @@ const nextConfig = {
         port: '',
         pathname: '/gh/devicons/devicon@latest/icons/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
