@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useEffect } from "react"
@@ -31,7 +30,7 @@ export function TestimonialsMinimal() {
   useEffect(() => {
     const interval = setInterval(() => {
       setActive((prevActive) => (prevActive + 1) % testimonials.length);
-    }, 750); // Auto-switch every 0.75 seconds
+    }, 2000); // Auto-switch every 2 seconds
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
