@@ -16,9 +16,8 @@ const StatsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div className="grid grid-cols-1 gap-8 items-start max-w-4xl mx-auto">
             <motion.div 
-                className="glass-card rounded-2xl"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -27,7 +26,7 @@ const StatsSection = () => {
                 <GitHubStats />
             </motion.div>
             <motion.div 
-                className="glass-card rounded-2xl"
+                className="mt-8"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
