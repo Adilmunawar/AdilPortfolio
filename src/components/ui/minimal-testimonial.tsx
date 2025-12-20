@@ -1,6 +1,7 @@
+
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 
 const testimonials = [
@@ -26,6 +27,15 @@ const testimonials = [
 
 export function TestimonialsMinimal() {
   const [active, setActive] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActive((prevActive) => (prevActive + 1) % testimonials.length);
+    }, 750); // Auto-switch every 0.75 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
+
 
   return (
     <div className="w-full max-w-xl mx-auto px-6 py-16">
