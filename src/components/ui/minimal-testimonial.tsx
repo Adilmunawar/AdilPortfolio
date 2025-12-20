@@ -63,7 +63,7 @@ export function TestimonialsMinimal() {
                 ${active === i ? "z-10 scale-110" : "grayscale hover:grayscale-0 hover:scale-105"}
               `}
             >
-              <Image src={t.image || "/placeholder.svg"} alt={t.name} fill className="object-cover" />
+              <Image src={t.image || "/placeholder.svg"} alt={t.name} width={100} height={100} className="object-cover" />
             </button>
           ))}
         </div>
