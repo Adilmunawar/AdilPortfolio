@@ -13,58 +13,58 @@ interface Testimonial {
 // --- Data ---
 const testimonials: Testimonial[] = [
   {
-    text: "This ERP revolutionized our operations, streamlining finance and inventory. The cloud-based platform keeps us productive, even remotely.",
+    text: "Adil's technical expertise and problem-solving skills are exceptional. He delivered a high-quality solution that exceeded our expectations.",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Briana Patton",
-    role: "Operations Manager",
+    role: "Project Manager",
   },
   {
-    text: "Implementing this ERP was smooth and quick. The customizable, user-friendly interface made team training effortless.",
+    text: "Working with Adil was a fantastic experience. His communication is clear, and he has a unique talent for turning complex ideas into elegant code.",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Bilal Ahmed",
-    role: "IT Manager",
+    role: "Lead Developer",
   },
   {
-    text: "The support team is exceptional, guiding us through setup and providing ongoing assistance, ensuring our satisfaction.",
+    text: "His attention to detail and commitment to quality are second to none. I was consistently impressed with his dedication to the project.",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Saman Malik",
-    role: "Customer Support Lead",
+    role: "UX Designer",
   },
   {
-    text: "This ERP's seamless integration enhanced our business operations and efficiency. Highly recommend for its intuitive interface.",
+    text: "Adil is a rare talent who combines strategic thinking with flawless execution. Highly recommended for any ambitious project.",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Omar Raza",
     role: "CEO",
   },
   {
-    text: "Its robust features and quick support have transformed our workflow, making us significantly more efficient.",
+    text: "He has a deep understanding of modern web technologies and a knack for writing clean, efficient, and maintainable code.",
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Zainab Hussain",
-    role: "Project Manager",
+    role: "Senior Engineer",
   },
   {
-    text: "The smooth implementation exceeded expectations. It streamlined processes, improving overall business performance.",
+    text: "The collaboration was seamless. He integrated perfectly with our team and consistently delivered outstanding results.",
     image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Aliza Khan",
-    role: "Business Analyst",
+    role: "Product Owner",
   },
   {
-    text: "Our business functions improved with a user-friendly design and positive customer feedback.",
+    text: "His passion for development is evident in the quality of his work. A reliable and highly skilled professional.",
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Farhan Siddiqui",
     role: "Marketing Director",
   },
   {
-    text: "They delivered a solution that exceeded expectations, understanding our needs and enhancing our operations.",
+    text: "Adil delivered a solution that exceeded our expectations, deeply understanding our needs and enhancing our user experience.",
     image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Sana Sheikh",
-    role: "Sales Manager",
+    role: "Client",
   },
   {
-    text: "Using this ERP, our online presence and conversions significantly improved, boosting business performance.",
+    text: "His ability to tackle challenging problems and deliver robust solutions was instrumental to our project's success.",
     image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Hassan Ali",
-    role: "E-commerce Manager",
+    role: "Tech Lead",
   },
 ];
 
@@ -169,10 +169,10 @@ export const TestimonialsV2 = () => {
           </div>
 
           <h2 id="testimonials-heading" className="text-5xl md:text-6xl font-bold tracking-tight mt-6 text-center text-gradient-slow">
-            What Our Users Say
+            Words From Colleagues & Clients
           </h2>
           <p className="text-center mt-5 text-frost-cyan text-lg leading-relaxed max-w-2xl">
-            Discover how thousands of teams streamline their operations with our platform.
+            Here's what people I've worked with have to say.
           </p>
         </div>
 
