@@ -90,7 +90,7 @@ const TestimonialsColumn = (props: {
           ease: "linear",
           repeatType: "loop",
         }}
-        className="flex flex-col gap-6 pb-6 bg-transparent transition-colors duration-300 list-none m-0 p-0"
+        className="flex flex-col gap-6 pb-6 bg-transparent list-none m-0 p-0"
       >
         {[
           ...new Array(2).fill(0).map((_, index) => (
@@ -103,34 +103,32 @@ const TestimonialsColumn = (props: {
                   whileHover={{ 
                     scale: 1.03,
                     y: -8,
-                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05)",
                     transition: { type: "spring", stiffness: 400, damping: 17 }
                   }}
                   whileFocus={{ 
                     scale: 1.03,
                     y: -8,
-                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05)",
                     transition: { type: "spring", stiffness: 400, damping: 17 }
                   }}
-                  className="p-10 rounded-3xl border border-neutral-200 dark:border-neutral-800 shadow-lg shadow-black/5 max-w-xs w-full bg-white dark:bg-neutral-900 transition-all duration-300 cursor-default select-none group focus:outline-none focus:ring-2 focus:ring-primary/30" 
+                  className="p-8 rounded-3xl max-w-xs w-full glass-card transition-all duration-300 cursor-default select-none group focus:outline-none focus:ring-2 focus:ring-neon-cyan/50" 
                 >
                   <blockquote className="m-0 p-0">
-                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed font-normal m-0 transition-colors duration-300">
+                    <p className="text-frost-cyan/80 leading-relaxed font-normal m-0 transition-colors duration-300">
                       {text}
                     </p>
-                    <footer className="flex items-center gap-3 mt-6">
+                    <footer className="flex items-center gap-4 mt-6">
                       <img
                         width={40}
                         height={40}
                         src={image}
                         alt={`Avatar of ${name}`}
-                        className="h-10 w-10 rounded-full object-cover ring-2 ring-neutral-100 dark:ring-neutral-800 group-hover:ring-primary/30 transition-all duration-300 ease-in-out"
+                        className="h-10 w-10 rounded-full object-cover border-2 border-neon-cyan/30 group-hover:border-neon-cyan transition-all duration-300 ease-in-out"
                       />
                       <div className="flex flex-col">
-                        <cite className="font-semibold not-italic tracking-tight leading-5 text-neutral-900 dark:text-white transition-colors duration-300">
+                        <cite className="font-semibold not-italic tracking-tight leading-5 text-frost-white transition-colors duration-300">
                           {name}
                         </cite>
-                        <span className="text-sm leading-5 tracking-tight text-neutral-500 dark:text-neutral-500 mt-0.5 transition-colors duration-300">
+                        <span className="text-sm leading-5 tracking-tight text-frost-cyan/70 mt-0.5 transition-colors duration-300">
                           {role}
                         </span>
                       </div>
@@ -163,23 +161,23 @@ export const TestimonialsV2 = () => {
         }}
         className="container px-4 z-10 mx-auto"
       >
-        <div className="flex flex-col items-center justify-center max-w-[540px] mx-auto mb-16">
-          <div className="flex justify-center">
-            <div className="border border-neutral-300 dark:border-neutral-700 py-1 px-4 rounded-full text-xs font-semibold tracking-wide uppercase text-neutral-600 dark:text-neutral-400 bg-neutral-100/50 dark:bg-neutral-800/50 transition-colors">
+        <div className="flex flex-col items-center justify-center max-w-3xl mx-auto mb-16">
+          <div className="flex justify-center mb-6">
+            <div className="border border-neon-cyan/30 py-2 px-6 rounded-full text-sm font-semibold tracking-wide uppercase text-frost-cyan bg-cyber-dark/50 backdrop-blur-sm">
               Testimonials
             </div>
           </div>
 
-          <h2 id="testimonials-heading" className="text-4xl md:text-5xl font-extrabold tracking-tight mt-6 text-center text-neutral-900 dark:text-white transition-colors">
-            What our users say
+          <h2 id="testimonials-heading" className="text-5xl md:text-6xl font-bold tracking-tight mt-6 text-center text-gradient-slow">
+            What Our Users Say
           </h2>
-          <p className="text-center mt-5 text-neutral-500 dark:text-neutral-400 text-lg leading-relaxed max-w-sm transition-colors">
+          <p className="text-center mt-5 text-frost-cyan text-lg leading-relaxed max-w-2xl">
             Discover how thousands of teams streamline their operations with our platform.
           </p>
         </div>
 
         <div 
-          className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] max-h-[740px] overflow-hidden"
+          className="flex justify-center gap-8 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] max-h-[740px] overflow-hidden"
           role="region"
           aria-label="Scrolling Testimonials"
         >
