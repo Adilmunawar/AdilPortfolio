@@ -9,6 +9,7 @@ import ContactSection from '@/components/ContactSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import { NeonOrbs } from '@/components/ui/neon-orbs';
 import CertificationsSection from '@/components/CertificationsSection';
+import StatsSection from '@/components/StatsSection';
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <main className="relative z-10">
         <HeroSection />
         <AboutSection />
+        <StatsSection />
         <SkillsSection />
         <ServicesSection />
         <CertificationsSection />

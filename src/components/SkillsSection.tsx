@@ -1,21 +1,20 @@
 
 'use client';
 import { useState, useEffect } from 'react';
-import GitHubStats from './GitHubStats';
-import LeetCodeStats from './LeetCodeStats'; // Import the new component
 import { LogoLoop } from './LogoLoop';
 
 const SkillsSection = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const skillsSection = document.getElementById('skills-section-observer');
+    const skillsSection = document.getElementById('skills');
     if(!skillsSection) return;
     
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
+          observer.unobserve(entry.target);
         }
       },
       { threshold: 0.1 }
@@ -61,7 +60,7 @@ const SkillsSection = () => {
 
   return (
     <section id="skills" className="py-20 px-4 relative overflow-hidden">
-      <div id="skills-section-observer" className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Title */}
         <div className="text-center mb-16">
           <h2 className={`text-5xl md:text-7xl font-bold mb-6 transition-all duration-1000 ${
@@ -69,25 +68,11 @@ const SkillsSection = () => {
           }`}>
             <span className="text-gradient animate-shimmer">Skills & Expertise</span>
           </h2>
-          <p className={`text-xl text-gray-300 max-w-3xl mx-auto transition-all duration-1000 delay-300 ${
+          <p className={`text-xl text-frost-cyan max-w-3xl mx-auto transition-all duration-1000 delay-300 ${
             isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-8'
           }`}>
             Mastering the latest technologies to build exceptional digital experiences
           </p>
-        </div>
-        
-        {/* GitHub Stats */}
-        <div className={`mb-16 transition-all duration-1000 delay-200 ${
-          isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-12'
-        }`}>
-          <GitHubStats />
-        </div>
-        
-        {/* LeetCode Stats */}
-        <div className={`mb-16 transition-all duration-1000 delay-300 ${
-          isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-12'
-        }`}>
-          <LeetCodeStats />
         </div>
 
         {/* Frontend Frameworks */}
@@ -95,7 +80,7 @@ const SkillsSection = () => {
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <h3 className="text-2xl font-bold text-center text-gray-300 mb-8">Frontend Frameworks</h3>
+          <h3 className="text-2xl font-bold text-center text-frost-white mb-8">Frontend Frameworks</h3>
           <LogoLoop 
             logos={frontendSkills} 
             speed={40} 
@@ -108,7 +93,7 @@ const SkillsSection = () => {
               'src' in item ? (
                 <div className="flex flex-col items-center justify-center text-center gap-2">
                   <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
-                  <span className="text-xs text-gray-400">{item.alt}</span>
+                  <span className="text-xs text-frost-cyan/80">{item.alt}</span>
                 </div>
               ) : null
             )}
@@ -120,7 +105,7 @@ const SkillsSection = () => {
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <h3 className="text-2xl font-bold text-center text-gray-300 mb-8">Backend & Databases</h3>
+          <h3 className="text-2xl font-bold text-center text-frost-white mb-8">Backend & Databases</h3>
           <LogoLoop 
             logos={backendSkills} 
             speed={40}
@@ -134,7 +119,7 @@ const SkillsSection = () => {
                'src' in item ? (
                 <div className="flex flex-col items-center justify-center text-center gap-2">
                   <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
-                  <span className="text-xs text-gray-400">{item.alt}</span>
+                  <span className="text-xs text-frost-cyan/80">{item.alt}</span>
                 </div>
               ) : null
             )}
@@ -146,7 +131,7 @@ const SkillsSection = () => {
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <h3 className="text-2xl font-bold text-center text-gray-300 mb-8">Tools & Technologies</h3>
+          <h3 className="text-2xl font-bold text-center text-frost-white mb-8">Tools & Technologies</h3>
           <LogoLoop 
             logos={toolsSkills} 
             speed={40}
@@ -160,7 +145,7 @@ const SkillsSection = () => {
                'src' in item ? (
                 <div className="flex flex-col items-center justify-center text-center gap-2">
                   <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
-                  <span className="text-xs text-gray-400">{item.alt}</span>
+                  <span className="text-xs text-frost-cyan/80">{item.alt}</span>
                 </div>
               ) : null
             )}

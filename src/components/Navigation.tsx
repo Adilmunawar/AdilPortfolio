@@ -15,6 +15,7 @@ const Navigation = () => {
   const navItems = useMemo(() => [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
+    { name: 'Stats', href: '#stats' },
     { name: 'Skills', href: '#skills' },
     { name: 'Services', href: '#services' },
     { name: 'Certifications', href: '#certifications' },
