@@ -31,34 +31,35 @@ const GitHubStats = () => {
     if (!contributions || contributions.length === 0) {
       return [];
     }
-
+  
     const contributionsMap = new Map<string, ContributionDay>();
     contributions.forEach(day => {
       contributionsMap.set(day.date, day);
     });
+  
+    const weeks: (ContributionDay | null)[][] = Array.from({ length: 52 }, () => Array(7).fill(null));
     
     const today = new Date();
-    // Go back roughly 53 weeks to get a full year calendar view
-    const startDate = new Date();
-    startDate.setDate(today.getDate() - 370);
-    // Align start date to the beginning of the week (Sunday)
-    startDate.setDate(startDate.getDate() - startDate.getDay());
+    const endDate = new Date(today);
+    // Align end date to the end of the week (Saturday)
+    endDate.setDate(today.getDate() + (6 - today.getDay()));
 
-    const weeks: (ContributionDay | null)[][] = Array.from({ length: 53 }, () => Array(7).fill(null));
-
-    for (let i = 0; i < 53 * 7; i++) {
+    const startDate = new Date(endDate);
+    startDate.setDate(endDate.getDate() - (52 * 7 - 1));
+  
+    for (let i = 0; i < 52 * 7; i++) {
       const currentDate = new Date(startDate);
       currentDate.setDate(startDate.getDate() + i);
       const dateKey = currentDate.toISOString().split('T')[0];
       const weekIndex = Math.floor(i / 7);
       const dayIndex = i % 7;
-
-      if (weekIndex < 53 && dayIndex < 7) {
-          const dayData = contributionsMap.get(dateKey);
-           weeks[weekIndex][dayIndex] = dayData || { date: dateKey, count: 0, level: 0 };
+  
+      if (weekIndex < 52) {
+        const dayData = contributionsMap.get(dateKey);
+        weeks[weekIndex][dayIndex] = dayData || { date: dateKey, count: 0, level: 0 };
       }
     }
-    
+  
     return weeks;
   };
   
@@ -121,7 +122,7 @@ const GitHubStats = () => {
            </div>
         </div>
         
-        <div className="flex justify-between items-center mt-6 text-xs text-gray-400 animate-fade-in-up max-w-lg mx-auto" style={{ animationDelay: '400ms' }}>
+        <div className="flex justify-between items-center mt-6 text-xs text-gray-400 animate-fade-in-up max-w-xs mx-auto" style={{ animationDelay: '400ms' }}>
           <span className="hover:text-gray-300 transition-colors">Less</span>
           <div className="flex gap-1">
             {[0, 1, 2, 3, 4].map(level => (
