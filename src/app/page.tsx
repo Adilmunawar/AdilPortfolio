@@ -8,7 +8,6 @@ import ProjectsSection from '@/components/ProjectsSection';
 import ContactSection from '@/components/ContactSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import { NeonOrbs } from '@/components/ui/neon-orbs';
-import CertificationsSection from '@/components/CertificationsSection';
 import StatsSection from '@/components/StatsSection';
 
 export default function Home() {
@@ -22,7 +21,6 @@ export default function Home() {
         <AboutSection />
         <StatsSection />
         <SkillsSection />
-        <CertificationsSection />
         <ServicesSection />
         <ProjectsSection />
         <TestimonialsSection />

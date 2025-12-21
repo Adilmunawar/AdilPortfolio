@@ -2,6 +2,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { LogoLoop } from './LogoLoop';
+import Achievements from './Achievements';
 
 const SkillsSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -43,7 +44,7 @@ const SkillsSection = () => {
     { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuresqldatabase/azuresqldatabase-original.svg", alt: "SQL" },
     { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg", alt: "PostgreSQL" },
     { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg", alt: "Firebase" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg", alt: "Supabase" },
+    { src: "https://cdn.jsdelivrnet/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg", alt: "Supabase" },
     { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg", alt: "Redis" }
   ];
 
@@ -60,6 +61,7 @@ const SkillsSection = () => {
 
   return (
     <section id="skills" className="py-20 px-4 relative overflow-hidden">
+      <Achievements />
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Title */}
         <div className="text-center mb-16">
