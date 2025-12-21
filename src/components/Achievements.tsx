@@ -91,7 +91,7 @@ const Achievements = () => {
         {[...certificates, ...certificates].map((item, index) => (
           <div
             key={index}
-            className="group relative flex-shrink-0 mx-4"
+            className="group relative flex-shrink-0 mx-2"
             style={{ width: '320px', height: '224px' }}
           >
             <div className="relative w-full h-full rounded-lg overflow-hidden transition-all duration-300 transform-gpu group-hover:scale-105">
@@ -105,12 +105,6 @@ const Achievements = () => {
           </div>
         ))}
       </motion.div>
-      
-      <div className="text-center mt-12 relative z-10">
-        <h3 className="text-3xl font-bold text-gradient-slow">
-          Achievements
-        </h3>
-      </div>
     </div>
   );
 };
