@@ -18,12 +18,12 @@ const extendedCertificates = [...certificates, ...certificates];
 
 const marqueeVariants = {
   animate: {
-    x: [0, -200 * (certificates.length / 2) + '%'], // Adjusted for correct looping distance
+    x: [0, '-100%'],
     transition: {
       x: {
         repeat: Infinity,
         repeatType: 'loop',
-        duration: 80, // Slower for smoother effect
+        duration: 80, 
         ease: 'linear',
       },
     },
@@ -35,8 +35,6 @@ const Achievements = () => {
   return (
     <div className="relative w-full overflow-hidden py-12">
       <div className="absolute inset-0 z-0 bg-grid-pattern"></div>
-      <div className="absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent"></div>
-      <div className="absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent"></div>
       
       <motion.div
         className="flex"
@@ -46,7 +44,7 @@ const Achievements = () => {
         {extendedCertificates.map((cert, index) => (
           <motion.div
             key={index}
-            className="group relative flex-shrink-0 mx-8" // Increased margin for spacing
+            className="group relative flex-shrink-0 mx-8"
             whileHover={{ scale: 1.05, zIndex: 20 }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
