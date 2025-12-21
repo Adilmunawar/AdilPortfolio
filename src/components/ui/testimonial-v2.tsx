@@ -14,19 +14,19 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     text: "Adil's technical expertise and problem-solving skills are exceptional. He delivered a high-quality solution that exceeded our expectations.",
-    image: "https://images.unsplash.com/photo-1599377884021-a4ebf59c1c3f?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "https://images.unsplash.com/photo-1628890920690-9e29d0019b9b?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     name: "Fatima Ahmed",
     role: "Project Manager",
   },
   {
     text: "Working with Adil was a fantastic experience. His communication is clear, and he has a unique talent for turning complex ideas into elegant code.",
-    image: "https://images.unsplash.com/photo-1628890920690-9e29d0019b9b?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     name: "Ayesha Khan",
     role: "Lead Developer",
   },
   {
     text: "His attention to detail and commitment to quality are second to none. I was consistently impressed with his dedication to the project.",
-    image: "https://images.unsplash.com/photo-1628890923662-2cb23c2a01a8?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "https://images.unsplash.com/photo-1594819047050-998a4446c651?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     name: "Saman Malik",
     role: "UX Designer",
   },
@@ -38,13 +38,13 @@ const testimonials: Testimonial[] = [
   },
   {
     text: "He has a deep understanding of modern web technologies and a knack for writing clean, efficient, and maintainable code.",
-    image: "https://images.unsplash.com/photo-1594819047050-998a4446c651?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "https://images.unsplash.com/photo-1628890923662-2cb23c2a01a8?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     name: "Zainab Hussain",
     role: "Senior Engineer",
   },
   {
     text: "The collaboration was seamless. He integrated perfectly with our team and consistently delivered outstanding results.",
-    image: "https://images.unsplash.com/photo-1594819047050-998a4446c651?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "https://images.unsplash.com/photo-1599377884021-a4ebf59c1c3f?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     name: "Aliza Khan",
     role: "Product Owner",
   },
