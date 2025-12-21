@@ -14,14 +14,14 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     text: "Adil's technical expertise and problem-solving skills are exceptional. He delivered a high-quality solution that exceeded our expectations.",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150",
-    name: "Briana Patton",
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150&h=150",
+    name: "Fatima Ahmed",
     role: "Project Manager",
   },
   {
     text: "Working with Adil was a fantastic experience. His communication is clear, and he has a unique talent for turning complex ideas into elegant code.",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150&h=150",
-    name: "Bilal Ahmed",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150",
+    name: "Ayesha Khan",
     role: "Lead Developer",
   },
   {
@@ -32,8 +32,8 @@ const testimonials: Testimonial[] = [
   },
   {
     text: "Adil is a rare talent who combines strategic thinking with flawless execution. Highly recommended for any ambitious project.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150&h=150",
-    name: "Omar Raza",
+    image: "https://images.unsplash.com/photo-1557053910-d9eadeed1c58?auto=format&fit=crop&q=80&w=150&h=150",
+    name: "Hina Riaz",
     role: "CEO",
   },
   {
@@ -50,20 +50,20 @@ const testimonials: Testimonial[] = [
   },
   {
     text: "His passion for development is evident in the quality of his work. A reliable and highly skilled professional.",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&h=150",
-    name: "Farhan Siddiqui",
+    image: "https://plus.unsplash.com/premium_photo-1664203067979-438c642459c6?auto=format&fit=crop&q=80&w=150&h=150",
+    name: "Nida Ali",
     role: "Marketing Director",
   },
   {
     text: "Adil delivered a solution that exceeded our expectations, deeply understanding our needs and enhancing our user experience.",
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150&h=150",
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Sana Sheikh",
     role: "Client",
   },
   {
     text: "His ability to tackle challenging problems and deliver robust solutions was instrumental to our project's success.",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150&h=150",
-    name: "Hassan Ali",
+    image: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&q=80&w=150&h=150",
+    name: "Iqra Hassan",
     role: "Tech Lead",
   },
 ];
