@@ -18,17 +18,18 @@ const extendedCertificates = [...certificates, ...certificates];
 
 const marqueeVariants = {
   animate: {
-    x: [0, -100 * certificates.length / (certificates.length / 4) + '%'],
+    x: [0, -200 * (certificates.length / 2) + '%'], // Adjusted for correct looping distance
     transition: {
       x: {
         repeat: Infinity,
         repeatType: 'loop',
-        duration: 40,
+        duration: 80, // Slower for smoother effect
         ease: 'linear',
       },
     },
   },
 };
+
 
 const Achievements = () => {
   return (
@@ -45,11 +46,11 @@ const Achievements = () => {
         {extendedCertificates.map((cert, index) => (
           <motion.div
             key={index}
-            className="group relative flex-shrink-0 mx-4"
+            className="group relative flex-shrink-0 mx-8" // Increased margin for spacing
             whileHover={{ scale: 1.05, zIndex: 20 }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
-            <div className="relative w-80 h-56 rounded-lg overflow-hidden glass-card hover:border-neon-cyan/80 transition-all duration-300">
+            <div className="relative w-80 h-56 rounded-lg overflow-hidden transition-all duration-300">
               <Image
                 src={cert.src}
                 alt={cert.alt}
@@ -57,7 +58,7 @@ const Achievements = () => {
                 objectFit="contain"
                 className="p-2 transition-transform duration-300 group-hover:scale-105"
               />
-               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
+               <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
             </div>
           </motion.div>
         ))}
