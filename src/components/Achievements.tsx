@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
 const certificates = [
@@ -11,6 +11,8 @@ const certificates = [
   { src: '/application modern.png', alt: 'Application Modernization Certificate' },
   { src: '/Google Ads apps.png', alt: 'Google Ads Apps Certificate' },
   { src: '/aws.png', alt: 'AWS Certificate' },
+  { src: '/Linkedin Content and creative design.png', alt: 'LinkedIn Content and Creative Design Certificate' },
+  { src: '/Microsoft-azure-professional.png', alt: 'Microsoft Azure Professional Certificate' },
 ];
 
 const Achievements = () => {
@@ -24,45 +26,63 @@ const Achievements = () => {
   };
   
   useEffect(() => {
-    if (isPaused) {
-      controls.stop();
-    } else {
-      const scrollerWidth = scrollerRef.current?.scrollWidth ?? 0;
-      const scrollableWidth = scrollerWidth / 2;
-
-      controls.start({
-        x: -scrollableWidth,
-        transition: {
-          duration: (scrollableWidth / 100), // Adjust speed here
-          ease: 'linear',
-          repeat: Infinity,
-          repeatType: 'loop',
-        },
-      });
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+  
+    const scrollerWidth = scroller.scrollWidth;
+    const scrollableWidth = scrollerWidth / 2;
+  
+    const animate = () => {
+      if (isPaused) {
+        controls.stop();
+      } else {
+        controls.start({
+          x: -scrollableWidth,
+          transition: {
+            duration: (scrollableWidth / 100), // Adjust speed here
+            ease: 'linear',
+            repeat: Infinity,
+            repeatType: 'loop',
+          },
+        });
+      }
+    };
+  
+    // Wait for images to load to get correct scrollWidth
+    const images = scroller.querySelectorAll('img');
+    let loadedImages = 0;
+    const totalImages = images.length;
+  
+    if (totalImages === 0) {
+      animate();
+      return;
     }
+  
+    images.forEach(img => {
+      if (img.complete) {
+        loadedImages++;
+      } else {
+        img.onload = () => {
+          loadedImages++;
+          if (loadedImages === totalImages) {
+            animate();
+          }
+        };
+      }
+    });
+  
+    if (loadedImages === totalImages) {
+      animate();
+    }
+  
   }, [isPaused, controls]);
 
-  useEffect(() => {
-    // Initial animation start
-    const scrollerWidth = scrollerRef.current?.scrollWidth ?? 0;
-    const scrollableWidth = scrollerWidth / 2;
-
-    if (scrollableWidth > 0) {
-      controls.start({
-        x: -scrollableWidth,
-        transition: {
-          duration: (scrollableWidth / 100), // Adjust speed here
-          ease: 'linear',
-          repeat: Infinity,
-          repeatType: 'loop',
-        },
-      });
-    }
-  }, [controls]);
-  
-
   return (
-    <div className="relative w-full py-12 overflow-hidden" onClick={handleTogglePause}>
+    <div 
+      className="relative w-full py-12 overflow-hidden cursor-pointer" 
+      onClick={handleTogglePause}
+      title="Click to pause/resume"
+    >
       <motion.div
         ref={scrollerRef}
         className="flex w-max"
