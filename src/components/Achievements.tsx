@@ -3,21 +3,59 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
 const certificates = [
-  { src: '/advance webhook concepts.png', alt: 'Advanced Webhook Concepts Certificate' },
-  { src: '/advanced performance measurements.png', alt: 'Advanced Performance Measurements Certificate' },
-  { src: '/CCAI frontend Integrations.png', alt: 'CCAI Frontend Integrations Certificate' },
-  { src: '/MLOPS.png', alt: 'MLOPS Certificate' },
-  { src: '/MLOPS with vertex AI.png', alt: 'MLOPS with Vertex AI Certificate' },
-  { src: '/application modern.png', alt: 'Application Modernization Certificate' },
-  { src: '/Google Ads apps.png', alt: 'Google Ads Apps Certificate' },
-  { src: '/aws.png', alt: 'AWS Certificate' },
-  { src: '/Linkedin Content and creative design.png', alt: 'LinkedIn Content and Creative Design Certificate' },
-  { src: '/Microsoft-azure-professional.png', alt: 'Microsoft Azure Professional Certificate' },
+  { 
+    src: '/advance webhook concepts.png', 
+    alt: 'Advanced Webhook Concepts Certificate',
+    description: 'Mastered advanced webhook concepts, enabling robust real-time data synchronization between applications.'
+  },
+  { 
+    src: '/advanced performance measurements.png', 
+    alt: 'Advanced Performance Measurements Certificate',
+    description: 'Certified in advanced performance measurements, skilled in optimizing application speed and efficiency.'
+  },
+  { 
+    src: '/CCAI frontend Integrations.png', 
+    alt: 'CCAI Frontend Integrations Certificate',
+    description: 'Proficient in CCAI Frontend Integrations, connecting powerful AI capabilities with user-friendly interfaces.'
+  },
+  { 
+    src: '/MLOPS.png', 
+    alt: 'MLOPS Certificate',
+    description: 'Demonstrates expertise in MLOps, streamlining the machine learning lifecycle from development to production.'
+  },
+  { 
+    src: '/MLOPS with vertex AI.png', 
+    alt: 'MLOPS with Vertex AI Certificate',
+    description: 'Specialized in MLOps with Vertex AI, managing and deploying machine learning models on Google Cloud.'
+  },
+  { 
+    src: '/application modern.png', 
+    alt: 'Application Modernization Certificate',
+    description: 'Skilled in modernizing legacy applications to improve performance, scalability, and maintainability.'
+  },
+  { 
+    src: '/Google Ads apps.png', 
+    alt: 'Google Ads Apps Certificate',
+    description: 'Certified in developing and integrating applications with the Google Ads API for campaign management.'
+  },
+  { 
+    src: '/aws.png', 
+    alt: 'AWS Certificate',
+    description: 'Proficient in deploying, managing, and operating scalable and fault-tolerant systems on Amazon Web Services.'
+  },
+  { 
+    src: '/Linkedin Content and creative design.png', 
+    alt: 'LinkedIn Content and Creative Design Certificate',
+    description: 'Adept at creating engaging content and visually appealing designs tailored for the LinkedIn platform.'
+  },
+  { 
+    src: '/Microsoft-azure-professional.png', alter: 'Microsoft Azure Professional Certificate',
+    description: 'Qualified to design, build, and manage secure and scalable solutions using Microsoft Azure services.'
+  },
 ];
 
 const Achievements = () => {
   const [isPaused, setIsPaused] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
 
@@ -36,10 +74,14 @@ const Achievements = () => {
       if (isPaused) {
         controls.stop();
       } else {
+        const currentX = (controls.get("x") as number) || 0;
+        const remainingDistance = scrollableWidth + currentX;
+        const remainingDuration = (remainingDistance / 100);
+
         controls.start({
           x: -scrollableWidth,
           transition: {
-            duration: (scrollableWidth / 100), // Adjust speed here
+            duration: remainingDuration,
             ease: 'linear',
             repeat: Infinity,
             repeatType: 'loop',
@@ -48,33 +90,9 @@ const Achievements = () => {
       }
     };
   
-    // Wait for images to load to get correct scrollWidth
-    const images = scroller.querySelectorAll('img');
-    let loadedImages = 0;
-    const totalImages = images.length;
-  
-    if (totalImages === 0) {
-      animate();
-      return;
-    }
-  
-    images.forEach(img => {
-      if (img.complete) {
-        loadedImages++;
-      } else {
-        img.onload = () => {
-          loadedImages++;
-          if (loadedImages === totalImages) {
-            animate();
-          }
-        };
-      }
-    });
-  
-    if (loadedImages === totalImages) {
-      animate();
-    }
-  
+    animate();
+
+    return () => controls.stop();
   }, [isPaused, controls]);
 
   return (
@@ -87,6 +105,7 @@ const Achievements = () => {
         ref={scrollerRef}
         className="flex w-max"
         animate={controls}
+        initial={{ x: 0 }}
       >
         {[...certificates, ...certificates].map((item, index) => (
           <div
@@ -100,7 +119,11 @@ const Achievements = () => {
                 alt={item.alt || ''}
                 className="p-2 object-contain w-full h-full"
               />
-              <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-50 transition-all duration-300"></div>
+              <div className="absolute inset-0 bg-cyber-dark/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+                <p className="text-center text-sm text-frost-cyan leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-150">
+                  {item.description}
+                </p>
+              </div>
             </div>
           </div>
         ))}
