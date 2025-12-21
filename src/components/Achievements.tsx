@@ -49,7 +49,8 @@ const certificates = [
     description: 'Adept at creating engaging content and visually appealing designs tailored for the LinkedIn platform.'
   },
   { 
-    src: '/Microsoft-azure-professional.png', alter: 'Microsoft Azure Professional Certificate',
+    src: '/Microsoft-azure-professional.png', 
+    alt: 'Microsoft Azure Professional Certificate',
     description: 'Qualified to design, build, and manage secure and scalable solutions using Microsoft Azure services.'
   },
 ];
@@ -74,7 +75,7 @@ const Achievements = () => {
       if (isPaused) {
         controls.stop();
       } else {
-        const currentX = (controls.get("x") as number) || 0;
+        const currentX = (scrollerRef.current as any)?._gsap?.x || 0;
         const remainingDistance = scrollableWidth + currentX;
         const remainingDuration = (remainingDistance / 100);
 
