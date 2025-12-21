@@ -167,10 +167,6 @@ export const TestimonialsV2 = () => {
               Testimonials
             </div>
           </div>
-
-          <h2 id="testimonials-heading" className="text-5xl md:text-6xl font-bold tracking-tight mt-6 text-center text-gradient-slow">
-            Words From Colleagues & Clients
-          </h2>
           <p className="text-center mt-5 text-frost-cyan text-lg leading-relaxed max-w-2xl">
             Here's what people I've worked with have to say.
           </p>
