@@ -7,7 +7,7 @@ const certificates = [
   { src: '/advanced performance measurements.png', alt: 'Advanced Performance Measurements Certificate' },
   { src: '/CCAI frontend Integrations.png', alt: 'CCAI Frontend Integrations Certificate' },
   { src: '/MLOPS.png', alt: 'MLOPS Certificate' },
-  { src: '/MLOPS with vertex Al.png', alt: 'MLOPS with Vertex AI Certificate' },
+  { src: '/MLOPS with vertex AI.png', alt: 'MLOPS with Vertex AI Certificate' },
   { src: '/application modern.png', alt: 'Application Modernization Certificate' },
   { src: '/Google Ads apps.png', alt: 'Google Ads Apps Certificate' },
   { src: '/aws.png', alt: 'AWS Certificate' },
