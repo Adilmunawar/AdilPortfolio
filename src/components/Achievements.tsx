@@ -5,53 +5,53 @@ import { motion, useAnimation } from 'framer-motion';
 const certificates = [
   { 
     src: '/advance webhook concepts.png', 
-    alt: 'Advanced Webhook Concepts Certificate',
-    description: 'Mastered advanced webhook concepts, enabling robust real-time data synchronization between applications.'
+    alt: 'Advanced Webhook Concepts Certificate for Adil Munawar',
+    description: 'Adil Munawar mastered advanced webhook concepts, enabling robust real-time data synchronization between applications.'
   },
   { 
     src: '/advanced performance measurements.png', 
-    alt: 'Advanced Performance Measurements Certificate',
-    description: 'Certified in advanced performance measurements, skilled in optimizing application speed and efficiency.'
+    alt: 'Advanced Performance Measurements Certificate for Adil Munawar',
+    description: 'Adil Munawar is certified in advanced performance measurements, skilled in optimizing application speed and efficiency.'
   },
   { 
     src: '/CCAI frontend Integrations.png', 
-    alt: 'CCAI Frontend Integrations Certificate',
-    description: 'Proficient in CCAI Frontend Integrations, connecting powerful AI capabilities with user-friendly interfaces.'
+    alt: 'CCAI Frontend Integrations Certificate for Adil Munawar',
+    description: 'Adil Munawar is proficient in CCAI Frontend Integrations, connecting powerful AI capabilities with user-friendly interfaces.'
   },
   { 
     src: '/MLOPS.png', 
-    alt: 'MLOPS Certificate',
-    description: 'Demonstrates expertise in MLOps, streamlining the machine learning lifecycle from development to production.'
+    alt: 'MLOPS Certificate for Adil Munawar',
+    description: 'Adil Munawar demonstrates expertise in MLOps, streamlining the machine learning lifecycle from development to production.'
   },
   { 
     src: '/MLOPS with vertex AI.png', 
-    alt: 'MLOPS with Vertex AI Certificate',
-    description: 'Specialized in MLOps with Vertex AI, managing and deploying machine learning models on Google Cloud.'
+    alt: 'MLOPS with Vertex AI Certificate for Adil Munawar',
+    description: 'Adil Munawar specializes in MLOps with Vertex AI, managing and deploying machine learning models on Google Cloud.'
   },
   { 
     src: '/application modern.png', 
-    alt: 'Application Modernization Certificate',
-    description: 'Skilled in modernizing legacy applications to improve performance, scalability, and maintainability.'
+    alt: 'Application Modernization Certificate for Adil Munawar',
+    description: 'Adil Munawar is skilled in modernizing legacy applications to improve performance, scalability, and maintainability.'
   },
   { 
     src: '/Google Ads apps.png', 
-    alt: 'Google Ads Apps Certificate',
-    description: 'Certified in developing and integrating applications with the Google Ads API for campaign management.'
+    alt: 'Google Ads Apps Certificate for Adil Munawar',
+    description: 'Adil Munawar is certified in developing and integrating applications with the Google Ads API for campaign management.'
   },
   { 
     src: '/aws.png', 
-    alt: 'AWS Certificate',
-    description: 'Proficient in deploying, managing, and operating scalable and fault-tolerant systems on Amazon Web Services.'
+    alt: 'AWS Certificate for Adil Munawar',
+    description: 'Adil Munawar is proficient in deploying, managing, and operating scalable and fault-tolerant systems on Amazon Web Services.'
   },
   { 
     src: '/Linkedin Content and creative design.png', 
-    alt: 'LinkedIn Content and Creative Design Certificate',
-    description: 'Adept at creating engaging content and visually appealing designs tailored for the LinkedIn platform.'
+    alt: 'LinkedIn Content and Creative Design Certificate for Adil Munawar',
+    description: 'Adil Munawar is adept at creating engaging content and visually appealing designs tailored for the LinkedIn platform.'
   },
   { 
     src: '/Microsoft-azure-professional.png', 
-    alt: 'Microsoft Azure Professional Certificate',
-    description: 'Qualified to design, build, and manage secure and scalable solutions using Microsoft Azure services.'
+    alt: 'Microsoft Azure Professional Certificate for Adil Munawar',
+    description: 'Adil Munawar is qualified to design, build, and manage secure and scalable solutions using Microsoft Azure services.'
   },
 ];
 
