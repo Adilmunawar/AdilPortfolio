@@ -22,8 +22,8 @@ export default function Home() {
         <AboutSection />
         <StatsSection />
         <SkillsSection />
-        <ServicesSection />
         <CertificationsSection />
+        <ServicesSection />
         <ProjectsSection />
         <TestimonialsSection />
         <ContactSection />
