@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 
 const testimonials = [
@@ -17,7 +17,7 @@ const testimonials = [
     image: "https://images.unsplash.com/photo-1639149888905-fb39731f2e6c?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDN8fGF2YXRhcnN8ZW58MHx8MHx8fDA",
   },
   {
-    quote: "Collaborating with Adil was seamless. He builds high-performing sites that make digital marketing work.",
+    quote: "Adil's collaboration was seamless. He builds high-performing sites that make digital marketing work effectively.",
     name: "Esha Riaz",
     role: "Digital Marketor",
     image: "/testimonials/esha.jpg",
@@ -26,23 +26,35 @@ const testimonials = [
 
 export function TestimonialsMinimal() {
   const [active, setActive] = useState(0)
+  const [containerHeight, setContainerHeight] = useState(100)
+  const quoteRefs = useRef<(HTMLParagraphElement | null)[]>([])
 
   useEffect(() => {
     const interval = setInterval(() => {
       setActive((prevActive) => (prevActive + 1) % testimonials.length);
-    }, 2000); // Auto-switch every 2 seconds
+    }, 4000); // Auto-switch every 4 seconds
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
+
+  useEffect(() => {
+    if (quoteRefs.current[active]) {
+      setContainerHeight(quoteRefs.current[active]!.scrollHeight)
+    }
+  }, [active])
 
 
   return (
     <div className="w-full max-w-xl mx-auto px-6 py-16">
       {/* Quote */}
-      <div className="relative min-h-[80px] mb-12">
+      <div 
+        className="relative mb-12 transition-all duration-500 ease-in-out"
+        style={{ height: containerHeight }}
+      >
         {testimonials.map((t, i) => (
           <p
             key={i}
+            ref={(el) => (quoteRefs.current[i] = el)}
             className={`
               absolute inset-0 text-xl md:text-2xl font-light leading-relaxed text-foreground
               transition-all duration-500 ease-out
