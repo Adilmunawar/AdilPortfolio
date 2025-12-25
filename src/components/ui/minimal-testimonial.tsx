@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { cn } from "@/lib/utils"
 
 const testimonials = [
@@ -37,21 +37,16 @@ const testimonials = [
 export function TestimonialsMinimal() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
-  const [displayedQuote, setDisplayedQuote] = useState(testimonials[0].quote)
-  const [displayedRole, setDisplayedRole] = useState(testimonials[0].role)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
-  const handleSelect = (index: number) => {
+  const handleSelect = useCallback((index: number) => {
     if (index === activeIndex || isAnimating) return
     setIsAnimating(true)
-
     setTimeout(() => {
-      setDisplayedQuote(testimonials[index].quote)
-      setDisplayedRole(testimonials[index].role)
       setActiveIndex(index)
-      setTimeout(() => setIsAnimating(false), 400)
-    }, 200)
-  }
+      setIsAnimating(false)
+    }, 400) // Corresponds to quote transition
+  }, [activeIndex, isAnimating])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -59,7 +54,9 @@ export function TestimonialsMinimal() {
     }, 2000); // Auto-switch every 2 seconds
 
     return () => clearInterval(interval);
-  }, [activeIndex]);
+  }, [activeIndex, handleSelect]);
+  
+  const { quote: displayedQuote, role: displayedRole } = testimonials[activeIndex];
 
   return (
     <div className="flex flex-col items-center gap-10 py-16">
@@ -119,7 +116,7 @@ export function TestimonialsMinimal() {
                     src={testimonial.avatar || "/placeholder.svg"}
                     alt={testimonial.author}
                     className={cn(
-                      "w-10 h-10 rounded-full object-cover",
+                      "w-12 h-12 rounded-full object-cover",
                       "transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
                       isActive ? "ring-2 ring-background/30" : "ring-0",
                       !isActive && "hover:scale-105",
