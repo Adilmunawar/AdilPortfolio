@@ -140,8 +140,8 @@ const AboutSection = () => {
                 handle="Adil Munawar"
                 status="Online"
                 contactText="Contact Me"
-                avatarUrl="/lovable-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
-                miniAvatarUrl="/lovable-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
+                avatarUrl="/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
+                miniAvatarUrl="/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
                 showUserInfo={true}
                 enableTilt={true}
                 onContactClick={() => console.log('Contact clicked')}

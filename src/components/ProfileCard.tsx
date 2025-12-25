@@ -32,7 +32,7 @@ const round = (value: number, precision = 3): number => parseFloat(value.toFixed
 const adjust = (value: number, fromMin: number, fromMax: number, toMin: number, toMax: number): number => round(toMin + (toMax - toMin) * (value - fromMin) / (fromMax - fromMin));
 const easeInOutCubic = (x: number): number => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 const ProfileCardComponent: React.FC<ProfileCardProps> = ({
-  avatarUrl = "/lovable-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png",
+  avatarUrl = "/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png",
   iconUrl,
   grainUrl,
   behindGradient,
