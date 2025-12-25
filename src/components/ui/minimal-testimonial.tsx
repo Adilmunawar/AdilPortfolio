@@ -1,141 +1,145 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import Image from "next/image"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState } from "react"
+import { cn } from "@/lib/utils"
 
 const testimonials = [
-  {
-    quote: "Co-founding Nexus Orbits Pakistan with Adil has been a highlight of my career. After years of collaborating on countless projects, I can attest to his exceptional skill and vision as a web developer and partner.",
-    name: "Zoya Ali",
-    role: "Web Developer & Co-founder",
-    image: "/testimonials/zoya.jpg",
-  },
-  {
-    quote: "He consistently impressed me with his dedication, professionalism, he is a great team player and communicator.",
-    name: "Amna Ali",
-    role: "HR Manager",
-    image: "/testimonials/AmnaAli.jpg",
-  },
-  {
-    quote: "I have been profoundly impressed by his remarkable aptitude for web development and problem-solving.",
-    name: "Alice Austen",
-    role: "Design Lead at Linear",
-    image: "/testimonials/alice.png",
-  },
-  {
-    quote: "Collaborating with Adil was seamless. He builds high-performing sites that make digital marketing actually work. Exceptional developer!",
-    name: "Esha Riaz",
-    role: "Digital Marketor",
-    image: "/testimonials/esha.jpg",
-  },
+    {
+        id: 1,
+        quote: "Co-founding Nexus Orbits Pakistan with Adil has been a highlight of my career. After years of collaborating on countless projects, I can attest to his exceptional skill and vision as a web developer and partner.",
+        author: "Zoya Ali",
+        role: "Web Developer & Co-founder",
+        avatar: "/testimonials/zoya.jpg",
+    },
+    {
+        id: 2,
+        quote: "I have been profoundly impressed by his remarkable aptitude for web development and problem-solving.",
+        author: "Alice Austen",
+        role: "Design Lead at Linear",
+        avatar: "/testimonials/alice.png",
+    },
+    {
+        id: 3,
+        quote: "Collaborating with Adil was seamless,builds high performing sites that make digital marketing actually work. Exceptional developer!",
+        author: "Esha Riaz",
+        role: "Digital Marketor",
+        avatar: "/testimonials/esha.jpg",
+    },
+    {
+        id: 4,
+        quote: "He consistently impressed me with his dedication, professionalism, he is a great team player and communicator.",
+        author: "Amna Ali",
+        role: "HR Manager",
+        avatar: "/testimonials/AmnaAli.jpg",
+    },
 ]
 
 export function TestimonialsMinimal() {
-  const [active, setActive] = useState(0);
-  const [containerHeight, setContainerHeight] = useState(100);
-  const quoteRefs = useRef<(HTMLParagraphElement | null)[]>([]);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [displayedQuote, setDisplayedQuote] = useState(testimonials[0].quote)
+  const [displayedRole, setDisplayedRole] = useState(testimonials[0].role)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
-  const setTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(() => {
-      setActive((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-  };
-  
-  useEffect(() => {
-    setTimer();
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, [active]);
+  const handleSelect = (index: number) => {
+    if (index === activeIndex || isAnimating) return
+    setIsAnimating(true)
 
-  useEffect(() => {
-    if (quoteRefs.current[active]) {
-      setContainerHeight(quoteRefs.current[active]!.scrollHeight);
-    }
-  }, [active, testimonials]);
-  
-  const handleAvatarClick = (index: number) => {
-    setActive(index);
+    setTimeout(() => {
+      setDisplayedQuote(testimonials[index].quote)
+      setDisplayedRole(testimonials[index].role)
+      setActiveIndex(index)
+      setTimeout(() => setIsAnimating(false), 400)
+    }, 200)
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-6 py-16">
-      {/* Quote */}
-      <div 
-        className="relative mb-12 transition-[height] duration-500 ease-in-out"
-        style={{ height: containerHeight }}
-      >
-        <AnimatePresence mode="wait">
-            <motion.div
-              key={active}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0"
-            >
-              <p
-                ref={(el) => (quoteRefs.current[active] = el)}
-                className="text-2xl md:text-3xl font-light leading-relaxed text-foreground text-center"
-              >
-                <span className="text-5xl text-neon-cyan/50 absolute -left-4 -top-2">“</span>
-                {testimonials[active].quote}
-                <span className="text-5xl text-neon-cyan/50 absolute -right-4 -bottom-2">”</span>
-              </p>
-            </motion.div>
-        </AnimatePresence>
+    <div className="flex flex-col items-center gap-10 py-16">
+      {/* Quote Container */}
+      <div className="relative px-8">
+        <span className="absolute -left-2 -top-6 text-7xl font-serif text-foreground/[0.06] select-none pointer-events-none">
+          "
+        </span>
+
+        <p
+          className={cn(
+            "text-2xl md:text-3xl font-light text-foreground text-center max-w-lg leading-relaxed transition-all duration-400 ease-out",
+            isAnimating ? "opacity-0 blur-sm scale-[0.98]" : "opacity-100 blur-0 scale-100",
+          )}
+        >
+          {displayedQuote}
+        </p>
+
+        <span className="absolute -right-2 -bottom-8 text-7xl font-serif text-foreground/[0.06] select-none pointer-events-none">
+          "
+        </span>
       </div>
 
-      {/* Author/Avatar Row */}
-      <div className="flex flex-col items-center gap-8">
-        <p className="text-center text-frost-cyan/70 font-semibold">{testimonials[active].role}</p>
-        
-        <div className="flex items-center space-x-2">
-          {testimonials.map((t, i) => (
-             <div 
-                key={i} 
-                onClick={() => handleAvatarClick(i)} 
-                className="relative cursor-pointer focus:outline-none"
-                onMouseEnter={() => setActive(i)}
-                onMouseLeave={setTimer}
-             >
-              <AnimatePresence>
-                {active === i && (
-                  <motion.div
-                    layoutId="capsule"
-                    className="absolute inset-0 z-10 bg-white rounded-full flex items-center justify-start px-2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  >
-                    <Image
-                      src={t.image}
-                      alt={t.name}
-                      width={48}
-                      height={48}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <span className="ml-3 text-sm font-medium text-cyber-dark whitespace-nowrap">{t.name}</span>
-                  </motion.div>
+      <div className="flex flex-col items-center gap-6 mt-2">
+        {/* Role text */}
+        <p
+          className={cn(
+            "text-xs text-muted-foreground tracking-[0.2em] uppercase transition-all duration-500 ease-out",
+            isAnimating ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0",
+          )}
+        >
+          {displayedRole}
+        </p>
+
+        <div className="flex items-center justify-center gap-2">
+          {testimonials.map((testimonial, index) => {
+            const isActive = activeIndex === index
+            const isHovered = hoveredIndex === index && !isActive
+            const showName = isActive || isHovered
+
+            return (
+              <button
+                key={testimonial.id}
+                onClick={() => handleSelect(index)}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                className={cn(
+                  "relative flex items-center gap-0 rounded-full cursor-pointer",
+                  "transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+                  isActive ? "bg-foreground shadow-lg" : "bg-transparent hover:bg-muted/80",
+                  showName ? "pr-4 pl-2 py-2" : "p-0.5",
                 )}
-              </AnimatePresence>
-              <Image
-                src={t.image}
-                alt={t.name}
-                width={56}
-                height={56}
-                className={`w-14 h-14 rounded-full object-cover transition-all duration-300 ${active === i ? 'opacity-0' : 'opacity-70 hover:opacity-100'}`}
-              />
-            </div>
-          ))}
+              >
+                {/* Avatar with smooth ring animation */}
+                <div className="relative flex-shrink-0">
+                  <img
+                    src={testimonial.avatar || "/placeholder.svg"}
+                    alt={testimonial.author}
+                    className={cn(
+                      "w-8 h-8 rounded-full object-cover",
+                      "transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+                      isActive ? "ring-2 ring-background/30" : "ring-0",
+                      !isActive && "hover:scale-105",
+                    )}
+                  />
+                </div>
+
+                <div
+                  className={cn(
+                    "grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+                    showName ? "grid-cols-[1fr] opacity-100 ml-2" : "grid-cols-[0fr] opacity-0 ml-0",
+                  )}
+                >
+                  <div className="overflow-hidden">
+                    <span
+                      className={cn(
+                        "text-sm font-medium whitespace-nowrap block",
+                        "transition-colors duration-300",
+                        isActive ? "text-background" : "text-foreground",
+                      )}
+                    >
+                      {testimonial.author}
+                    </span>
+                  </div>
+                </div>
+              </button>
+            )
+          })}
         </div>
       </div>
     </div>
