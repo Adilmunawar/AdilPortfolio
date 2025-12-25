@@ -12,25 +12,25 @@ const testimonials = [
         avatar: "/testimonials/zoya.jpg",
     },
     {
-        id: 2,
-        quote: "I have been profoundly impressed by his remarkable aptitude for web development and problem-solving.",
-        author: "Alice Austen",
-        role: "Design Lead at Linear",
-        avatar: "/testimonials/alice.png",
-    },
-    {
-        id: 3,
-        quote: "Collaborating with Adil was seamless,builds high performing sites that make digital marketing actually work. Exceptional developer!",
-        author: "Esha Riaz",
-        role: "Digital Marketor",
-        avatar: "/testimonials/esha.jpg",
-    },
-    {
         id: 4,
         quote: "He consistently impressed me with his dedication, professionalism, he is a great team player and communicator.",
         author: "Amna Ali",
         role: "HR Manager",
         avatar: "/testimonials/AmnaAli.jpg",
+    },
+    {
+        id: 3,
+        quote: "Collaborating with Adil was seamless, builds high performing sites that make digital marketing actually work. Exceptional developer!",
+        author: "Esha Riaz",
+        role: "Digital Marketor",
+        avatar: "/testimonials/esha.jpg",
+    },
+    {
+        id: 2,
+        quote: "I have been profoundly impressed by his remarkable aptitude for web development and problem-solving.",
+        author: "Alice Austen",
+        role: "Design Lead at Linear",
+        avatar: "/testimonials/alice.png",
     },
 ]
 
