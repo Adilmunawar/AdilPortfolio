@@ -1,0 +1,40 @@
+name: Auto Update README Architecture
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+  #  Runs at 00:00 UTC every day
+  schedule:
+    - cron: '0 0 * * *'
+  #  Allows you to run this manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # Fetches full history so the bot can push back
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate Architecture Tree
+        run: node scripts/generate-architecture.mjs
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "AdilMunawar-Bot"
+          git config --global user.email "adilmunawarx@gmail.com"
+          git add README.md
+          # Only commit if there are actually changes in the file structure
+          git diff --quiet && git diff --staged --quiet || (git commit -m "docs: daily architecture sync [skip ci]" && git push)
