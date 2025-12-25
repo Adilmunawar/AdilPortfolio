@@ -5,6 +5,12 @@ import Image from "next/image"
 
 const testimonials = [
   {
+    quote: "Co-founding Nexus Orbits Pakistan with Adil has been a highlight of my career. After years of collaborating on countless projects, I can attest to his exceptional skill and vision as a web developer and partner.",
+    name: "Zoya Ali",
+    role: "Web Developer & Co-founder",
+    image: "/testimonials/zoya.jpg",
+  },
+  {
     quote: "He consistently impressed me with his dedication, professionalism, he is a great team player and communicator.",
     name: "Amna Ali",
     role: "HR Manager",
@@ -45,7 +51,7 @@ export function TestimonialsMinimal() {
 
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-6 py-16">
+    <div className="w-full max-w-4xl mx-auto px-6 py-16">
       {/* Quote */}
       <div 
         className="relative mb-12 transition-[height] duration-500 ease-in-out"
@@ -56,7 +62,7 @@ export function TestimonialsMinimal() {
             key={i}
             ref={(el) => (quoteRefs.current[i] = el)}
             className={`
-              absolute inset-0 text-2xl md:text-3xl font-light leading-relaxed text-foreground
+              absolute inset-0 text-3xl md:text-4xl font-light leading-relaxed text-foreground
               transition-all duration-500 ease-out
               ${
                 active === i
@@ -71,15 +77,15 @@ export function TestimonialsMinimal() {
       </div>
 
       {/* Author Row */}
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-8">
         {/* Avatars */}
-        <div className="flex -space-x-3">
+        <div className="flex -space-x-4">
           {testimonials.map((t, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
               className={`
-                relative w-14 h-14 rounded-full overflow-hidden ring-2 ring-background
+                relative w-16 h-16 rounded-full overflow-hidden ring-4 ring-background
                 transition-all duration-300 ease-out
                 ${active === i ? "z-10 scale-110" : "grayscale hover:grayscale-0 hover:scale-105"}
               `}
@@ -90,10 +96,10 @@ export function TestimonialsMinimal() {
         </div>
 
         {/* Divider */}
-        <div className="h-10 w-px bg-border" />
+        <div className="h-12 w-px bg-border" />
 
         {/* Active Author Info */}
-        <div className="relative flex-1 min-h-[48px]">
+        <div className="relative flex-1 min-h-[56px]">
           {testimonials.map((t, i) => (
             <div
               key={i}
@@ -103,8 +109,8 @@ export function TestimonialsMinimal() {
                 ${active === i ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 pointer-events-none"}
               `}
             >
-              <span className="text-base font-medium text-foreground">{t.name}</span>
-              <span className="text-sm text-muted-foreground">{t.role}</span>
+              <span className="text-lg font-medium text-foreground">{t.name}</span>
+              <span className="text-base text-muted-foreground">{t.role}</span>
             </div>
           ))}
         </div>
