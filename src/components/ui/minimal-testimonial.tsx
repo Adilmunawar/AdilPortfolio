@@ -45,9 +45,9 @@ export function TestimonialsMinimal() {
 
   useEffect(() => {
     if (quoteRefs.current[active]) {
-      setContainerHeight(quoteRefs.current[active]!.scrollHeight)
+      setContainerHeight(quoteRefs.current[active]!.scrollHeight);
     }
-  }, [active])
+  }, [active, testimonials]);
 
 
   return (
@@ -62,7 +62,7 @@ export function TestimonialsMinimal() {
             key={i}
             ref={(el) => {quoteRefs.current[i] = el}}
             className={`
-              absolute inset-0 text-3xl md:text-4xl font-light leading-relaxed text-foreground
+              absolute inset-0 text-2xl md:text-3xl font-light leading-relaxed text-foreground
               transition-all duration-500 ease-out
               ${
                 active === i
@@ -85,9 +85,9 @@ export function TestimonialsMinimal() {
               key={i}
               onClick={() => setActive(i)}
               className={`
-                relative w-16 h-16 rounded-full overflow-hidden ring-4 ring-background
+                relative w-20 h-20 rounded-full overflow-hidden ring-4 ring-background
                 transition-all duration-300 ease-out
-                ${active === i ? "z-10 scale-110" : "grayscale hover:grayscale-0 hover:scale-105"}
+                ${active === i ? "z-10 scale-110" : "grayscale hover:grayscale-0 scale-90 hover:scale-100"}
               `}
             >
               <Image src={t.image || "/placeholder.svg"} alt={t.name} width={100} height={100} className={`object-cover ${t.name === 'Amna Ali' ? 'object-top' : ''}`} />
@@ -109,8 +109,8 @@ export function TestimonialsMinimal() {
                 ${active === i ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 pointer-events-none"}
               `}
             >
-              <span className="text-lg font-medium text-foreground">{t.name}</span>
-              <span className="text-base text-muted-foreground">{t.role}</span>
+              <span className="text-xl font-medium text-foreground">{t.name}</span>
+              <span className="text-lg text-muted-foreground">{t.role}</span>
             </div>
           ))}
         </div>
