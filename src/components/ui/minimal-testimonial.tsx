@@ -5,22 +5,22 @@ import Image from "next/image"
 
 const testimonials = [
   {
-    quote: "Working with them transformed our entire brand identity. The attention to detail was exceptional.",
-    name: "Sarah Chen",
-    role: "CEO at Stripe",
-    image: "https://images.unsplash.com/photo-1701615004837-40d8573b6652?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDB8fGF2YXRhcnN8ZW58MHx8MHx8fDA",
+    quote: "He consistently impressed me with his dedication, professionalism, he is a great team player and communicator.",
+    name: "Amna Ali",
+    role: "HR Manager",
+    image: "/testimonials/AmnaAli.jpg",
   },
   {
-    quote: "A rare talent who combines strategic thinking with flawless execution. Highly recommended.",
-    name: "Marcus Johnson",
+    quote: "I have found Adil to be a developer of rare calibre.I have been profoundly impressed by his remarkable aptitude",
+    name: "Alice Austen",
     role: "Design Lead at Linear",
     image: "https://images.unsplash.com/photo-1639149888905-fb39731f2e6c?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDN8fGF2YXRhcnN8ZW58MHx8MHx8fDA",
   },
   {
-    quote: "The most seamless collaboration I've experienced. They truly understand modern design.",
-    name: "Elena Voss",
-    role: "Founder at Notion",
-    image: "https://plus.unsplash.com/premium_photo-1689977830819-d00b3a9b7363?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTJ8fGF2YXRhcnN8ZW58MHx8MHx8fDA",
+    quote: "Collaborating with Adil was seamless,builds high performing sites that make digital marketing actually work. Exceptional developer!",
+    name: "Esha Riaz",
+    role: "Digital Marketor",
+    image: "/testimonials/esha.jpg",
   },
 ]
 
