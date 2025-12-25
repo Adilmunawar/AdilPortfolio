@@ -9,7 +9,7 @@
 ├── docs/
 │   └── blueprint.md
 ├── public/
-│   ├── lovable-uploads/
+│   ├── adil-munawar-uploads/
 │   │   └── eaf50e40-682a-4730-ac3c-407cf3e4896e.png
 │   ├── AdiCorp.png
 │   ├── AdiFlux.png
