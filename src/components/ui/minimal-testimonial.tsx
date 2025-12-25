@@ -17,7 +17,7 @@ const testimonials = [
     image: "/testimonials/alice.png",
   },
   {
-    quote: "Collaborating with Adil was seamless,builds high performing sites that make digital marketing actually work. Exceptional developer!",
+    quote: "Collaborating with Adil was seamless,builds high performing sites that make digital marketing actually work. Exceptional developer!",
     name: "Esha Riaz",
     role: "Digital Marketor",
     image: "/testimonials/esha.jpg",
@@ -45,7 +45,7 @@ export function TestimonialsMinimal() {
 
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-6 py-16">
+    <div className="w-full max-w-3xl mx-auto px-6 py-16">
       {/* Quote */}
       <div 
         className="relative mb-12 transition-[height] duration-500 ease-in-out"
@@ -56,7 +56,7 @@ export function TestimonialsMinimal() {
             key={i}
             ref={(el) => (quoteRefs.current[i] = el)}
             className={`
-              absolute inset-0 text-xl md:text-2xl font-light leading-relaxed text-foreground
+              absolute inset-0 text-2xl md:text-3xl font-light leading-relaxed text-foreground
               transition-all duration-500 ease-out
               ${
                 active === i
@@ -73,13 +73,13 @@ export function TestimonialsMinimal() {
       {/* Author Row */}
       <div className="flex items-center gap-6">
         {/* Avatars */}
-        <div className="flex -space-x-2">
+        <div className="flex -space-x-3">
           {testimonials.map((t, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
               className={`
-                relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-background
+                relative w-14 h-14 rounded-full overflow-hidden ring-2 ring-background
                 transition-all duration-300 ease-out
                 ${active === i ? "z-10 scale-110" : "grayscale hover:grayscale-0 hover:scale-105"}
               `}
@@ -90,10 +90,10 @@ export function TestimonialsMinimal() {
         </div>
 
         {/* Divider */}
-        <div className="h-8 w-px bg-border" />
+        <div className="h-10 w-px bg-border" />
 
         {/* Active Author Info */}
-        <div className="relative flex-1 min-h-[44px]">
+        <div className="relative flex-1 min-h-[48px]">
           {testimonials.map((t, i) => (
             <div
               key={i}
@@ -103,8 +103,8 @@ export function TestimonialsMinimal() {
                 ${active === i ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 pointer-events-none"}
               `}
             >
-              <span className="text-sm font-medium text-foreground">{t.name}</span>
-              <span className="text-xs text-muted-foreground">{t.role}</span>
+              <span className="text-base font-medium text-foreground">{t.name}</span>
+              <span className="text-sm text-muted-foreground">{t.role}</span>
             </div>
           ))}
         </div>
