@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 
 const testimonials = [
@@ -53,17 +53,25 @@ export function TestimonialsMinimal() {
     }, 200)
   }
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleSelect((activeIndex + 1) % testimonials.length);
+    }, 8000); // Auto-switch every 8 seconds
+
+    return () => clearInterval(interval);
+  }, [activeIndex]);
+
   return (
     <div className="flex flex-col items-center gap-10 py-16">
       {/* Quote Container */}
-      <div className="relative px-8">
+      <div className="relative px-8 min-h-[160px] flex items-center">
         <span className="absolute -left-2 -top-6 text-7xl font-serif text-foreground/[0.06] select-none pointer-events-none">
           "
         </span>
 
         <p
           className={cn(
-            "text-2xl md:text-3xl font-light text-foreground text-center max-w-lg leading-relaxed transition-all duration-400 ease-out",
+            "text-xl md:text-2xl font-light text-foreground text-center max-w-lg leading-relaxed transition-all duration-400 ease-out",
             isAnimating ? "opacity-0 blur-sm scale-[0.98]" : "opacity-100 blur-0 scale-100",
           )}
         >
@@ -111,7 +119,7 @@ export function TestimonialsMinimal() {
                     src={testimonial.avatar || "/placeholder.svg"}
                     alt={testimonial.author}
                     className={cn(
-                      "w-8 h-8 rounded-full object-cover",
+                      "w-10 h-10 rounded-full object-cover",
                       "transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
                       isActive ? "ring-2 ring-background/30" : "ring-0",
                       !isActive && "hover:scale-105",
