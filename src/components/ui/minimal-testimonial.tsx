@@ -23,7 +23,7 @@ const testimonials = [
     image: "/testimonials/alice.png",
   },
   {
-    quote: "Collaborating with Adil was seamless,builds high performing sites that make digital marketing actually work. Exceptional developer!",
+    quote: "Collaborating with Adil was seamless,builds high performing sites that make digital marketing actually work. Exceptional developer!",
     name: "Esha Riaz",
     role: "Digital Marketor",
     image: "/testimonials/esha.jpg",
@@ -60,7 +60,7 @@ export function TestimonialsMinimal() {
         {testimonials.map((t, i) => (
           <p
             key={i}
-            ref={(el) => (quoteRefs.current[i] = el)}
+            ref={(el) => {quoteRefs.current[i] = el}}
             className={`
               absolute inset-0 text-3xl md:text-4xl font-light leading-relaxed text-foreground
               transition-all duration-500 ease-out
