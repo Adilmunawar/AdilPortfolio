@@ -13,7 +13,7 @@ const testimonials = [
     },
     {
         id: 4,
-        quote: "He consistently impressed me with his dedication, professionalism, he is a great team player and communicator.",
+        quote: "Adil consistently impressed me with his dedication, professionalism, he is a great team player and communicator.",
         author: "Amna Ali",
         role: "HR Manager",
         avatar: "/testimonials/AmnaAli.jpg",
@@ -27,7 +27,7 @@ const testimonials = [
     },
     {
         id: 2,
-        quote: "I have been profoundly impressed by his remarkable aptitude for web development and problem-solving.",
+        quote: "I have been profoundly impressed by Adil's remarkable aptitude for web development and problem-solving.",
         author: "Alice Austen",
         role: "Design Lead at Linear",
         avatar: "/testimonials/alice.png",
