@@ -11,7 +11,7 @@ const testimonials = [
     image: "/testimonials/AmnaAli.jpg",
   },
   {
-    quote: "I have found Adil to be a developer of rare calibre.I have been profoundly impressed by his remarkable aptitude",
+    quote: "I have been profoundly impressed by his remarkable aptitude",
     name: "Alice Austen",
     role: "Design Lead at Linear",
     image: "https://images.unsplash.com/photo-1639149888905-fb39731f2e6c?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDN8fGF2YXRhcnN8ZW58MHx8MHx8fDA",
@@ -72,7 +72,7 @@ export function TestimonialsMinimal() {
                 ${active === i ? "z-10 scale-110" : "grayscale hover:grayscale-0 hover:scale-105"}
               `}
             >
-              <Image src={t.image || "/placeholder.svg"} alt={t.name} width={100} height={100} className="object-cover" />
+              <Image src={t.image || "/placeholder.svg"} alt={t.name} width={100} height={100} className={`object-cover ${t.name === 'Amna Ali' ? 'object-top' : ''}`} />
             </button>
           ))}
         </div>
