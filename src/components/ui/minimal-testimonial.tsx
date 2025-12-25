@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
+import { motion, AnimatePresence } from "framer-motion"
 
 const testimonials = [
   {
@@ -23,7 +24,7 @@ const testimonials = [
     image: "/testimonials/alice.png",
   },
   {
-    quote: "Collaborating with Adil was seamless,builds high performing sites that make digital marketing actually work. Exceptional developer!",
+    quote: "Collaborating with Adil was seamless. He builds high-performing sites that make digital marketing actually work. Exceptional developer!",
     name: "Esha Riaz",
     role: "Digital Marketor",
     image: "/testimonials/esha.jpg",
@@ -31,24 +32,38 @@ const testimonials = [
 ]
 
 export function TestimonialsMinimal() {
-  const [active, setActive] = useState(0)
-  const [containerHeight, setContainerHeight] = useState(100)
-  const quoteRefs = useRef<(HTMLParagraphElement | null)[]>([])
+  const [active, setActive] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(100);
+  const quoteRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  const setTimer = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => {
+      setActive((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+  };
+  
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActive((prevActive) => (prevActive + 1) % testimonials.length);
-    }, 4000); // Auto-switch every 4 seconds
-
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, []);
+    setTimer();
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [active]);
 
   useEffect(() => {
     if (quoteRefs.current[active]) {
       setContainerHeight(quoteRefs.current[active]!.scrollHeight);
     }
   }, [active, testimonials]);
-
+  
+  const handleAvatarClick = (index: number) => {
+    setActive(index);
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto px-6 py-16">
@@ -57,60 +72,68 @@ export function TestimonialsMinimal() {
         className="relative mb-12 transition-[height] duration-500 ease-in-out"
         style={{ height: containerHeight }}
       >
-        {testimonials.map((t, i) => (
-          <p
-            key={i}
-            ref={(el) => {quoteRefs.current[i] = el}}
-            className={`
-              absolute inset-0 text-2xl md:text-3xl font-light leading-relaxed text-foreground
-              transition-all duration-500 ease-out
-              ${
-                active === i
-                  ? "opacity-100 translate-y-0 blur-0"
-                  : "opacity-0 translate-y-4 blur-sm pointer-events-none"
-              }
-            `}
-          >
-            "{t.quote}"
-          </p>
-        ))}
+        <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0"
+            >
+              <p
+                ref={(el) => (quoteRefs.current[active] = el)}
+                className="text-2xl md:text-3xl font-light leading-relaxed text-foreground text-center"
+              >
+                <span className="text-5xl text-neon-cyan/50 absolute -left-4 -top-2">“</span>
+                {testimonials[active].quote}
+                <span className="text-5xl text-neon-cyan/50 absolute -right-4 -bottom-2">”</span>
+              </p>
+            </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* Author Row */}
-      <div className="flex items-center gap-8">
-        {/* Avatars */}
-        <div className="flex -space-x-4">
+      {/* Author/Avatar Row */}
+      <div className="flex flex-col items-center gap-8">
+        <p className="text-center text-frost-cyan/70 font-semibold">{testimonials[active].role}</p>
+        
+        <div className="flex items-center space-x-2">
           {testimonials.map((t, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              className={`
-                relative w-20 h-20 rounded-full overflow-hidden ring-4 ring-background
-                transition-all duration-300 ease-out
-                ${active === i ? "z-10 scale-110" : "grayscale hover:grayscale-0 scale-90 hover:scale-100"}
-              `}
-            >
-              <Image src={t.image || "/placeholder.svg"} alt={t.name} width={100} height={100} className={`object-cover ${t.name === 'Amna Ali' ? 'object-top' : ''}`} />
-            </button>
-          ))}
-        </div>
-
-        {/* Divider */}
-        <div className="h-12 w-px bg-border" />
-
-        {/* Active Author Info */}
-        <div className="relative flex-1 min-h-[56px]">
-          {testimonials.map((t, i) => (
-            <div
-              key={i}
-              className={`
-                absolute inset-0 flex flex-col justify-center
-                transition-all duration-400 ease-out
-                ${active === i ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 pointer-events-none"}
-              `}
-            >
-              <span className="text-xl font-medium text-foreground">{t.name}</span>
-              <span className="text-lg text-muted-foreground">{t.role}</span>
+             <div 
+                key={i} 
+                onClick={() => handleAvatarClick(i)} 
+                className="relative cursor-pointer focus:outline-none"
+                onMouseEnter={() => setActive(i)}
+                onMouseLeave={setTimer}
+             >
+              <AnimatePresence>
+                {active === i && (
+                  <motion.div
+                    layoutId="capsule"
+                    className="absolute inset-0 z-10 bg-white rounded-full flex items-center justify-start px-2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  >
+                    <Image
+                      src={t.image}
+                      alt={t.name}
+                      width={48}
+                      height={48}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                    <span className="ml-3 text-sm font-medium text-cyber-dark whitespace-nowrap">{t.name}</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <Image
+                src={t.image}
+                alt={t.name}
+                width={56}
+                height={56}
+                className={`w-14 h-14 rounded-full object-cover transition-all duration-300 ${active === i ? 'opacity-0' : 'opacity-70 hover:opacity-100'}`}
+              />
             </div>
           ))}
         </div>
