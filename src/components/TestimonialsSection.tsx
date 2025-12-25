@@ -10,7 +10,7 @@ const TestimonialsSection = () => {
             <TestimonialsV2 />
 
             <div className="mt-24 w-full">
-              <h3 className="text-4xl font-bold text-center mb-12 text-gradient-slow">Recommendations</h3>
+              <h3 className="text-4xl font-bold text-center mb-12 text-gradient-slow">Collab</h3>
               <TestimonialsMinimal />
             </div>
         </div>
