@@ -56,7 +56,7 @@ export function TestimonialsMinimal() {
   useEffect(() => {
     const interval = setInterval(() => {
       handleSelect((activeIndex + 1) % testimonials.length);
-    }, 8000); // Auto-switch every 8 seconds
+    }, 2000); // Auto-switch every 2 seconds
 
     return () => clearInterval(interval);
   }, [activeIndex]);
