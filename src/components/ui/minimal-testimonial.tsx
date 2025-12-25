@@ -14,7 +14,7 @@ const testimonials = [
     quote: "I have been profoundly impressed by his remarkable aptitude for web development and problem-solving.",
     name: "Alice Austen",
     role: "Design Lead at Linear",
-    image: "/testimonials/alice.jpg",
+    image: "/testimonials/alice.png",
   },
   {
     quote: "Collaborating with Adil was seamless,builds high performing sites that make digital marketing actually work. Exceptional developer!",
