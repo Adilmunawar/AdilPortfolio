@@ -30,11 +30,10 @@ jobs:
 
       - name: Generate Architecture Tree
         run: node scripts/generate-architecture.mjs
-
+        
       - name: Commit and Push changes
         run: |
-          git config --global user.name "AdilMunawar-Bot"
-          git config --global user.email "adilmunawarx@gmail.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add README.md
-          # Only commit if there are actually changes in the file structure
-          git diff --quiet && git diff --staged --quiet || (git commit -m "docs: daily architecture sync [skip ci]" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-update architecture [skip ci]" && git push)
