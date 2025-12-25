@@ -14,10 +14,10 @@ const testimonials = [
     quote: "I have been profoundly impressed by his remarkable aptitude for web development and problem-solving.",
     name: "Alice Austen",
     role: "Design Lead at Linear",
-    image: "https://images.unsplash.com/photo-1639149888905-fb39731f2e6c?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDN8fGF2YXRhcnN8ZW58MHx8MHx8fDA",
+    image: "/testimonials/alice.jpg",
   },
   {
-    quote: "Collaborating with Adil was seamless,builds high performing sites that make digital marketing actually work. Exceptional developer!",
+    quote: "Collaborating with Adil was seamless,builds high performing sites that make digital marketing actually work. Exceptional developer!",
     name: "Esha Riaz",
     role: "Digital Marketor",
     image: "/testimonials/esha.jpg",
@@ -45,7 +45,7 @@ export function TestimonialsMinimal() {
 
 
   return (
-    <div className="w-full max-w-xl mx-auto px-6 py-16">
+    <div className="w-full max-w-2xl mx-auto px-6 py-16">
       {/* Quote */}
       <div 
         className="relative mb-12 transition-[height] duration-500 ease-in-out"
