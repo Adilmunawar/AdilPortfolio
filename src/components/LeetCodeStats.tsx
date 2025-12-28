@@ -204,17 +204,6 @@ const LeetCodeStats = () => {
             {/* Badges Section */}
             <div className="relative z-10 mt-16">
                 <motion.div 
-                    initial={{ opacity: 0}} 
-                    animate={{opacity: 1}} 
-                    transition={{delay: 0.8}}
-                    className="text-center mb-8"
-                >
-                    <h4 className="text-xl font-bold text-white tracking-wider uppercase">
-                        My Badges
-                    </h4>
-                    <div className="w-24 h-px bg-neon-cyan/50 mx-auto mt-2"></div>
-                </motion.div>
-                <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1, duration: 0.6 }}
@@ -225,7 +214,6 @@ const LeetCodeStats = () => {
                             key={index}
                             whileHover={{ scale: 1.1, rotate: 3 }}
                             transition={{ type: 'spring', stiffness: 300 }}
-                            className="p-1 bg-cyber-dark/40 rounded-lg border border-neon-cyan/20 hover:border-neon-cyan/50 transition-all duration-300 shadow-lg hover:shadow-neon-cyan/20"
                         >
                             <Image
                                 src={badge.src}
