@@ -12,6 +12,7 @@ import { Trophy, Activity, Cpu, Terminal, TrendingUp, Users } from 'lucide-react
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import leetCodeStats from '@/lib/leetcode-stats.json';
+import Image from 'next/image';
 
 // Cyber Palette
 const THEME = {
@@ -23,6 +24,17 @@ const THEME = {
   grid: 'rgba(34, 211, 238, 0.1)',
   grid2: 'rgba(244, 63, 94, 0.15)',
 };
+
+const badges = [
+  { src: '/leetcode/202508.gif', alt: 'LeetCode 202508 Badge' },
+  { src: '/leetcode/202509.gif', alt: 'LeetCode 202509 Badge' },
+  { src: '/leetcode/202510.gif', alt: 'LeetCode 202510 Badge' },
+  { src: '/leetcode/202511.gif', alt: 'LeetCode 202511 Badge' },
+  { src: '/leetcode/25100.gif', alt: 'LeetCode 25100 Badge' },
+  { src: '/leetcode/2550.gif', alt: 'LeetCode 2550 Badge' },
+  { src: '/leetcode/Introduction_to_Pandas.gif', alt: 'Introduction to Pandas Badge' },
+  { src: '/leetcode/Top_SQL_50.gif', alt: 'Top SQL 50 Badge' },
+];
 
 const LeetCodeStats = () => {
     const { 
@@ -186,6 +198,45 @@ const LeetCodeStats = () => {
                             />
                         </RadarChart>
                     </ResponsiveContainer>
+                </motion.div>
+            </div>
+
+            {/* Badges Section */}
+            <div className="relative z-10 mt-16">
+                <motion.div 
+                    initial={{ opacity: 0}} 
+                    animate={{opacity: 1}} 
+                    transition={{delay: 0.8}}
+                    className="text-center mb-8"
+                >
+                    <h4 className="text-xl font-bold text-white tracking-wider uppercase">
+                        My Badges
+                    </h4>
+                    <div className="w-24 h-px bg-neon-cyan/50 mx-auto mt-2"></div>
+                </motion.div>
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1, duration: 0.6 }}
+                    className="flex flex-wrap justify-center items-center gap-4 md:gap-6"
+                >
+                    {badges.map((badge, index) => (
+                        <motion.div
+                            key={index}
+                            whileHover={{ scale: 1.1, rotate: 3 }}
+                            transition={{ type: 'spring', stiffness: 300 }}
+                            className="p-1 bg-cyber-dark/40 rounded-lg border border-neon-cyan/20 hover:border-neon-cyan/50 transition-all duration-300 shadow-lg hover:shadow-neon-cyan/20"
+                        >
+                            <Image
+                                src={badge.src}
+                                alt={badge.alt}
+                                width={120}
+                                height={120}
+                                className="rounded-md"
+                                unoptimized={true}
+                            />
+                        </motion.div>
+                    ))}
                 </motion.div>
             </div>
         </motion.div>
