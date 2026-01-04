@@ -254,16 +254,16 @@ const BlogSection = () => {
                 onMouseMove={onVMouseMove}
              >
                 <div className="p-0">
-                    <DialogHeader className="p-6 md:p-8 !space-y-0">
-                        <div className="relative w-full h-48 md:h-64 rounded-lg overflow-hidden mb-6">
-                            <Image
-                                src={selectedPost.image}
-                                alt={selectedPost.title}
-                                fill
-                                className="object-cover pointer-events-none"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/40 to-transparent"></div>
-                        </div>
+                    <div className="relative w-full h-48 md:h-64">
+                        <Image
+                            src={selectedPost.image}
+                            alt={selectedPost.title}
+                            fill
+                            className="object-cover pointer-events-none"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/40 to-transparent"></div>
+                    </div>
+                    <DialogHeader className="p-6 md:px-8 -mt-20 relative z-10 !space-y-0">
                         <DialogTitle className="text-2xl md:text-3xl font-bold text-gradient-slow mb-2">{selectedPost.title}</DialogTitle>
                         <DialogDescription className="text-frost-cyan/80 flex flex-wrap gap-2 py-2">
                             {selectedPost.tags.map((tag) => (
@@ -276,7 +276,7 @@ const BlogSection = () => {
                             ))}
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-p:break-words prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan prose-table:border-neon-cyan/20 prose-th:text-frost-white prose-tr:border-neon-cyan/20 max-w-none px-6 md:px-8 pb-8 pt-6">
+                    <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-p:break-words prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan prose-table:border-neon-cyan/20 prose-th:text-frost-white prose-tr:border-neon-cyan/20 max-w-none px-6 md:px-8 pb-8">
                         <ReactMarkdown
                            components={{
                              code: CodeBlock,
@@ -295,4 +295,3 @@ const BlogSection = () => {
 };
 
 export default BlogSection;
-    
