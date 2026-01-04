@@ -114,10 +114,10 @@ const BlogSection = () => {
   
   // Vertical Drag Handlers for Modal
   const onVMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    const slider = vSliderRef.current
+    const slider = vSliderRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
     if (!slider) return;
     setIsVDragging(true);
-    setStartY(e.pageY - slider.offsetTop);
+    setStartY(e.pageY - (slider as HTMLElement).offsetTop);
     setScrollTop(slider.scrollTop);
     document.body.style.userSelect = 'none';
   };
@@ -128,10 +128,10 @@ const BlogSection = () => {
   };
 
   const onVMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    const slider = vSliderRef.current;
+    const slider = vSliderRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
     if (!isVDragging || !slider) return;
     e.preventDefault();
-    const y = e.pageY - slider.offsetTop;
+    const y = e.pageY - (slider as HTMLElement).offsetTop;
     const walk = (y - startY) * 2; // scroll-fast
     slider.scrollTop = scrollTop - walk;
   };
