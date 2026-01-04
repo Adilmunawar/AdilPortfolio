@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     // 2. Prepare the payload for OpenRouter
     // We prepend the system message to the conversation history
     const payload = {
-      model: "google/gemini-flash-1.5", 
+      model: "google/gemini-3-flash-preview", 
       messages: [systemMessage, ...messages],
       reasoning: { enabled: true } // Enable reasoning capabilities
     };
