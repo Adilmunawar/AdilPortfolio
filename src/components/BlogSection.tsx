@@ -140,7 +140,8 @@ const BlogSection = () => {
               {blogData.map((post, index) => (
                 <div key={post.id} className="flex-shrink-0 w-[320px] snap-center">
                   <Card
-                    className="group relative h-full glass-card rounded-2xl overflow-hidden transition-all duration-500 hover:border-neon-cyan/80 hover:shadow-2xl hover:shadow-neon-cyan/20 hover:-translate-y-2 flex flex-col"
+                    onClick={() => handleReadMore(post)}
+                    className="group relative h-full glass-card rounded-2xl overflow-hidden transition-all duration-500 hover:border-neon-cyan/80 hover:shadow-2xl hover:shadow-neon-cyan/20 hover:-translate-y-2 flex flex-col cursor-pointer"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <div className="relative overflow-hidden h-48">
@@ -173,7 +174,7 @@ const BlogSection = () => {
                         </p>
                       </div>
                       <button
-                        onClick={() => handleReadMore(post)}
+                        tabIndex={-1}
                         className="mt-6 inline-flex items-center text-neon-cyan font-semibold group-hover:text-frost-white transition-colors"
                       >
                         Read More{' '}
