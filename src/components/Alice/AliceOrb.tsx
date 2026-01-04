@@ -1,14 +1,30 @@
-
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, Sparkles } from 'lucide-react';
+import { Bot } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 interface AliceOrbProps {
   onClick: () => void;
   isOpen: boolean;
 }
 
+const subtitles = [
+  "Have a project?",
+  "Collab with Adil?",
+  "Let's connect!",
+];
+
 export const AliceOrb = ({ onClick, isOpen }: AliceOrbProps) => {
+  const [currentSubtitle, setCurrentSubtitle] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSubtitle((prev) => (prev + 1) % subtitles.length);
+    }, 3000); // Change text every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <AnimatePresence>
       {!isOpen && (
@@ -19,7 +35,7 @@ export const AliceOrb = ({ onClick, isOpen }: AliceOrbProps) => {
           exit={{ y: 100, opacity: 0 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="fixed bottom-6 right-6 z-40 group"
+          className="fixed bottom-6 left-6 z-40 group"
         >
           <div className="relative flex items-center gap-3 pl-3 pr-5 py-3 rounded-full bg-black/60 backdrop-blur-lg border border-white/10 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 transition-all duration-300 hover:border-cyan-400/30">
             
@@ -32,9 +48,11 @@ export const AliceOrb = ({ onClick, isOpen }: AliceOrbProps) => {
             {/* Text */}
             <div className="flex flex-col items-start">
               <span className="text-white font-semibold text-base tracking-wide flex items-center gap-1.5">
-                Alice <Sparkles className="w-3 h-3 text-cyan-400" />
+                Alice
               </span>
-              <span className="text-[11px] text-cyan-400/80 font-medium">Ask me anything</span>
+              <span className="text-[11px] text-cyan-400/80 font-medium">
+                {subtitles[currentSubtitle]}
+              </span>
             </div>
             
             {/* Glow Effect */}
