@@ -11,6 +11,9 @@
 ├── public/
 │   ├── adil-munawar-uploads/
 │   │   └── eaf50e40-682a-4730-ac3c-407cf3e4896e.png
+│   ├── blogpic/
+│   │   ├── gameserverhack.jpg
+│   │   └── publicwifi.jpg
 │   ├── leetcode/
 │   │   ├── 202508.gif
 │   │   ├── 202509.gif
@@ -123,6 +126,7 @@
 │   │   │   └── ZenithOrb.tsx
 │   │   ├── AboutSection.tsx
 │   │   ├── Achievements.tsx
+│   │   ├── BlogSection.tsx
 │   │   ├── CertificationsSection.tsx
 │   │   ├── ContactSection.tsx
 │   │   ├── GitHubStats.tsx
@@ -143,6 +147,7 @@
 │   │   ├── use-mobile.tsx
 │   │   └── use-toast.ts
 │   ├── lib/
+│   │   ├── blog-data.json
 │   │   ├── github-contributions.json
 │   │   ├── leetcode-stats.json
 │   │   └── utils.ts
