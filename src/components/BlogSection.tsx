@@ -241,11 +241,11 @@ const BlogSection = () => {
 
       {selectedPost && (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-          <DialogContent className="sm:max-w-3xl h-[90vh] bg-cyber-dark/90 backdrop-blur-lg border-neon-cyan/30 text-frost-white p-0">
+          <DialogContent className="max-w-3xl w-[90vw] h-[90vh] bg-cyber-dark/90 backdrop-blur-lg border-neon-cyan/30 text-frost-white p-0 flex flex-col">
              <ScrollArea 
                 ref={vScrollContainerRef}
                 className={cn(
-                  "h-full w-full rounded-lg cursor-grab",
+                  "h-full w-full rounded-lg cursor-grab custom-scrollbar",
                   isVDragging && "cursor-grabbing"
                 )}
                 onMouseDown={onVMouseDown}
@@ -253,8 +253,8 @@ const BlogSection = () => {
                 onMouseLeave={onVMouseLeave}
                 onMouseMove={onVMouseMove}
              >
-                <div className="p-6 md:p-8">
-                    <DialogHeader>
+                <div className="p-0">
+                    <DialogHeader className="p-6 md:p-8 !space-y-0">
                         <div className="relative w-full h-48 md:h-64 rounded-lg overflow-hidden mb-6">
                             <Image
                                 src={selectedPost.image}
@@ -276,7 +276,7 @@ const BlogSection = () => {
                             ))}
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-p:break-words prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan prose-table:border-neon-cyan/20 prose-th:text-frost-white prose-tr:border-neon-cyan/20 max-w-none pt-6">
+                    <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-p:break-words prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan prose-table:border-neon-cyan/20 prose-th:text-frost-white prose-tr:border-neon-cyan/20 max-w-none px-6 md:px-8 pb-8 pt-6">
                         <ReactMarkdown
                            components={{
                              code: CodeBlock,
@@ -296,4 +296,3 @@ const BlogSection = () => {
 
 export default BlogSection;
     
-  
