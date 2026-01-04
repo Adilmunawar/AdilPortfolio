@@ -1,80 +1,72 @@
-
 import { NextResponse } from 'next/server';
+import OpenAI from 'openai';
+
+// 1. Initialize OpenAI Client for OpenRouter (Same technique as AdiARC)
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://adilmunawar.vercel.app";
+
+const openai = OPENROUTER_API_KEY ? new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: OPENROUTER_API_KEY,
+  defaultHeaders: {
+    "HTTP-Referer": SITE_URL,
+    "X-Title": "Adil Munawar Portfolio",
+  }
+}) : null;
 
 export async function POST(req: Request) {
   try {
+    // Safety Check: Ensure API Key exists
+    if (!openai) {
+      console.error("❌ OpenRouter API Key is missing.");
+      return NextResponse.json(
+        { error: "Server Configuration Error: Missing API Key" }, 
+        { status: 500 }
+      );
+    }
+
     const { messages } = await req.json();
-    const apiKey = process.env.OPENROUTER_API_KEY;
 
-    // --- 🔍 DEBUG LOGS (Check your VS Code Terminal) ---
-    console.log("------------------------------------------------");
-    console.log("Incoming Request to /api/chat");
-    if (!apiKey) {
-      console.error("❌ CRITICAL ERROR: API Key is undefined in process.env");
-    } else {
-      console.log(`✅ API Key Loaded. Length: ${apiKey.length}`);
-      console.log(`🔑 Key starts with: ${apiKey.substring(0, 10)}...`); // Safe log
-    }
-    // -----------------------------------------------------
-
-    if (!apiKey) {
-      return NextResponse.json({ error: "Server Error: API Key missing configuration." }, { status: 500 });
-    }
-
+    // 2. Define Alice's Persona (System Prompt)
     const systemMessage = {
       role: "system",
-      content: `You are Alice, a professional virtual assistant for Adil Munawar.
+      content: `You are Alice, a professional, empathetic, and intelligent virtual assistant for Adil Munawar.
       Your goal is to generate leads for his Web Development & Design services.
       
       Flow:
       1. Greet the user warmly.
-      2. Ask about their project needs.
+      2. Ask about their project needs (Web, Design, or Marketing).
       3. Ask for Timeline and Budget.
-      4. Ask to finalize via "WhatsApp" or "Email".
+      4. Once details are gathered, ask to finalize via "WhatsApp" or "Email".
       
-      Tone: Professional, concise, and helpful. Use Markdown.`
+      Tone: Professional, concise, and helpful. Use Markdown for formatting.`
     };
 
-    // ✅ Using the NVIDIA model you confirmed works on ReqBin
-    const payload = {
-      model: "nvidia/nemotron-3-nano-30b-a3b:free",
+    // 3. Call OpenRouter using the SDK
+    // We use a reliable free model (Gemini 2.0 Flash) similar to your other project
+    const completion = await openai.chat.completions.create({
+      model: "google/gemini-flash-1.5", 
       messages: [systemMessage, ...messages],
-      reasoning: { enabled: true } // Keeping this since it worked in your test
-    };
-
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "https://adilmunawar.vercel.app",
-        "X-Title": "Adil Munawar Portfolio",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
+      temperature: 0.7,
     });
 
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error(`❌ OpenRouter API Error (${response.status}):`, errorBody);
-      throw new Error(`OpenRouter API Error: ${response.status} - ${errorBody}`);
+    const aiMessage = completion.choices[0]?.message;
+
+    if (!aiMessage) {
+      throw new Error("No response received from AI.");
     }
 
-    const data = await response.json();
-    
-    if (!data.choices || data.choices.length === 0) {
-        throw new Error("OpenRouter returned no content.");
-    }
-
-    const aiMessage = data.choices[0].message;
-
+    // 4. Return the clean response
     return NextResponse.json({
       role: 'assistant',
-      content: aiMessage.content,
-      reasoning_details: aiMessage.reasoning_details || null 
+      content: aiMessage.content
     });
 
   } catch (error: any) {
-    console.error("❌ API Route Handler Error:", error);
-    return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
+    console.error("API Error:", error);
+    return NextResponse.json(
+      { error: error.message || "Failed to fetch response" }, 
+      { status: 500 }
+    );
   }
 }
