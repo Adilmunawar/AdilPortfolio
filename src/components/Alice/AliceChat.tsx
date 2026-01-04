@@ -22,6 +22,28 @@ interface AliceChatProps {
   onClose: () => void;
 }
 
+async function* readStream(stream: ReadableStream) {
+    const reader = stream.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let buffer = "";
+    while (true) {
+        const { value, done } = await reader.read();
+        if (done) {
+            if (buffer.length > 0) yield buffer;
+            break;
+        }
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n\n');
+        buffer = lines.pop() ?? '';
+        for (const line of lines) {
+            if (line.startsWith('data: ')) {
+                yield line.substring(6);
+            }
+        }
+    }
+}
+
+
 const TypingIndicator = () => (
   <div className="flex items-center gap-1.5">
     <motion.div
@@ -79,19 +101,27 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
     
     try {
         const stream = await streamChat(newMessages.map(m => ({role: m.role, content: m.content, reasoning_details: m.reasoning_details})));
-
-        for await (const chunk of stream) {
-            if (chunk.reasoning_details && !reasoning) {
-                reasoning = chunk.reasoning_details;
-                setMessages(prev => prev.map(msg => 
-                    msg.id === assistantMessageId ? { ...msg, reasoning_details: reasoning } : msg
-                ));
+        
+        for await (const chunk of readStream(stream)) {
+            if (chunk.trim() === '[DONE]') {
+                break;
             }
-            if (chunk.content) {
-                currentContent += chunk.content;
-                setMessages(prev => prev.map(msg => 
-                    msg.id === assistantMessageId ? { ...msg, content: currentContent } : msg
-                ));
+            try {
+                const parsed = JSON.parse(chunk);
+                if (parsed.reasoning_details && !reasoning) {
+                    reasoning = parsed.reasoning_details;
+                    setMessages(prev => prev.map(msg => 
+                        msg.id === assistantMessageId ? { ...msg, reasoning_details: reasoning } : msg
+                    ));
+                }
+                if (parsed.content) {
+                    currentContent += parsed.content;
+                    setMessages(prev => prev.map(msg => 
+                        msg.id === assistantMessageId ? { ...msg, content: currentContent } : msg
+                    ));
+                }
+            } catch(error) {
+                console.error("Error parsing stream chunk:", error, "Chunk:", chunk);
             }
         }
     } catch (error) {
