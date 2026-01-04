@@ -16,60 +16,77 @@ interface ZenithChatProps {
   isOpen: boolean;
   onClose: () => void;
   initialMessage: Message | null;
-  initialAudioUrl: string | null;
   isInitiallyLoading: boolean;
 }
 
-export const ZenithChat = ({ isOpen, onClose, initialMessage, initialAudioUrl, isInitiallyLoading }: ZenithChatProps) => {
+export const ZenithChat = ({ isOpen, onClose, initialMessage, isInitiallyLoading }: ZenithChatProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+
+  useEffect(() => {
+    // The voices are loaded asynchronously. We need to listen for the voiceschanged event.
+    const loadVoices = () => {
+      const availableVoices = window.speechSynthesis.getVoices();
+      if (availableVoices.length > 0) {
+        setVoices(availableVoices);
+      }
+    };
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices(); // Initial call
+  }, []);
+  
+  const speak = (text: string) => {
+    if ('speechSynthesis' in window) {
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      // Find a suitable female English voice
+      const femaleVoice = voices.find(
+        voice => voice.lang.startsWith('en') && voice.name.toLowerCase().includes('female')
+      ) || voices.find(voice => voice.lang.startsWith('en')); // Fallback to any English voice
+      
+      if (femaleVoice) {
+        utterance.voice = femaleVoice;
+      }
+      
+      utterance.pitch = 1;
+      utterance.rate = 1;
+      utterance.volume = 1;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
 
   useEffect(() => {
     if (initialMessage && messages.length === 0) {
       setMessages([initialMessage]);
+      // Speak the initial message when it arrives
+      if (voices.length > 0) {
+        speak(initialMessage.content);
+      }
     }
-  }, [initialMessage, messages.length]);
-
+  }, [initialMessage, messages.length, voices]);
+  
   useEffect(() => {
-    if (isOpen && initialAudioUrl && audioRef.current) {
-        audioRef.current.src = initialAudioUrl;
-        audioRef.current.play().catch(e => console.error("Initial audio playback failed:", e));
+    // If voices load after the initial message is set, speak it.
+    if (initialMessage && messages.length === 1 && voices.length > 0) {
+      const isInitialMessagePresent = messages.some(msg => msg.content === initialMessage.content);
+      if (isInitialMessagePresent) {
+        speak(initialMessage.content);
+      }
     }
-  }, [isOpen, initialAudioUrl]);
+  }, [voices, initialMessage, messages]);
+
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, isLoading]);
-  
-  const playAudio = (audioDataUrl: string) => {
-    if (audioRef.current) {
-      audioRef.current.src = audioDataUrl;
-      audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
-    }
-  };
-
-  const generateAndPlaySpeech = async (text: string) => {
-    try {
-      const response = await fetch('/api/tts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text }),
-      });
-      if (response.ok) {
-        const { audioDataUrl } = await response.json();
-        playAudio(audioDataUrl);
-      } else {
-        console.error("Failed to generate speech");
-      }
-    } catch (error) {
-      console.error("Error generating speech:", error);
-    }
-  };
 
   useEffect(() => {
     if (isOpen) {
@@ -77,16 +94,21 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, initialAudioUrl, i
     } else {
         document.body.style.overflow = 'auto';
     }
+    // Cleanup function to stop speech synthesis when the component is closed or unmounted
     return () => {
         document.body.style.overflow = 'auto';
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
     };
   }, [isOpen]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
-
-    if(audioRef.current && !audioRef.current.paused) {
-      audioRef.current.pause();
+    
+    // Stop any currently playing speech
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
     }
 
     const userMsg: Message = { role: 'user', content: input };
@@ -108,7 +130,7 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, initialAudioUrl, i
       
       const data = await response.json();
       setMessages(prev => [...prev, data]);
-      await generateAndPlaySpeech(data.content);
+      speak(data.content);
 
     } catch (error: any) {
        setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${error.message}` }]);
@@ -209,7 +231,6 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, initialAudioUrl, i
                         Zenith - Developed by Adil Munawar
                     </p>
                 </div>
-                <audio ref={audioRef} className="hidden" />
             </motion.div>
         </motion.div>
       )}
