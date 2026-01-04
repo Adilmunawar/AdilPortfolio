@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -114,21 +113,34 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
                 
                 {/* Chat Area */}
                 <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar pt-12">
-                    {messages.map((msg, idx) => (
-                    <div key={idx} className={cn("flex gap-3", msg.role === 'user' ? 'flex-row-reverse' : 'flex-row')}>
-                        <div className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center", msg.role === 'user' ? 'bg-cyan-700' : 'bg-cyber-gray/80')}>
-                            {msg.role === 'user' ? <User size={18} /> : <Bot size={18} />}
-                        </div>
-                        <div className={cn(
-                            "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-md",
-                            msg.role === 'user'
-                            ? "bg-cyan-600 text-white rounded-br-sm"
-                            : "bg-cyber-gray/50 border border-white/10 text-frost-white rounded-bl-sm"
-                        )}>
-                            <ReactMarkdown className="prose prose-sm prose-invert max-w-none prose-p:my-0">{msg.content}</ReactMarkdown>
-                        </div>
-                    </div>
-                    ))}
+                    <AnimatePresence initial={false}>
+                        {messages.map((msg, idx) => (
+                        <motion.div
+                            key={idx}
+                            layout
+                            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                            transition={{ duration: 0.3, ease: 'easeOut' }}
+                            className={cn("flex gap-3", msg.role === 'user' ? 'flex-row-reverse' : 'flex-row')}
+                        >
+                            <motion.div 
+                                whileHover={{ scale: 1.1, rotate: 5 }}
+                                className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center cursor-pointer", msg.role === 'user' ? 'bg-cyan-700' : 'bg-cyber-gray/80')}
+                            >
+                                {msg.role === 'user' ? <User size={18} /> : <Bot size={18} />}
+                            </motion.div>
+                            <div className={cn(
+                                "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-md",
+                                msg.role === 'user'
+                                ? "bg-cyan-600 text-white rounded-br-sm"
+                                : "bg-cyber-gray/50 border border-white/10 text-frost-white rounded-bl-sm"
+                            )}>
+                                <ReactMarkdown className="prose prose-sm prose-invert max-w-none prose-p:my-0">{msg.content}</ReactMarkdown>
+                            </div>
+                        </motion.div>
+                        ))}
+                    </AnimatePresence>
 
                     {isLoading && messages.length > 0 && (
                     <div className="flex items-center gap-2 text-white/40 text-xs ml-11">
@@ -152,13 +164,15 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
                         placeholder="Ask about web development or design projects..."
                         className="flex-1 bg-transparent border-none outline-none text-white text-sm placeholder:text-white/30 px-3"
                     />
-                    <button
+                    <motion.button
                         type="submit"
                         disabled={!input.trim() || isLoading}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
                         className="p-2 w-10 h-10 flex items-center justify-center bg-cyan-600 hover:bg-cyan-700 text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
                     >
                         <Send size={16} className="group-hover:translate-x-0.5 transition-transform"/>
-                    </button>
+                    </motion.button>
                     </form>
                     <p className="text-xs text-center text-cyan-400/40 mt-2">
                         Zenith - Developed by Adil Munawar

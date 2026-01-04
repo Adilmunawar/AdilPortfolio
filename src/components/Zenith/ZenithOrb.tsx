@@ -1,4 +1,3 @@
-
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bot } from 'lucide-react';
@@ -41,19 +40,36 @@ export const ZenithOrb = ({ onClick, isOpen }: ZenithOrbProps) => {
           <div className="relative flex items-center gap-3 pl-3 pr-5 py-3 rounded-full bg-black/60 backdrop-blur-lg border border-white/10 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 transition-all duration-300 hover:border-cyan-400/30">
             
             {/* Avatar Circle */}
-            <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-cyber-purple to-cyber-blue flex items-center justify-center border-2 border-white/20 shadow-inner">
-              <Bot className="text-white w-7 h-7" />
-              <span className="absolute bottom-1 right-1 w-3 h-3 bg-green-500 border-2 border-black rounded-full animate-pulse"></span>
-            </div>
+            <motion.div 
+              className="relative w-12 h-12 rounded-full bg-gradient-to-br from-cyan-600 to-blue-800 flex items-center justify-center border-2 border-white/20 shadow-inner overflow-hidden group-hover:from-cyan-500 group-hover:to-blue-700 transition-colors"
+            >
+              <motion.div whileHover={{ scale: 1.1, rotate: 5 }}>
+                <Bot className="text-white w-7 h-7" />
+              </motion.div>
+              <motion.span 
+                className="absolute bottom-1 right-1 w-3 h-3 bg-green-500 border-2 border-black rounded-full"
+                animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </motion.div>
 
             {/* Text */}
-            <div className="flex flex-col items-start">
+            <div className="flex flex-col items-start overflow-hidden">
               <span className="text-white font-semibold text-base tracking-wide flex items-center gap-1.5">
                 Zenith
               </span>
-              <span className="text-[11px] text-cyan-400/80 font-medium">
-                {subtitles[currentSubtitle]}
-              </span>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={currentSubtitle}
+                  initial={{ y: '100%', opacity: 0 }}
+                  animate={{ y: '0%', opacity: 1 }}
+                  exit={{ y: '-100%', opacity: 0 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[11px] text-cyan-400/80 font-medium block"
+                >
+                  {subtitles[currentSubtitle]}
+                </motion.span>
+              </AnimatePresence>
             </div>
             
             {/* Glow Effect */}
