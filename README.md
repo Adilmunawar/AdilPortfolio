@@ -57,10 +57,17 @@
 │   └── update-github-stats.mjs
 ├── src/
 │   ├── app/
+│   │   ├── api/
+│   │   │   └── chat/
+│   │   │       └── route.ts
 │   │   ├── globals.css
 │   │   ├── layout.tsx
 │   │   └── page.tsx
 │   ├── components/
+│   │   ├── Alice/
+│   │   │   ├── AliceAssistant.tsx
+│   │   │   ├── AliceChat.tsx
+│   │   │   └── AliceOrb.tsx
 │   │   ├── ui/
 │   │   │   ├── accordion.tsx
 │   │   │   ├── alert-dialog.tsx
