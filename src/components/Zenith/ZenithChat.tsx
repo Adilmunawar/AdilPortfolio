@@ -15,15 +15,30 @@ interface Message {
 interface ZenithChatProps {
   isOpen: boolean;
   onClose: () => void;
-  playInitialGreeting: boolean;
+  initialMessage: Message | null;
+  initialAudioUrl: string | null;
+  isInitiallyLoading: boolean;
 }
 
-export const ZenithChat = ({ isOpen, onClose, playInitialGreeting }: ZenithChatProps) => {
+export const ZenithChat = ({ isOpen, onClose, initialMessage, initialAudioUrl, isInitiallyLoading }: ZenithChatProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (initialMessage && messages.length === 0) {
+      setMessages([initialMessage]);
+    }
+  }, [initialMessage, messages.length]);
+
+  useEffect(() => {
+    if (isOpen && initialAudioUrl && audioRef.current) {
+        audioRef.current.src = initialAudioUrl;
+        audioRef.current.play().catch(e => console.error("Initial audio playback failed:", e));
+    }
+  }, [isOpen, initialAudioUrl]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -59,42 +74,19 @@ export const ZenithChat = ({ isOpen, onClose, playInitialGreeting }: ZenithChatP
   useEffect(() => {
     if (isOpen) {
         document.body.style.overflow = 'hidden';
-        if (messages.length === 0) {
-          setIsLoading(true);
-          fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ messages: [] }),
-          })
-          .then(res => res.json())
-          .then(data => {
-            if (data.error) {
-              setMessages([{ role: 'assistant', content: `Error: ${data.error}` }]);
-            } else {
-              setMessages([data]);
-              if (playInitialGreeting) {
-                generateAndPlaySpeech(data.content);
-              }
-            }
-          })
-          .catch(error => {
-            setMessages([{ role: 'assistant', content: `Error: ${error.message}` }]);
-          })
-          .finally(() => setIsLoading(false));
-        }
     } else {
         document.body.style.overflow = 'auto';
     }
     return () => {
         document.body.style.overflow = 'auto';
     };
-  }, [isOpen, messages.length, playInitialGreeting]);
+  }, [isOpen]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
 
-    if(audioRef.current && audioRef.current.paused) {
-      audioRef.current.play().catch(() => {});
+    if(audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
     }
 
     const userMsg: Message = { role: 'user', content: input };
@@ -124,6 +116,8 @@ export const ZenithChat = ({ isOpen, onClose, playInitialGreeting }: ZenithChatP
       setIsLoading(false);
     }
   };
+
+  const currentLoadingState = isInitiallyLoading || isLoading;
 
   return (
     <AnimatePresence>
@@ -179,7 +173,7 @@ export const ZenithChat = ({ isOpen, onClose, playInitialGreeting }: ZenithChatP
                         ))}
                     </AnimatePresence>
 
-                    {isLoading && messages.length > 0 && (
+                    {currentLoadingState && (
                     <div className="flex items-center gap-2 text-white/40 text-xs ml-11">
                         <motion.span animate={{ y: [0, -2, 0] }} transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}>●</motion.span>
                         <motion.span animate={{ y: [0, -2, 0] }} transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut', delay: 0.1 }}>●</motion.span>
@@ -203,7 +197,7 @@ export const ZenithChat = ({ isOpen, onClose, playInitialGreeting }: ZenithChatP
                     />
                     <motion.button
                         type="submit"
-                        disabled={!input.trim() || isLoading}
+                        disabled={!input.trim() || currentLoadingState}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         className="p-2 w-10 h-10 flex items-center justify-center bg-cyan-600 hover:bg-cyan-700 text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
