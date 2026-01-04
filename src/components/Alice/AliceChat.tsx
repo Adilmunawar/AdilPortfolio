@@ -1,15 +1,15 @@
 'use client';
-
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Bot, User, Sparkles } from 'lucide-react';
+import { X, Send, Bot, User, Sparkles, ChevronDown, Cpu } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import ReactMarkdown from 'react-markdown';
 import { cn } from '@/lib/utils';
-import remarkGfm from 'remark-gfm';
 
 interface Message {
-  role: 'user' | 'assistant' | 'system';
+  role: 'user' | 'assistant';
   content: string;
+  reasoning_details?: any; 
 }
 
 interface AliceChatProps {
@@ -23,12 +23,22 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, isLoading]);
+  
+  useEffect(() => {
+    if (isOpen) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = 'auto';
+    }
+    return () => {
+        document.body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -42,26 +52,19 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          messages: [...messages, userMsg],
-        }),
+        body: JSON.stringify({ messages: [...messages, userMsg] }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || 'Network response was not ok');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'The AI is taking a break. Please try again later.');
       }
       
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: data.content,
-      }]);
+      const data = await response.json();
+      setMessages(prev => [...prev, data]);
 
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "I'm having trouble connecting right now. Please try again.";
-      console.error(error);
-      setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${errorMessage}` }]);
+    } catch (error: any) {
+      setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${error.message}` }]);
     } finally {
       setIsLoading(false);
     }
@@ -71,89 +74,102 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 20, scale: 0.95 }}
-          className="fixed bottom-24 left-6 z-50 w-[90vw] max-w-md h-[600px] max-h-[70vh] flex flex-col rounded-2xl border border-white/10 bg-black/80 backdrop-blur-xl shadow-2xl overflow-hidden font-sans"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md"
+            onClick={onClose}
         >
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/5">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-cyber-purple to-cyber-blue flex items-center justify-center overflow-hidden border border-white/20">
-                   <Bot className="text-white w-6 h-6" />
-                </div>
-                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-black rounded-full animate-pulse"></span>
-              </div>
-              <div>
-                <h3 className="font-bold text-white text-sm">Alice AI</h3>
-                <p className="text-xs text-frost-cyan/60 flex items-center gap-1">
-                  <Sparkles size={10} /> Assistant
-                </p>
-              </div>
-            </div>
-            <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors text-white/70 hover:text-white">
-              <X size={20} />
-            </button>
-          </div>
-
-          {/* Chat Area */}
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4">
-            {messages.length === 0 && (
-              <div className="flex flex-col items-center justify-center h-full text-center text-white/40 space-y-4">
-                <Bot size={48} className="opacity-20" />
-                <p className="text-sm">Hi! I'm Alice. How can I help with your project?</p>
-              </div>
-            )}
-            
-            {messages.map((msg, idx) => (
-              <div key={idx} className={`flex flex-col gap-1 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
-                <div
-                  className={cn(
-                    "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm",
-                    msg.role === 'user'
-                      ? "bg-cyber-blue text-white rounded-br-sm"
-                      : "bg-cyber-gray/50 border border-white/5 text-frost-white rounded-bl-sm"
-                  )}
-                >
-                  <ReactMarkdown remarkPlugins={[remarkGfm]} className="prose prose-invert prose-sm max-w-none">
-                    {msg.content}
-                  </ReactMarkdown>
-                </div>
-              </div>
-            ))}
-
-            {isLoading && (
-              <div className="flex items-center gap-2 text-white/40 text-xs ml-2">
-                <span className="animate-bounce">●</span>
-                <span className="animate-bounce delay-75">●</span>
-                <span className="animate-bounce delay-150">●</span>
-              </div>
-            )}
-          </div>
-
-          {/* Input Area */}
-          <div className="p-4 border-t border-white/10 bg-white/5">
-            <form
-              onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-              className="flex items-center gap-2 bg-black/50 border border-white/10 rounded-full px-4 py-2 focus-within:border-cyber-cyan/50 transition-colors"
+            <motion.div
+                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                className="relative w-full max-w-2xl h-[700px] max-h-[85vh] flex flex-col rounded-3xl border border-white/10 bg-black/90 shadow-2xl shadow-cyan-500/20 overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
             >
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Type a message..."
-                className="flex-1 bg-transparent border-none outline-none text-white text-sm placeholder:text-white/30"
-              />
-              <button
-                type="submit"
-                disabled={!input.trim() || isLoading}
-                className="p-2 bg-cyber-blue hover:bg-cyber-blue/80 text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Send size={16} />
-              </button>
-            </form>
-          </div>
+                {/* Header */}
+                <div className="flex flex-col items-center p-4 border-b border-white/10 text-center">
+                    <h3 className="font-bold text-white text-lg flex items-center gap-2">
+                        <Sparkles className="text-cyan-400 w-5 h-5" /> Alice AI
+                    </h3>
+                    <p className="text-xs text-cyan-400/60 mt-1">Connected via Gemini Flash</p>
+                    <button onClick={onClose} className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-colors">
+                        <X size={20} />
+                    </button>
+                </div>
+
+                {/* Chat Area */}
+                <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6">
+                    {messages.length === 0 && (
+                    <div className="flex flex-col items-center justify-center h-full text-center text-white/40 space-y-4">
+                        <Bot size={48} className="opacity-20" />
+                        <p className="text-sm">Hi! I'm Alice. How can I help you bring your ideas to life?</p>
+                    </div>
+                    )}
+                    
+                    {messages.map((msg, idx) => (
+                    <div key={idx} className={cn("flex gap-3", msg.role === 'user' ? 'flex-row-reverse' : 'flex-row')}>
+                        <div className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center", msg.role === 'user' ? 'bg-cyber-blue' : 'bg-cyber-gray/80')}>
+                            {msg.role === 'user' ? <User size={18} /> : <Bot size={18} />}
+                        </div>
+                        <div className={cn(
+                            "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-md",
+                            msg.role === 'user'
+                            ? "bg-gradient-to-br from-cyber-blue to-cyber-purple text-white rounded-br-sm"
+                            : "bg-cyber-gray/50 border border-white/10 text-frost-white rounded-bl-sm"
+                        )}>
+                            <ReactMarkdown className="prose prose-sm prose-invert max-w-none prose-p:my-0">{msg.content}</ReactMarkdown>
+                            
+                            {msg.role === 'assistant' && msg.reasoning_details && (
+                                <Accordion type="single" collapsible className="w-full mt-3 border-t border-white/10 pt-2">
+                                <AccordionItem value="reasoning" className="border-none">
+                                    <AccordionTrigger className="text-xs text-white/50 hover:no-underline py-1 gap-1">
+                                      <Cpu size={12}/> Thought Process
+                                    </AccordionTrigger>
+                                    <AccordionContent className="text-xs text-white/40 bg-black/30 p-2 rounded-md mt-1">
+                                        <pre className="whitespace-pre-wrap font-mono text-xs">{JSON.stringify(msg.reasoning_details, null, 2)}</pre>
+                                    </AccordionContent>
+                                </AccordionItem>
+                                </Accordion>
+                            )}
+                        </div>
+                    </div>
+                    ))}
+
+                    {isLoading && (
+                    <div className="flex items-center gap-2 text-white/40 text-xs ml-11">
+                        <motion.span animate={{ y: [0, -2, 0] }} transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}>●</motion.span>
+                        <motion.span animate={{ y: [0, -2, 0] }} transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut', delay: 0.1 }}>●</motion.span>
+                        <motion.span animate={{ y: [0, -2, 0] }} transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}>●</motion.span>
+                    </div>
+                    )}
+                </div>
+
+                {/* Input Area */}
+                <div className="p-4">
+                    <form
+                    onSubmit={(e) => { e.preventDefault(); handleSend(); }}
+                    className="flex items-center gap-2 bg-black/50 border border-white/10 rounded-full p-2 focus-within:border-cyan-400/50 transition-all duration-300"
+                    >
+                    <input
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Ask me about web development, design, or collaboration..."
+                        className="flex-1 bg-transparent border-none outline-none text-white text-sm placeholder:text-white/30 px-3"
+                    />
+                    <button
+                        type="submit"
+                        disabled={!input.trim() || isLoading}
+                        className="p-2 w-10 h-10 flex items-center justify-center bg-cyber-blue hover:bg-cyber-blue/80 text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+                    >
+                        <Send size={16} className="group-hover:translate-x-0.5 transition-transform"/>
+                    </button>
+                    </form>
+                </div>
+            </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
