@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     };
 
     const payload = {
-      model: "google/gemini-flash-1.5", 
+      model: "nvidia/nemotron-3-nano-30b-a3b:free",
       messages: [systemMessage, ...messages],
       reasoning: { enabled: true }
     };
