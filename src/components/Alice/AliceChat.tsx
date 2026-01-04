@@ -111,10 +111,7 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
             >
                 {/* Header */}
                 <div className="flex flex-col items-center p-4 border-b border-white/10 text-center">
-                    <h3 className="font-bold text-white text-lg">
-                        Alice AI
-                    </h3>
-                    <p className="text-xs text-cyan-400/60">developed by adil munawar</p>
+                    
                     <button onClick={onClose} className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-colors">
                         <X size={20} />
                     </button>
