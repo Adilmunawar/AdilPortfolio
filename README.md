@@ -59,7 +59,9 @@
 ├── src/
 │   ├── app/
 │   │   ├── api/
-│   │   │   └── chat/
+│   │   │   ├── chat/
+│   │   │   │   └── route.ts
+│   │   │   └── tts/
 │   │   │       └── route.ts
 │   │   ├── globals.css
 │   │   ├── layout.tsx
