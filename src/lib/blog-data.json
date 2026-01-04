@@ -1,0 +1,67 @@
+
+[
+  {
+    "id": 1,
+    "title": "Mastering Cross-Site Scripting (XSS)",
+    "excerpt": "A deep dive into preventing and exploiting XSS vulnerabilities, from reflected to stored and DOM-based attacks.",
+    "image": "https://picsum.photos/seed/blog1/600/400",
+    "tags": ["Web Security", "Hacking", "XSS"],
+    "link": "#"
+  },
+  {
+    "id": 2,
+    "title": "The Art of SQL Injection",
+    "excerpt": "Learn how to identify and exploit SQL injection flaws to bypass authentication and extract sensitive data.",
+    "image": "https://picsum.photos/seed/blog2/600/400",
+    "tags": ["Database", "Hacking", "SQLi"],
+    "link": "#"
+  },
+  {
+    "id": 3,
+    "title": "Modern Frontend Frameworks: React vs. Vue",
+    "excerpt": "A comprehensive comparison of React and Vue, helping you choose the right tool for your next project.",
+    "image": "https://picsum.photos/seed/blog3/600/400",
+    "tags": ["React", "Vue", "JavaScript"],
+    "link": "#"
+  },
+  {
+    "id": 4,
+    "title": "Building Scalable APIs with Node.js",
+    "excerpt": "Best practices for designing and implementing scalable, high-performance RESTful APIs using Node.js and Express.",
+    "image": "https://picsum.photos/seed/blog4/600/400",
+    "tags": ["Node.js", "API", "Backend"],
+    "link": "#"
+  },
+  {
+    "id": 5,
+    "title": "Social Engineering: The Human Element of Hacking",
+    "excerpt": "Explore the psychological tactics used by hackers to manipulate individuals into divulging confidential information.",
+    "image": "https://picsum.photos/seed/blog5/600/400",
+    "tags": ["Hacking", "Security", "Psychology"],
+    "link": "#"
+  },
+  {
+    "id": 6,
+    "title": "Introduction to Docker and Containers",
+    "excerpt": "Understand the fundamentals of containerization and how Docker can streamline your development workflow.",
+    "image": "https://picsum.photos/seed/blog6/600/400",
+    "tags": ["DevOps", "Docker", "Containers"],
+    "link": "#"
+  },
+  {
+    "id": 7,
+    "title": "Advanced CSS Animations and Transitions",
+    "excerpt": "Bring your websites to life with advanced CSS techniques for creating smooth and performant animations.",
+    "image": "https://picsum.photos/seed/blog7/600/400",
+    "tags": ["CSS", "Frontend", "Animation"],
+    "link": "#"
+  },
+  {
+    "id": 8,
+    "title": "Securing Your CI/CD Pipeline",
+    "excerpt": "Strategies for integrating security checks and best practices into your continuous integration and delivery process.",
+    "image": "https://picsum.photos/seed/blog8/600/400",
+    "tags": ["DevSecOps", "CI/CD", "Security"],
+    "link": "#"
+  }
+]

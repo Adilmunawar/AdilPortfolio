@@ -1,4 +1,3 @@
-
 'use client';
 import { useState } from 'react';
 import Navigation from '@/components/Navigation';
@@ -11,6 +10,7 @@ import ContactSection from '@/components/ContactSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import { NeonOrbs } from '@/components/ui/neon-orbs';
 import StatsSection from '@/components/StatsSection';
+import BlogSection from '@/components/BlogSection';
 
 export default function Home() {
 
@@ -27,6 +27,7 @@ export default function Home() {
         <ServicesSection />
         <ProjectsSection />
         <TestimonialsSection />
+        <BlogSection />
         <ContactSection />
       </main>
     </div>
