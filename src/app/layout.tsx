@@ -6,7 +6,7 @@ import "@/app/globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import AliceAssistant from "@/components/Alice/AliceAssistant";
+import ZenithAssistant from "@/components/Zenith/ZenithAssistant";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -53,7 +53,7 @@ export default function RootLayout({
           <Toaster />
           <Sonner />
           {children}
-          <AliceAssistant />
+          <ZenithAssistant />
         </TooltipProvider>
 
         <Script

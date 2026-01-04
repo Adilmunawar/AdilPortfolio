@@ -1,23 +1,22 @@
+
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Bot, User, Cpu } from 'lucide-react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { X, Send, Bot, User } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { cn } from '@/lib/utils';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
-  reasoning_details?: any; 
 }
 
-interface AliceChatProps {
+interface ZenithChatProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
+export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -162,7 +161,7 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                     </button>
                     </form>
                     <p className="text-xs text-center text-cyan-400/40 mt-2">
-                        Alice - Developed by Adil Munawar
+                        Zenith - Developed by Adil Munawar
                     </p>
                 </div>
             </motion.div>

@@ -1,9 +1,10 @@
+
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bot } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-interface AliceOrbProps {
+interface ZenithOrbProps {
   onClick: () => void;
   isOpen: boolean;
 }
@@ -14,7 +15,7 @@ const subtitles = [
   "Let's connect!",
 ];
 
-export const AliceOrb = ({ onClick, isOpen }: AliceOrbProps) => {
+export const ZenithOrb = ({ onClick, isOpen }: ZenithOrbProps) => {
   const [currentSubtitle, setCurrentSubtitle] = useState(0);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export const AliceOrb = ({ onClick, isOpen }: AliceOrbProps) => {
             {/* Text */}
             <div className="flex flex-col items-start">
               <span className="text-white font-semibold text-base tracking-wide flex items-center gap-1.5">
-                Alice
+                Zenith
               </span>
               <span className="text-[11px] text-cyan-400/80 font-medium">
                 {subtitles[currentSubtitle]}
