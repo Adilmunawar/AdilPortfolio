@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Bot, User, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import { cn } from '@/lib/utils'; // Assuming you have a utils file for tailwind-merge
+import { cn } from '@/lib/utils';
 import remarkGfm from 'remark-gfm';
 
 interface Message {
@@ -40,11 +40,13 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
     setIsLoading(true);
 
     try {
-      // Send the entire history (including previous reasoning) to the backend
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages, userMsg] }),
+        body: JSON.stringify({ 
+          messages: [...messages, userMsg],
+          apiKey: process.env.NEXT_PUBLIC_OPENROUTER_API_KEY
+        }),
       });
 
       const data = await response.json();
@@ -53,7 +55,6 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
         throw new Error(data.error || 'Network response was not ok');
       }
       
-      // Add the assistant's response (with reasoning) to state
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: data.content,
@@ -83,7 +84,7 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
             <div className="flex items-center gap-3">
               <div className="relative">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-cyber-purple to-cyber-blue flex items-center justify-center overflow-hidden border border-white/20">
-                   <Bot className="text-white w-6 h-6" /> {/* Replace with <Image> if available */}
+                   <Bot className="text-white w-6 h-6" />
                 </div>
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-black rounded-full animate-pulse"></span>
               </div>
@@ -111,12 +112,10 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex flex-col gap-1 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                 
-                {/* 🧠 Reasoning Accordion (Only for Assistant) */}
                 {msg.role === 'assistant' && msg.reasoning_details && (
                   <ReasoningAccordion reasoning={msg.reasoning_details} />
                 )}
 
-                {/* Message Bubble */}
                 <div
                   className={cn(
                     "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm",
@@ -169,7 +168,6 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
   );
 };
 
-// Sub-component for the "Thought Process" visualization
 const ReasoningAccordion = ({ reasoning }: { reasoning: string }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 

@@ -1,8 +1,14 @@
+'use client';
+
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { messages } = await req.json();
+    const { messages, apiKey } = await req.json();
+
+    if (!apiKey) {
+      throw new Error("OpenRouter API key is missing.");
+    }
 
     // 1. Define the System Persona
     const systemMessage = {
@@ -20,18 +26,17 @@ export async function POST(req: Request) {
     };
 
     // 2. Prepare the payload for OpenRouter
-    // We prepend the system message to the conversation history
     const payload = {
       model: "google/gemini-flash-1.5", 
       messages: [systemMessage, ...messages],
-      reasoning: { enabled: true } // Enable reasoning capabilities
+      reasoning: { enabled: true }
     };
 
     // 3. Call OpenRouter API
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Authorization": `Bearer ${apiKey}`,
         "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "https://adilmunawar.vercel.app",
         "X-Title": "Adil Munawar Portfolio",
         "Content-Type": "application/json"
