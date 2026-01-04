@@ -1,7 +1,8 @@
+
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Bot, User, Sparkles, ChevronDown, Cpu } from 'lucide-react';
+import { X, Send, Bot, User, Sparkles, Cpu } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import ReactMarkdown from 'react-markdown';
 import { cn } from '@/lib/utils';
@@ -32,6 +33,28 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
   useEffect(() => {
     if (isOpen) {
         document.body.style.overflow = 'hidden';
+        // Automatically send the first message from Alice when the chat opens
+        if (messages.length === 0) {
+          setIsLoading(true);
+          // This simulates the initial greeting from Alice
+          fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: [] }),
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.error) {
+              setMessages([{ role: 'assistant', content: `Error: ${data.error}` }]);
+            } else {
+              setMessages([data]);
+            }
+          })
+          .catch(error => {
+            setMessages([{ role: 'assistant', content: `Error: ${error.message}` }]);
+          })
+          .finally(() => setIsLoading(false));
+        }
     } else {
         document.body.style.overflow = 'auto';
     }
@@ -86,7 +109,7 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                className="relative w-full max-w-2xl h-[700px] max-h-[85vh] flex flex-col rounded-3xl border border-white/10 bg-black/90 shadow-2xl shadow-cyan-500/20 overflow-hidden"
+                className="relative w-full max-w-2xl h-[600px] max-h-[85vh] flex flex-col rounded-3xl border border-white/10 bg-black/90 shadow-2xl shadow-cyan-500/20 overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
@@ -102,13 +125,6 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
 
                 {/* Chat Area */}
                 <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6">
-                    {messages.length === 0 && (
-                    <div className="flex flex-col items-center justify-center h-full text-center text-white/40 space-y-4">
-                        <Bot size={48} className="opacity-20" />
-                        <p className="text-sm">Hi! I'm Alice. How can I help you bring your ideas to life?</p>
-                    </div>
-                    )}
-                    
                     {messages.map((msg, idx) => (
                     <div key={idx} className={cn("flex gap-3", msg.role === 'user' ? 'flex-row-reverse' : 'flex-row')}>
                         <div className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center", msg.role === 'user' ? 'bg-cyber-blue' : 'bg-cyber-gray/80')}>
@@ -121,24 +137,11 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                             : "bg-cyber-gray/50 border border-white/10 text-frost-white rounded-bl-sm"
                         )}>
                             <ReactMarkdown className="prose prose-sm prose-invert max-w-none prose-p:my-0">{msg.content}</ReactMarkdown>
-                            
-                            {msg.role === 'assistant' && msg.reasoning_details && (
-                                <Accordion type="single" collapsible className="w-full mt-3 border-t border-white/10 pt-2">
-                                <AccordionItem value="reasoning" className="border-none">
-                                    <AccordionTrigger className="text-xs text-white/50 hover:no-underline py-1 gap-1">
-                                      <Cpu size={12}/> Thought Process
-                                    </AccordionTrigger>
-                                    <AccordionContent className="text-xs text-white/40 bg-black/30 p-2 rounded-md mt-1">
-                                        <pre className="whitespace-pre-wrap font-mono text-xs">{JSON.stringify(msg.reasoning_details, null, 2)}</pre>
-                                    </AccordionContent>
-                                </AccordionItem>
-                                </Accordion>
-                            )}
                         </div>
                     </div>
                     ))}
 
-                    {isLoading && (
+                    {isLoading && messages.length > 0 && (
                     <div className="flex items-center gap-2 text-white/40 text-xs ml-11">
                         <motion.span animate={{ y: [0, -2, 0] }} transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}>●</motion.span>
                         <motion.span animate={{ y: [0, -2, 0] }} transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut', delay: 0.1 }}>●</motion.span>
@@ -157,7 +160,7 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        placeholder="Ask me about web development, design, or collaboration..."
+                        placeholder="Ask about web development or design projects..."
                         className="flex-1 bg-transparent border-none outline-none text-white text-sm placeholder:text-white/30 px-3"
                     />
                     <button
