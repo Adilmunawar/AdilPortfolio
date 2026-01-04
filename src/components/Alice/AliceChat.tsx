@@ -2,18 +2,19 @@
 
 import { useState, useRef, useEffect, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, X, Bot, User, Trash2, BrainCircuit, ChevronDown } from 'lucide-react';
+import { Send, X, Bot, User, Trash2, BrainCircuit } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { streamChat } from '@/app/actions/chat';
 
 interface Message {
   id: number;
   role: 'user' | 'assistant';
   content: string;
-  reasoning_details?: string;
+  reasoning_details?: string | null;
 }
 
 interface AliceChatProps {
@@ -62,36 +63,45 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = { id: Date.now(), role: 'user', content: input };
-    setMessages((prev) => [...prev, userMessage]);
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     setInput('');
     setIsLoading(true);
 
-    // MOCK API CALL
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const assistantMessageId = Date.now() + 1;
+    let currentContent = "";
+    let reasoning = null;
 
-    const mockResponse: Message = {
-      id: Date.now() + 1,
-      role: 'assistant',
-      content: `You asked: "${input}". This is a simulated response demonstrating markdown capabilities. \n\n*   Here is a list item.\n*   And another one. \n\n\`\`\`javascript\nconsole.log("Hello, world!");\n\`\`\``,
-      reasoning_details: "1. Acknowledged user input.\n2. Formulated a response structure.\n3. Included Markdown elements: list and code block.\n4. Set `isLoading` to false.",
-    };
+    setMessages((prev) => [
+        ...prev, 
+        { id: assistantMessageId, role: 'assistant', content: "", reasoning_details: null }
+    ]);
     
-    // Simulate streaming
-    let streamedContent = "";
-    const words = mockResponse.content.split(' ');
-    for (let i = 0; i < words.length; i++) {
-        await new Promise(resolve => setTimeout(resolve, 50));
-        streamedContent += (i > 0 ? " " : "") + words[i];
-        setMessages((prev) => {
-            const lastMsg = prev[prev.length -1];
-            if (lastMsg.role === 'assistant') {
-                return [...prev.slice(0, -1), { ...mockResponse, content: streamedContent }];
-            }
-            return [...prev, { ...mockResponse, content: streamedContent }];
-        });
-    }
+    try {
+        const stream = await streamChat(newMessages.map(m => ({role: m.role, content: m.content, reasoning_details: m.reasoning_details})));
 
-    setIsLoading(false);
+        for await (const chunk of stream) {
+            if (chunk.reasoning_details && !reasoning) {
+                reasoning = chunk.reasoning_details;
+                setMessages(prev => prev.map(msg => 
+                    msg.id === assistantMessageId ? { ...msg, reasoning_details: reasoning } : msg
+                ));
+            }
+            if (chunk.content) {
+                currentContent += chunk.content;
+                setMessages(prev => prev.map(msg => 
+                    msg.id === assistantMessageId ? { ...msg, content: currentContent } : msg
+                ));
+            }
+        }
+    } catch (error) {
+        console.error("Error streaming chat:", error);
+        setMessages(prev => prev.map(msg => 
+            msg.id === assistantMessageId ? { ...msg, content: "Sorry, I encountered an error." } : msg
+        ));
+    } finally {
+        setIsLoading(false);
+    }
   };
 
   return (
@@ -102,7 +112,7 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 50 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="fixed bottom-24 left-6 z-50 w-[90vw] max-w-md h-[70vh] flex flex-col glass-card border-2 border-white/10 rounded-xl shadow-2xl shadow-black/50"
+          className="fixed bottom-24 left-4 right-4 md:left-6 md:right-auto z-50 w-auto max-w-md h-[70vh] flex flex-col glass-card border-2 border-white/10 rounded-xl shadow-2xl shadow-black/50"
         >
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-white/10 flex-shrink-0">
@@ -172,31 +182,25 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
                           </AccordionItem>
                         </Accordion>
                     )}
-                    <ReactMarkdown 
-                        remarkPlugins={[remarkGfm]} 
-                        className="prose prose-sm prose-invert prose-p:text-white"
-                        components={{
-                            p: ({node, ...props}) => <p className="text-white" {...props} />,
-                        }}
-                    >
-                        {msg.content}
-                    </ReactMarkdown>
+                    
+                    {msg.content ? (
+                        <ReactMarkdown 
+                            remarkPlugins={[remarkGfm]} 
+                            className="prose prose-sm prose-invert prose-p:text-white"
+                            components={{
+                                p: ({node, ...props}) => <p className="text-white" {...props} />,
+                            }}
+                        >
+                            {msg.content}
+                        </ReactMarkdown>
+                    ) : (
+                        msg.role === 'assistant' && <TypingIndicator />
+                    )}
+
                   </div>
                   {msg.role === 'user' && <User className="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" />}
                 </motion.div>
               ))}
-              {isLoading && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex justify-start items-start gap-3"
-                  >
-                     <Bot className="w-6 h-6 text-neon-cyan flex-shrink-0 mt-1" />
-                     <div className="bg-secondary rounded-xl p-3">
-                         <TypingIndicator />
-                     </div>
-                  </motion.div>
-              )}
             </AnimatePresence>
           </div>
 
