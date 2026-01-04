@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef, MouseEvent } from 'react';
+import { useState, useRef, MouseEvent, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
@@ -33,6 +33,12 @@ const BlogSection = () => {
   const [vStartY, setVStartY] = useState(0);
   const [vScrollTop, setVScrollTop] = useState(0);
 
+  useEffect(() => {
+    // Cleanup user-select style on component unmount
+    return () => {
+      document.body.style.userSelect = '';
+    };
+  }, []);
 
   const handleReadMore = (post: BlogPost) => {
     setSelectedPost(post);
@@ -43,16 +49,21 @@ const BlogSection = () => {
   const onHMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     if (!hScrollContainerRef.current) return;
     setIsHDragging(true);
+    document.body.style.userSelect = 'none';
     setHStartX(e.pageX - hScrollContainerRef.current.offsetLeft);
     setHScrollLeft(hScrollContainerRef.current.scrollLeft);
   };
 
   const onHMouseLeave = () => {
-    setIsHDragging(false);
+    if (isHDragging) {
+      setIsHDragging(false);
+      document.body.style.userSelect = '';
+    }
   };
 
   const onHMouseUp = () => {
     setIsHDragging(false);
+    document.body.style.userSelect = '';
   };
 
   const onHMouseMove = (e: MouseEvent<HTMLDivElement>) => {
@@ -68,16 +79,21 @@ const BlogSection = () => {
     const scrollAreaViewport = vScrollContainerRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
     if (!scrollAreaViewport) return;
     setIsVDragging(true);
+    document.body.style.userSelect = 'none';
     setVStartY(e.pageY - (scrollAreaViewport as HTMLElement).offsetTop);
     setVScrollTop(scrollAreaViewport.scrollTop);
   };
 
   const onVMouseLeave = () => {
-    setIsVDragging(false);
+    if (isVDragging) {
+      setIsVDragging(false);
+      document.body.style.userSelect = '';
+    }
   };
 
   const onVMouseUp = () => {
     setIsVDragging(false);
+    document.body.style.userSelect = '';
   };
 
   const onVMouseMove = (e: MouseEvent<HTMLDivElement>) => {
@@ -132,7 +148,7 @@ const BlogSection = () => {
                         src={post.image}
                         alt={post.title}
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105 pointer-events-none"
                         data-ai-hint="programming abstract"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/40 to-transparent"></div>
@@ -198,7 +214,7 @@ const BlogSection = () => {
                                 src={selectedPost.image}
                                 alt={selectedPost.title}
                                 fill
-                                className="object-cover"
+                                className="object-cover pointer-events-none"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/40 to-transparent"></div>
                         </div>
