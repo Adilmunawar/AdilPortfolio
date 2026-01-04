@@ -48,12 +48,14 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
         language={lang}
         PreTag="div"
         {...props}
+        wrapLines={true}
+        wrapLongLines={true}
       >
         {String(children).replace(/\n$/, '')}
       </SyntaxHighlighter>
     </div>
   ) : (
-    <code className={cn("text-sm font-mono bg-neon-cyan/10 text-neon-cyan px-1 py-0.5 rounded", className)} {...props}>
+    <code className={cn("text-sm font-mono bg-neon-cyan/10 text-neon-cyan px-1 py-0.5 rounded break-words", className)} {...props}>
       {children}
     </code>
   );
@@ -274,7 +276,7 @@ const BlogSection = () => {
                             ))}
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan prose-table:border-neon-cyan/20 prose-th:text-frost-white prose-tr:border-neon-cyan/20 max-w-none pt-6">
+                    <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-p:break-words prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan prose-table:border-neon-cyan/20 prose-th:text-frost-white prose-tr:border-neon-cyan/20 max-w-none pt-6">
                         <ReactMarkdown
                            components={{
                              code: CodeBlock,
@@ -294,3 +296,4 @@ const BlogSection = () => {
 
 export default BlogSection;
     
+  
