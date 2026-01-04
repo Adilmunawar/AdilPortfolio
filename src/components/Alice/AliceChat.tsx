@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Bot, User, Sparkles, Cpu } from 'lucide-react';
+import { X, Send, Bot, User, Cpu } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import ReactMarkdown from 'react-markdown';
 import { cn } from '@/lib/utils';
@@ -32,10 +32,8 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
   useEffect(() => {
     if (isOpen) {
         document.body.style.overflow = 'hidden';
-        // Automatically send the first message from Alice when the chat opens
         if (messages.length === 0) {
           setIsLoading(true);
-          // This simulates the initial greeting from Alice
           fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -60,7 +58,7 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
     return () => {
         document.body.style.overflow = 'auto';
     };
-  }, [isOpen]);
+  }, [isOpen, messages.length]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -113,9 +111,10 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
             >
                 {/* Header */}
                 <div className="flex flex-col items-center p-4 border-b border-white/10 text-center">
-                    <h3 className="font-bold text-white text-lg flex items-center gap-2">
-                        <Sparkles className="text-cyan-400 w-5 h-5" /> Alice AI
+                    <h3 className="font-bold text-white text-lg">
+                        Alice AI
                     </h3>
+                    <p className="text-xs text-cyan-400/60">developed by adil munawar</p>
                     <button onClick={onClose} className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-colors">
                         <X size={20} />
                     </button>
@@ -131,7 +130,7 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                         <div className={cn(
                             "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-md",
                             msg.role === 'user'
-                            ? "bg-gradient-to-br from-cyber-blue to-cyber-purple text-white rounded-br-sm"
+                            ? "bg-cyber-blue text-white rounded-br-sm"
                             : "bg-cyber-gray/50 border border-white/10 text-frost-white rounded-bl-sm"
                         )}>
                             <ReactMarkdown className="prose prose-sm prose-invert max-w-none prose-p:my-0">{msg.content}</ReactMarkdown>
