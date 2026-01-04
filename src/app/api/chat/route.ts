@@ -64,7 +64,7 @@ export async function POST(req: Request) {
       messages: [systemMessage, ...messages],
       temperature: 0.7,
       max_tokens: 1500,
-      extraBody: {
+      extra_body: {
         safety_settings: [
             {
                 category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
@@ -72,7 +72,7 @@ export async function POST(req: Request) {
             },
         ],
       }
-    });
+    } as any);
 
     const aiMessage = completion.choices[0]?.message;
 
