@@ -47,9 +47,11 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
         body: JSON.stringify({ messages: [...messages, userMsg] }),
       });
 
-      if (!response.ok) throw new Error('Network response was not ok');
-
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Network response was not ok');
+      }
       
       // Add the assistant's response (with reasoning) to state
       setMessages(prev => [...prev, {
@@ -58,9 +60,10 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
         reasoning_details: data.reasoning_details
       }]);
 
-    } catch (error) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "I'm having trouble connecting right now. Please try again.";
       console.error(error);
-      setMessages(prev => [...prev, { role: 'assistant', content: "I'm having trouble connecting right now. Please try again." }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${errorMessage}` }]);
     } finally {
       setIsLoading(false);
     }

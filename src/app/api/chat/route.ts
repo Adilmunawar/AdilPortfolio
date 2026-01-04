@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     // 2. Prepare the payload for OpenRouter
     // We prepend the system message to the conversation history
     const payload = {
-      model: "google/gemini-3-flash-preview", 
+      model: "google/gemini-flash-1.5", 
       messages: [systemMessage, ...messages],
       reasoning: { enabled: true } // Enable reasoning capabilities
     };
@@ -40,7 +40,8 @@ export async function POST(req: Request) {
     });
 
     if (!response.ok) {
-      throw new Error(`OpenRouter API Error: ${response.statusText}`);
+      const errorBody = await response.text();
+      throw new Error(`OpenRouter API Error: ${response.statusText} - ${errorBody}`);
     }
 
     const data = await response.json();
@@ -53,8 +54,9 @@ export async function POST(req: Request) {
       reasoning_details: aiMessage.reasoning_details || null 
     });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("API Error:", error);
-    return NextResponse.json({ error: "Failed to process request" }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
