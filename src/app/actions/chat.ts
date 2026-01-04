@@ -10,7 +10,7 @@ interface ChatMessage {
 }
 
 const openrouter = new OpenRouter({
-  apiKey: process.env.OPENROUTER_API_KEY,
+  apiKey: process.env.OPENROUTER_API_KEY || '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',
 });
 
 const systemPrompt = `You are Alice, a high-end AI Portfolio Assistant for Adil Munawar, a skilled Full-Stack Developer. Your persona is professional, friendly, and slightly futuristic.
@@ -38,6 +38,7 @@ export async function streamChat(messages: ChatMessage[]) {
                 content: m.content
             };
             if (m.reasoning_details) {
+                // The SDK types might not explicitly include reasoning_details, but we cast to any to include it.
                 (message as any).reasoning_details = m.reasoning_details;
             }
             return message;
@@ -55,9 +56,8 @@ export async function streamChat(messages: ChatMessage[]) {
 
     const transformStream = new TransformStream({
         async transform(chunk, controller) {
-            const isFinalChunk = chunk.usage && chunk.usage.completion_tokens;
-            const reasoning = isFinalChunk ? JSON.stringify(chunk.usage) : null;
             const content = chunk.choices[0]?.delta?.content;
+            const usage = chunk.usage;
             
             const payload: { content?: string; reasoning_details?: string } = {};
 
@@ -65,16 +65,14 @@ export async function streamChat(messages: ChatMessage[]) {
                 payload.content = content;
             }
             
-            if (reasoning) {
-                payload.reasoning_details = `Completion Tokens: ${chunk.usage?.completion_tokens}, Prompt Tokens: ${chunk.usage?.prompt_tokens}, Total Tokens: ${chunk.usage?.total_tokens}`;
+            // The final chunk contains usage statistics, which we'll use as reasoning details.
+            if (usage && usage.completion_tokens) {
+                 payload.reasoning_details = `Completion Tokens: ${usage.completion_tokens}, Prompt Tokens: ${usage.prompt_tokens}, Total Tokens: ${usage.total_tokens}`;
             }
 
             if (Object.keys(payload).length > 0) {
                controller.enqueue(`data: ${JSON.stringify(payload)}\n\n`);
             }
-        },
-        flush(controller) {
-            controller.enqueue(`data: [DONE]\n\n`);
         }
     });
 

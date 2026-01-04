@@ -79,9 +79,7 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
         const reader = stream.getReader();
         const decoder = new TextDecoder();
         let done = false;
-        let currentContent = "";
-        let reasoning = null;
-
+        
         while (!done) {
             const { value, done: readerDone } = await reader.read();
             done = readerDone;
@@ -91,24 +89,18 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
             for (const line of lines) {
                 if (line.startsWith('data: ')) {
                     const data = line.substring(6);
-                    if (data.trim() === '[DONE]') {
-                        done = true;
-                        break;
-                    }
                     try {
                         const parsed = JSON.parse(data);
-                        if (parsed.reasoning_details && !reasoning) {
-                            reasoning = parsed.reasoning_details;
-                             setMessages(prev => prev.map(msg => 
-                                msg.id === assistantMessageId ? { ...msg, content: currentContent, reasoning_details: reasoning } : msg
-                            ));
-                        }
-                        if (parsed.content) {
-                            currentContent += parsed.content;
-                            setMessages(prev => prev.map(msg => 
-                                msg.id === assistantMessageId ? { ...msg, content: currentContent, reasoning_details: reasoning } : msg
-                            ));
-                        }
+                        setMessages(prev => prev.map(msg => {
+                            if (msg.id === assistantMessageId) {
+                                return {
+                                    ...msg,
+                                    content: msg.content + (parsed.content || ''),
+                                    reasoning_details: parsed.reasoning_details || msg.reasoning_details
+                                };
+                            }
+                            return msg;
+                        }));
                     } catch (error) {
                         console.error("Error parsing stream chunk:", error, "Chunk:", data);
                     }
@@ -207,9 +199,15 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
                     {msg.content ? (
                         <ReactMarkdown 
                             remarkPlugins={[remarkGfm]} 
-                            className="prose prose-sm prose-invert prose-p:text-white"
+                            className="prose prose-sm prose-invert"
                             components={{
-                                p: ({node, ...props}) => <p className="text-white" {...props} />,
+                                p: ({node, ...props}) => <p className="text-white mb-2 last:mb-0" {...props} />,
+                                ul: ({node, ...props}) => <ul className="list-disc list-inside" {...props} />,
+                                ol: ({node, ...props}) => <ol className="list-decimal list-inside" {...props} />,
+                                li: ({node, ...props}) => <li className="text-white" {...props} />,
+                                code: ({node, ...props}) => <code className="bg-black/20 text-white/80 px-1 py-0.5 rounded text-xs" {...props} />,
+                                pre: ({node, ...props}) => <pre className="bg-black/20 text-white/80 p-2 rounded-md text-xs" {...props} />,
+                                strong: ({node, ...props}) => <strong className="font-bold text-white" {...props} />
                             }}
                         >
                             {msg.content}
@@ -224,7 +222,7 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
               ))}
             </AnimatePresence>
             {isLoading && !messages.find(m => m.id === messages[messages.length - 1].id && m.content) && (
-                 <motion.div className="flex justify-start gap-3 w-full">
+                 <motion.div layout className="flex justify-start gap-3 w-full">
                     <Bot className="w-6 h-6 text-neon-cyan flex-shrink-0 mt-1" />
                     <div className="max-w-[80%] rounded-xl p-3 text-white bg-secondary">
                         <TypingIndicator />
