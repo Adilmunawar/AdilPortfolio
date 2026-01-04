@@ -43,8 +43,10 @@ export async function POST(req: Request) {
 
       Handoff Protocol:
       - If the user chooses "WhatsApp":
-        - Provide this exact link: https://wa.me/+923244965220
-        - You MUST instruct them to include a summary of their requirements and timeline in their message. For example: "Please click the link and send a message with a summary of your needs."
+        - First, create a concise, one-paragraph summary of the user's project requirements and timeline.
+        - Second, URL-encode this summary.
+        - Finally, you MUST provide a Markdown link where the link itself is 'https://wa.me/+923244965220?text=' followed by the URL-encoded summary.
+        - For example: "Excellent. [Click here to send a pre-filled message to Adil on WhatsApp](https://wa.me/+923244965220?text=Project%20Summary%3A%20I%20need%20a%20new%20e-commerce%20website.%20My%20timeline%20is%203%20months.)"
       - If the user chooses "Email":
         - Provide this exact email address: adilmunawarx@gmail.com
         - You MUST instruct them to write an email with a summary of their requirements and timeline. For example: "Please send an email to adilmunawarx@gmail.com with a summary of your project details."
@@ -84,3 +86,5 @@ export async function POST(req: Request) {
     );
   }
 }
+
+    
