@@ -1,7 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, MouseEvent } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -14,17 +13,47 @@ import Image from 'next/image';
 import blogData from '@/lib/blog-data.json';
 import ReactMarkdown from 'react-markdown';
 import { ScrollArea } from './ui/scroll-area';
+import { cn } from '@/lib/utils';
 
 type BlogPost = (typeof blogData)[0];
 
 const BlogSection = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
 
   const handleReadMore = (post: BlogPost) => {
     setSelectedPost(post);
     setIsModalOpen(true);
   };
+
+  const onMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+  };
+
+  const onMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const onMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const onMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // scroll-fast
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
 
   return (
     <>
@@ -46,7 +75,17 @@ const BlogSection = () => {
           </div>
 
           <div className="relative">
-            <div className="flex space-x-8 pb-8 overflow-x-auto custom-scrollbar">
+            <div 
+              ref={scrollContainerRef}
+              className={cn(
+                "flex space-x-8 pb-8 overflow-x-auto custom-scrollbar cursor-grab",
+                isDragging && "cursor-grabbing"
+              )}
+              onMouseDown={onMouseDown}
+              onMouseLeave={onMouseLeave}
+              onMouseUp={onMouseUp}
+              onMouseMove={onMouseMove}
+            >
               {blogData.map((post, index) => (
                 <div key={post.id} className="flex-shrink-0 w-[320px] snap-center">
                   <Card
