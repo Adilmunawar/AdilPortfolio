@@ -20,10 +20,18 @@ type BlogPost = (typeof blogData)[0];
 const BlogSection = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  
+  // State for horizontal card list dragging
+  const hScrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isHDragging, setIsHDragging] = useState(false);
+  const [hStartX, setHStartX] = useState(0);
+  const [hScrollLeft, setHScrollLeft] = useState(0);
+
+  // State for vertical modal dragging
+  const vScrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isVDragging, setIsVDragging] = useState(false);
+  const [vStartY, setVStartY] = useState(0);
+  const [vScrollTop, setVScrollTop] = useState(0);
 
 
   const handleReadMore = (post: BlogPost) => {
@@ -31,27 +39,54 @@ const BlogSection = () => {
     setIsModalOpen(true);
   };
 
-  const onMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    if (!scrollContainerRef.current) return;
-    setIsDragging(true);
-    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
-    setScrollLeft(scrollContainerRef.current.scrollLeft);
+  // Horizontal Drag Handlers
+  const onHMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    if (!hScrollContainerRef.current) return;
+    setIsHDragging(true);
+    setHStartX(e.pageX - hScrollContainerRef.current.offsetLeft);
+    setHScrollLeft(hScrollContainerRef.current.scrollLeft);
   };
 
-  const onMouseLeave = () => {
-    setIsDragging(false);
+  const onHMouseLeave = () => {
+    setIsHDragging(false);
   };
 
-  const onMouseUp = () => {
-    setIsDragging(false);
+  const onHMouseUp = () => {
+    setIsHDragging(false);
   };
 
-  const onMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || !scrollContainerRef.current) return;
+  const onHMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!isHDragging || !hScrollContainerRef.current) return;
     e.preventDefault();
-    const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // scroll-fast
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+    const x = e.pageX - hScrollContainerRef.current.offsetLeft;
+    const walk = (x - hStartX) * 2; // scroll-fast
+    hScrollContainerRef.current.scrollLeft = hScrollLeft - walk;
+  };
+
+  // Vertical Drag Handlers for Modal
+  const onVMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    const scrollAreaViewport = vScrollContainerRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
+    if (!scrollAreaViewport) return;
+    setIsVDragging(true);
+    setVStartY(e.pageY - (scrollAreaViewport as HTMLElement).offsetTop);
+    setVScrollTop(scrollAreaViewport.scrollTop);
+  };
+
+  const onVMouseLeave = () => {
+    setIsVDragging(false);
+  };
+
+  const onVMouseUp = () => {
+    setIsVDragging(false);
+  };
+
+  const onVMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    const scrollAreaViewport = vScrollContainerRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
+    if (!isVDragging || !scrollAreaViewport) return;
+    e.preventDefault();
+    const y = e.pageY - (scrollAreaViewport as HTMLElement).offsetTop;
+    const walk = (y - vStartY) * 2; // scroll-fast
+    scrollAreaViewport.scrollTop = vScrollTop - walk;
   };
 
 
@@ -76,15 +111,15 @@ const BlogSection = () => {
 
           <div className="relative">
             <div 
-              ref={scrollContainerRef}
+              ref={hScrollContainerRef}
               className={cn(
                 "flex space-x-8 pb-8 overflow-x-auto custom-scrollbar cursor-grab",
-                isDragging && "cursor-grabbing"
+                isHDragging && "cursor-grabbing"
               )}
-              onMouseDown={onMouseDown}
-              onMouseLeave={onMouseLeave}
-              onMouseUp={onMouseUp}
-              onMouseMove={onMouseMove}
+              onMouseDown={onHMouseDown}
+              onMouseLeave={onHMouseLeave}
+              onMouseUp={onHMouseUp}
+              onMouseMove={onHMouseMove}
             >
               {blogData.map((post, index) => (
                 <div key={post.id} className="flex-shrink-0 w-[320px] snap-center">
@@ -145,7 +180,17 @@ const BlogSection = () => {
       {selectedPost && (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="sm:max-w-3xl h-[90vh] bg-cyber-dark/90 backdrop-blur-lg border-neon-cyan/30 text-frost-white p-0">
-             <ScrollArea className="h-full w-full rounded-lg">
+             <ScrollArea 
+                ref={vScrollContainerRef}
+                className={cn(
+                  "h-full w-full rounded-lg cursor-grab",
+                  isVDragging && "cursor-grabbing"
+                )}
+                onMouseDown={onVMouseDown}
+                onMouseUp={onVMouseUp}
+                onMouseLeave={onVMouseLeave}
+                onMouseMove={onVMouseMove}
+             >
                 <div className="p-6">
                     <DialogHeader>
                         <div className="relative w-full h-64 rounded-lg overflow-hidden mb-6">
