@@ -1,5 +1,3 @@
-'use client';
-
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
@@ -7,7 +5,7 @@ export async function POST(req: Request) {
     const { messages, apiKey } = await req.json();
 
     if (!apiKey) {
-      throw new Error("OpenRouter API key is missing.");
+      return NextResponse.json({ error: "OpenRouter API key is missing from the request." }, { status: 400 });
     }
 
     // 1. Define the System Persona
@@ -46,6 +44,7 @@ export async function POST(req: Request) {
 
     if (!response.ok) {
       const errorBody = await response.text();
+      // Throw an error that includes the status and body from OpenRouter's response
       throw new Error(`OpenRouter API Error: ${response.statusText} - ${errorBody}`);
     }
 
@@ -60,8 +59,8 @@ export async function POST(req: Request) {
     });
 
   } catch (error: unknown) {
-    console.error("API Error:", error);
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    console.error("API Route Error:", error);
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred on the server.";
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
