@@ -117,13 +117,13 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                 <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar pt-12">
                     {messages.map((msg, idx) => (
                     <div key={idx} className={cn("flex gap-3", msg.role === 'user' ? 'flex-row-reverse' : 'flex-row')}>
-                        <div className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center", msg.role === 'user' ? 'bg-cyber-blue' : 'bg-cyber-gray/80')}>
+                        <div className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center", msg.role === 'user' ? 'bg-neon-cyan/80' : 'bg-cyber-gray/80')}>
                             {msg.role === 'user' ? <User size={18} /> : <Bot size={18} />}
                         </div>
                         <div className={cn(
                             "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-md",
                             msg.role === 'user'
-                            ? "bg-cyber-blue text-white rounded-br-sm"
+                            ? "bg-neon-cyan/90 text-white rounded-br-sm"
                             : "bg-cyber-gray/50 border border-white/10 text-frost-white rounded-bl-sm"
                         )}>
                             <ReactMarkdown className="prose prose-sm prose-invert max-w-none prose-p:my-0">{msg.content}</ReactMarkdown>
@@ -156,7 +156,7 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                     <button
                         type="submit"
                         disabled={!input.trim() || isLoading}
-                        className="p-2 w-10 h-10 flex items-center justify-center bg-cyber-blue hover:bg-cyber-blue/80 text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+                        className="p-2 w-10 h-10 flex items-center justify-center bg-neon-cyan/90 hover:bg-neon-cyan/70 text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
                     >
                         <Send size={16} className="group-hover:translate-x-0.5 transition-transform"/>
                     </button>
