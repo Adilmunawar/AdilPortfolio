@@ -22,6 +22,7 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -29,6 +30,31 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
     }
   }, [messages, isLoading]);
   
+  const playAudio = (audioDataUrl: string) => {
+    if (audioRef.current) {
+      audioRef.current.src = audioDataUrl;
+      audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
+    }
+  };
+
+  const generateAndPlaySpeech = async (text: string) => {
+    try {
+      const response = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+      if (response.ok) {
+        const { audioDataUrl } = await response.json();
+        playAudio(audioDataUrl);
+      } else {
+        console.error("Failed to generate speech");
+      }
+    } catch (error) {
+      console.error("Error generating speech:", error);
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
         document.body.style.overflow = 'hidden';
@@ -45,6 +71,7 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
               setMessages([{ role: 'assistant', content: `Error: ${data.error}` }]);
             } else {
               setMessages([data]);
+              generateAndPlaySpeech(data.content);
             }
           })
           .catch(error => {
@@ -82,6 +109,7 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
       
       const data = await response.json();
       setMessages(prev => [...prev, data]);
+      generateAndPlaySpeech(data.content);
 
     } catch (error: any) {
        setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${error.message}` }]);
@@ -180,6 +208,7 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
                         Zenith - Developed by Adil Munawar
                     </p>
                 </div>
+                <audio ref={audioRef} className="hidden" />
             </motion.div>
         </motion.div>
       )}
