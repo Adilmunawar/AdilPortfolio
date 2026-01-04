@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Bot, User } from 'lucide-react';
+import { X, Send, User } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { cn } from '@/lib/utils';
 
@@ -14,6 +14,19 @@ interface ZenithChatProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+const ZenithFemaleBotIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M12 8V4H8v4" />
+      <rect width="16" height="12" x="4" y="8" rx="2" />
+      <path d="M8 12h8" />
+      <path d="M10 16h4" />
+      <path d="M12 20v-4" />
+      {/* Sweet female touch - bow */}
+      <path d="M17.5 5c-1 0-1.5-1-1.5-1s.5-1 1.5-1 1.5 1 1.5 1-.5 1-1.5 1z" />
+      <path d="M14 5c0 .5.5 1 1.5 1s1.5-.5 1.5-1" />
+    </svg>
+  );
 
 export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -82,7 +95,7 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
       setMessages(prev => [...prev, data]);
 
     } catch (error: any) {
-      setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${error.message}` }]);
+       setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${error.message}` }]);
     } finally {
       setIsLoading(false);
     }
@@ -128,7 +141,7 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
                                 whileHover={{ scale: 1.1, rotate: 5 }}
                                 className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center cursor-pointer", msg.role === 'user' ? 'bg-cyan-700' : 'bg-cyber-gray/80')}
                             >
-                                {msg.role === 'user' ? <User size={18} /> : <Bot size={18} />}
+                                {msg.role === 'user' ? <User size={18} /> : <ZenithFemaleBotIcon className='w-5 h-5' />}
                             </motion.div>
                             <div className={cn(
                                 "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-md",
