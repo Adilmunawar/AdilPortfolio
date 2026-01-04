@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -117,14 +116,14 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                     <h3 className="font-bold text-white text-lg flex items-center gap-2">
                         <Sparkles className="text-cyan-400 w-5 h-5" /> Alice AI
                     </h3>
-                    <p className="text-xs text-cyan-400/60 mt-1">Connected via Gemini Flash</p>
+                    <p className="text-xs text-cyan-400/60 mt-1">developed by adil munawar</p>
                     <button onClick={onClose} className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-colors">
                         <X size={20} />
                     </button>
                 </div>
 
                 {/* Chat Area */}
-                <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6">
+                <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
                     {messages.map((msg, idx) => (
                     <div key={idx} className={cn("flex gap-3", msg.role === 'user' ? 'flex-row-reverse' : 'flex-row')}>
                         <div className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center", msg.role === 'user' ? 'bg-cyber-blue' : 'bg-cyber-gray/80')}>
