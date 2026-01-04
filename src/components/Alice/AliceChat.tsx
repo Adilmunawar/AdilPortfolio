@@ -116,7 +116,6 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                     <h3 className="font-bold text-white text-lg flex items-center gap-2">
                         <Sparkles className="text-cyan-400 w-5 h-5" /> Alice AI
                     </h3>
-                    <p className="text-xs text-cyan-400/60 mt-1">developed by adil munawar</p>
                     <button onClick={onClose} className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-colors">
                         <X size={20} />
                     </button>
@@ -150,7 +149,7 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                 </div>
 
                 {/* Input Area */}
-                <div className="p-4">
+                <div className="p-4 pt-2">
                     <form
                     onSubmit={(e) => { e.preventDefault(); handleSend(); }}
                     className="flex items-center gap-2 bg-black/50 border border-white/10 rounded-full p-2 focus-within:border-cyan-400/50 transition-all duration-300"
@@ -170,6 +169,9 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                         <Send size={16} className="group-hover:translate-x-0.5 transition-transform"/>
                     </button>
                     </form>
+                    <p className="text-xs text-center text-cyan-400/40 mt-2">
+                        Alice - Developed by Adil Munawar
+                    </p>
                 </div>
             </motion.div>
         </motion.div>
