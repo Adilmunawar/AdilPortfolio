@@ -556,3 +556,30 @@
   scrollbar-width: thin;
   scrollbar-color: hsl(var(--accent) / 0.5) transparent;
 }
+
+.prose table {
+    @apply w-full my-6 border-collapse border border-neon-cyan/20 rounded-lg overflow-hidden;
+  }
+  .prose thead {
+    @apply bg-cyber-dark/50;
+  }
+  .prose th {
+    @apply px-4 py-3 text-left text-sm font-semibold text-frost-white border-b border-neon-cyan/20;
+  }
+  .prose tbody tr {
+    @apply border-t border-neon-cyan/20;
+  }
+  .prose tbody tr:nth-child(even) {
+    @apply bg-cyber-gray/20;
+  }
+  .prose td {
+    @apply px-4 py-3 align-top;
+  }
+  .prose td code {
+    @apply bg-neon-cyan/10 text-neon-cyan px-2 py-1 rounded-md text-xs border border-neon-cyan/20;
+  }
+  .prose td strong {
+    @apply text-frost-white;
+  }
+
+    
