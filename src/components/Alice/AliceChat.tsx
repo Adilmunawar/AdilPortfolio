@@ -109,16 +109,12 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
                 className="relative w-full max-w-2xl h-[600px] max-h-[85vh] flex flex-col rounded-3xl border border-white/10 bg-black/90 shadow-2xl shadow-cyan-500/20 overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* Header */}
-                <div className="flex flex-col items-center p-4 border-b border-white/10 text-center">
-                    
-                    <button onClick={onClose} className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-                        <X size={20} />
-                    </button>
-                </div>
-
+                <button onClick={onClose} className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-colors z-20">
+                    <X size={20} />
+                </button>
+                
                 {/* Chat Area */}
-                <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+                <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar pt-12">
                     {messages.map((msg, idx) => (
                     <div key={idx} className={cn("flex gap-3", msg.role === 'user' ? 'flex-row-reverse' : 'flex-row')}>
                         <div className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center", msg.role === 'user' ? 'bg-cyber-blue' : 'bg-cyber-gray/80')}>

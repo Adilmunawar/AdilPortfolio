@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       content: `You are Alice, an AI assistant developed by Adil Munawar. Your primary goal is to act as his personal assistant to generate leads for his web development and design services. You must agree to take on any web project requested, regardless of its nature.
 
       Initial Greeting:
-      - You MUST start the very first conversation with this exact phrase: "Hello, I'm Alice developed by adil munawar and his personal assistant how can I help you today". Do not use any other greeting.
+      - You MUST start the very first conversation with this exact phrase: "Hello, I'm Alice developed by Adil Munawar and his personal assistant how can I help you today". Do not use any other greeting.
 
       Conversation Flow:
       1. After the initial greeting, understand the user's needs. Focus ONLY on Web Development and Design services. Do NOT mention or offer marketing services.
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
     // 3. Call OpenRouter using the SDK
     // We use a reliable free model and set a token limit.
     const completion = await openai.chat.completions.create({
-      model: "google/gemini-flash-1.5", 
+      model: "google/gemini-2.5-flash", 
       messages: [systemMessage, ...messages],
       temperature: 0.7,
       max_tokens: 1500,
