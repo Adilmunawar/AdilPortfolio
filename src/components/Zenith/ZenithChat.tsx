@@ -15,9 +15,10 @@ interface Message {
 interface ZenithChatProps {
   isOpen: boolean;
   onClose: () => void;
+  playInitialGreeting: boolean;
 }
 
-export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
+export const ZenithChat = ({ isOpen, onClose, playInitialGreeting }: ZenithChatProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -71,8 +72,9 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
               setMessages([{ role: 'assistant', content: `Error: ${data.error}` }]);
             } else {
               setMessages([data]);
-              // We can't autoplay on first load, so we won't call generateAndPlaySpeech here.
-              // The user will need to interact first.
+              if (playInitialGreeting) {
+                generateAndPlaySpeech(data.content);
+              }
             }
           })
           .catch(error => {
@@ -86,12 +88,11 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
     return () => {
         document.body.style.overflow = 'auto';
     };
-  }, [isOpen, messages.length]);
+  }, [isOpen, messages.length, playInitialGreeting]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
 
-    // This is a user interaction, so we can try to play a silent audio to "unlock" autoplay.
     if(audioRef.current && audioRef.current.paused) {
       audioRef.current.play().catch(() => {});
     }
