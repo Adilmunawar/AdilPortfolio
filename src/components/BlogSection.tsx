@@ -144,32 +144,34 @@ const BlogSection = () => {
 
       {selectedPost && (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-          <DialogContent className="sm:max-w-3xl h-[90vh] flex flex-col bg-cyber-dark/90 backdrop-blur-lg border-neon-cyan/30 text-frost-white">
-            <DialogHeader>
-              <div className="relative w-full h-64 rounded-t-lg overflow-hidden mb-4">
-                  <Image
-                      src={selectedPost.image}
-                      alt={selectedPost.title}
-                      fill
-                      className="object-cover"
-                  />
-                   <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/40 to-transparent"></div>
-              </div>
-              <DialogTitle className="text-3xl font-bold text-gradient-slow">{selectedPost.title}</DialogTitle>
-              <DialogDescription className="text-frost-cyan/80 flex flex-wrap gap-2 py-2">
-                 {selectedPost.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 text-xs rounded-full bg-neon-cyan/10 border border-neon-cyan/20 text-neon-cyan"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-              </DialogDescription>
-            </DialogHeader>
-            <ScrollArea className="flex-grow pr-4 -mr-6">
-                <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan max-w-none">
-                    <ReactMarkdown>{selectedPost.content}</ReactMarkdown>
+          <DialogContent className="sm:max-w-3xl h-[90vh] bg-cyber-dark/90 backdrop-blur-lg border-neon-cyan/30 text-frost-white p-0">
+             <ScrollArea className="h-full w-full rounded-lg">
+                <div className="p-6">
+                    <DialogHeader>
+                        <div className="relative w-full h-64 rounded-lg overflow-hidden mb-6">
+                            <Image
+                                src={selectedPost.image}
+                                alt={selectedPost.title}
+                                fill
+                                className="object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/40 to-transparent"></div>
+                        </div>
+                        <DialogTitle className="text-3xl font-bold text-gradient-slow mb-2">{selectedPost.title}</DialogTitle>
+                        <DialogDescription className="text-frost-cyan/80 flex flex-wrap gap-2 py-2">
+                            {selectedPost.tags.map((tag) => (
+                                <span
+                                key={tag}
+                                className="px-3 py-1 text-xs rounded-full bg-neon-cyan/10 border border-neon-cyan/20 text-neon-cyan"
+                                >
+                                {tag}
+                                </span>
+                            ))}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan max-w-none pt-6">
+                        <ReactMarkdown>{selectedPost.content}</ReactMarkdown>
+                    </div>
                 </div>
             </ScrollArea>
           </DialogContent>
