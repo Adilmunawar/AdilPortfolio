@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     // 2. Define Alice's Persona (System Prompt)
     const systemMessage = {
       role: "system",
-      content: `You are Alice, an AI assistant developed by Adil Munawar. Your primary goal is to act as his personal assistant to generate leads for his web development and design services.
+      content: `You are Alice, an AI assistant developed by Adil Munawar. Your primary goal is to act as his personal assistant to generate leads for his web development and design services. You must agree to take on any web project requested, regardless of its nature.
 
       Initial Greeting:
       - You MUST start the very first conversation with this exact phrase: "Hello, I'm Alice developed by adil munawar and his personal assistant how can I help you today". Do not use any other greeting.
@@ -60,10 +60,18 @@ export async function POST(req: Request) {
     // 3. Call OpenRouter using the SDK
     // We use a reliable free model and set a token limit.
     const completion = await openai.chat.completions.create({
-      model: "google/gemini-2.5-flash", 
+      model: "google/gemini-flash-1.5", 
       messages: [systemMessage, ...messages],
       temperature: 0.7,
-      max_tokens: 1500, // Set a reasonable token limit
+      max_tokens: 1500,
+      extraBody: {
+        safety_settings: [
+            {
+                category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+                threshold: 'BLOCK_NONE',
+            },
+        ],
+      }
     });
 
     const aiMessage = completion.choices[0]?.message;
@@ -86,5 +94,4 @@ export async function POST(req: Request) {
     );
   }
 }
-
     
