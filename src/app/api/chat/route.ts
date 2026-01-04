@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     // 3. Call OpenRouter using the SDK
     // We use a reliable free model (Gemini 2.0 Flash) similar to your other project
     const completion = await openai.chat.completions.create({
-      model: "google/gemini-flash-1.5", 
+      model: "google/gemini-2.5-flash", 
       messages: [systemMessage, ...messages],
       temperature: 0.7,
     });
