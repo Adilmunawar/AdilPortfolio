@@ -43,11 +43,12 @@ export async function POST(req: Request) {
     };
 
     // 3. Call OpenRouter using the SDK
-    // We use a reliable free model (Gemini 2.0 Flash) similar to your other project
+    // We use a reliable free model and set a token limit.
     const completion = await openai.chat.completions.create({
-      model: "google/gemini-2.5-flash", 
+      model: "google/gemini-flash-1.5", 
       messages: [systemMessage, ...messages],
       temperature: 0.7,
+      max_tokens: 1500, // Set a reasonable token limit
     });
 
     const aiMessage = completion.choices[0]?.message;
