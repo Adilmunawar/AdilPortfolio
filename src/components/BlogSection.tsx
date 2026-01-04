@@ -66,90 +66,10 @@ const BlogSection = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  const hScrollContainerRef = useRef<HTMLDivElement>(null);
-  const [isHDragging, setIsHDragging] = useState(false);
-  const [hStartX, setHStartX] = useState(0);
-  const [hScrollLeft, setHScrollLeft] = useState(0);
-
-  const vScrollContainerRef = useRef<HTMLDivElement>(null);
-  const [isVDragging, setIsVDragging] = useState(false);
-  const [vStartY, setVStartY] = useState(0);
-  const [vScrollTop, setVScrollTop] = useState(0);
-
-  useEffect(() => {
-    const cleanup = () => {
-      document.body.style.userSelect = '';
-    };
-    window.addEventListener('mouseup', cleanup);
-    return () => {
-      window.removeEventListener('mouseup', cleanup);
-      cleanup();
-    };
-  }, []);
-
   const handleReadMore = (post: BlogPost) => {
     setSelectedPost(post);
     setIsModalOpen(true);
   };
-
-  const onHMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    if (!hScrollContainerRef.current) return;
-    setIsHDragging(true);
-    document.body.style.userSelect = 'none';
-    setHStartX(e.pageX - hScrollContainerRef.current.offsetLeft);
-    setHScrollLeft(hScrollContainerRef.current.scrollLeft);
-  };
-
-  const onHMouseLeave = () => {
-    if (isHDragging) {
-      setIsHDragging(false);
-      document.body.style.userSelect = '';
-    }
-  };
-
-  const onHMouseUp = () => {
-    setIsHDragging(false);
-    document.body.style.userSelect = '';
-  };
-
-  const onHMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!isHDragging || !hScrollContainerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - hScrollContainerRef.current.offsetLeft;
-    const walk = (x - hStartX) * 2;
-    hScrollContainerRef.current.scrollLeft = hScrollLeft - walk;
-  };
-
-  const onVMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    const scrollAreaViewport = vScrollContainerRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
-    if (!scrollAreaViewport) return;
-    setIsVDragging(true);
-    document.body.style.userSelect = 'none';
-    setVStartY(e.pageY - (scrollAreaViewport as HTMLElement).offsetTop);
-    setVScrollTop(scrollAreaViewport.scrollTop);
-  };
-
-  const onVMouseLeave = () => {
-    if (isVDragging) {
-      setIsVDragging(false);
-      document.body.style.userSelect = '';
-    }
-  };
-
-  const onVMouseUp = () => {
-    setIsVDragging(false);
-    document.body.style.userSelect = '';
-  };
-
-  const onVMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    const scrollAreaViewport = vScrollContainerRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
-    if (!isVDragging || !scrollAreaViewport) return;
-    e.preventDefault();
-    const y = e.pageY - (scrollAreaViewport as HTMLElement).offsetTop;
-    const walk = (y - vStartY) * 2;
-    scrollAreaViewport.scrollTop = vScrollTop - walk;
-  };
-
 
   return (
     <>
@@ -172,15 +92,7 @@ const BlogSection = () => {
 
           <div className="relative">
             <div 
-              ref={hScrollContainerRef}
-              className={cn(
-                "flex space-x-8 pb-8 overflow-x-auto custom-scrollbar cursor-grab",
-                isHDragging && "cursor-grabbing"
-              )}
-              onMouseDown={onHMouseDown}
-              onMouseLeave={onHMouseLeave}
-              onMouseUp={onHMouseUp}
-              onMouseMove={onHMouseMove}
+              className="flex space-x-8 pb-8 overflow-x-auto custom-scrollbar cursor-grab"
             >
               {blogData.map((post, index) => (
                 <div key={post.id} className="flex-shrink-0 w-[320px] snap-center">
@@ -243,15 +155,7 @@ const BlogSection = () => {
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="max-w-3xl w-[90vw] h-[90vh] bg-cyber-dark/90 backdrop-blur-lg border-neon-cyan/30 text-frost-white p-0 flex flex-col">
              <ScrollArea 
-                ref={vScrollContainerRef}
-                className={cn(
-                  "h-full w-full rounded-lg cursor-grab custom-scrollbar",
-                  isVDragging && "cursor-grabbing"
-                )}
-                onMouseDown={onVMouseDown}
-                onMouseUp={onVMouseUp}
-                onMouseLeave={onVMouseLeave}
-                onMouseMove={onVMouseMove}
+                className="h-full w-full rounded-lg cursor-grab custom-scrollbar"
              >
                 <div className="p-0">
                     <div className="relative w-full h-48 md:h-64">
