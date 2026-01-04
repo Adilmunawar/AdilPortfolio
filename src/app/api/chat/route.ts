@@ -1,3 +1,4 @@
+
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
@@ -8,7 +9,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "OpenRouter API key is missing from the request." }, { status: 400 });
     }
 
-    // 1. Define the System Persona
     const systemMessage = {
       role: "system",
       content: `You are Alice, a professional, empathetic, and intelligent virtual assistant for Adil Munawar.
@@ -23,14 +23,12 @@ export async function POST(req: Request) {
       Tone: Professional, concise, and helpful. Use Markdown for formatting.`
     };
 
-    // 2. Prepare the payload for OpenRouter
     const payload = {
       model: "google/gemini-flash-1.5", 
       messages: [systemMessage, ...messages],
       reasoning: { enabled: true }
     };
 
-    // 3. Call OpenRouter API
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -51,7 +49,6 @@ export async function POST(req: Request) {
     const data = await response.json();
     const aiMessage = data.choices[0].message;
 
-    // 4. Return the content AND the reasoning details
     return NextResponse.json({
       role: 'assistant',
       content: aiMessage.content,
