@@ -71,7 +71,8 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
               setMessages([{ role: 'assistant', content: `Error: ${data.error}` }]);
             } else {
               setMessages([data]);
-              generateAndPlaySpeech(data.content);
+              // We can't autoplay on first load, so we won't call generateAndPlaySpeech here.
+              // The user will need to interact first.
             }
           })
           .catch(error => {
@@ -89,6 +90,11 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
+
+    // This is a user interaction, so we can try to play a silent audio to "unlock" autoplay.
+    if(audioRef.current && audioRef.current.paused) {
+      audioRef.current.play().catch(() => {});
+    }
 
     const userMsg: Message = { role: 'user', content: input };
     setMessages(prev => [...prev, userMsg]);
@@ -109,7 +115,7 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
       
       const data = await response.json();
       setMessages(prev => [...prev, data]);
-      generateAndPlaySpeech(data.content);
+      await generateAndPlaySpeech(data.content);
 
     } catch (error: any) {
        setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${error.message}` }]);
