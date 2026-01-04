@@ -3,10 +3,12 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { messages, apiKey } = await req.json();
+    const { messages } = await req.json();
+
+    const apiKey = process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
-      return NextResponse.json({ error: "OpenRouter API key is missing from the request." }, { status: 400 });
+      return NextResponse.json({ error: "OpenRouter API key is not configured on the server." }, { status: 500 });
     }
 
     const systemMessage = {

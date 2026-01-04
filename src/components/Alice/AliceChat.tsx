@@ -45,7 +45,6 @@ export const AliceChat = ({ isOpen, onClose }: AliceChatProps) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           messages: [...messages, userMsg],
-          apiKey: process.env.NEXT_PUBLIC_OPENROUTER_API_KEY
         }),
       });
 
