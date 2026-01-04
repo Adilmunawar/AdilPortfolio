@@ -1,6 +1,8 @@
+
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface ZenithOrbProps {
   onClick: () => void;
@@ -12,19 +14,6 @@ const subtitles = [
   "Collab with Adil?",
   "Let's connect!",
 ];
-
-const ZenithFemaleBotIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <path d="M12 8V4H8v4" />
-      <rect width="16" height="12" x="4" y="8" rx="2" />
-      <path d="M8 12h8" />
-      <path d="M10 16h4" />
-      <path d="M12 20v-4" />
-      {/* Sweet female touch - bow */}
-      <path d="M17.5 5c-1 0-1.5-1-1.5-1s.5-1 1.5-1 1.5 1 1.5 1-.5 1-1.5 1z" />
-      <path d="M14 5c0 .5.5 1 1.5 1s1.5-.5 1.5-1" />
-    </svg>
-  );
 
 export const ZenithOrb = ({ onClick, isOpen }: ZenithOrbProps) => {
   const [currentSubtitle, setCurrentSubtitle] = useState(0);
@@ -55,8 +44,8 @@ export const ZenithOrb = ({ onClick, isOpen }: ZenithOrbProps) => {
             <motion.div 
               className="relative w-12 h-12 rounded-full bg-gradient-to-br from-cyan-600 to-blue-800 flex items-center justify-center border-2 border-white/20 shadow-inner overflow-hidden group-hover:from-cyan-500 group-hover:to-blue-700 transition-colors"
             >
-              <motion.div whileHover={{ scale: 1.1, rotate: 5 }}>
-                <ZenithFemaleBotIcon className="text-white w-7 h-7" />
+              <motion.div whileHover={{ scale: 1.1, rotate: 5 }} className="w-full h-full">
+                <Image src="/zenith.png" alt="Zenith Avatar" width={48} height={48} className="object-cover" />
               </motion.div>
               <motion.span 
                 className="absolute bottom-1 right-1 w-3 h-3 bg-green-500 border-2 border-black rounded-full"
