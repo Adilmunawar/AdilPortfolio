@@ -65,11 +65,76 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
 const BlogSection = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Horizontal drag state
+  const hSliderRef = useRef<HTMLDivElement>(null);
+  const [isHDragging, setIsHDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  // Vertical drag state for modal
+  const vSliderRef = useRef<HTMLDivElement>(null);
+  const [isVDragging, setIsVDragging] = useState(false);
+  const [startY, setStartY] = useState(0);
+  const [scrollTop, setScrollTop] = useState(0);
   
+  useEffect(() => {
+    // Cleanup function to reset user-select on unmount
+    return () => {
+      document.body.style.userSelect = '';
+    };
+  }, []);
+
   const handleReadMore = (post: BlogPost) => {
     setSelectedPost(post);
     setIsModalOpen(true);
   };
+
+  // Horizontal Drag Handlers
+  const onHMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    if (!hSliderRef.current) return;
+    setIsHDragging(true);
+    setStartX(e.pageX - hSliderRef.current.offsetLeft);
+    setScrollLeft(hSliderRef.current.scrollLeft);
+    document.body.style.userSelect = 'none';
+  };
+
+  const onHMouseLeaveOrUp = () => {
+    setIsHDragging(false);
+    document.body.style.userSelect = '';
+  };
+
+  const onHMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!isHDragging || !hSliderRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - hSliderRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // scroll-fast
+    hSliderRef.current.scrollLeft = scrollLeft - walk;
+  };
+  
+  // Vertical Drag Handlers for Modal
+  const onVMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    const slider = e.currentTarget as HTMLDivElement;
+    setIsVDragging(true);
+    setStartY(e.pageY - slider.offsetTop);
+    setScrollTop(slider.scrollTop);
+    document.body.style.userSelect = 'none';
+  };
+
+  const onVMouseLeaveOrUp = () => {
+    setIsVDragging(false);
+    document.body.style.userSelect = '';
+  };
+
+  const onVMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    const slider = e.currentTarget as HTMLDivElement;
+    if (!isVDragging) return;
+    e.preventDefault();
+    const y = e.pageY - slider.offsetTop;
+    const walk = (y - startY) * 2; // scroll-fast
+    slider.scrollTop = scrollTop - walk;
+  };
+
 
   return (
     <>
@@ -92,7 +157,12 @@ const BlogSection = () => {
 
           <div className="relative">
             <div 
-              className="flex space-x-8 pb-8 overflow-x-auto custom-scrollbar cursor-grab"
+              ref={hSliderRef}
+              onMouseDown={onHMouseDown}
+              onMouseLeave={onHMouseLeaveOrUp}
+              onMouseUp={onHMouseLeaveOrUp}
+              onMouseMove={onHMouseMove}
+              className={cn("flex space-x-8 pb-8 overflow-x-auto custom-scrollbar", isHDragging ? "cursor-grabbing" : "cursor-grab")}
             >
               {blogData.map((post, index) => (
                 <div key={post.id} className="flex-shrink-0 w-[320px] snap-center">
@@ -155,7 +225,11 @@ const BlogSection = () => {
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="max-w-3xl w-[90vw] h-[90vh] bg-cyber-dark/90 backdrop-blur-lg border-neon-cyan/30 text-frost-white p-0 flex flex-col">
              <ScrollArea 
-                className="h-full w-full rounded-lg cursor-grab custom-scrollbar"
+                className={cn("h-full w-full rounded-lg custom-scrollbar", isVDragging ? "cursor-grabbing" : "cursor-grab")}
+                onMouseDown={onVMouseDown}
+                onMouseLeave={onVMouseLeaveOrUp}
+                onMouseUp={onVMouseLeaveOrUp}
+                onMouseMove={onVMouseMove}
              >
                 <div className="p-0">
                     <div className="relative w-full h-48 md:h-64">
@@ -199,3 +273,5 @@ const BlogSection = () => {
 };
 
 export default BlogSection;
+
+    
