@@ -22,28 +22,6 @@ interface AliceChatProps {
   onClose: () => void;
 }
 
-async function* readStream(stream: ReadableStream) {
-    const reader = stream.getReader();
-    const decoder = new TextDecoder("utf-8");
-    let buffer = "";
-    while (true) {
-        const { value, done } = await reader.read();
-        if (done) {
-            if (buffer.length > 0) yield buffer;
-            break;
-        }
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n\n');
-        buffer = lines.pop() ?? '';
-        for (const line of lines) {
-            if (line.startsWith('data: ')) {
-                yield line.substring(6);
-            }
-        }
-    }
-}
-
-
 const TypingIndicator = () => (
   <div className="flex items-center gap-1.5">
     <motion.div
@@ -91,9 +69,6 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
     setIsLoading(true);
 
     const assistantMessageId = Date.now() + 1;
-    let currentContent = "";
-    let reasoning = null;
-
     setMessages((prev) => [
         ...prev, 
         { id: assistantMessageId, role: 'assistant', content: "", reasoning_details: null }
@@ -101,27 +76,43 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
     
     try {
         const stream = await streamChat(newMessages.map(m => ({role: m.role, content: m.content, reasoning_details: m.reasoning_details})));
-        
-        for await (const chunk of readStream(stream)) {
-            if (chunk.trim() === '[DONE]') {
-                break;
-            }
-            try {
-                const parsed = JSON.parse(chunk);
-                if (parsed.reasoning_details && !reasoning) {
-                    reasoning = parsed.reasoning_details;
-                    setMessages(prev => prev.map(msg => 
-                        msg.id === assistantMessageId ? { ...msg, reasoning_details: reasoning } : msg
-                    ));
+        const reader = stream.getReader();
+        const decoder = new TextDecoder();
+        let done = false;
+        let currentContent = "";
+        let reasoning = null;
+
+        while (!done) {
+            const { value, done: readerDone } = await reader.read();
+            done = readerDone;
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split('\n\n').filter(line => line.trim());
+
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    const data = line.substring(6);
+                    if (data.trim() === '[DONE]') {
+                        done = true;
+                        break;
+                    }
+                    try {
+                        const parsed = JSON.parse(data);
+                        if (parsed.reasoning_details && !reasoning) {
+                            reasoning = parsed.reasoning_details;
+                             setMessages(prev => prev.map(msg => 
+                                msg.id === assistantMessageId ? { ...msg, content: currentContent, reasoning_details: reasoning } : msg
+                            ));
+                        }
+                        if (parsed.content) {
+                            currentContent += parsed.content;
+                            setMessages(prev => prev.map(msg => 
+                                msg.id === assistantMessageId ? { ...msg, content: currentContent, reasoning_details: reasoning } : msg
+                            ));
+                        }
+                    } catch (error) {
+                        console.error("Error parsing stream chunk:", error, "Chunk:", data);
+                    }
                 }
-                if (parsed.content) {
-                    currentContent += parsed.content;
-                    setMessages(prev => prev.map(msg => 
-                        msg.id === assistantMessageId ? { ...msg, content: currentContent } : msg
-                    ));
-                }
-            } catch(error) {
-                console.error("Error parsing stream chunk:", error, "Chunk:", chunk);
             }
         }
     } catch (error) {
@@ -232,6 +223,14 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
                 </motion.div>
               ))}
             </AnimatePresence>
+            {isLoading && !messages.find(m => m.id === messages[messages.length - 1].id && m.content) && (
+                 <motion.div className="flex justify-start gap-3 w-full">
+                    <Bot className="w-6 h-6 text-neon-cyan flex-shrink-0 mt-1" />
+                    <div className="max-w-[80%] rounded-xl p-3 text-white bg-secondary">
+                        <TypingIndicator />
+                    </div>
+                </motion.div>
+            )}
           </div>
 
           {/* Input Form */}

@@ -37,8 +37,9 @@ export async function streamChat(messages: ChatMessage[]) {
                 role: m.role as 'user' | 'assistant', // System messages are handled separately
                 content: m.content
             };
+            // The SDK expects this property to be camelCased
             if (m.reasoning_details) {
-                (message as any).reasoning_details = m.reasoning_details;
+                (message as any).reasoningDetails = m.reasoning_details;
             }
             return message;
         })
@@ -53,31 +54,30 @@ export async function streamChat(messages: ChatMessage[]) {
         },
     });
 
-    const readableStream = new ReadableStream({
-        async start(controller) {
-            for await (const chunk of stream) {
-                const isFinalChunk = chunk.usage && chunk.usage.completion_tokens;
-                const reasoning = isFinalChunk ? JSON.stringify(chunk.usage) : null;
-                const content = chunk.choices[0]?.delta?.content;
-                
-                const payload: { content?: string; reasoning_details?: string } = {};
+    const transformStream = new TransformStream({
+        async transform(chunk, controller) {
+            const isFinalChunk = chunk.usage && chunk.usage.completion_tokens;
+            const reasoning = isFinalChunk ? JSON.stringify(chunk.usage) : null;
+            const content = chunk.choices[0]?.delta?.content;
+            
+            const payload: { content?: string; reasoning_details?: string } = {};
 
-                if (content) {
-                    payload.content = content;
-                }
-                
-                if (reasoning) {
-                   payload.reasoning_details = `Completion Tokens: ${chunk.usage?.completion_tokens}, Prompt Tokens: ${chunk.usage?.prompt_tokens}, Total Tokens: ${chunk.usage?.total_tokens}`;
-                }
-
-                if (Object.keys(payload).length > 0) {
-                   controller.enqueue(`data: ${JSON.stringify(payload)}\n\n`);
-                }
+            if (content) {
+                payload.content = content;
             }
-            controller.enqueue(`data: [DONE]\n\n`);
-            controller.close();
+            
+            if (reasoning) {
+                payload.reasoning_details = `Completion Tokens: ${chunk.usage?.completion_tokens}, Prompt Tokens: ${chunk.usage?.prompt_tokens}, Total Tokens: ${chunk.usage?.total_tokens}`;
+            }
+
+            if (Object.keys(payload).length > 0) {
+               controller.enqueue(`data: ${JSON.stringify(payload)}\n\n`);
+            }
         },
+        flush(controller) {
+            controller.enqueue(`data: [DONE]\n\n`);
+        }
     });
 
-    return readableStream;
+    return stream.pipeThrough(transformStream);
 }
