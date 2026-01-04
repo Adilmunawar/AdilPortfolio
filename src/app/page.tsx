@@ -10,6 +10,7 @@ import ContactSection from '@/components/ContactSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import { NeonOrbs } from '@/components/ui/neon-orbs';
 import StatsSection from '@/components/StatsSection';
+import AliceAssistant from '@/components/Alice/AliceAssistant';
 
 export default function Home() {
 
@@ -28,6 +29,7 @@ export default function Home() {
         <TestimonialsSection />
         <ContactSection />
       </main>
+      <AliceAssistant />
     </div>
   );
 }
