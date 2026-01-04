@@ -53,7 +53,7 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
       </SyntaxHighlighter>
     </div>
   ) : (
-    <code className={className} {...props}>
+    <code className={cn("text-sm font-mono bg-neon-cyan/10 text-neon-cyan px-1 py-0.5 rounded", className)} {...props}>
       {children}
     </code>
   );
@@ -75,8 +75,13 @@ const BlogSection = () => {
   const [vScrollTop, setVScrollTop] = useState(0);
 
   useEffect(() => {
-    return () => {
+    const cleanup = () => {
       document.body.style.userSelect = '';
+    };
+    window.addEventListener('mouseup', cleanup);
+    return () => {
+      window.removeEventListener('mouseup', cleanup);
+      cleanup();
     };
   }, []);
 
@@ -246,9 +251,9 @@ const BlogSection = () => {
                 onMouseLeave={onVMouseLeave}
                 onMouseMove={onVMouseMove}
              >
-                <div className="p-6">
+                <div className="p-6 md:p-8">
                     <DialogHeader>
-                        <div className="relative w-full h-64 rounded-lg overflow-hidden mb-6">
+                        <div className="relative w-full h-48 md:h-64 rounded-lg overflow-hidden mb-6">
                             <Image
                                 src={selectedPost.image}
                                 alt={selectedPost.title}
@@ -257,7 +262,7 @@ const BlogSection = () => {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/40 to-transparent"></div>
                         </div>
-                        <DialogTitle className="text-3xl font-bold text-gradient-slow mb-2">{selectedPost.title}</DialogTitle>
+                        <DialogTitle className="text-2xl md:text-3xl font-bold text-gradient-slow mb-2">{selectedPost.title}</DialogTitle>
                         <DialogDescription className="text-frost-cyan/80 flex flex-wrap gap-2 py-2">
                             {selectedPost.tags.map((tag) => (
                                 <span
@@ -269,7 +274,7 @@ const BlogSection = () => {
                             ))}
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan max-w-none pt-6">
+                    <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan prose-table:border-neon-cyan/20 prose-th:text-frost-white prose-tr:border-neon-cyan/20 max-w-none pt-6">
                         <ReactMarkdown
                            components={{
                              code: CodeBlock,
