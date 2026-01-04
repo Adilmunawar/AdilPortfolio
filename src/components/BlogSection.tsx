@@ -8,33 +8,73 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { ArrowRight, Rss } from 'lucide-react';
+import { ArrowRight, Rss, Copy, Check } from 'lucide-react';
 import Image from 'next/image';
 import blogData from '@/lib/blog-data.json';
 import ReactMarkdown from 'react-markdown';
 import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
 
 type BlogPost = (typeof blogData)[0];
+
+const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
+  const [isCopied, setIsCopied] = useState(false);
+  const match = /language-(\w+)/.exec(className || '');
+  const lang = match ? match[1] : 'bash';
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(String(children).replace(/\n$/, ''));
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
+
+  return !inline && match ? (
+    <div className="relative my-4 rounded-lg bg-cyber-dark border border-neon-cyan/20 overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-2 bg-cyber-gray/50 border-b border-neon-cyan/20">
+        <span className="text-xs text-frost-cyan font-mono">{lang}</span>
+        <button
+          onClick={handleCopy}
+          className="flex items-center gap-1 text-xs text-frost-cyan hover:text-white transition-colors"
+        >
+          {isCopied ? <Check size={14} /> : <Copy size={14} />}
+          {isCopied ? 'Copied!' : 'Copy'}
+        </button>
+      </div>
+      <SyntaxHighlighter
+        style={atomDark}
+        language={lang}
+        PreTag="div"
+        {...props}
+      >
+        {String(children).replace(/\n$/, '')}
+      </SyntaxHighlighter>
+    </div>
+  ) : (
+    <code className={className} {...props}>
+      {children}
+    </code>
+  );
+};
+
 
 const BlogSection = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // State for horizontal card list dragging
   const hScrollContainerRef = useRef<HTMLDivElement>(null);
   const [isHDragging, setIsHDragging] = useState(false);
   const [hStartX, setHStartX] = useState(0);
   const [hScrollLeft, setHScrollLeft] = useState(0);
 
-  // State for vertical modal dragging
   const vScrollContainerRef = useRef<HTMLDivElement>(null);
   const [isVDragging, setIsVDragging] = useState(false);
   const [vStartY, setVStartY] = useState(0);
   const [vScrollTop, setVScrollTop] = useState(0);
 
   useEffect(() => {
-    // Cleanup user-select style on component unmount
     return () => {
       document.body.style.userSelect = '';
     };
@@ -45,7 +85,6 @@ const BlogSection = () => {
     setIsModalOpen(true);
   };
 
-  // Horizontal Drag Handlers
   const onHMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     if (!hScrollContainerRef.current) return;
     setIsHDragging(true);
@@ -70,11 +109,10 @@ const BlogSection = () => {
     if (!isHDragging || !hScrollContainerRef.current) return;
     e.preventDefault();
     const x = e.pageX - hScrollContainerRef.current.offsetLeft;
-    const walk = (x - hStartX) * 2; // scroll-fast
+    const walk = (x - hStartX) * 2;
     hScrollContainerRef.current.scrollLeft = hScrollLeft - walk;
   };
 
-  // Vertical Drag Handlers for Modal
   const onVMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     const scrollAreaViewport = vScrollContainerRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
     if (!scrollAreaViewport) return;
@@ -101,7 +139,7 @@ const BlogSection = () => {
     if (!isVDragging || !scrollAreaViewport) return;
     e.preventDefault();
     const y = e.pageY - (scrollAreaViewport as HTMLElement).offsetTop;
-    const walk = (y - vStartY) * 2; // scroll-fast
+    const walk = (y - vStartY) * 2;
     scrollAreaViewport.scrollTop = vScrollTop - walk;
   };
 
@@ -150,7 +188,7 @@ const BlogSection = () => {
                         alt={post.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105 pointer-events-none"
-                        data-ai-hint="programming abstract"
+                        data-ai-hint="hacking cybersecurity abstract"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/40 to-transparent"></div>
                     </div>
@@ -232,7 +270,13 @@ const BlogSection = () => {
                         </DialogDescription>
                     </DialogHeader>
                     <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan max-w-none pt-6">
-                        <ReactMarkdown>{selectedPost.content}</ReactMarkdown>
+                        <ReactMarkdown
+                           components={{
+                             code: CodeBlock,
+                           }}
+                        >
+                          {selectedPost.content}
+                        </ReactMarkdown>
                     </div>
                 </div>
             </ScrollArea>
@@ -244,3 +288,4 @@ const BlogSection = () => {
 };
 
 export default BlogSection;
+    
