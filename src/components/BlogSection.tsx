@@ -114,7 +114,8 @@ const BlogSection = () => {
   
   // Vertical Drag Handlers for Modal
   const onVMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    const slider = e.currentTarget as HTMLDivElement;
+    const slider = vSliderRef.current
+    if (!slider) return;
     setIsVDragging(true);
     setStartY(e.pageY - slider.offsetTop);
     setScrollTop(slider.scrollTop);
@@ -127,8 +128,8 @@ const BlogSection = () => {
   };
 
   const onVMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    const slider = e.currentTarget as HTMLDivElement;
-    if (!isVDragging) return;
+    const slider = vSliderRef.current;
+    if (!isVDragging || !slider) return;
     e.preventDefault();
     const y = e.pageY - slider.offsetTop;
     const walk = (y - startY) * 2; // scroll-fast
@@ -225,6 +226,7 @@ const BlogSection = () => {
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="max-w-5xl w-[90vw] h-[90vh] bg-cyber-dark/90 backdrop-blur-lg border-neon-cyan/30 text-frost-white p-0 flex flex-col">
              <ScrollArea 
+                ref={vSliderRef}
                 className={cn("h-full w-full rounded-lg custom-scrollbar", isVDragging ? "cursor-grabbing" : "cursor-grab")}
                 onMouseDown={onVMouseDown}
                 onMouseLeave={onVMouseLeaveOrUp}
@@ -254,7 +256,7 @@ const BlogSection = () => {
                             ))}
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="prose prose-invert prose-p:text-frost-cyan/90 prose-p:break-words prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan prose-table:border-neon-cyan/20 prose-th:text-frost-white prose-tr:border-neon-cyan/20 max-w-none px-6 md:px-8 pb-8">
+                    <div className="prose prose-sm md:prose-base prose-invert prose-p:text-frost-cyan/90 prose-p:break-words prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan prose-table:border-neon-cyan/20 prose-th:text-frost-white prose-tr:border-neon-cyan/20 max-w-none px-6 md:px-8 pb-8">
                         <ReactMarkdown
                            components={{
                              code: CodeBlock,
