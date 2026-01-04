@@ -48,7 +48,7 @@ export const ZenithOrb = ({ onClick, isOpen }: ZenithOrbProps) => {
                 <Image src="/zenith.png" alt="Zenith Avatar" width={56} height={56} className="object-cover" />
               </motion.div>
               <motion.span 
-                className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-black rounded-full"
+                className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 border-2 border-black rounded-full"
                 animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
               />
