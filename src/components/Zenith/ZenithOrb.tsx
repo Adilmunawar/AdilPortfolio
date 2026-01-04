@@ -42,13 +42,13 @@ export const ZenithOrb = ({ onClick, isOpen }: ZenithOrbProps) => {
             
             {/* Avatar Circle */}
             <motion.div 
-              className="relative w-12 h-12 rounded-full bg-gradient-to-br from-cyan-600 to-blue-800 flex items-center justify-center border-2 border-white/20 shadow-inner overflow-hidden group-hover:from-cyan-500 group-hover:to-blue-700 transition-colors"
+              className="relative w-14 h-14 rounded-full bg-gradient-to-br from-cyan-600 to-blue-800 flex items-center justify-center border-2 border-white/20 shadow-inner overflow-hidden group-hover:from-cyan-500 group-hover:to-blue-700 transition-colors"
             >
               <motion.div whileHover={{ scale: 1.1, rotate: 5 }} className="w-full h-full">
-                <Image src="/zenith.png" alt="Zenith Avatar" width={48} height={48} className="object-cover" />
+                <Image src="/zenith.png" alt="Zenith Avatar" width={56} height={56} className="object-cover" />
               </motion.div>
               <motion.span 
-                className="absolute bottom-1 right-1 w-3 h-3 bg-green-500 border-2 border-black rounded-full"
+                className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-black rounded-full"
                 animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
               />
