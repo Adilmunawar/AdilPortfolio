@@ -37,9 +37,8 @@ export async function streamChat(messages: ChatMessage[]) {
                 role: m.role as 'user' | 'assistant', // System messages are handled separately
                 content: m.content
             };
-            // The SDK expects this property to be camelCased
             if (m.reasoning_details) {
-                (message as any).reasoningDetails = m.reasoning_details;
+                (message as any).reasoning_details = m.reasoning_details;
             }
             return message;
         })
