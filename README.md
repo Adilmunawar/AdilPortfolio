@@ -47,7 +47,8 @@
 │   ├── robots.txt
 │   ├── RuntimeError43
 │   ├── Screenshot 2025-05-28 213514.png
-│   └── Screenshot 2025-05-28 213528.png
+│   ├── Screenshot 2025-05-28 213528.png
+│   └── zenith.png
 ├── scripts/
 │   ├── templates/
 │   │   └── GitHubStats.tsx.template
@@ -64,10 +65,6 @@
 │   │   ├── layout.tsx
 │   │   └── page.tsx
 │   ├── components/
-│   │   ├── Alice/
-│   │   │   ├── AliceAssistant.tsx
-│   │   │   ├── AliceChat.tsx
-│   │   │   └── AliceOrb.tsx
 │   │   ├── ui/
 │   │   │   ├── accordion.tsx
 │   │   │   ├── alert-dialog.tsx
@@ -120,6 +117,10 @@
 │   │   │   ├── toggle-group.tsx
 │   │   │   ├── toggle.tsx
 │   │   │   └── tooltip.tsx
+│   │   ├── Zenith/
+│   │   │   ├── ZenithAssistant.tsx
+│   │   │   ├── ZenithChat.tsx
+│   │   │   └── ZenithOrb.tsx
 │   │   ├── AboutSection.tsx
 │   │   ├── Achievements.tsx
 │   │   ├── CertificationsSection.tsx
