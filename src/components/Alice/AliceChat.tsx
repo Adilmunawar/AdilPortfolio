@@ -12,7 +12,7 @@ import { streamChat } from '@/app/actions/chat';
 
 interface Message {
   id: number;
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'system';
   content: string;
   reasoning_details?: string | null;
 }
@@ -177,7 +177,7 @@ export function AliceChat({ isOpen, onClose }: AliceChatProps) {
           {/* Message List */}
           <div ref={scrollRef} className="flex-1 p-4 overflow-y-auto space-y-6">
             <AnimatePresence>
-              {messages.map((msg) => (
+              {messages.filter(m => m.role !== 'system').map((msg) => (
                 <motion.div
                   key={msg.id}
                   layout
