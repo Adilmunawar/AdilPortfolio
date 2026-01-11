@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, MouseEvent, useEffect } from 'react';
+import React, { useState, MouseEvent, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, BookOpen, Copy, Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -271,12 +271,6 @@ export default function CaseStudiesSection() {
   const [selectedPost, setSelectedPost] = useState<CaseStudy | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Horizontal drag state
-  const hSliderRef = useRef<HTMLDivElement>(null);
-  const [isHDragging, setIsHDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  
   // Vertical drag state for modal
   const vSliderRef = useRef<HTMLDivElement>(null);
   const [isVDragging, setIsVDragging] = useState(false);
@@ -294,28 +288,6 @@ export default function CaseStudiesSection() {
     setIsModalOpen(true);
   };
   
-  // Horizontal Drag Handlers
-  const onHMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    if (!hSliderRef.current) return;
-    setIsHDragging(true);
-    setStartX(e.pageX - hSliderRef.current.offsetLeft);
-    setScrollLeft(hSliderRef.current.scrollLeft);
-    document.body.style.userSelect = 'none';
-  };
-
-  const onHMouseLeaveOrUp = () => {
-    setIsHDragging(false);
-    document.body.style.userSelect = '';
-  };
-
-  const onHMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!isHDragging || !hSliderRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - hSliderRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    hSliderRef.current.scrollLeft = scrollLeft - walk;
-  };
-
   // Vertical Drag Handlers for Modal
   const onVMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     const slider = vSliderRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
@@ -365,60 +337,57 @@ export default function CaseStudiesSection() {
             </motion.h2>
           </div>
 
-          <div 
-              ref={hSliderRef}
-              onMouseDown={onHMouseDown}
-              onMouseLeave={onHMouseLeaveOrUp}
-              onMouseUp={onHMouseLeaveOrUp}
-              onMouseMove={onHMouseMove}
-              className={cn("flex space-x-8 pb-8 overflow-x-auto custom-scrollbar", isHDragging ? "cursor-grabbing" : "cursor-grab")}
-            >
+          <div className="grid grid-cols-1 gap-12">
             <AnimatePresence>
               {CASE_STUDIES.map((study, index) => (
                 <motion.div
                   layout
                   key={study.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
                   onClick={() => handleReadMore(study)}
-                  className="group relative flex-shrink-0 w-[350px] snap-center rounded-3xl border border-white/10 bg-black/40 backdrop-blur-sm overflow-hidden hover:border-cyan-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-900/20 cursor-pointer"
+                  className="group relative rounded-3xl border border-white/10 bg-black/40 backdrop-blur-sm overflow-hidden hover:border-cyan-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-900/20 cursor-pointer"
                 >
-                  <div className="md:flex flex-col">
-                      <div className="relative h-48 w-full overflow-hidden">
-                          <Image 
-                              src={study.image} 
-                              alt={study.title} 
-                              fill 
-                              className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10 opacity-80" />
-                      </div>
-                      <div className="p-6 space-y-4 flex-grow flex flex-col">
-                          <div className="flex justify-between items-start">
-                              <div>
-                                  <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
-                                      {study.title}
-                                  </h3>
-                              </div>
-                              <Button 
-                                  size="icon" 
-                                  variant="ghost" 
-                                  className="text-white/30 group-hover:text-white group-hover:bg-cyan-500 group-hover:rotate-45 transition-all duration-300 rounded-full flex-shrink-0"
-                              >
-                                <ArrowUpRight className="w-5 h-5" />
-                              </Button>
-                          </div>
-                          <p className="text-sm text-gray-300 leading-relaxed flex-grow">{study.excerpt}</p>
-                          <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
-                              {study.techStack.map((tech, i) => (
-                              <Badge key={i} variant="outline" className="bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-cyan-500/50 transition-colors">
-                                  {tech}
-                              </Badge>
-                              ))}
-                          </div>
-                      </div>
+                  <motion.div
+                    whileHover={{ y: -5 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }} 
+                    className="md:flex"
+                  >
+                    <div className="md:w-1/3 relative h-48 md:h-auto overflow-hidden">
+                        <Image 
+                            src={study.image} 
+                            alt={study.title} 
+                            fill 
+                            className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100"
+                        />
+                         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10 opacity-80" />
+                    </div>
+                    <div className="md:w-2/3 p-6 flex flex-col">
+                        <div className="flex justify-between items-start flex-grow">
+                            <div>
+                                <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                                    {study.title}
+                                </h3>
+                                <p className="text-sm text-gray-300 leading-relaxed mt-2">{study.excerpt}</p>
+                            </div>
+                            <Button 
+                                size="icon" 
+                                variant="ghost" 
+                                className="text-white/30 group-hover:text-white group-hover:bg-cyan-500 group-hover:rotate-45 transition-all duration-300 rounded-full flex-shrink-0"
+                            >
+                              <ArrowUpRight className="w-5 h-5" />
+                            </Button>
+                        </div>
+                    </div>
+                  </motion.div>
+                  <div className="flex flex-wrap gap-2 p-4 border-t border-white/10 bg-black/20">
+                      {study.techStack.map((tech, i) => (
+                      <Badge key={i} variant="outline" className="bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-cyan-500/50 transition-colors">
+                          {tech}
+                      </Badge>
+                      ))}
                   </div>
                 </motion.div>
               ))}
