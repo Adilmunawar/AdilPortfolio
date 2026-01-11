@@ -62,7 +62,7 @@ export async function POST(req: Request) {
 
     // 3. Call OpenRouter using the SDK
     const completion = await openai.chat.completions.create({
-      model: "allenai/molmo-2-8b:free", 
+      model: "google/gemini-2.0-flash-exp:free", 
       messages: [systemMessage, ...messages],
       temperature: 0.7,
       max_tokens: 1500,
