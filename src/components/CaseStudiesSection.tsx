@@ -65,7 +65,7 @@ const CASE_STUDIES = [
     id: 1,
     title: "AdiGaze – AI Recruitment Engine",
     excerpt: "Engineering a high-concurrency AI engine to parse 1,000+ resumes without hitting API rate limits or server timeouts.",
-    image: "/AdiCorp.png",
+    image: "/casestudy/adigaze.jpg",
     techStack: ["React (Vite)", "Supabase (Deno)", "Gemini 1.5 Pro", "pgvector"],
     challenge: "Process thousands of resumes with AI without hitting API rate limits or server timeouts, a complex high-concurrency challenge.",
     solution: "Architected a distributed round-robin worker pool to parallelize AI requests across multiple API keys, boosting throughput by 500%.",
@@ -179,7 +179,7 @@ As a certified Ethical Hacker, I implemented strict sanitization.
     id: 2,
     title: "The Agentic Blueprint",
     excerpt: "Dissecting the AdiGaze architecture to reveal a blueprint for building autonomous, resilient, and scalable AI systems.",
-    image: "/zenith.png",
+    image: "/casestudy/agent.jpg",
     techStack: ["System Design", "AI", "Swarm Logic", "pgvector", "Resilience"],
     challenge: "Typical AI development treats models as passive tools. The challenge is to architect an active, autonomous system that can make decisions, use tools, and self-heal.",
     solution: "A five-pillar blueprint for building agentic systems, focusing on structured cognition, parallel worker swarms, self-healing reflexes, vector memory, and a security-first immune system.",
@@ -445,5 +445,3 @@ export default function CaseStudiesSection() {
     </>
   );
 }
-
-    
