@@ -67,6 +67,8 @@ const CASE_STUDIES = [
     excerpt: "Engineering a high-concurrency AI engine to parse 1,000+ resumes without hitting API rate limits or server timeouts.",
     image: "/AdiCorp.png",
     techStack: ["React (Vite)", "Supabase (Deno)", "Gemini 1.5 Pro", "pgvector"],
+    challenge: "Process thousands of resumes with AI without hitting API rate limits or server timeouts, a complex high-concurrency challenge.",
+    solution: "Architected a distributed round-robin worker pool to parallelize AI requests across multiple API keys, boosting throughput by 500%.",
     content: `### Case Study: AdiGaze – Engineering a High-Concurrency AI Recruitment Engine
 **Role**: Lead Architect & Developer (Nexus Orbits)
 
@@ -179,6 +181,8 @@ As a certified Ethical Hacker, I implemented strict sanitization.
     excerpt: "Dissecting the AdiGaze architecture to reveal a blueprint for building autonomous, resilient, and scalable AI systems.",
     image: "/zenith.png",
     techStack: ["System Design", "AI", "Swarm Logic", "pgvector", "Resilience"],
+    challenge: "Typical AI development treats models as passive tools. The challenge is to architect an active, autonomous system that can make decisions, use tools, and self-heal.",
+    solution: "A five-pillar blueprint for building agentic systems, focusing on structured cognition, parallel worker swarms, self-healing reflexes, vector memory, and a security-first immune system.",
     content: `### The Agentic Blueprint: Architecting Autonomous AI Systems
 Based on the AdiGaze Architecture
 
@@ -366,7 +370,7 @@ export default function CaseStudiesSection() {
                          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10 opacity-80" />
                     </div>
                     <div className="md:w-2/3 p-6 flex flex-col">
-                        <div className="flex justify-between items-start flex-grow">
+                        <div className="flex justify-between items-start">
                             <div>
                                 <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
                                     {study.title}
@@ -380,6 +384,22 @@ export default function CaseStudiesSection() {
                             >
                               <ArrowUpRight className="w-5 h-5" />
                             </Button>
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
+                           <div className="flex gap-3">
+                               <div className="min-w-[4px] bg-red-500/50 rounded-full" />
+                               <div>
+                                   <p className="text-xs text-white/40 uppercase font-semibold">The Challenge</p>
+                                   <p className="text-sm text-gray-300 leading-relaxed">{study.challenge}</p>
+                               </div>
+                           </div>
+                           <div className="flex gap-3">
+                               <div className="min-w-[4px] bg-cyan-500/50 rounded-full" />
+                               <div>
+                                   <p className="text-xs text-white/40 uppercase font-semibold">The Solution</p>
+                                   <p className="text-sm text-gray-300 leading-relaxed">{study.solution}</p>
+                               </div>
+                           </div>
                         </div>
                     </div>
                   </motion.div>
