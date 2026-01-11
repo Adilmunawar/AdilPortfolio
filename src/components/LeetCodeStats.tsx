@@ -36,14 +36,14 @@ const THEME = {
 };
 
 const badges = [
-  { src: '/leetcode/202508.gif', alt: 'LeetCode 202508 Badge' },
-  { src: '/leetcode/202509.gif', alt: 'LeetCode 202509 Badge' },
-  { src: '/leetcode/202510.gif', alt: 'LeetCode 202510 Badge' },
-  { src: '/leetcode/202511.gif', alt: 'LeetCode 202511 Badge' },
-  { src: '/leetcode/25100.gif', alt: 'LeetCode 25100 Badge' },
-  { src: '/leetcode/2550.gif', alt: 'LeetCode 2550 Badge' },
-  { src: '/leetcode/Introduction_to_Pandas.gif', alt: 'Introduction to Pandas Badge' },
-  { src: '/leetcode/Top_SQL_50.gif', alt: 'Top SQL 50 Badge' },
+  { src: '/leetcode/202508.gif', alt: 'August 2025' },
+  { src: '/leetcode/202509.gif', alt: 'September 2025' },
+  { src: '/leetcode/202510.gif', alt: 'October 2025' },
+  { src: '/leetcode/202511.gif', alt: 'November 2025' },
+  { src: '/leetcode/25100.gif', alt: '100 Day Badge 2025' },
+  { src: '/leetcode/2550.gif', alt: '50 Day Badge 2025' },
+  { src: '/leetcode/Introduction_to_Pandas.gif', alt: 'Introduction to Pandas' },
+  { src: '/leetcode/Top_SQL_50.gif', alt: 'Top SQL 50' },
 ];
 
 const LeetCodeStats = () => {
@@ -256,7 +256,7 @@ const LeetCodeStats = () => {
                         className="rounded-lg transition-transform duration-300 group-hover:scale-105"
                       />
                        <p className="text-xs text-center text-frost-cyan/70 group-hover:text-frost-white transition-colors">
-                        {badge.alt.replace(' LeetCode', '').replace(' Badge', '')}
+                        {badge.alt}
                       </p>
                     </motion.div>
                   ))}
