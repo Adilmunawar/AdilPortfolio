@@ -6,7 +6,7 @@ import LeetCodeBadges from './LeetCodeBadges';
 
 const StatsSection = () => {
   return (
-    <section id="stats" className="py-20 px-4 relative overflow-hidden">
+    <section id="stats" className="py-8 px-4 relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 gap-8 items-start max-w-4xl mx-auto">
             <motion.div 
