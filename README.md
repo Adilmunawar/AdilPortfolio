@@ -36,6 +36,7 @@
 │   ├── adicorp.jpg
 │   ├── adiflux.jpg
 │   ├── adify.jpg
+│   ├── adigaze.jpg
 │   ├── adigon.jpg
 │   ├── adinox.jpg
 │   ├── aditron.jpg
