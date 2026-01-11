@@ -218,7 +218,7 @@ const LeetCodeStats = () => {
           <DrawerTrigger asChild>
             <Button
               variant="outline"
-              className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-full md:-translate-x-1/2
+              className="absolute right-0 top-1/2 -translate-y-1/2
                          flex items-center justify-center w-auto h-auto p-2
                          bg-cyber-dark/50 border-2 border-neon-cyan/20 hover:bg-neon-cyan/10
                          rounded-l-lg rounded-r-none
