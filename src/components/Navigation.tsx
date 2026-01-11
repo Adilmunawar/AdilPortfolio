@@ -71,14 +71,14 @@ const Navigation = () => {
     )}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-center h-16">
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
                 onClick={(e) => handleLinkClick(e, item.href)}
                 className={cn(
-                  "text-frost-cyan hover:text-frost-white px-3 py-2 text-sm font-medium transition-all duration-300 relative group",
+                  "text-frost-cyan hover:text-frost-white px-3 py-2 text-sm font-medium transition-all duration-300 relative group whitespace-nowrap",
                   activeSection === getSectionIdFromHref(item.href) && "text-frost-white"
                 )}
               >
