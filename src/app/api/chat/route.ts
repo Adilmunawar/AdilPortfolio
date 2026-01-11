@@ -54,7 +54,7 @@ export async function POST(req: Request) {
       model: "google/gemini-2.5-flash-lite", 
       messages: [systemMessage, ...messages],
       temperature: 0.7,
-      max_tokens: 15000,
+      max_tokens: 2000,
       extra_body: {
         safety_settings: [
             {
