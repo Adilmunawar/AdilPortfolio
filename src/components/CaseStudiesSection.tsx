@@ -73,7 +73,7 @@ export default function CaseStudiesSection() {
     : CASE_STUDIES.filter(c => c.category === activeCategory);
 
   return (
-    <section className="relative py-24 bg-background overflow-hidden" id="case-studies">
+    <section className="relative py-24 overflow-hidden" id="case-studies">
       {/* Background Elements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[400px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
       
