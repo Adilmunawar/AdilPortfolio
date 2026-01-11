@@ -43,7 +43,10 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, isInitiallyLoading
       // Cancel any ongoing speech
       window.speechSynthesis.cancel();
 
-      const utterance = new SpeechSynthesisUtterance(text);
+      // Strip Markdown links to avoid reading the URL
+      const cleanText = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1');
+
+      const utterance = new SpeechSynthesisUtterance(cleanText);
       // Find a suitable female English voice
       const femaleVoice = voices.find(
         voice => voice.lang.startsWith('en') && voice.name.toLowerCase().includes('female')
