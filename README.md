@@ -52,8 +52,6 @@
 │   ├── placeholder.svg
 │   ├── robots.txt
 │   ├── RuntimeError43
-│   ├── Screenshot 2025-05-28 213514.png
-│   ├── Screenshot 2025-05-28 213528.png
 │   └── zenith.png
 ├── scripts/
 │   ├── templates/
