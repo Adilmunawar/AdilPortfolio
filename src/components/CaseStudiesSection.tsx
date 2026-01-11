@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, MouseEvent, useEffect, useRef } from 'react';
@@ -424,3 +425,5 @@ export default function CaseStudiesSection() {
     </>
   );
 }
+
+    
