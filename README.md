@@ -33,12 +33,6 @@
 │   │   ├── AmnaAli.jpg
 │   │   ├── esha.jpg
 │   │   └── zoya.jpg
-│   ├── AdiCorp.png
-│   ├── AdiFlux.png
-│   ├── Adify.png
-│   ├── AdiGon.png
-│   ├── AdiNox.png
-│   ├── AdiTron.png
 │   ├── advance webhook concepts.png
 │   ├── advanced performance measurements.png
 │   ├── application modern.png
