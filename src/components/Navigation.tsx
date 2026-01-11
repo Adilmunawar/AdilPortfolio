@@ -18,6 +18,7 @@ const Navigation = () => {
     { name: 'Stats', href: '#stats' },
     { name: 'Skills', href: '#skills' },
     { name: 'Services', href: '#services' },
+    { name: 'Case Studies', href: '#case-studies' },
     { name: 'Projects', href: '#projects' },
     { name: 'Collab', href: '#testimonials' },
     { name: 'Blog', href: '#blog' },
