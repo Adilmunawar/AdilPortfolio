@@ -38,6 +38,7 @@
 │   ├── adify.jpg
 │   ├── adigon.jpg
 │   ├── adinox.jpg
+│   ├── aditron.jpg
 │   ├── advance webhook concepts.png
 │   ├── advanced performance measurements.png
 │   ├── application modern.png
