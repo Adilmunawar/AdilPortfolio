@@ -67,9 +67,6 @@ const ProjectsSection = () => {
               Featured Work
             </span>
           </div>
-          <h2 className="text-5xl md:text-7xl font-bold mb-8 text-gradient-slow drop-shadow-2xl">
-            My Projects
-          </h2>
           <p className="text-xl text-frost-cyan max-w-4xl mx-auto leading-relaxed">
             Explore my latest creations showcasing modern web technologies, 
             <span className="text-frost-white font-semibold"> innovative solutions</span>, and 
