@@ -15,6 +15,9 @@
 │   ├── blogpic/
 │   │   ├── gameserverhack.jpg
 │   │   └── publicwifi.jpg
+│   ├── casestudy/
+│   │   ├── adigaze.jpg
+│   │   └── agent.jpg
 │   ├── leetcode/
 │   │   ├── 202508.gif
 │   │   ├── 202509.gif
@@ -128,6 +131,7 @@
 │   │   ├── AboutSection.tsx
 │   │   ├── Achievements.tsx
 │   │   ├── BlogSection.tsx
+│   │   ├── CaseStudiesSection.tsx
 │   │   ├── CertificationsSection.tsx
 │   │   ├── ContactSection.tsx
 │   │   ├── GitHubStats.tsx
