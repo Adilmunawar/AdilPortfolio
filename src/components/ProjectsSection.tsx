@@ -41,7 +41,7 @@ const projects = [
     {
       title: 'AdiFlux',
       description: 'An AI-powered web application for generating high-quality images from text prompts, opening up endless creative possibilities for users.',
-      image: '/adiFlux.jpg',
+      image: '/adiflux.jpg',
       tech: ['Next.js', 'AI', 'Image Generation', 'Vercel'],
       github: 'https://github.com/adilmunawar/adiflux',
       live: 'https://adiflux.vercel.app',
