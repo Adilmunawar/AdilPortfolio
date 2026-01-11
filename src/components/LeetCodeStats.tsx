@@ -221,7 +221,6 @@ const LeetCodeStats = () => {
                                 width={120}
                                 height={120}
                                 className="rounded-md"
-                                unoptimized={true}
                             />
                         </motion.div>
                     ))}
