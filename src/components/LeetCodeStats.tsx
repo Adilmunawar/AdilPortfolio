@@ -8,21 +8,11 @@ import {
   PolarAngleAxis, 
   ResponsiveContainer,
 } from 'recharts';
-import { Button } from './ui/button';
-import { ChevronsLeft, Terminal } from 'lucide-react';
+import { Terminal } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import leetCodeStats from '@/lib/leetcode-stats.json';
-import Image from 'next/image';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
-import { ScrollArea } from './ui/scroll-area';
+
 
 // Cyber Palette
 const THEME = {
@@ -34,17 +24,6 @@ const THEME = {
   grid: 'rgba(34, 211, 238, 0.1)',
   grid2: 'rgba(244, 63, 94, 0.15)',
 };
-
-const badges = [
-  { src: '/leetcode/202508.gif', alt: 'August Badge 2025' },
-  { src: '/leetcode/202509.gif', alt: 'September Badge 2025' },
-  { src: '/leetcode/202510.gif', alt: 'October Badge 2025' },
-  { src: '/leetcode/202511.gif', alt: 'November Badge 2025' },
-  { src: '/leetcode/25100.gif', alt: '100 Day Badge 2025' },
-  { src: '/leetcode/2550.gif', alt: '50 Day Badge 2025' },
-  { src: '/leetcode/Introduction_to_Pandas.gif', alt: 'Introduction to Pandas' },
-  { src: '/leetcode/Top_SQL_50.gif', alt: 'Top SQL 50' },
-];
 
 const LeetCodeStats = () => {
     const { 
@@ -93,179 +72,126 @@ const LeetCodeStats = () => {
     }
 
     return (
-      <Drawer>
-        <div className="relative">
-          <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="w-full p-8 group"
-          >
-              {/* Header Area */}
-              <div className="relative z-10 text-center pb-6 mb-6">
-                <div className="flex justify-center items-center gap-4">
-                  <motion.div initial={{ opacity: 0}} animate={{opacity: 1}} transition={{delay: 0.2}}>
-                      <h3 className="text-2xl font-bold text-white tracking-widest uppercase">
-                          LeetCode Stats
-                      </h3>
-                      <p className="text-sm text-neon-cyan/70">@AdilMunawar</p>
-                  </motion.div>
-                </div>
-                  
-                  <motion.div 
-                      initial={{ opacity: 0, scale: 0.8 }} 
-                      animate={{ opacity: 1, scale: 1 }} 
-                      transition={{ delay: 0.4, type: 'spring' }}
-                      className="mt-4 inline-flex items-center gap-3 bg-neon-cyan/10 border border-neon-cyan/20 px-4 py-2 rounded-full"
-                  >
-                      <span className="text-xs text-gray-300 uppercase">Global Rank:</span>
-                      <span className="text-lg font-bold text-white">{ranking.toLocaleString()}</span>
-                  </motion.div>
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="w-full p-8 group"
+        >
+            {/* Header Area */}
+            <div className="relative z-10 text-center pb-6 mb-6">
+              <div className="flex justify-center items-center gap-4">
+                <motion.div initial={{ opacity: 0}} animate={{opacity: 1}} transition={{delay: 0.2}}>
+                    <h3 className="text-2xl font-bold text-white tracking-widest uppercase">
+                        LeetCode Stats
+                    </h3>
+                    <p className="text-sm text-neon-cyan/70">@AdilMunawar</p>
+                </motion.div>
               </div>
-
-              {/* Main Content: Three Charts */}
-              <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 items-center gap-4 min-h-[220px]">
-                  {/* Left Radar Chart */}
-                  <motion.div className="h-full relative group/radar" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
-                      <ResponsiveContainer width="100%" height={200}>
-                          <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData1}>
-                              <PolarGrid stroke={THEME.grid} strokeDasharray="3 3" />
-                              <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
-                              <Radar 
-                                  dataKey="A" 
-                                  stroke={THEME.cyan} 
-                                  strokeWidth={2} 
-                                  fill={THEME.cyan} 
-                                  fillOpacity={0.2} 
-                                  animationDuration={800} 
-                                  className="group-hover/radar:animate-radar-ripple" 
-                                  dot={{ r: 3, fill: THEME.white, stroke: THEME.cyan, strokeWidth: 1 }} 
-                                  activeDot={{ r: 5, stroke: THEME.white }}
-                              />
-                          </RadarChart>
-                      </ResponsiveContainer>
-                  </motion.div>
-
-                  {/* Center Donut Chart */}
-                  <motion.div 
-                      className="h-full relative flex items-center justify-center"
-                      onMouseEnter={() => setIsHoveringCircular(true)}
-                      onMouseLeave={() => setIsHoveringCircular(false)}
-                      initial={{ opacity: 0, scale: 0.5 }} 
-                      animate={{ opacity: 1, scale: 1 }} 
-                      transition={{ delay: 0.6, type: 'spring' }}
-                  >
-                      <DonutChart
-                          easy={easy.solved}
-                          medium={medium.solved}
-                          hard={hard.solved}
-                          total={totalQuestions}
-                      />
-                      <AnimatePresence>
-                          {!isHoveringCircular ? (
-                              <motion.div
-                                  initial={{ opacity: 0, scale: 0.8 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  exit={{ opacity: 0, scale: 0.8 }}
-                                  transition={{ duration: 0.3 }}
-                                  className="absolute inset-0 flex flex-col items-center justify-center text-center"
-                              >
-                                  <p className="text-3xl lg:text-4xl font-black text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">{totalSolved}</p>
-                                  <p className="text-sm text-gray-400 -mt-1">/{totalQuestions}</p>
-                                  <p className="text-sm font-semibold text-emerald-400 mt-1">Solved</p>
-                              </motion.div>
-                          ) : (
-                              <motion.div
-                                  initial={{ opacity: 0, scale: 0.8 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  exit={{ opacity: 0, scale: 0.8 }}
-                                  transition={{ duration: 0.3 }}
-                                  className="absolute inset-0 flex flex-col items-center justify-center text-center"
-                              >
-                                  <div className="flex items-baseline gap-1.5">
-                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-neon-cyan"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                                      <p className="text-3xl font-black text-white drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">{acceptanceRate.toFixed(1)}%</p>
-                                  </div>
-                                  <p className="text-sm font-semibold text-neon-cyan/80 mt-1">Acceptance</p>
-                              </motion.div>
-                          )}
-                      </AnimatePresence>
-                  </motion.div>
-                  
-                  {/* Right Radar Chart */}
-                  <motion.div className="h-full relative group/radar" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
-                       <ResponsiveContainer width="100%" height={200}>
-                          <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData2}>
-                              <PolarGrid stroke={THEME.grid2} strokeDasharray="3 3" />
-                              <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
-                              <Radar 
-                                  dataKey="A" 
-                                  stroke={THEME.red} 
-                                  strokeWidth={2} 
-                                  fill={THEME.amber} 
-                                  fillOpacity={0.25} 
-                                  animationDuration={800} 
-                                  className="group-hover/radar:animate-radar-ripple" 
-                                  dot={{ r: 3, fill: THEME.white, stroke: THEME.red, strokeWidth: 1 }}
-                                  activeDot={{ r: 5, stroke: THEME.white }}
-                              />
-                          </RadarChart>
-                      </ResponsiveContainer>
-                  </motion.div>
-              </div>
-          </motion.div>
-          <DrawerTrigger asChild>
-            <Button
-              variant="outline"
-              className="absolute right-0 top-1/2 -translate-y-1/2
-                         flex items-center justify-center w-auto h-auto p-2
-                         bg-cyber-dark/50 border-2 border-neon-cyan/20 hover:bg-neon-cyan/10
-                         rounded-l-lg rounded-r-none
-                         transition-all duration-300 group
-                         transform hover:scale-105"
-              style={{ writingMode: 'vertical-rl' }}
-            >
-              <span className="flex items-center gap-2 transform -rotate-180 text-sm tracking-wider">
-                <ChevronsLeft className="w-4 h-4 animate-pulse" />
-                LeetCode Badges
-              </span>
-            </Button>
-          </DrawerTrigger>
-          <DrawerContent>
-            <div className="mx-auto w-full max-w-4xl">
-              <DrawerHeader>
-                <DrawerTitle className="text-center text-2xl font-bold text-gradient-slow">LeetCode Badges</DrawerTitle>
-                <DrawerDescription className="text-center text-frost-cyan">A collection of my achievements on LeetCode.</DrawerDescription>
-              </DrawerHeader>
-              <ScrollArea className="h-[60vh] p-4">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                  {badges.map((badge, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                      className="group relative flex flex-col items-center gap-2"
-                    >
-                      <Image
-                        src={badge.src}
-                        alt={badge.alt}
-                        width={120}
-                        height={120}
-                        className="rounded-lg transition-transform duration-300 group-hover:scale-105"
-                      />
-                       <p className="text-xs text-center text-frost-cyan/70 group-hover:text-frost-white transition-colors">
-                        {badge.alt}
-                      </p>
-                    </motion.div>
-                  ))}
-                </div>
-              </ScrollArea>
+                
+                <motion.div 
+                    initial={{ opacity: 0, scale: 0.8 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    transition={{ delay: 0.4, type: 'spring' }}
+                    className="mt-4 inline-flex items-center gap-3 bg-neon-cyan/10 border border-neon-cyan/20 px-4 py-2 rounded-full"
+                >
+                    <span className="text-xs text-gray-300 uppercase">Global Rank:</span>
+                    <span className="text-lg font-bold text-white">{ranking.toLocaleString()}</span>
+                </motion.div>
             </div>
-          </DrawerContent>
-        </div>
-      </Drawer>
+
+            {/* Main Content: Three Charts */}
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 items-center gap-4 min-h-[220px]">
+                {/* Left Radar Chart */}
+                <motion.div className="h-full relative group/radar" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
+                    <ResponsiveContainer width="100%" height={200}>
+                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData1}>
+                            <PolarGrid stroke={THEME.grid} strokeDasharray="3 3" />
+                            <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
+                            <Radar 
+                                dataKey="A" 
+                                stroke={THEME.cyan} 
+                                strokeWidth={2} 
+                                fill={THEME.cyan} 
+                                fillOpacity={0.2} 
+                                animationDuration={800} 
+                                className="group-hover/radar:animate-radar-ripple" 
+                                dot={{ r: 3, fill: THEME.white, stroke: THEME.cyan, strokeWidth: 1 }} 
+                                activeDot={{ r: 5, stroke: THEME.white }}
+                            />
+                        </RadarChart>
+                    </ResponsiveContainer>
+                </motion.div>
+
+                {/* Center Donut Chart */}
+                <motion.div 
+                    className="h-full relative flex items-center justify-center"
+                    onMouseEnter={() => setIsHoveringCircular(true)}
+                    onMouseLeave={() => setIsHoveringCircular(false)}
+                    initial={{ opacity: 0, scale: 0.5 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    transition={{ delay: 0.6, type: 'spring' }}
+                >
+                    <DonutChart
+                        easy={easy.solved}
+                        medium={medium.solved}
+                        hard={hard.solved}
+                        total={totalQuestions}
+                    />
+                    <AnimatePresence>
+                        {!isHoveringCircular ? (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={{ duration: 0.3 }}
+                                className="absolute inset-0 flex flex-col items-center justify-center text-center"
+                            >
+                                <p className="text-3xl lg:text-4xl font-black text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">{totalSolved}</p>
+                                <p className="text-sm text-gray-400 -mt-1">/{totalQuestions}</p>
+                                <p className="text-sm font-semibold text-emerald-400 mt-1">Solved</p>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={{ duration: 0.3 }}
+                                className="absolute inset-0 flex flex-col items-center justify-center text-center"
+                            >
+                                <div className="flex items-baseline gap-1.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-neon-cyan"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                    <p className="text-3xl font-black text-white drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">{acceptanceRate.toFixed(1)}%</p>
+                                </div>
+                                <p className="text-sm font-semibold text-neon-cyan/80 mt-1">Acceptance</p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.div>
+                
+                {/* Right Radar Chart */}
+                <motion.div className="h-full relative group/radar" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
+                     <ResponsiveContainer width="100%" height={200}>
+                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData2}>
+                            <PolarGrid stroke={THEME.grid2} strokeDasharray="3 3" />
+                            <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
+                            <Radar 
+                                dataKey="A" 
+                                stroke={THEME.red} 
+                                strokeWidth={2} 
+                                fill={THEME.amber} 
+                                fillOpacity={0.25} 
+                                animationDuration={800} 
+                                className="group-hover/radar:animate-radar-ripple" 
+                                dot={{ r: 3, fill: THEME.white, stroke: THEME.red, strokeWidth: 1 }}
+                                activeDot={{ r: 5, stroke: THEME.white }}
+                            />
+                        </RadarChart>
+                    </ResponsiveContainer>
+                </motion.div>
+            </div>
+        </motion.div>
     );
 };
 

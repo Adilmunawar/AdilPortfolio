@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import GitHubStats from './GitHubStats';
 import LeetCodeStats from './LeetCodeStats';
+import LeetCodeBadges from './LeetCodeBadges';
 
 const StatsSection = () => {
   return (
@@ -27,6 +28,7 @@ const StatsSection = () => {
             </motion.div>
         </div>
       </div>
+      <LeetCodeBadges />
     </section>
   );
 };
