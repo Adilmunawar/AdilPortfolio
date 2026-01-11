@@ -5,7 +5,8 @@
 │   └── workflows/
 │       ├── auto-readme.yml
 │       ├── update-contributions.yml
-│       └── update-leetcode-stats.yml
+│       ├── update-leetcode-stats.yml
+│       └── update-year.yml
 ├── docs/
 │   └── blueprint.md
 ├── public/
@@ -131,6 +132,7 @@
 │   │   ├── ContactSection.tsx
 │   │   ├── GitHubStats.tsx
 │   │   ├── HeroSection.tsx
+│   │   ├── LeetCodeBadges.tsx
 │   │   ├── LeetCodeStats.tsx
 │   │   ├── LogoLoop.css
 │   │   ├── LogoLoop.tsx
