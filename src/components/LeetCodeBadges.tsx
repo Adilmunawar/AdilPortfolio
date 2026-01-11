@@ -1,3 +1,4 @@
+
 'use client';
 import {
   Drawer,
@@ -12,6 +13,7 @@ import { ChevronsLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ScrollArea } from './ui/scroll-area';
 import Image from 'next/image';
+import { useEffect } from "react";
 
 const badges = [
   { src: '/leetcode/202508.gif', alt: 'August Badge 2025' },
@@ -25,6 +27,16 @@ const badges = [
 ];
 
 const LeetCodeBadges = () => {
+
+  useEffect(() => {
+    // Preload images after the component mounts to ensure they are cached
+    // by the time the user opens the drawer.
+    badges.forEach((badge) => {
+      const img = new (window as any).Image();
+      img.src = badge.src;
+    });
+  }, []);
+
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -65,6 +77,7 @@ const LeetCodeBadges = () => {
                     alt={badge.alt}
                     width={120}
                     height={120}
+                    unoptimized // Important for GIFs to prevent them from being converted to static images
                     className="rounded-lg transition-transform duration-300 group-hover:scale-105"
                   />
                   <p className="text-xs text-center text-frost-cyan/70 group-hover:text-frost-white transition-colors">
