@@ -8,7 +8,8 @@ import {
   PolarAngleAxis, 
   ResponsiveContainer,
 } from 'recharts';
-import { Trophy, Activity, Cpu, Terminal, TrendingUp, Users } from 'lucide-react';
+import { Button } from './ui/button';
+import { Eye, EyeOff, Terminal } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import leetCodeStats from '@/lib/leetcode-stats.json';
@@ -49,6 +50,7 @@ const LeetCodeStats = () => {
     
     const [mounted, setMounted] = useState(false);
     const [isHoveringCircular, setIsHoveringCircular] = useState(false);
+    const [showBadges, setShowBadges] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -92,12 +94,23 @@ const LeetCodeStats = () => {
         >
             {/* Header Area */}
             <div className="relative z-10 text-center pb-6 mb-6">
+              <div className="flex justify-center items-center gap-4">
                 <motion.div initial={{ opacity: 0}} animate={{opacity: 1}} transition={{delay: 0.2}}>
                     <h3 className="text-2xl font-bold text-white tracking-widest uppercase">
                         LeetCode Stats
                     </h3>
                     <p className="text-sm text-neon-cyan/70">@AdilMunawar</p>
                 </motion.div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setShowBadges(!showBadges)}
+                  className="bg-cyber-dark/50 border-neon-cyan/20 hover:bg-neon-cyan/10"
+                >
+                  {showBadges ? <EyeOff className="mr-2 h-4 w-4" /> : <Eye className="mr-2 h-4 w-4" />}
+                  {showBadges ? 'Hide Badges' : 'Show Badges'}
+                </Button>
+              </div>
                 
                 <motion.div 
                     initial={{ opacity: 0, scale: 0.8 }} 
@@ -170,7 +183,7 @@ const LeetCodeStats = () => {
                                 className="absolute inset-0 flex flex-col items-center justify-center text-center"
                             >
                                 <div className="flex items-baseline gap-1.5">
-                                    <Activity className="w-5 h-5 text-neon-cyan" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-neon-cyan"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                                     <p className="text-3xl font-black text-white drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">{acceptanceRate.toFixed(1)}%</p>
                                 </div>
                                 <p className="text-sm font-semibold text-neon-cyan/80 mt-1">Acceptance</p>
@@ -202,29 +215,34 @@ const LeetCodeStats = () => {
             </div>
 
             {/* Badges Section */}
-            <div className="relative z-10 mt-16">
-                <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1, duration: 0.6 }}
-                    className="flex flex-wrap justify-center items-center gap-4 md:gap-6"
-                >
-                    {badges.map((badge, index) => (
-                        <motion.div
-                            key={index}
-                            whileHover={{ scale: 1.1, rotate: 3 }}
-                            transition={{ type: 'spring', stiffness: 300 }}
-                        >
-                            <Image
-                                src={badge.src}
-                                alt={badge.alt}
-                                width={120}
-                                height={120}
-                                className="rounded-md"
-                            />
-                        </motion.div>
-                    ))}
-                </motion.div>
+            <div className="relative z-10 mt-16 min-h-[120px]">
+              <AnimatePresence>
+                {showBadges && (
+                  <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      className="flex flex-wrap justify-center items-center gap-4 md:gap-6"
+                  >
+                      {badges.map((badge, index) => (
+                          <motion.div
+                              key={index}
+                              whileHover={{ scale: 1.1, rotate: 3 }}
+                              transition={{ type: 'spring', stiffness: 300 }}
+                          >
+                              <Image
+                                  src={badge.src}
+                                  alt={badge.alt}
+                                  width={120}
+                                  height={120}
+                                  className="rounded-md"
+                              />
+                          </motion.div>
+                      ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
         </motion.div>
     );
@@ -318,3 +336,5 @@ const DonutChart = ({ easy, medium, hard, total }: { easy: number, medium: numbe
 };
 
 export default LeetCodeStats;
+
+    
