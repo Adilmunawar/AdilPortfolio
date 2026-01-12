@@ -17,7 +17,8 @@
 │   │   └── publicwifi.jpg
 │   ├── casestudy/
 │   │   ├── adigaze.jpg
-│   │   └── agent.jpg
+│   │   ├── agent.jpg
+│   │   └── supabase.jpg
 │   ├── leetcode/
 │   │   ├── 202508.gif
 │   │   ├── 202509.gif
