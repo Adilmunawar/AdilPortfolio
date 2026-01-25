@@ -1,5 +1,4 @@
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -81,7 +80,9 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "Inter", sans-serif;
+  }
+  ::selection {
+    @apply bg-cyan-500/30 text-cyan-200;
   }
 }
 
@@ -581,5 +582,3 @@
   .prose td strong {
     @apply text-frost-white;
   }
-
-    
