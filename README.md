@@ -49,6 +49,8 @@
 │   ├── favicon.ico
 │   ├── Google Ads apps.png
 │   ├── Linkedin Content and creative design.png
+│   ├── llm.txt
+│   ├── llms.txt
 │   ├── Microsoft-azure-professional.png
 │   ├── MLOPS with vertex AI.png
 │   ├── MLOPS.png
@@ -70,7 +72,10 @@
 │   │   │       └── route.ts
 │   │   ├── globals.css
 │   │   ├── layout.tsx
-│   │   └── page.tsx
+│   │   ├── manifest.ts
+│   │   ├── page.tsx
+│   │   ├── robots.ts
+│   │   └── sitemap.ts
 │   ├── components/
 │   │   ├── ui/
 │   │   │   ├── accordion.tsx
