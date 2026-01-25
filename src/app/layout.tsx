@@ -9,7 +9,7 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import "@/app/globals.css";
 
-// 👇 Metadata Base (Critical for Social Sharing)
+//  Metadata Base (Critical for Social Sharing)
 export const metadata: Metadata = {
   metadataBase: new URL('https://adilmunawar.vercel.app'), 
   
@@ -70,7 +70,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   
-  // 🧠 The "Master Entity" Graph
+  //  The "Master Entity" Graph
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -81,7 +81,7 @@ export default function RootLayout({
     "url": "https://adilmunawar.vercel.app",
     "image": "https://adilmunawar.vercel.app/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png",
     
-    // 📅 Vital Stats
+    //  Vital Stats
     "birthDate": "2005-06-10",
     "telephone": "+92-324-4965220",
     "nationality": {
@@ -109,24 +109,20 @@ export default function RootLayout({
       }
     },
 
-    // 💼 Professional Roles (Multi-Role Support)
+    //  Professional Roles (Multi-Role Support)
     "jobTitle": ["Project Lead", "Database Administrator", "Senior Web Developer"],
     "worksFor": [
       {
         "@type": "Organization",
         "name": "Nexsus Orbits",
-        "url": "https://nexsusorbits.com",
+        "url": "https://nexsus.vercel.app",
         "jobTitle": "Project Lead & Web Developer"
       },
       {
         "@type": "Organization",
         "name": "AOS",
+        "url": "https://aos.tech",
         "jobTitle": "Database Administrator"
-      },
-      {
-        "@type": "Organization",
-        "name": "AdiCorp",
-        "jobTitle": "Founder"
       }
     ],
 
@@ -141,7 +137,7 @@ export default function RootLayout({
       "Microsoft Azure Cloud Computing (2025)"
     ],
 
-    // 🔗 The Social Authority Web
+    //  The Social Authority Web
     "sameAs": [
       "https://github.com/AdilMunawar",
       "https://www.linkedin.com/in/adilmunawar/", 
@@ -149,12 +145,12 @@ export default function RootLayout({
       "https://dev.to/adilmunawar", 
       "https://leetcode.com/u/AdilMunawar/",
       "https://www.instagram.com/adilmunawarx/",
-      "https://www.facebook.com/AdilMunawarX",
+      "https://www.facebook.com/adil.adilmunewer",
       "https://steamcommunity.com/id/AdilMunawar",
-      "https://discordapp.com/users/1097023241586544650"
+      "https://discordapp.com/users/adilmunawar"
     ],
 
-    // 🧠 The "Top Notch" Skills Matrix
+    //  The "Top Notch" Skills Matrix
     "knowsAbout": [
       "MERN Stack (MongoDB, Express, React, Node.js)", "Next.js Architecture", "Supabase & Firebase",
       "Transact-SQL (TSQL)", "Database Administration", "RAG (Retrieval-Augmented Generation)",
@@ -162,7 +158,7 @@ export default function RootLayout({
       "Kubernetes Orchestration", "GitHub Actions (CI/CD)", "Python Automation"
     ],
     
-    // 📢 Services Offered
+    //  Services Offered
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Web Development & AI Services",
