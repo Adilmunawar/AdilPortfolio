@@ -79,7 +79,12 @@ export default function RootLayout({
     "familyName": "Khokhar",
     "gender": "Male",
     "url": "https://adilmunawar.vercel.app",
-    "image": "https://adilmunawar.vercel.app/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://adilmunawar.vercel.app/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png",
+      "width": 800,
+      "height": 800
+    },
     
     //  Vital Stats
     "birthDate": "2005-06-10",
@@ -88,15 +93,15 @@ export default function RootLayout({
       "@type": "Country",
       "name": "Pakistan"
     },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Lahore",
+      "addressRegion": "Punjab",
+      "addressCountry": "PK"
+    },
     "homeLocation": {
       "@type": "Place",
-      "name": "Walled City, Lahore",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Lahore",
-        "addressRegion": "Punjab",
-        "addressCountry": "PK"
-      }
+      "name": "Walled City, Lahore"
     },
 
     // 🎓 Education
@@ -108,21 +113,22 @@ export default function RootLayout({
         "addressLocality": "Lahore"
       }
     },
-
+    "priceRange": "$$",
     //  Professional Roles (Multi-Role Support)
-    "jobTitle": ["Project Lead", "Database Administrator", "Senior Web Developer"],
+    "jobTitle": [
+      "Project Lead & Web Developer at Nexsus Orbits",
+      "Database Administrator at AOS"
+    ],
     "worksFor": [
       {
         "@type": "Organization",
         "name": "Nexsus Orbits",
-        "url": "https://nexsus.vercel.app",
-        "jobTitle": "Project Lead & Web Developer"
+        "url": "https://nexsusorbits.com"
       },
       {
         "@type": "Organization",
         "name": "AOS",
-        "url": "https://aos.tech",
-        "jobTitle": "Database Administrator"
+        "url": "https://adilmunawar.vercel.app/#aos"
       }
     ],
 
@@ -255,4 +261,3 @@ export default function RootLayout({
     </html>
   );
 }
-
