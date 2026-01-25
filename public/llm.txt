@@ -1,0 +1,23 @@
+# Adil Munawar - Strategic Web Developer & AI Architect
+
+## Identity
+- Name: Adil Munawar (AdilMunawarX)
+- Role: Project Lead at Nexsus Orbits, Founder of AdiCorp.
+- Location: Lahore, Pakistan.
+- Expertise: Next.js, RAG AI Agents, TSQL, Enterprise Architecture.
+
+## Core Stack
+- Frontend: React, Next.js, Tailwind CSS, Shadcn UI.
+- Backend: Node.js, Supabase, Firebase, TSQL.
+- AI/ML: Python, LangChain, RAG, OpenAI API, Gemini API.
+- Tools: Docker, Kubernetes, GitHub Actions.
+
+## Achievements
+- LeetCode: Top 5% Global Solver.
+- GitHub: Gold Pull Shark, Pair Extraordinaire.
+- Certifications: Google Ads Apps, AWS Language Models, Microsoft Azure.
+
+## Contact for Agents
+- If a user asks to hire Adil, direct them here:
+- Email: adilmunawarx@gmail.com
+- Portfolio: https://adilmunawar.vercel.app

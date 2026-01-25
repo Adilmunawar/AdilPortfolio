@@ -11,35 +11,28 @@ import "@/app/globals.css";
 
 //  Metadata Base (Critical for Social Sharing)
 export const metadata: Metadata = {
-  metadataBase: new URL('https://adilmunawar.vercel.app'), 
-  
+  metadataBase: new URL('https://adilmunawar.vercel.app'),
+  alternates: {
+    canonical: '/', // Fixes duplicate content warning
+  },
   title: {
     default: "Adil Munawar - Strategic Web Developer & AI Architect",
     template: "%s | Adil Munawar"
   },
-  description: "Portfolio of Adil Munawar, Project Lead at Nexsus Orbits and Senior Full Stack Developer. Specializing in High-Performance Next.js, RAG AI Agents (Zenith), and TSQL Database Administration.",
-  keywords: [
-    "Adil Munawar", "AdilMunawarX", "Project Lead Nexsus Orbits", 
-    "Web Developer Lahore", "AI Architect Pakistan", "Ethical Hacker",
-    "TSQL Expert", "RAG AI Specialist", "Next.js Developer"
-  ],
-  authors: [{ name: "Adil Munawar" }],
+  description: "Portfolio of Adil Munawar, Project Lead at Nexsus Orbits. Specialized in Next.js, RAG AI Agents, and Enterprise Systems. Optimized for Human & AI Interaction.",
+  keywords: ["Adil Munawar", "AdilMunawarX", "AI Architect", "Web Developer Lahore", "Next.js Expert", "RAG Agent Developer"],
+  authors: [{ name: "Adil Munawar", url: "https://adilmunawar.vercel.app" }],
   creator: "Adil Munawar",
+  publisher: "Adil Munawar",
+  category: "technology", // Fixes "missing category" warning
   openGraph: {
-    type: "website",
+    type: "profile",
     locale: "en_US",
     url: "https://adilmunawar.vercel.app",
     title: "Adil Munawar - Strategic Web Developer",
-    description: "Building the next generation of web applications with AI, RAG, and Enterprise architecture.",
+    description: "Building the next generation of web applications with AI and Enterprise architecture.",
     siteName: "Adil Munawar Portfolio",
-    images: [
-      {
-        url: "/zenith.png",
-        width: 1200,
-        height: 630,
-        alt: "Adil Munawar Portfolio & Zenith AI",
-      },
-    ],
+    images: [{ url: "/zenith.png", width: 1200, height: 630, alt: "Adil Munawar" }],
   },
   robots: {
     index: true,
@@ -64,6 +57,7 @@ export const metadata: Metadata = {
   },
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -86,13 +80,6 @@ export default function RootLayout({
       "height": 800
     },
     
-    //  Vital Stats
-    "birthDate": "2005-06-10",
-    "telephone": "+92-324-4965220",
-    "nationality": {
-      "@type": "Country",
-      "name": "Pakistan"
-    },
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Lahore",

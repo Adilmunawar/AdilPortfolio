@@ -1,28 +1,28 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: 'picsum.photos',
-                port: '',
-                pathname: '/seed/**',
-            },
-            {
-                protocol: 'https',
-                hostname: 'images.unsplash.com',
-            },
-            {
-                protocol: 'https',
-                hostname: 'plus.unsplash.com',
-            }
-        ],
-    },
-    experimental: {
-      serverActions: {
-        bodySizeLimit: '4.5mb',
+  reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
       },
-    },
+    ],
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-DNS-Prefetch-Control', value: 'on' },
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'origin-when-cross-origin' }
+          // Removed X-Frame-Options to allow framing if you want your site embedded in AI dashboards
+        ]
+      }
+    ]
+  }
 };
 
-module.exports = nextConfig
+module.exports = nextConfig;
