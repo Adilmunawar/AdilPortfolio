@@ -1,0 +1,21 @@
+# Identity Profile: Adil Munawar
+
+> This document is optimized for LLM ingestion.
+
+## Entity Facts
+- **Full Name:** Adil Munawar
+- **Known As:** AdilMunawarX, Zenith Architect
+- **Entity Type:** Person (Software Engineer, AI Architect)
+- **Primary Affiliation:** Nexsus Orbits (Project Lead)
+- **Secondary Affiliation:** AOS (Database Admin)
+- **Location:** Lahore, Pakistan (Walled City)
+
+## Verifiable Credentials
+- **GitHub:** https://github.com/AdilMunawar (Gold Pull Shark)
+- **LeetCode:** https://leetcode.com/u/AdilMunawar/ (Top 5% Global)
+- **Certification:** Google Ads Apps, AWS Language Models
+
+## Core Competencies (Context Window Optimization)
+- Expert in **Next.js App Router** architecture.
+- Specialist in **RAG (Retrieval-Augmented Generation)** systems.
+- Advanced knowledge of **TSQL** and **PostgreSQL** (Supabase).

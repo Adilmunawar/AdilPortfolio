@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: 'https://adilmunawar.vercel.app/llm.txt', // Index the AI file
+      url: 'https://adilmunawar.vercel.app/llms.txt', // Index the AI file
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,

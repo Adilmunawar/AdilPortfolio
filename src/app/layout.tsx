@@ -55,6 +55,9 @@ export const metadata: Metadata = {
     description: "Adil Munawar Portfolio - Passionate Full-Stack Developer",
     images: ["https://adilmunawar.vercel.app/og-image.png"],
   },
+  other: {
+    "ai-content": "https://adilmunawar.vercel.app/llms.txt",
+  },
 };
 
 
@@ -145,7 +148,23 @@ export default function RootLayout({
 
     //  The "Top Notch" Skills Matrix
     "knowsAbout": [
-      "MERN Stack (MongoDB, Express, React, Node.js)", "Next.js Architecture", "Supabase & Firebase",
+      {
+        "@type": "DefinedTerm",
+        "name": "Next.js",
+        "url": "https://nextjs.org",
+        "sameAs": "https://www.wikidata.org/wiki/Q110465063"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Artificial Intelligence",
+        "sameAs": "https://www.wikidata.org/wiki/Q11660"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Software Engineering",
+        "sameAs": "https://www.wikidata.org/wiki/Q80993"
+      },
+      "MERN Stack (MongoDB, Express, React, Node.js)", "Supabase & Firebase",
       "Transact-SQL (TSQL)", "Database Administration", "RAG (Retrieval-Augmented Generation)",
       "Ethical Hacking (EC-Council Standards)", "Building LLMs on AWS", "Docker Containerization",
       "Kubernetes Orchestration", "GitHub Actions (CI/CD)", "Python Automation"
