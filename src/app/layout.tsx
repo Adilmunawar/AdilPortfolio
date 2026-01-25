@@ -156,39 +156,86 @@ export default function RootLayout({
 
     // 🧠 The "Top Notch" Skills Matrix
     "knowsAbout": [
-      // Core Stack
-      "MERN Stack (MongoDB, Express, React, Node.js)",
-      "Next.js Architecture",
-      "Supabase & Firebase",
-      
-      // Database Mastery
-      "Transact-SQL (TSQL)",
-      "Database Administration",
-      
-      // AI & Advanced Tech
-      "RAG (Retrieval-Augmented Generation)",
-      "Ethical Hacking (EC-Council Standards)",
-      "Building LLMs on AWS",
-      
-      // DevOps & Tools
-      "Docker Containerization",
-      "Kubernetes Orchestration",
-      "GitHub Actions (CI/CD)",
-      "Python Automation"
+      "MERN Stack (MongoDB, Express, React, Node.js)", "Next.js Architecture", "Supabase & Firebase",
+      "Transact-SQL (TSQL)", "Database Administration", "RAG (Retrieval-Augmented Generation)",
+      "Ethical Hacking (EC-Council Standards)", "Building LLMs on AWS", "Docker Containerization",
+      "Kubernetes Orchestration", "GitHub Actions (CI/CD)", "Python Automation"
     ],
     
+    // 📢 Services Offered
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Web Development & AI Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Full-Stack Development",
+            "description": "End-to-end web application development using modern technologies like React, Node.js, and cloud platforms.",
+            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Mobile App Development",
+            "description": "Cross-platform mobile applications with seamless user experiences. Specializing in React Native and hybrid app development.",
+            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Digital Solutions",
+            "description": "Custom digital solutions including corporate management systems, social platforms, and automation tools.",
+            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "System Integration",
+            "description": "Seamless integration of various systems and APIs to create unified digital ecosystems.",
+            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Performance Optimization",
+            "description": "Website and application performance optimization and SEO implementation to maximize your digital presence.",
+            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Rapid Prototyping",
+            "description": "Quick development of MVPs and prototypes to validate ideas and accelerate time-to-market.",
+            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
+          }
+        }
+      ]
+    },
+
     "description": "Adil Munawar is a Project Lead at Nexsus Orbits and Database Admin at AOS. A specialist in RAG AI Agents and TSQL, he holds 'Gold Pull Shark' status on GitHub and ranks in the Top 5% on LeetCode."
   };
 
   return (
-    <html lang="en" className={`${GeistSans.className} ${GeistMono.variable} dark scroll-smooth`}>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} dark scroll-smooth`}>
        <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased bg-background text-foreground">
+      <body className="antialiased bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-200">
         <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -212,3 +259,4 @@ export default function RootLayout({
     </html>
   );
 }
+
