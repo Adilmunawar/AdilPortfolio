@@ -62,7 +62,7 @@ export function TestimonialsMinimal() {
   return (
     <div className="flex flex-col items-center gap-10 py-16">
       {/* Quote Container */}
-      <div className="relative px-8 min-h-[200px] flex items-center">
+      <div className="relative px-8 h-64 flex items-center">
         <span className="absolute -left-2 -top-6 text-7xl font-serif text-foreground/[0.06] select-none pointer-events-none">
           "
         </span>
