@@ -78,7 +78,6 @@
   width: auto;
   display: block;
   object-fit: contain;
-  image-rendering: -webkit-optimize-contrast;
   -webkit-user-drag: none;
   pointer-events: none;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
