@@ -1,12 +1,14 @@
 
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, CheckCircle2, TrendingUp, Award, X } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import leetCodeStats from '@/lib/leetcode-stats.json';
+import useEmblaCarousel, { type EmblaCarouselType } from 'embla-carousel-react'
+import Autoplay from 'embla-carousel-autoplay'
 
 const badges = [
     { src: '/leetcode/dcc-2025-8.png', alt: 'August 2025 Daily Challenge' },
@@ -19,8 +21,6 @@ const badges = [
     { src: '/leetcode/lg25100 (1).png', alt: '100 Day Badge' },
 ];
 
-const mostRecentBadge = badges[0];
-
 const THEME = {
   easy: '#34d399',      // emerald-400
   medium: '#f59e0b',     // amber-500
@@ -30,6 +30,15 @@ const THEME = {
 };
 
 const GaugeCircle = ({ easy, medium, hard, size = 150, stroke = 10 }) => {
+    const totalSolved = easy + medium + hard;
+    if (totalSolved === 0) { // Avoid division by zero
+        easy = medium = hard = 1/3;
+    } else {
+        easy = easy / totalSolved;
+        medium = medium / totalSolved;
+        hard = hard / totalSolved;
+    }
+    
     const radius = (size - stroke) / 2;
     const circumference = radius * 2 * Math.PI;
     const arc = circumference * (270 / 360);
@@ -91,7 +100,59 @@ const LeetCodeStats = () => {
     
     const [isExpanded, setIsExpanded] = useState(false);
     const [isHoveringStats, setIsHoveringStats] = useState(false);
-    const [badgeIndex, setBadgeIndex] = useState(0);
+    const [mostRecentBadge, setMostRecentBadge] = useState(badges[0]);
+
+    const [emblaRef, emblaApi] = useEmblaCarousel(
+      { loop: true, align: 'center' },
+      [Autoplay({ delay: 2500, stopOnInteraction: true, stopOnMouseEnter: true })]
+    );
+    const [scales, setScales] = useState<number[]>([]);
+
+    const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
+        if (!emblaApi) return;
+        const selectedIndex = emblaApi.selectedScrollSnap();
+        setMostRecentBadge(badges[selectedIndex]);
+    }, []);
+
+    const onScroll = useCallback(() => {
+        if (!emblaApi) return;
+        const engine = emblaApi.internalEngine();
+        const scrollProgress = emblaApi.scrollProgress();
+
+        const newScales = emblaApi.scrollSnapList().map((scrollSnap, index) => {
+            let diff = scrollSnap - scrollProgress;
+            
+            if (engine.options.loop) {
+                engine.slideLooper.loopPoints.forEach((loopItem) => {
+                    const target = loopItem.target();
+                    if (index === loopItem.index && target !== 0) {
+                        const sign = Math.sign(target);
+                        if (sign === -1) diff = scrollSnap - (1 + scrollProgress);
+                        if (sign === 1) diff = scrollSnap + (1 - scrollProgress);
+                    }
+                });
+            }
+            const tweenValue = 1 - Math.abs(diff * 2.5);
+            return 0.8 + 0.35 * Math.max(0, tweenValue);
+        });
+        setScales(newScales);
+    }, [emblaApi]);
+
+
+    useEffect(() => {
+        if (!emblaApi) return;
+        onSelect(emblaApi);
+        onScroll();
+        emblaApi.on('select', onSelect);
+        emblaApi.on('scroll', onScroll);
+        emblaApi.on('reInit', onScroll);
+        emblaApi.on('reInit', onSelect);
+
+        return () => {
+            emblaApi.off('select', onSelect);
+            emblaApi.off('scroll', onScroll);
+        }
+    }, [emblaApi, onSelect, onScroll]);
 
     const stats = useMemo(() => [
         { label: 'Easy', solved: easy.solved, total: easy.total, color: 'text-emerald-400' },
@@ -99,30 +160,18 @@ const LeetCodeStats = () => {
         { label: 'Hard', solved: hard.solved, total: hard.total, color: 'text-rose-500' },
     ], [easy, medium, hard]);
 
-    useEffect(() => {
-        if (!isExpanded) {
-            const interval = setInterval(() => {
-                setBadgeIndex(prev => (prev + 1));
-            }, 2500);
-            return () => clearInterval(interval);
-        }
-    }, [isExpanded]);
-
-    const displayedBadges = useMemo(() => {
-        const len = badges.length;
-        if (len === 0) return [];
-        return [
-            badges[(badgeIndex - 1 + len) % len],
-            badges[badgeIndex % len],
-            badges[(badgeIndex + 1) % len]
-        ];
-    }, [badgeIndex]);
-    
     const solvedRatios = useMemo(() => ({
-        easy: easy.solved / totalQuestions,
-        medium: medium.solved / totalQuestions,
-        hard: hard.solved / totalQuestions,
-    }), [easy.solved, medium.solved, hard.solved, totalQuestions]);
+        easy: totalSolved > 0 ? easy.solved / totalSolved : 0,
+        medium: totalSolved > 0 ? medium.solved / totalSolved : 0,
+        hard: totalSolved > 0 ? hard.solved / totalSolved : 0,
+    }), [easy.solved, medium.solved, hard.solved, totalSolved]);
+
+    const solvedPortions = useMemo(() => ({
+        easy: easy.solved,
+        medium: medium.solved,
+        hard: hard.solved,
+    }), [easy.solved, medium.solved, hard.solved]);
+
 
     return (
         <motion.div layout className="relative bg-cyber-dark/80 rounded-2xl border border-neon-cyan/20 backdrop-blur-sm">
@@ -175,7 +224,7 @@ const LeetCodeStats = () => {
                                                 )}
                                             </motion.div>
                                         </AnimatePresence>
-                                        <GaugeCircle {...solvedRatios} />
+                                        <GaugeCircle {...solvedPortions} />
                                     </div>
                                     <div className="flex flex-col gap-2.5 flex-1">
                                         {stats.map(stat => (
@@ -250,31 +299,20 @@ const LeetCodeStats = () => {
                                         <p className="text-sm text-slate-400">Most Recent Badge</p>
                                         <p className="font-semibold text-white truncate">{mostRecentBadge.alt}</p>
                                     </div>
-                                    <div className="relative mt-auto h-24 flex items-center justify-center overflow-hidden">
-                                        <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-slate-900/50 to-transparent z-10" />
-                                        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-slate-900/50 to-transparent z-10" />
-                                        <AnimatePresence custom={badgeIndex}>
-                                            <motion.div
-                                                key={badgeIndex}
-                                                className="absolute flex items-center justify-center w-full"
-                                                initial={{ x: 100, opacity: 0 }}
-                                                animate={{ x: 0, opacity: 1 }}
-                                                exit={{ x: -100, opacity: 0 }}
-                                                transition={{ type: 'spring', stiffness: 350, damping: 35 }}
-                                            >
-                                                {displayedBadges.length > 0 && displayedBadges.map((badge, i) => (
-                                                    <motion.div
-                                                        key={badge.src + i}
-                                                        animate={{ scale: i === 1 ? 1.15 : 0.8, opacity: i === 1 ? 1 : 0.5, zIndex: i === 1 ? 10 : 1 }}
-                                                        transition={{ duration: 0.4 }}
-                                                        className="w-20 h-20 absolute"
-                                                        style={{ x: `${(i - 1) * 70}px` }}
-                                                    >
-                                                        <Image src={badge.src} alt={badge.alt} width={128} height={128} className="object-contain" />
-                                                    </motion.div>
-                                                ))}
-                                            </motion.div>
-                                        </AnimatePresence>
+                                    <div className="relative mt-auto h-24 flex items-center justify-center cursor-grab active:cursor-grabbing" ref={emblaRef}>
+                                        <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-slate-900/50 to-transparent z-10 pointer-events-none" />
+                                        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-slate-900/50 to-transparent z-10 pointer-events-none" />
+                                        <div className="flex items-center">
+                                            {badges.map((badge, index) => (
+                                                <motion.div
+                                                    key={index}
+                                                    className="relative flex-[0_0_80px] h-20 transition-transform duration-200"
+                                                    style={{ transform: `scale(${scales[index] || 0})` }}
+                                                >
+                                                    <Image src={badge.src} alt={badge.alt} width={128} height={128} className="object-contain w-full h-full" />
+                                                </motion.div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </motion.div>
                             )}
