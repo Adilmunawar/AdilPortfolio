@@ -177,43 +177,44 @@ const LeetCodeStats = () => {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -30, transition: { duration: 0.3 } }}
                                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                                className="md:col-span-2 flex flex-col gap-4 p-6 bg-slate-900/50 rounded-xl border border-slate-700"
+                                className="md:col-span-2 p-6 bg-slate-900/50 rounded-xl border border-slate-700"
                                 onMouseEnter={() => setIsHoveringStats(true)}
                                 onMouseLeave={() => setIsHoveringStats(false)}
                             >
-                                <div className="text-center">
-                                    <p className="text-xs text-slate-400">Global Rank</p>
-                                    <p className="text-2xl font-bold text-white">~{ranking.toLocaleString()}</p>
-                                </div>
-                                
                                 <div className="flex items-center justify-between gap-4">
-                                    <div className="relative w-[150px] h-[150px]">
-                                        <AnimatePresence mode="wait">
-                                            <motion.div
-                                                key={isHoveringStats ? 'acceptance' : 'solved'}
-                                                initial={{ opacity: 0, scale: 0.8 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                exit={{ opacity: 0, scale: 0.8 }}
-                                                transition={{ duration: 0.2 }}
-                                                className="absolute inset-0 flex flex-col items-center justify-center text-center"
-                                            >
-                                                {isHoveringStats ? (
-                                                    <>
-                                                        <TrendingUp className="w-7 h-7 text-neon-cyan mb-1" />
-                                                        <p className="text-3xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
-                                                        <p className="text-xs text-slate-400 mt-1">Acceptance</p>
-                                                    </>
-                                                ) : (
-                                                    <div className="flex flex-col items-center justify-center h-full">
-                                                        <div>
-                                                            <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
-                                                            <p className="text-sm text-emerald-400 flex items-center justify-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
+                                    <div className="flex flex-col items-center">
+                                        <div className="text-center">
+                                            <p className="text-xs text-slate-400">Global Rank</p>
+                                            <p className="text-2xl font-bold text-white">~{ranking.toLocaleString()}</p>
+                                        </div>
+                                        <div className="relative w-[150px] h-[150px] -mt-4">
+                                            <AnimatePresence mode="wait">
+                                                <motion.div
+                                                    key={isHoveringStats ? 'acceptance' : 'solved'}
+                                                    initial={{ opacity: 0, scale: 0.8 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    exit={{ opacity: 0, scale: 0.8 }}
+                                                    transition={{ duration: 0.2 }}
+                                                    className="absolute inset-0 flex flex-col items-center justify-center text-center"
+                                                >
+                                                    {isHoveringStats ? (
+                                                        <>
+                                                            <TrendingUp className="w-7 h-7 text-neon-cyan mb-1" />
+                                                            <p className="text-3xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
+                                                            <p className="text-xs text-slate-400 mt-1">Acceptance</p>
+                                                        </>
+                                                    ) : (
+                                                        <div className="flex flex-col items-center justify-center h-full">
+                                                            <div>
+                                                                <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
+                                                                <p className="text-sm text-emerald-400 flex items-center justify-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                )}
-                                            </motion.div>
-                                        </AnimatePresence>
-                                        <GaugeCircle {...solvedPortions} />
+                                                    )}
+                                                </motion.div>
+                                            </AnimatePresence>
+                                            <GaugeCircle {...solvedPortions} />
+                                        </div>
                                     </div>
                                     <div className="flex flex-col gap-2.5 flex-1">
                                         {stats.map(stat => (
@@ -298,8 +299,8 @@ const LeetCodeStats = () => {
                                                 {badges.map((badge, index) => (
                                                     <div
                                                         key={index}
-                                                        className="relative flex-[0_0_150px] h-40 pl-4 transition-transform duration-300 ease-out"
-                                                        style={{ transform: `scale(${scales[index] || 0.6})` }}
+                                                        className="relative flex-[0_0_150px] h-40 pl-4"
+                                                        style={{ transform: `scale(${scales[index] || 0.6})`, transition: 'transform 0.3s ease-out' }}
                                                     >
                                                         <Image src={badge.src} alt={badge.alt} width={256} height={256} className="object-contain w-full h-full" />
                                                     </div>
