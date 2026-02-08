@@ -7,7 +7,7 @@ import { ArrowRight, CheckCircle2, TrendingUp, X } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import leetCodeStats from '@/lib/leetcode-stats.json';
-import useEmblaCarousel, { type EmblaCarouselType } from 'embla-carousel-react'
+import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 
 const badges = [
@@ -166,10 +166,6 @@ const LeetCodeStats = () => {
                     <h3 className="text-2xl font-bold text-white tracking-widest uppercase">
                         LeetCode Stats
                     </h3>
-                    <div className="text-right">
-                        <p className="text-xs text-slate-400 uppercase tracking-wider">Global Rank</p>
-                        <p className="text-3xl font-bold text-neon-cyan animate-text-glow">~{ranking.toLocaleString()}</p>
-                    </div>
                 </div>
 
                 <motion.div layout className="grid grid-cols-1 md:grid-cols-5 gap-6">
@@ -203,10 +199,16 @@ const LeetCodeStats = () => {
                                                         <p className="text-xs text-slate-400 mt-1">Acceptance</p>
                                                     </>
                                                 ) : (
-                                                    <>
-                                                        <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
-                                                        <p className="text-sm text-emerald-400 flex items-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
-                                                    </>
+                                                    <div className="flex flex-col items-center justify-center h-full">
+                                                        <div className="absolute top-4">
+                                                          <p className="text-xs text-slate-400">Global Rank</p>
+                                                          <p className="text-lg font-bold text-white">~{ranking.toLocaleString()}</p>
+                                                        </div>
+                                                        <div className="mt-8">
+                                                          <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
+                                                          <p className="text-sm text-emerald-400 flex items-center justify-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
+                                                        </div>
+                                                    </div>
                                                 )}
                                             </motion.div>
                                         </AnimatePresence>
@@ -315,4 +317,3 @@ const LeetCodeStats = () => {
 };
 
 export default LeetCodeStats;
-
