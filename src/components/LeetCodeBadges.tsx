@@ -1,4 +1,3 @@
-
 'use client';
 import {
   Drawer,
@@ -16,14 +15,14 @@ import Image from 'next/image';
 import { useEffect } from "react";
 
 const badges = [
-  { src: '/leetcode/202508.gif', alt: 'August Badge 2025' },
-  { src: '/leetcode/202509.gif', alt: 'September Badge 2025' },
-  { src: '/leetcode/202510.gif', alt: 'October Badge 2025' },
-  { src: '/leetcode/202511.gif', alt: 'November Badge 2025' },
-  { src: '/leetcode/25100.gif', alt: '100 Day Badge 2025' },
-  { src: '/leetcode/2550.gif', alt: '50 Day Badge 2025' },
-  { src: '/leetcode/Introduction_to_Pandas.gif', alt: 'Introduction to Pandas' },
-  { src: '/leetcode/Top_SQL_50.gif', alt: 'Top SQL 50' },
+    { src: '/leetcode/dcc-2025-8.png', alt: 'August 2025 Daily Challenge' },
+    { src: '/leetcode/dcc-2025-9.png', alt: 'September 2025 Daily Challenge' },
+    { src: '/leetcode/dcc-2025-10.png', alt: 'October 2025 Daily Challenge' },
+    { src: '/leetcode/dcc-2025-11.png', alt: 'November 2025 Daily Challenge' },
+    { src: '/leetcode/dcc-2025-12.png', alt: 'December 2025 Daily Challenge' },
+    { src: '/leetcode/dcc-2026-1.png', alt: 'January 2026 Daily Challenge' },
+    { src: '/leetcode/lg2550.png', alt: '50 Day Badge' },
+    { src: '/leetcode/lg25100 (1).png', alt: '100 Day Badge' },
 ];
 
 const LeetCodeBadges = () => {
@@ -77,7 +76,6 @@ const LeetCodeBadges = () => {
                     alt={badge.alt}
                     width={120}
                     height={120}
-                    unoptimized // Important for GIFs to prevent them from being converted to static images
                     className="rounded-lg transition-transform duration-300 group-hover:scale-105"
                   />
                   <p className="text-xs text-center text-frost-cyan/70 group-hover:text-frost-white transition-colors">
