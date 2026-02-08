@@ -11,6 +11,7 @@
 │   └── blueprint.md
 ├── public/
 │   ├── adil-munawar-uploads/
+│   │   ├── discord.svg
 │   │   └── eaf50e40-682a-4730-ac3c-407cf3e4896e.png
 │   ├── blogpic/
 │   │   ├── gameserverhack.jpg
