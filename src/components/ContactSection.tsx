@@ -1,14 +1,9 @@
+
 'use client';
 import { Card } from '@/components/ui/card';
 import { Mail, Phone, Github, Instagram, MessageSquare, Linkedin, Send, MapPin, Clock, ArrowUp } from 'lucide-react';
 import { useState } from 'react';
-
-const DiscordIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" {...props}>
-    <title>Discord</title>
-    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4464.8245-.666 1.2111-2.6041-.6017-5.4248-.6017-8.0218 0-.22-.3866-.4554-.8358-.666-1.2111a.0741.0741 0 00-.0785-.0371 19.7913 19.7913 0 00-4.8851 1.5152.069.069 0 00-.0321.0232c-1.8831 3.6343-2.43 7.2193-1.9606 10.584.0361.258.1143.516.2428.7234.024.0371.06.06.0962.0473a18.232 18.232 0 005.1883-2.115.069.069 0 00.003-.0582c-.018-.0232-.0361-.0473-.0541-.0705-1.1542-.8721-2.0009-1.954-2.5353-3.0704a.069.069 0 01.012-.0873c.189-.13.3841-.2471.5942-.3493a.069.069 0 01.0842.0232c.4111.6253.7742 1.2874 1.1954 1.933.018.0232.042.0473.066.0582a15.899 15.899 0 006.3232 0 .069.069 0 00.066-.0582c.4212-.6456.7843-1.3077 1.1954-1.933a.069.069 0 01.0842-.0232c.21.1022.4051.2193.5942.3493a.069.069 0 01.012.0873c-.5344 1.1164-1.3811 2.1983-2.5353 3.0704-.018.0232-.0361.0473-.0541-.0705a.069.069 0 00.003.0582 18.232 18.232 0 005.1883 2.115.069.069 0 00.0962-.0473c.1285-.2074.2067-.4654.2428-.7234.4694-3.3647-.0772-6.9497-1.9606-10.584a.069.069 0 00-.0321-.0232zM8.02 15.3312c-.8223 0-1.488-1.042-1.488-2.314s.6657-2.314 1.488-2.314c.8223 0 1.488 1.042 1.488 2.314.001.0461.001.0922 0 .1383.018 1.1842-.6476 2.1757-1.488 2.1757zm7.9531 0c-.8223 0-1.488-1.042-1.488-2.314s.6657-2.314 1.488-2.314c.8223 0 1.488 1.042 1.488 2.314s-.6657 2.314-1.488 2.314z"/>
-  </svg>
-);
+import Image from 'next/image';
 
 const ContactSection = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
@@ -119,7 +114,7 @@ const ContactSection = () => {
       dotColor: 'bg-neon-cyan'
     },
     {
-      Icon: DiscordIcon,
+      imgSrc: '/adil-munawar-uploads/discord.svg',
       link: 'https://discordapp.com/users/adilmunawar',
       color: 'hover:text-white',
       bgGradient: 'from-neon-cyan/10 to-frost-cyan/10',
@@ -239,7 +234,11 @@ const ContactSection = () => {
                   className={`group relative w-16 h-16 bg-gradient-to-br ${social.bgGradient} ${social.hoverGradient} rounded-2xl flex items-center justify-center transition-all duration-700 hover:scale-125 hover:rotate-12 backdrop-blur-sm border-2 ${social.borderColor} hover:shadow-2xl ${social.shadowColor} text-primary`}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <social.Icon size={24} className="transition-all duration-500 group-hover:scale-110" />
+                  {social.Icon ? (
+                    <social.Icon size={24} className="transition-all duration-500 group-hover:scale-110" />
+                  ) : (
+                    'imgSrc' in social && <Image src={social.imgSrc} alt="Discord Icon" width={24} height={24} className="transition-all duration-500 group-hover:scale-110" />
+                  )}
                   
                   <div className={`absolute -top-1 -right-1 w-3 h-3 ${social.dotColor} rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 animate-pulse`}></div>
                   
@@ -270,3 +269,5 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
+
+    
