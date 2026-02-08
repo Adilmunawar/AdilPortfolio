@@ -187,15 +187,15 @@ const LeetCodeStats = () => {
                             </div>
                         </div>
                         
-                        <div className="flex-grow flex items-center justify-center">
+                        <div className="relative flex-grow flex items-center justify-center overflow-hidden">
                             <LogoLoop
                                 logos={badges}
-                                speed={60}
+                                speed={40}
                                 fadeOut={true}
-                                logoHeight={90}
+                                logoHeight={80}
                                 gap={48}
                                 scaleOnHover={true}
-                                fadeOutColor="hsl(215 28% 17% / 0.5)"
+                                fadeOutColor="hsl(222 47% 11%)"
                             />
                         </div>
                     </motion.div>
