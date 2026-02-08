@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CheckCircle2, TrendingUp, Award, X } from 'lucide-react';
+import { ArrowRight, CheckCircle2, TrendingUp, X } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import leetCodeStats from '@/lib/leetcode-stats.json';
@@ -95,7 +95,7 @@ const LeetCodeStats = () => {
 
     const [emblaRef, emblaApi] = useEmblaCarousel(
       { loop: true, align: 'center' },
-      [Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true })]
+      [Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })]
     );
     const [scales, setScales] = useState<number[]>([]);
 
@@ -104,10 +104,10 @@ const LeetCodeStats = () => {
         const selectedIndex = emblaApi.selectedScrollSnap();
         setMostRecentBadge(badges[selectedIndex]);
     }, []);
-
-    const TWEEN_FACTOR = 1.8;
+    
     const onScroll = useCallback(() => {
         if (!emblaApi) return;
+
         const engine = emblaApi.internalEngine();
         const scrollProgress = emblaApi.scrollProgress();
 
@@ -124,11 +124,19 @@ const LeetCodeStats = () => {
                     }
                 });
             }
+            
+            const TWEEN_FACTOR = 4.2;
             const tweenValue = 1 - Math.abs(diff * TWEEN_FACTOR);
-            return 0.7 + 0.3 * Math.max(0, tweenValue);
+            
+            const baseScale = 0.6;
+            const scaleRange = 0.4;
+            const scale = baseScale + scaleRange * Math.max(0, tweenValue);
+            
+            return scale;
         });
         setScales(newScales);
     }, [emblaApi]);
+
 
     useEffect(() => {
         if (!emblaApi) return;
@@ -161,7 +169,7 @@ const LeetCodeStats = () => {
 
 
     return (
-        <motion.div layout className="relative bg-cyber-dark/80 rounded-2xl border border-neon-cyan/20 backdrop-blur-sm">
+        <motion.div layout className="relative bg-transparent rounded-2xl">
             <div className="p-6 md:p-8">
                 <div className="flex justify-between items-start mb-6">
                     <h3 className="text-2xl font-bold text-white tracking-widest uppercase">
@@ -274,11 +282,11 @@ const LeetCodeStats = () => {
                                     className="flex flex-col flex-grow"
                                 >
                                     <div className="flex justify-between items-start mb-2">
-                                      <div>
+                                      <div className="flex items-baseline gap-4">
                                         <h4 className="text-sm font-semibold text-white">
                                             Badges: <span className="text-xl font-bold">{badges.length}</span>
                                         </h4>
-                                        <div className="flex items-center gap-2 text-xs text-slate-400 mt-1">
+                                        <div className="flex items-center gap-2 text-xs text-slate-400">
                                             <span>Most Recent:</span> 
                                             <span className="font-semibold text-slate-200 truncate">{mostRecentBadge.alt}</span>
                                         </div>
@@ -288,20 +296,19 @@ const LeetCodeStats = () => {
                                       </button>
                                     </div>
                                     
-                                    <div className="relative mt-auto h-32 flex items-center justify-center">
+                                    <div className="relative mt-auto h-40 flex items-center justify-center">
                                         <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-slate-900/50 to-transparent z-10 pointer-events-none" />
                                         <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-900/50 to-transparent z-10 pointer-events-none" />
                                         <div ref={emblaRef} className="overflow-hidden cursor-grab active:cursor-grabbing w-full">
                                             <div className="flex items-center -ml-4">
                                                 {badges.map((badge, index) => (
-                                                    <motion.div
+                                                    <div
                                                         key={index}
-                                                        className="relative flex-[0_0_120px] h-32 pl-4"
-                                                        style={{ transform: `scale(${scales[index] || 0.8})` }}
-                                                        transition={{ type: 'spring', stiffness: 400, damping: 30}}
+                                                        className="relative flex-[0_0_150px] h-40 pl-4 transition-transform duration-300 ease-out"
+                                                        style={{ transform: `scale(${scales[index] || 0.6})` }}
                                                     >
                                                         <Image src={badge.src} alt={badge.alt} width={256} height={256} className="object-contain w-full h-full" />
-                                                    </motion.div>
+                                                    </div>
                                                 ))}
                                             </div>
                                         </div>
