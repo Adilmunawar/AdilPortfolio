@@ -120,15 +120,15 @@ const LeetCodeStats = () => {
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                        className="md:col-span-2 p-6 bg-slate-900/50 rounded-xl border border-slate-700 flex flex-col md:flex-row items-center justify-between"
+                        className="md:col-span-2 p-6 bg-slate-900/50 rounded-xl border border-slate-700 flex flex-col md:flex-row items-stretch justify-between"
                         onMouseEnter={() => setIsHoveringStats(true)}
                         onMouseLeave={() => setIsHoveringStats(false)}
                     >
                        <div className="flex w-full items-stretch">
-                         <div className="flex flex-col justify-between items-center">
+                         <div className="flex-1 flex flex-col justify-between items-center">
                             <div className="text-center">
-                                <p className="text-xs text-slate-400">Global Rank</p>
-                                <p className="text-2xl font-bold text-white">{ranking.toLocaleString()}</p>
+                                <p className="text-xs text-slate-400 uppercase">Global Rank</p>
+                                <p className="text-3xl font-bold text-white tracking-tight">{ranking.toLocaleString()}</p>
                             </div>
                             <div className="relative w-[150px] h-[150px] -mt-4">
                                 <AnimatePresence mode="wait">
@@ -185,12 +185,12 @@ const LeetCodeStats = () => {
                             </div>
                         </div>
                         
-                        <div className="relative flex-grow flex items-center justify-center">
+                        <div className="relative flex-grow flex items-center justify-center overflow-hidden">
                             <LogoLoop
                                 logos={badges}
                                 speed={40}
                                 fadeOut={true}
-                                logoHeight={120}
+                                logoHeight={80}
                                 gap={48}
                                 scaleOnHover={true}
                                 fadeOutColor='hsl(224 33% 14%)'
