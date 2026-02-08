@@ -136,7 +136,7 @@ const ContactSection = () => {
   ];
 
   return (
-    <section id="contact" className="min-h-screen py-20 px-4 relative">
+    <section id="contact" className="py-20 px-4 relative">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-20">
           <div className="inline-block mb-8">
@@ -237,7 +237,7 @@ const ContactSection = () => {
                   {social.Icon ? (
                     <social.Icon size={24} className="transition-all duration-500 group-hover:scale-110" />
                   ) : (
-                    'imgSrc' in social && <Image src={social.imgSrc} alt="Discord Icon" width={24} height={24} className="transition-all duration-500 group-hover:scale-110" />
+                    'imgSrc' in social && <Image src={social.imgSrc} alt="Discord Icon" width={24} height={24} className="transition-all duration-500 group-hover:scale-110 grayscale brightness-0 invert" />
                   )}
                   
                   <div className={`absolute -top-1 -right-1 w-3 h-3 ${social.dotColor} rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 animate-pulse`}></div>
@@ -269,5 +269,3 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
-
-    
