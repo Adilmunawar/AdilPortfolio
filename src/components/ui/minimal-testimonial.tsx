@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
@@ -61,7 +62,7 @@ export function TestimonialsMinimal() {
   return (
     <div className="flex flex-col items-center gap-10 py-16">
       {/* Quote Container */}
-      <div className="relative px-8 min-h-[160px] flex items-center">
+      <div className="relative px-8 min-h-[200px] flex items-center">
         <span className="absolute -left-2 -top-6 text-7xl font-serif text-foreground/[0.06] select-none pointer-events-none">
           "
         </span>
@@ -84,7 +85,7 @@ export function TestimonialsMinimal() {
         {/* Role text */}
         <p
           className={cn(
-            "text-xs text-muted-foreground tracking-[0.2em] uppercase transition-all duration-500 ease-out",
+            "text-xs text-muted-foreground tracking-[0.2em] uppercase transition-all duration-500 ease-out text-center h-8 flex items-center justify-center",
             isAnimating ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0",
           )}
         >
