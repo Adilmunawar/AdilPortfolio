@@ -9,14 +9,14 @@ import { cn } from '@/lib/utils';
 import leetCodeStats from '@/lib/leetcode-stats.json';
 
 const badges = [
-    { src: '/leetcode/Top_SQL_50.jpg', alt: 'Top SQL 50' },
-    { src: '/leetcode/202508.jpg', alt: 'August 2025 Daily Challenge' },
-    { src: '/leetcode/202509.jpg', alt: 'September 2025 Daily Challenge' },
-    { src: '/leetcode/202510.jpg', alt: 'October 2025 Daily Challenge' },
-    { src: '/leetcode/202511.jpg', alt: 'November 2025 Daily Challenge' },
-    { src: '/leetcode/25100.jpg', alt: '100 Day Badge' },
-    { src: '/leetcode/2550.jpg', alt: '50 Day Badge' },
-    { src: '/leetcode/Introduction_to_Pandas.jpg', alt: 'Introduction to Pandas' },
+    { src: '/leetcode/dcc-2025-8.png', alt: 'August 2025 Daily Challenge' },
+    { src: '/leetcode/dcc-2025-9.png', alt: 'September 2025 Daily Challenge' },
+    { src: '/leetcode/dcc-2025-10.png', alt: 'October 2025 Daily Challenge' },
+    { src: '/leetcode/dcc-2025-11.png', alt: 'November 2025 Daily Challenge' },
+    { src: '/leetcode/dcc-2025-12.png', alt: 'December 2025 Daily Challenge' },
+    { src: '/leetcode/dcc-2026-1.png', alt: 'January 2026 Daily Challenge' },
+    { src: '/leetcode/lg2550.png', alt: '50 Day Badge' },
+    { src: '/leetcode/lg25100 (1).png', alt: '100 Day Badge' },
 ];
 
 const mostRecentBadge = badges[0];
