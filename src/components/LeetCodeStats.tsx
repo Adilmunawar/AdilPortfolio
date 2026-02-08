@@ -181,13 +181,13 @@ const LeetCodeStats = () => {
                                 onMouseEnter={() => setIsHoveringStats(true)}
                                 onMouseLeave={() => setIsHoveringStats(false)}
                             >
-                                <div className="flex items-center justify-between gap-4">
+                                <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-4">
                                     <div className="flex flex-col items-center">
                                         <div className="text-center">
                                             <p className="text-xs text-slate-400">Global Rank</p>
-                                            <p className="text-2xl font-bold text-white">~{ranking.toLocaleString()}</p>
+                                            <p className="text-xl font-bold text-white">{ranking.toLocaleString()}</p>
                                         </div>
-                                        <div className="relative w-[150px] h-[150px] -mt-4">
+                                        <div className="relative w-[150px] h-[150px] -mt-2">
                                             <AnimatePresence mode="wait">
                                                 <motion.div
                                                     key={isHoveringStats ? 'acceptance' : 'solved'}
@@ -216,7 +216,7 @@ const LeetCodeStats = () => {
                                             <GaugeCircle {...solvedPortions} />
                                         </div>
                                     </div>
-                                    <div className="flex flex-col gap-2.5 flex-1">
+                                    <div className="flex w-full sm:w-auto flex-col gap-2.5">
                                         {stats.map(stat => (
                                             <div key={stat.label} className="p-3 rounded-lg bg-slate-800/70 border border-slate-700">
                                                 <p className={`text-sm font-medium ${stat.color}`}>{stat.label}</p>
