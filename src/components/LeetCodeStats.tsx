@@ -9,15 +9,16 @@ import leetCodeStats from '@/lib/leetcode-stats.json';
 import { LogoLoop } from './LogoLoop';
 
 const badges = [
-    { src: '/leetcode/Top_SQL_50.gif', alt: 'Top SQL 50' },
-    { src: '/leetcode/Introduction_to_Pandas.gif', alt: 'Introduction to Pandas' },
-    { src: '/leetcode/202511.gif', alt: 'November 2025 Daily Challenge' },
-    { src: '/leetcode/202510.gif', alt: 'October 2025 Daily Challenge' },
-    { src: '/leetcode/202509.gif', alt: 'September 2025 Daily Challenge' },
-    { src: '/leetcode/202508.gif', alt: 'August 2025 Daily Challenge' },
-    { src: '/leetcode/25100.gif', alt: '100 Day Badge' },
-    { src: '/leetcode/2550.gif', alt: '50 Day Badge' },
+    { src: '/leetcode/202601.png', alt: 'January 2026 Daily Challenge' },
+    { src: '/leetcode/202512.png', alt: 'December 2025 Daily Challenge' },
+    { src: '/leetcode/202511.png', alt: 'November 2025 Daily Challenge' },
+    { src: '/leetcode/202510.png', alt: 'October 2025 Daily Challenge' },
+    { src: '/leetcode/202509.png', alt: 'September 2025 Daily Challenge' },
+    { src: '/leetcode/202508.png', alt: 'August 2025 Daily Challenge' },
+    { src: '/leetcode/25100.png', alt: '100 Day Badge' },
+    { src: '/leetcode/2550.png', alt: '50 Day Badge' },
 ];
+
 
 const THEME = {
   easy: '#34d399',      // emerald-400
@@ -124,12 +125,12 @@ const LeetCodeStats = () => {
                         onMouseEnter={() => setIsHoveringStats(true)}
                         onMouseLeave={() => setIsHoveringStats(false)}
                     >
-                        <div className="flex items-center justify-center h-full">
-                           <div className="flex flex-col items-center justify-between gap-4 h-full w-full sm:flex-row">
-                                <div className="flex flex-col items-center justify-between">
+                        <div className="flex items-start h-full">
+                           <div className="flex flex-col sm:flex-row items-start justify-between gap-4 h-full w-full">
+                                <div className="flex flex-col items-center justify-between h-full">
                                     <div className="text-center">
                                         <p className="text-xs text-slate-400">Global Rank</p>
-                                        <p className="text-xl font-bold text-white">~{ranking.toLocaleString()}</p>
+                                        <p className="text-xl font-bold text-white">{ranking.toLocaleString()}</p>
                                     </div>
                                     <div className="relative w-[150px] h-[150px]">
                                         <AnimatePresence mode="wait">
@@ -174,7 +175,7 @@ const LeetCodeStats = () => {
                         layout
                         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                         className={cn(
-                            "relative p-6 bg-slate-900/50 rounded-xl border border-slate-700 flex flex-col md:col-span-3 min-h-[268px]"
+                            "relative p-6 bg-slate-900/50 rounded-xl border border-slate-700 flex flex-col md:col-span-3 min-h-[268px] overflow-hidden"
                         )}
                     >
                         <div className="flex justify-between items-start mb-4">
@@ -187,7 +188,7 @@ const LeetCodeStats = () => {
                             </div>
                         </div>
                         
-                        <div className="relative flex-grow flex items-center justify-center overflow-hidden">
+                        <div className="relative flex-grow flex items-center justify-center">
                             <LogoLoop
                                 logos={badges}
                                 speed={40}
@@ -195,7 +196,7 @@ const LeetCodeStats = () => {
                                 logoHeight={80}
                                 gap={48}
                                 scaleOnHover={true}
-                                fadeOutColor="hsl(222 47% 11%)"
+                                fadeOutColor='hsl(224 33% 14%)'
                             />
                         </div>
                     </motion.div>
