@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
@@ -11,14 +10,14 @@ import useEmblaCarousel, { type EmblaCarouselType } from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 
 const badges = [
-    { src: '/leetcode/dcc-2025-8.png', alt: 'August 2025 Daily Challenge' },
-    { src: '/leetcode/dcc-2025-9.png', alt: 'September 2025 Daily Challenge' },
-    { src: '/leetcode/dcc-2025-10.png', alt: 'October 2025 Daily Challenge' },
-    { src: '/leetcode/dcc-2025-11.png', alt: 'November 2025 Daily Challenge' },
-    { src: '/leetcode/dcc-2025-12.png', alt: 'December 2025 Daily Challenge' },
-    { src: '/leetcode/dcc-2026-1.png', alt: 'January 2026 Daily Challenge' },
-    { src: '/leetcode/lg2550.png', alt: '50 Day Badge' },
-    { src: '/leetcode/lg25100 (1).png', alt: '100 Day Badge' },
+    { src: '/leetcode/202508.png', alt: 'August 2025 Daily Challenge' },
+    { src: '/leetcode/202509.png', alt: 'September 2025 Daily Challenge' },
+    { src: '/leetcode/202510.png', alt: 'October 2025 Daily Challenge' },
+    { src: '/leetcode/202511.png', alt: 'November 2025 Daily Challenge' },
+    { src: '/leetcode/202512.png', alt: 'December 2025 Daily Challenge' },
+    { src: '/leetcode/202601.png', alt: 'January 2026 Daily Challenge' },
+    { src: '/leetcode/2550.png', alt: '50 Day Badge' },
+    { src: '/leetcode/25100.png', alt: '100 Day Badge' },
 ];
 
 const THEME = {
@@ -30,32 +29,24 @@ const THEME = {
 };
 
 const GaugeCircle = ({ easy, medium, hard, totalSolved, totalQuestions, size = 150, stroke = 10 }) => {
-    // Ratio of total solved problems to total available problems
-    const solvedRatioOfAll = totalQuestions > 0 ? totalSolved / totalQuestions : 0;
+    const easyRatioOfAll = totalQuestions > 0 ? easy / totalQuestions : 0;
+    const mediumRatioOfAll = totalQuestions > 0 ? medium / totalQuestions : 0;
+    const hardRatioOfAll = totalQuestions > 0 ? hard / totalQuestions : 0;
 
-    // Ratios of solved problems *within the solved set*
-    const easyRatioOfSolved = totalSolved > 0 ? easy / totalSolved : 0;
-    const mediumRatioOfSolved = totalSolved > 0 ? medium / totalSolved : 0;
-    
     const radius = (size - stroke) / 2;
     const circumference = radius * 2 * Math.PI;
-    const fullArc = circumference * (270 / 360); // The full 270-degree arc for the background
+    const fullArc = circumference * (270 / 360);
 
-    // The length of the filled part of the arc
-    const filledArcLength = fullArc * solvedRatioOfAll;
+    const easyDash = fullArc * easyRatioOfAll;
+    const mediumDash = fullArc * mediumRatioOfAll;
+    const hardDash = fullArc * hardRatioOfAll;
 
-    // The length of each colored segment is its proportion of the filledArcLength
-    const easyDash = filledArcLength * easyRatioOfSolved;
-    const mediumDash = filledArcLength * mediumRatioOfSolved;
-    const hardDash = filledArcLength * (1 - easyRatioOfSolved - mediumRatioOfSolved);
-
-    // Offsets are cumulative lengths of the segments before the current one
     const mediumOffset = -easyDash;
     const hardOffset = -(easyDash + mediumDash);
 
     return (
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-[225deg]">
-            <circle // The background track for all possible questions
+            <circle
                 cx={size / 2} cy={size / 2} r={radius}
                 fill="none"
                 stroke={THEME.background}
@@ -64,8 +55,6 @@ const GaugeCircle = ({ easy, medium, hard, totalSolved, totalQuestions, size = 1
                 strokeDasharray={`${fullArc} ${circumference - fullArc}`}
             />
             
-            {/* The colored segments representing solved questions */}
-            {/* Hard */}
             <motion.circle
                 cx={size / 2} cy={size / 2} r={radius}
                 fill="none" stroke={THEME.hard} strokeWidth={stroke} strokeLinecap="round"
@@ -75,7 +64,6 @@ const GaugeCircle = ({ easy, medium, hard, totalSolved, totalQuestions, size = 1
                 animate={{ strokeDasharray: `${hardDash} ${circumference}` }}
                 transition={{ duration: 1, ease: 'easeOut', delay: 0.6 }}
             />
-            {/* Medium */}
             <motion.circle
                 cx={size / 2} cy={size / 2} r={radius}
                 fill="none" stroke={THEME.medium} strokeWidth={stroke} strokeLinecap="round"
@@ -85,7 +73,6 @@ const GaugeCircle = ({ easy, medium, hard, totalSolved, totalQuestions, size = 1
                 animate={{ strokeDasharray: `${mediumDash} ${circumference}` }}
                 transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
             />
-            {/* Easy */}
             <motion.circle
                 cx={size / 2} cy={size / 2} r={radius}
                 fill="none" stroke={THEME.easy} strokeWidth={stroke} strokeLinecap="round"
@@ -108,7 +95,7 @@ const LeetCodeStats = () => {
 
     const [emblaRef, emblaApi] = useEmblaCarousel(
       { loop: true, align: 'center' },
-      [Autoplay({ delay: 2500, stopOnInteraction: true, stopOnMouseEnter: true })]
+      [Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true })]
     );
     const [scales, setScales] = useState<number[]>([]);
 
@@ -118,6 +105,7 @@ const LeetCodeStats = () => {
         setMostRecentBadge(badges[selectedIndex]);
     }, []);
 
+    const TWEEN_FACTOR = 2.2;
     const onScroll = useCallback(() => {
         if (!emblaApi) return;
         const engine = emblaApi.internalEngine();
@@ -136,12 +124,11 @@ const LeetCodeStats = () => {
                     }
                 });
             }
-            const tweenValue = 1 - Math.abs(diff * 2.5);
-            return 0.8 + 0.35 * Math.max(0, tweenValue);
+            const tweenValue = 1 - Math.abs(diff * TWEEN_FACTOR);
+            return 0.7 + 0.3 * Math.max(0, tweenValue);
         });
         setScales(newScales);
     }, [emblaApi]);
-
 
     useEffect(() => {
         if (!emblaApi) return;
@@ -176,17 +163,17 @@ const LeetCodeStats = () => {
     return (
         <motion.div layout className="relative bg-cyber-dark/80 rounded-2xl border border-neon-cyan/20 backdrop-blur-sm">
             <div className="p-6 md:p-8">
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between items-start mb-6">
                     <h3 className="text-2xl font-bold text-white tracking-widest uppercase">
                         LeetCode Stats
                     </h3>
                     <div className="text-right">
-                        <p className="text-xs text-slate-400">Global Rank</p>
-                        <p className="text-2xl font-bold text-neon-cyan animate-text-glow">~{ranking.toLocaleString()}</p>
+                        <p className="text-xs text-slate-400 uppercase tracking-wider">Global Rank</p>
+                        <p className="text-3xl font-bold text-neon-cyan animate-text-glow">~{ranking.toLocaleString()}</p>
                     </div>
                 </div>
 
-                <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <motion.div layout className="grid grid-cols-1 md:grid-cols-5 gap-6">
                     <AnimatePresence>
                         {!isExpanded && (
                             <motion.div
@@ -195,7 +182,7 @@ const LeetCodeStats = () => {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -30, transition: { duration: 0.3 } }}
                                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                                className="flex flex-col gap-6 p-6 bg-slate-900/50 rounded-xl border border-slate-700"
+                                className="md:col-span-2 flex flex-col gap-6 p-6 bg-slate-900/50 rounded-xl border border-slate-700"
                                 onMouseEnter={() => setIsHoveringStats(true)}
                                 onMouseLeave={() => setIsHoveringStats(false)}
                             >
@@ -244,7 +231,7 @@ const LeetCodeStats = () => {
                         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                         className={cn(
                             "relative p-6 bg-slate-900/50 rounded-xl border border-slate-700 flex flex-col",
-                            isExpanded ? "md:col-span-2 min-h-[400px]" : ""
+                            isExpanded ? "md:col-span-5 min-h-[400px]" : "md:col-span-3"
                         )}
                     >
                         <AnimatePresence mode="wait">
@@ -288,30 +275,33 @@ const LeetCodeStats = () => {
                                 >
                                     <div className="flex justify-between items-start">
                                         <div>
-                                            <p className="text-sm text-slate-400">Badges</p>
-                                            <p className="text-4xl font-bold text-white">{badges.length}</p>
+                                            <p className="text-xs text-slate-400 uppercase tracking-wider">Badges</p>
+                                            <p className="text-5xl font-bold text-white">{badges.length}</p>
                                         </div>
                                         <button onClick={() => setIsExpanded(true)} className="p-2 rounded-full hover:bg-slate-700 transition-colors">
                                             <ArrowRight className="w-5 h-5 text-slate-300" />
                                         </button>
                                     </div>
                                     <div className="mt-4">
-                                        <p className="text-sm text-slate-400">Most Recent Badge</p>
-                                        <p className="font-semibold text-white truncate">{mostRecentBadge.alt}</p>
+                                        <p className="text-xs text-slate-400 uppercase tracking-wider">Most Recent Badge</p>
+                                        <p className="text-lg font-bold text-white truncate">{mostRecentBadge.alt}</p>
                                     </div>
-                                    <div className="relative mt-auto h-24 flex items-center justify-center cursor-grab active:cursor-grabbing" ref={emblaRef}>
-                                        <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-slate-900/50 to-transparent z-10 pointer-events-none" />
-                                        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-slate-900/50 to-transparent z-10 pointer-events-none" />
-                                        <div className="flex items-center">
-                                            {badges.map((badge, index) => (
-                                                <motion.div
-                                                    key={index}
-                                                    className="relative flex-[0_0_80px] h-20"
-                                                    style={{ transform: `scale(${scales[index] || 0.8})` }}
-                                                >
-                                                    <Image src={badge.src} alt={badge.alt} width={128} height={128} className="object-contain w-full h-full" />
-                                                </motion.div>
-                                            ))}
+                                    <div className="relative mt-auto h-24 flex items-center justify-center">
+                                        <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-slate-900/50 to-transparent z-10 pointer-events-none" />
+                                        <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-900/50 to-transparent z-10 pointer-events-none" />
+                                        <div ref={emblaRef} className="overflow-hidden cursor-grab active:cursor-grabbing">
+                                            <div className="flex items-center -ml-4">
+                                                {badges.map((badge, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        className="relative flex-[0_0_90px] h-24 pl-4"
+                                                        style={{ transform: `scale(${scales[index] || 0.8})` }}
+                                                        transition={{ type: 'spring', stiffness: 400, damping: 30}}
+                                                    >
+                                                        <Image src={badge.src} alt={badge.alt} width={128} height={128} className="object-contain w-full h-full" />
+                                                    </motion.div>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                 </motion.div>
