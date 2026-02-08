@@ -181,13 +181,13 @@ const LeetCodeStats = () => {
                                 onMouseEnter={() => setIsHoveringStats(true)}
                                 onMouseLeave={() => setIsHoveringStats(false)}
                             >
-                                <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-4">
-                                    <div className="flex flex-col items-center">
+                                <div className="flex flex-col sm:flex-row items-stretch justify-between gap-6 sm:gap-4 h-full">
+                                    <div className="flex flex-col items-center justify-between">
                                         <div className="text-center">
                                             <p className="text-xs text-slate-400">Global Rank</p>
                                             <p className="text-xl font-bold text-white">{ranking.toLocaleString()}</p>
                                         </div>
-                                        <div className="relative w-[150px] h-[150px] -mt-2">
+                                        <div className="relative w-[150px] h-[150px]">
                                             <AnimatePresence mode="wait">
                                                 <motion.div
                                                     key={isHoveringStats ? 'acceptance' : 'solved'}
@@ -204,12 +204,10 @@ const LeetCodeStats = () => {
                                                             <p className="text-xs text-slate-400 mt-1">Acceptance</p>
                                                         </>
                                                     ) : (
-                                                        <div className="flex flex-col items-center justify-center h-full">
-                                                            <div>
-                                                                <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
-                                                                <p className="text-sm text-emerald-400 flex items-center justify-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
-                                                            </div>
-                                                        </div>
+                                                        <>
+                                                            <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
+                                                            <p className="text-sm text-emerald-400 flex items-center justify-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
+                                                        </>
                                                     )}
                                                 </motion.div>
                                             </AnimatePresence>
