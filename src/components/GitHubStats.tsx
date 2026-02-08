@@ -77,7 +77,7 @@ const GitHubStats = () => {
   }
   
   return (
-    <div className="p-8 group relative">
+    <div className="p-8 group relative bg-cyber-dark/80 rounded-2xl border border-neon-cyan/20 backdrop-blur-sm">
       <div className="relative z-10">
         <div className="text-center mb-6">
           <h3 className="text-2xl font-bold text-white animate-fade-in-up">

@@ -251,8 +251,8 @@ const LeetCodeStats = () => {
                                         <p className="font-semibold text-white truncate">{mostRecentBadge.alt}</p>
                                     </div>
                                     <div className="relative mt-auto h-24 flex items-center justify-center overflow-hidden">
-                                        <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-slate-900/100 to-transparent z-10" />
-                                        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-slate-900/100 to-transparent z-10" />
+                                        <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-slate-900/50 to-transparent z-10" />
+                                        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-slate-900/50 to-transparent z-10" />
                                         <AnimatePresence custom={badgeIndex}>
                                             <motion.div
                                                 key={badgeIndex}
@@ -262,7 +262,7 @@ const LeetCodeStats = () => {
                                                 exit={{ x: -100, opacity: 0 }}
                                                 transition={{ type: 'spring', stiffness: 350, damping: 35 }}
                                             >
-                                                {displayedBadges.map((badge, i) => (
+                                                {displayedBadges.length > 0 && displayedBadges.map((badge, i) => (
                                                     <motion.div
                                                         key={badge.src + i}
                                                         animate={{ scale: i === 1 ? 1.15 : 0.8, opacity: i === 1 ? 1 : 0.5, zIndex: i === 1 ? 10 : 1 }}

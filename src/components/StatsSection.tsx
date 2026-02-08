@@ -21,7 +21,6 @@ const StatsSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.2 }}
-                className="bg-cyber-dark/80 rounded-2xl border border-neon-cyan/20 backdrop-blur-sm"
             >
                 <GitHubStats />
             </motion.div>
