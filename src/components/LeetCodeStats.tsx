@@ -125,14 +125,14 @@ const LeetCodeStats = () => {
                         onMouseEnter={() => setIsHoveringStats(true)}
                         onMouseLeave={() => setIsHoveringStats(false)}
                     >
-                        <div className="flex items-start h-full">
-                           <div className="flex flex-col sm:flex-row items-start justify-between gap-4 h-full w-full">
-                                <div className="flex flex-col items-center justify-between h-full">
+                       <div className="flex items-stretch h-full">
+                           <div className="flex w-full flex-row items-center justify-between gap-4">
+                                <div className="flex flex-col justify-between items-center h-full">
                                     <div className="text-center">
                                         <p className="text-xs text-slate-400">Global Rank</p>
-                                        <p className="text-xl font-bold text-white">{ranking.toLocaleString()}</p>
+                                        <p className="text-2xl font-bold text-white">{ranking.toLocaleString()}</p>
                                     </div>
-                                    <div className="relative w-[150px] h-[150px]">
+                                    <div className="relative w-[150px] h-[150px] -mt-2">
                                         <AnimatePresence mode="wait">
                                             <motion.div
                                                 key={isHoveringStats ? 'acceptance' : 'solved'}
