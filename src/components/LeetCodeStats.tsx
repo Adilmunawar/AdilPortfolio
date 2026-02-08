@@ -1,284 +1,288 @@
 
 'use client';
 
-import { 
-  Radar, 
-  RadarChart, 
-  PolarGrid, 
-  PolarAngleAxis, 
-  ResponsiveContainer,
-} from 'recharts';
-import { Terminal } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, CheckCircle2, TrendingUp, Award, X } from 'lucide-react';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
 import leetCodeStats from '@/lib/leetcode-stats.json';
 
+const badges = [
+    { src: '/leetcode/Top_SQL_50.jpg', alt: 'Top SQL 50' },
+    { src: '/leetcode/202508.jpg', alt: 'August 2025 Daily Challenge' },
+    { src: '/leetcode/202509.jpg', alt: 'September 2025 Daily Challenge' },
+    { src: '/leetcode/202510.jpg', alt: 'October 2025 Daily Challenge' },
+    { src: '/leetcode/202511.jpg', alt: 'November 2025 Daily Challenge' },
+    { src: '/leetcode/25100.jpg', alt: '100 Day Badge' },
+    { src: '/leetcode/2550.jpg', alt: '50 Day Badge' },
+    { src: '/leetcode/Introduction_to_Pandas.jpg', alt: 'Introduction to Pandas' },
+];
 
-// Cyber Palette
+const mostRecentBadge = badges[0];
+
 const THEME = {
-  cyan: '#22d3ee',
-  red: '#f43f5e',
-  amber: '#f59e0b',
-  emerald: '#34d399',
-  white: '#f0f9ff',
-  grid: 'rgba(34, 211, 238, 0.1)',
-  grid2: 'rgba(244, 63, 94, 0.15)',
+  easy: '#34d399',      // emerald-400
+  medium: '#f59e0b',     // amber-500
+  hard: '#f43f5e',       // rose-500
+  background: 'hsl(var(--muted))',
+  foreground: 'hsl(var(--foreground))',
 };
 
-const LeetCodeStats = () => {
-    const { 
-      totalSolved, 
-      easy, 
-      medium, 
-      hard, 
-      ranking, 
-      acceptanceRate, 
-      totalQuestions 
-    } = leetCodeStats;
-    
-    const [mounted, setMounted] = useState(false);
-    const [isHoveringCircular, setIsHoveringCircular] = useState(false);
+const GaugeCircle = ({ easy, medium, hard, size = 150, stroke = 10 }) => {
+    const radius = (size - stroke) / 2;
+    const circumference = radius * 2 * Math.PI;
+    const arc = circumference * (270 / 360);
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-    
-    const radarData1 = useMemo(() => [
-        { subject: 'Dyn. Prog.', A: 95, fullMark: 100 },
-        { subject: 'Backtracking', A: 75, fullMark: 100 },
-        { subject: 'Union Find', A: 60, fullMark: 100 },
-        { subject: 'Div & Conquer', A: 55, fullMark: 100 },
-        { subject: 'Bitmask', A: 45, fullMark: 100 },
-    ], []);
+    const easyOffset = 0;
+    const mediumOffset = arc * easy;
+    const hardOffset = arc * (easy + medium);
 
-    const radarData2 = useMemo(() => [
-        { subject: 'Greedy', A: 88, fullMark: 100 },
-        { subject: 'Graph', A: 92, fullMark: 100 },
-        { subject: 'Trie', A: 70, fullMark: 100 },
-        { subject: 'Segment Tree', A: 65, fullMark: 100 },
-        { subject: 'Geometry', A: 50, fullMark: 100 },
-    ], []);
-
-    // Fallback loading state
-    if (!mounted || (!totalSolved && !ranking)) {
-        return (
-          <div className="p-8">
-             <div className="flex flex-col items-center text-neon-cyan animate-pulse">
-                <Terminal className="w-10 h-10 mb-4" />
-                <p className="font-mono text-sm">INITIALIZING DATA STREAM...</p>
-             </div>
-          </div>
-        );
-    }
+    const easyDash = arc * easy;
+    const mediumDash = arc * medium;
+    const hardDash = arc * hard;
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="w-full p-8 group"
-        >
-            {/* Header Area */}
-            <div className="relative z-10 text-center pb-6 mb-6">
-              <div className="flex justify-center items-center gap-4">
-                <motion.div initial={{ opacity: 0}} animate={{opacity: 1}} transition={{delay: 0.2}}>
-                    <h3 className="text-2xl font-bold text-white tracking-widest uppercase">
-                        LeetCode Stats
-                    </h3>
-                    <p className="text-sm text-neon-cyan/70">@AdilMunawar</p>
-                </motion.div>
-              </div>
-                
-                <motion.div 
-                    initial={{ opacity: 0, scale: 0.8 }} 
-                    animate={{ opacity: 1, scale: 1 }} 
-                    transition={{ delay: 0.4, type: 'spring' }}
-                    className="mt-4 inline-flex items-center gap-3 bg-neon-cyan/10 border border-neon-cyan/20 px-4 py-2 rounded-full"
-                >
-                    <span className="text-xs text-gray-300 uppercase">Global Rank:</span>
-                    <span className="text-lg font-bold text-white">{ranking.toLocaleString()}</span>
-                </motion.div>
-            </div>
-
-            {/* Main Content: Three Charts */}
-            <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 items-center gap-4 min-h-[220px]">
-                {/* Left Radar Chart */}
-                <motion.div className="h-full relative group/radar" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
-                    <ResponsiveContainer width="100%" height={200}>
-                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData1}>
-                            <PolarGrid stroke={THEME.grid} strokeDasharray="3 3" />
-                            <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
-                            <Radar 
-                                dataKey="A" 
-                                stroke={THEME.cyan} 
-                                strokeWidth={2} 
-                                fill={THEME.cyan} 
-                                fillOpacity={0.2} 
-                                animationDuration={800} 
-                                className="group-hover/radar:animate-radar-ripple" 
-                                dot={{ r: 3, fill: THEME.white, stroke: THEME.cyan, strokeWidth: 1 }} 
-                                activeDot={{ r: 5, stroke: THEME.white }}
-                            />
-                        </RadarChart>
-                    </ResponsiveContainer>
-                </motion.div>
-
-                {/* Center Donut Chart */}
-                <motion.div 
-                    className="h-full relative flex items-center justify-center"
-                    onMouseEnter={() => setIsHoveringCircular(true)}
-                    onMouseLeave={() => setIsHoveringCircular(false)}
-                    initial={{ opacity: 0, scale: 0.5 }} 
-                    animate={{ opacity: 1, scale: 1 }} 
-                    transition={{ delay: 0.6, type: 'spring' }}
-                >
-                    <DonutChart
-                        easy={easy.solved}
-                        medium={medium.solved}
-                        hard={hard.solved}
-                        total={totalQuestions}
-                    />
-                    <AnimatePresence>
-                        {!isHoveringCircular ? (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.8 }}
-                                transition={{ duration: 0.3 }}
-                                className="absolute inset-0 flex flex-col items-center justify-center text-center"
-                            >
-                                <p className="text-3xl lg:text-4xl font-black text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">{totalSolved}</p>
-                                <p className="text-sm text-gray-400 -mt-1">/{totalQuestions}</p>
-                                <p className="text-sm font-semibold text-emerald-400 mt-1">Solved</p>
-                            </motion.div>
-                        ) : (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.8 }}
-                                transition={{ duration: 0.3 }}
-                                className="absolute inset-0 flex flex-col items-center justify-center text-center"
-                            >
-                                <div className="flex items-baseline gap-1.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-neon-cyan"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                                    <p className="text-3xl font-black text-white drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]">{acceptanceRate.toFixed(1)}%</p>
-                                </div>
-                                <p className="text-sm font-semibold text-neon-cyan/80 mt-1">Acceptance</p>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </motion.div>
-                
-                {/* Right Radar Chart */}
-                <motion.div className="h-full relative group/radar" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
-                     <ResponsiveContainer width="100%" height={200}>
-                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData2}>
-                            <PolarGrid stroke={THEME.grid2} strokeDasharray="3 3" />
-                            <PolarAngleAxis dataKey="subject" tick={{ fill: THEME.white, fontSize: 10, fontFamily: 'monospace' }} />
-                            <Radar 
-                                dataKey="A" 
-                                stroke={THEME.red} 
-                                strokeWidth={2} 
-                                fill={THEME.amber} 
-                                fillOpacity={0.25} 
-                                animationDuration={800} 
-                                className="group-hover/radar:animate-radar-ripple" 
-                                dot={{ r: 3, fill: THEME.white, stroke: THEME.red, strokeWidth: 1 }}
-                                activeDot={{ r: 5, stroke: THEME.white }}
-                            />
-                        </RadarChart>
-                    </ResponsiveContainer>
-                </motion.div>
-            </div>
-        </motion.div>
+        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-[225deg]">
+            <circle
+                cx={size / 2} cy={size / 2} r={radius}
+                fill="none"
+                stroke={THEME.background}
+                strokeOpacity="0.2"
+                strokeWidth={stroke}
+                strokeDasharray={`${arc} ${circumference - arc}`}
+            />
+            {/* Hard */}
+            <motion.circle
+                cx={size / 2} cy={size / 2} r={radius}
+                fill="none" stroke={THEME.hard} strokeWidth={stroke} strokeLinecap="round"
+                strokeDasharray={`${hardDash} ${circumference - hardDash}`}
+                strokeDashoffset={-hardOffset}
+                initial={{ strokeDashoffset: -hardOffset + arc }}
+                animate={{ strokeDashoffset: -hardOffset }}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.4 }}
+            />
+            {/* Medium */}
+            <motion.circle
+                cx={size / 2} cy={size / 2} r={radius}
+                fill="none" stroke={THEME.medium} strokeWidth={stroke} strokeLinecap="round"
+                strokeDasharray={`${mediumDash} ${circumference - mediumDash}`}
+                strokeDashoffset={-mediumOffset}
+                 initial={{ strokeDashoffset: -mediumOffset + arc }}
+                animate={{ strokeDashoffset: -mediumOffset }}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
+            />
+            {/* Easy */}
+            <motion.circle
+                cx={size / 2} cy={size / 2} r={radius}
+                fill="none" stroke={THEME.easy} strokeWidth={stroke} strokeLinecap="round"
+                strokeDasharray={`${easyDash} ${circumference - easyDash}`}
+                strokeDashoffset={-easyOffset}
+                 initial={{ strokeDashoffset: -easyOffset + arc }}
+                animate={{ strokeDashoffset: -easyOffset }}
+                transition={{ duration: 1, ease: 'easeOut' }}
+            />
+        </svg>
     );
 };
 
-// Custom Donut Chart Component
-const DonutChart = ({ easy, medium, hard, total }: { easy: number, medium: number, hard: number, total: number }) => {
-    const size = 150;
-    const strokeWidth = 12;
-    const radius = (size - strokeWidth) / 2;
-    const circumference = 2 * Math.PI * radius;
-
-    const easyPercent = (easy / total) * 100;
-    const mediumPercent = (medium / total) * 100;
-    const hardPercent = (hard / total) * 100;
+const LeetCodeStats = () => {
+    const { totalSolved, easy, medium, hard, acceptanceRate, totalQuestions, ranking } = leetCodeStats;
     
-    const dashArray = `${circumference} ${circumference}`;
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [isHoveringStats, setIsHoveringStats] = useState(false);
+    const [badgeIndex, setBadgeIndex] = useState(0);
+
+    const stats = useMemo(() => [
+        { label: 'Easy', solved: easy.solved, total: easy.total, color: 'text-emerald-400' },
+        { label: 'Medium', solved: medium.solved, total: medium.total, color: 'text-amber-400' },
+        { label: 'Hard', solved: hard.solved, total: hard.total, color: 'text-rose-500' },
+    ], [easy, medium, hard]);
+
+    useEffect(() => {
+        if (!isExpanded) {
+            const interval = setInterval(() => {
+                setBadgeIndex(prev => (prev + 1));
+            }, 2500);
+            return () => clearInterval(interval);
+        }
+    }, [isExpanded]);
+
+    const displayedBadges = useMemo(() => {
+        const len = badges.length;
+        if (len === 0) return [];
+        return [
+            badges[(badgeIndex - 1 + len) % len],
+            badges[badgeIndex % len],
+            badges[(badgeIndex + 1) % len]
+        ];
+    }, [badgeIndex]);
+    
+    const solvedPercentages = useMemo(() => ({
+        easy: easy.solved / totalSolved,
+        medium: medium.solved / totalSolved,
+        hard: hard.solved / totalSolved,
+    }), [easy.solved, medium.solved, hard.solved, totalSolved]);
 
     return (
-        <div className="relative" style={{ width: size, height: size }}>
-            <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
-                <circle
-                    cx={size / 2}
-                    cy={size / 2}
-                    r={radius}
-                    fill="transparent"
-                    stroke="rgba(34, 211, 238, 0.1)"
-                    strokeWidth={strokeWidth}
-                />
-                <motion.circle
-                    cx={size / 2}
-                    cy={size / 2}
-                    r={radius}
-                    fill="transparent"
-                    stroke={THEME.emerald}
-                    strokeWidth={strokeWidth}
-                    strokeDasharray={dashArray}
-                    strokeDashoffset={circumference}
-                    strokeLinecap="round"
-                    initial={{ strokeDashoffset: circumference }}
-                    animate={{ strokeDashoffset: circumference - (easyPercent / 100) * circumference }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                />
-                <motion.circle
-                    cx={size / 2}
-                    cy={size / 2}
-                    r={radius}
-                    fill="transparent"
-                    stroke={THEME.amber}
-                    strokeWidth={strokeWidth}
-                    strokeDasharray={dashArray}
-                    strokeDashoffset={circumference}
-                    strokeLinecap="round"
-                    initial={{ strokeDashoffset: circumference }}
-                    animate={{ strokeDashoffset: circumference - (mediumPercent / 100) * circumference }}
-                    transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-                    style={{ transform: `rotate(${(easyPercent / 100) * 360}deg)`, transformOrigin: '50% 50%' }}
-                />
-                <motion.circle
-                    cx={size / 2}
-                    cy={size / 2}
-                    r={radius}
-                    fill="transparent"
-                    stroke={THEME.red}
-                    strokeWidth={strokeWidth}
-                    strokeDasharray={dashArray}
-                    strokeDashoffset={circumference}
-                    strokeLinecap="round"
-                    initial={{ strokeDashoffset: circumference }}
-                    animate={{ strokeDashoffset: circumference - (hardPercent / 100) * circumference }}
-                    transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
-                    style={{ transform: `rotate(${((easyPercent + mediumPercent) / 100) * 360}deg)`, transformOrigin: '50% 50%' }}
-                />
-            </svg>
-            <motion.div 
-                className="absolute inset-0 rounded-full border-2 border-transparent group-hover:border-neon-cyan/50 group-hover:animate-pulse"
-                style={{
-                    boxShadow: '0 0 20px -5px rgba(34,211,238,0), 0 0 30px -10px rgba(34,211,238,0)',
-                }}
-                animate={{
-                    boxShadow: [
-                        '0 0 20px -5px rgba(34,211,238,0), 0 0 30px -10px rgba(34,211,238,0)',
-                        '0 0 20px -5px rgba(34,211,238,0.5), 0 0 30px -10px rgba(34,211,238,0.3)',
-                        '0 0 20px -5px rgba(34,211,238,0), 0 0 30px -10px rgba(34,211,238,0)'
-                    ]
-                }}
-                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-            />
-        </div>
+        <motion.div layout className="relative bg-cyber-dark/80 rounded-2xl border border-neon-cyan/20 backdrop-blur-sm">
+            <div className="p-6 md:p-8">
+                <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-2xl font-bold text-white tracking-widest uppercase">
+                        LeetCode Stats
+                    </h3>
+                    <div className="text-right">
+                        <p className="text-xs text-slate-400">Global Rank</p>
+                        <p className="text-2xl font-bold text-neon-cyan animate-text-glow">~{ranking.toLocaleString()}</p>
+                    </div>
+                </div>
+
+                <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <AnimatePresence>
+                        {!isExpanded && (
+                            <motion.div
+                                layoutId="stats-box"
+                                initial={{ opacity: 0, x: -30 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -30, transition: { duration: 0.3 } }}
+                                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                                className="flex flex-col gap-6 p-6 bg-slate-900/50 rounded-xl border border-slate-700"
+                                onMouseEnter={() => setIsHoveringStats(true)}
+                                onMouseLeave={() => setIsHoveringStats(false)}
+                            >
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="relative w-[150px] h-[150px]">
+                                        <AnimatePresence mode="wait">
+                                            <motion.div
+                                                key={isHoveringStats ? 'acceptance' : 'solved'}
+                                                initial={{ opacity: 0, scale: 0.8 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.8 }}
+                                                transition={{ duration: 0.2 }}
+                                                className="absolute inset-0 flex flex-col items-center justify-center text-center"
+                                            >
+                                                {isHoveringStats ? (
+                                                    <>
+                                                        <TrendingUp className="w-7 h-7 text-neon-cyan mb-1" />
+                                                        <p className="text-3xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
+                                                        <p className="text-xs text-slate-400 mt-1">Acceptance</p>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
+                                                        <p className="text-sm text-emerald-400 flex items-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
+                                                    </>
+                                                )}
+                                            </motion.div>
+                                        </AnimatePresence>
+                                        <GaugeCircle {...solvedPercentages} />
+                                    </div>
+                                    <div className="flex flex-col gap-2.5 flex-1">
+                                        {stats.map(stat => (
+                                            <div key={stat.label} className="p-3 rounded-lg bg-slate-800/70 border border-slate-700">
+                                                <p className={`text-sm font-medium ${stat.color}`}>{stat.label}</p>
+                                                <p className="text-lg font-bold text-white">{stat.solved}<span className="text-xs text-slate-400">/{stat.total}</span></p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    <motion.div
+                        layout
+                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                        className={cn(
+                            "relative p-6 bg-slate-900/50 rounded-xl border border-slate-700 flex flex-col",
+                            isExpanded ? "md:col-span-2 min-h-[400px]" : ""
+                        )}
+                    >
+                        <AnimatePresence mode="wait">
+                            {isExpanded ? (
+                                <motion.div
+                                    key="expanded-badges"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                >
+                                    <div className="flex justify-between items-center mb-4">
+                                        <h4 className="text-lg font-bold text-white flex items-center gap-2"><Award className="w-5 h-5 text-amber-400"/> All Badges</h4>
+                                        <button onClick={() => setIsExpanded(false)} className="p-2 rounded-full hover:bg-slate-700 transition-colors">
+                                            <X className="w-5 h-5 text-slate-300" />
+                                        </button>
+                                    </div>
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
+                                        {badges.map((badge, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, scale: 0.8 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                transition={{ duration: 0.3, delay: index * 0.03 }}
+                                                className="group relative flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-slate-800/50 transition-colors"
+                                            >
+                                                <Image src={badge.src} alt={badge.alt} width={128} height={128} className="rounded-lg transition-transform duration-300 group-hover:scale-105" />
+                                                <p className="text-xs text-center text-slate-400 group-hover:text-white transition-colors h-8 flex items-center">
+                                                    {badge.alt}
+                                                </p>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="collapsed-badges"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    className="flex flex-col flex-grow"
+                                >
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <p className="text-sm text-slate-400">Badges</p>
+                                            <p className="text-4xl font-bold text-white">{badges.length}</p>
+                                        </div>
+                                        <button onClick={() => setIsExpanded(true)} className="p-2 rounded-full hover:bg-slate-700 transition-colors">
+                                            <ArrowRight className="w-5 h-5 text-slate-300" />
+                                        </button>
+                                    </div>
+                                    <div className="mt-4">
+                                        <p className="text-sm text-slate-400">Most Recent Badge</p>
+                                        <p className="font-semibold text-white truncate">{mostRecentBadge.alt}</p>
+                                    </div>
+                                    <div className="relative mt-auto h-24 flex items-center justify-center overflow-hidden">
+                                        <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-slate-900/100 to-transparent z-10" />
+                                        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-slate-900/100 to-transparent z-10" />
+                                        <AnimatePresence custom={badgeIndex}>
+                                            <motion.div
+                                                key={badgeIndex}
+                                                className="absolute flex items-center justify-center w-full"
+                                                initial={{ x: 100, opacity: 0 }}
+                                                animate={{ x: 0, opacity: 1 }}
+                                                exit={{ x: -100, opacity: 0 }}
+                                                transition={{ type: 'spring', stiffness: 350, damping: 35 }}
+                                            >
+                                                {displayedBadges.map((badge, i) => (
+                                                    <motion.div
+                                                        key={badge.src + i}
+                                                        animate={{ scale: i === 1 ? 1.15 : 0.8, opacity: i === 1 ? 1 : 0.5, zIndex: i === 1 ? 10 : 1 }}
+                                                        transition={{ duration: 0.4 }}
+                                                        className="w-20 h-20 absolute"
+                                                        style={{ x: `${(i - 1) * 70}px` }}
+                                                    >
+                                                        <Image src={badge.src} alt={badge.alt} width={128} height={128} className="object-contain" />
+                                                    </motion.div>
+                                                ))}
+                                            </motion.div>
+                                        </AnimatePresence>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </motion.div>
+                </motion.div>
+            </div>
+        </motion.div>
     );
 };
 

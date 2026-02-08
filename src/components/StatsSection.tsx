@@ -2,23 +2,30 @@
 import { motion } from 'framer-motion';
 import GitHubStats from './GitHubStats';
 import LeetCodeStats from './LeetCodeStats';
-import LeetCodeBadges from './LeetCodeBadges';
 
 const StatsSection = () => {
   return (
-    <section id="stats" className="px-4 relative overflow-hidden">
+    <section id="stats" className="py-20 px-4 relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 gap-8 items-start max-w-4xl mx-auto">
+        <div className="text-center mb-16 animate-fade-in-up">
+            <h2 className="text-5xl md:text-7xl font-bold mb-6 text-gradient-slow">
+                Stats & Achievements
+            </h2>
+            <p className="text-xl text-frost-cyan max-w-4xl mx-auto leading-relaxed">
+                A data-driven look at my coding journey and accomplishments.
+            </p>
+        </div>
+        <div className="grid grid-cols-1 gap-12 lg:gap-16 items-start">
             <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.2 }}
+                className="bg-cyber-dark/80 rounded-2xl border border-neon-cyan/20 backdrop-blur-sm"
             >
                 <GitHubStats />
             </motion.div>
             <motion.div 
-                className="mt-8"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -28,7 +35,6 @@ const StatsSection = () => {
             </motion.div>
         </div>
       </div>
-      <LeetCodeBadges />
     </section>
   );
 };
