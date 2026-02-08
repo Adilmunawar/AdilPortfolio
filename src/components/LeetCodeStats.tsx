@@ -118,11 +118,11 @@ const LeetCodeStats = () => {
         ];
     }, [badgeIndex]);
     
-    const solvedPercentages = useMemo(() => ({
-        easy: easy.solved / totalSolved,
-        medium: medium.solved / totalSolved,
-        hard: hard.solved / totalSolved,
-    }), [easy.solved, medium.solved, hard.solved, totalSolved]);
+    const solvedRatios = useMemo(() => ({
+        easy: easy.solved / totalQuestions,
+        medium: medium.solved / totalQuestions,
+        hard: hard.solved / totalQuestions,
+    }), [easy.solved, medium.solved, hard.solved, totalQuestions]);
 
     return (
         <motion.div layout className="relative bg-cyber-dark/80 rounded-2xl border border-neon-cyan/20 backdrop-blur-sm">
@@ -175,7 +175,7 @@ const LeetCodeStats = () => {
                                                 )}
                                             </motion.div>
                                         </AnimatePresence>
-                                        <GaugeCircle {...solvedPercentages} />
+                                        <GaugeCircle {...solvedRatios} />
                                     </div>
                                     <div className="flex flex-col gap-2.5 flex-1">
                                         {stats.map(stat => (
