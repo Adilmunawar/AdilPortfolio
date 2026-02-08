@@ -120,44 +120,44 @@ const LeetCodeStats = () => {
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                        className="md:col-span-2 p-6 bg-slate-900/50 rounded-xl border border-slate-700 flex items-stretch"
+                        className="md:col-span-2 p-6 bg-slate-900/50 rounded-xl border border-slate-700 flex flex-col md:flex-row items-center justify-between"
                         onMouseEnter={() => setIsHoveringStats(true)}
                         onMouseLeave={() => setIsHoveringStats(false)}
                     >
-                       <div className="flex w-full flex-col md:flex-row items-center justify-between gap-4">
-                           <div className="flex flex-col items-center justify-between h-full">
-                                <div className="text-center">
-                                    <p className="text-xs text-slate-400">Global Rank</p>
-                                    <p className="text-2xl font-bold text-white">{ranking.toLocaleString()}</p>
-                                </div>
-                                <div className="relative w-[150px] h-[150px] -mt-2">
-                                    <AnimatePresence mode="wait">
-                                        <motion.div
-                                            key={isHoveringStats ? 'acceptance' : 'solved'}
-                                            initial={{ opacity: 0, scale: 0.8 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            exit={{ opacity: 0, scale: 0.8 }}
-                                            transition={{ duration: 0.2 }}
-                                            className="absolute inset-0 flex flex-col items-center justify-center text-center"
-                                        >
-                                            {isHoveringStats ? (
-                                                <>
-                                                    <TrendingUp className="w-7 h-7 text-neon-cyan mb-1" />
-                                                    <p className="text-3xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
-                                                    <p className="text-xs text-slate-400 mt-1">Acceptance</p>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
-                                                    <p className="text-sm text-emerald-400 flex items-center justify-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
-                                                </>
-                                            )}
-                                        </motion.div>
-                                    </AnimatePresence>
-                                    <GaugeCircle {...solvedPortions} />
-                                </div>
-                           </div>
-                            <div className="flex w-full sm:w-auto flex-col gap-2.5">
+                       <div className="flex w-full items-stretch">
+                         <div className="flex flex-col justify-between items-center">
+                            <div className="text-center">
+                                <p className="text-xs text-slate-400">Global Rank</p>
+                                <p className="text-2xl font-bold text-white">{ranking.toLocaleString()}</p>
+                            </div>
+                            <div className="relative w-[150px] h-[150px] -mt-4">
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={isHoveringStats ? 'acceptance' : 'solved'}
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.8 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="absolute inset-0 flex flex-col items-center justify-center text-center"
+                                    >
+                                        {isHoveringStats ? (
+                                            <>
+                                                <TrendingUp className="w-7 h-7 text-neon-cyan mb-1" />
+                                                <p className="text-3xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
+                                                <p className="text-xs text-slate-400 mt-1">Acceptance</p>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
+                                                <p className="text-sm text-emerald-400 flex items-center justify-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
+                                            </>
+                                        )}
+                                    </motion.div>
+                                </AnimatePresence>
+                                <GaugeCircle {...solvedPortions} />
+                            </div>
+                         </div>
+                            <div className="flex flex-col justify-center gap-2.5">
                                 {stats.map(stat => (
                                     <div key={stat.label} className="p-3 rounded-lg bg-slate-800/70 border border-slate-700">
                                         <p className={cn(`text-sm font-medium`, stat.color)}>{stat.label}</p>
@@ -190,7 +190,7 @@ const LeetCodeStats = () => {
                                 logos={badges}
                                 speed={40}
                                 fadeOut={true}
-                                logoHeight={80}
+                                logoHeight={120}
                                 gap={48}
                                 scaleOnHover={true}
                                 fadeOutColor='hsl(224 33% 14%)'
