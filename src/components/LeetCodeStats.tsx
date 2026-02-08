@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
@@ -91,19 +92,13 @@ const LeetCodeStats = () => {
     
     const [isExpanded, setIsExpanded] = useState(false);
     const [isHoveringStats, setIsHoveringStats] = useState(false);
-    const [mostRecentBadge, setMostRecentBadge] = useState(badges[0]);
+    const [mostRecentBadge] = useState(badges[0]);
 
     const [emblaRef, emblaApi] = useEmblaCarousel(
       { loop: true, align: 'center' },
-      [Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })]
+      [Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: false })]
     );
     const [scales, setScales] = useState<number[]>([]);
-
-    const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
-        if (!emblaApi) return;
-        const selectedIndex = emblaApi.selectedScrollSnap();
-        setMostRecentBadge(badges[selectedIndex]);
-    }, []);
     
     const onScroll = useCallback(() => {
         if (!emblaApi) return;
@@ -140,18 +135,14 @@ const LeetCodeStats = () => {
 
     useEffect(() => {
         if (!emblaApi) return;
-        onSelect(emblaApi);
         onScroll();
-        emblaApi.on('select', onSelect);
         emblaApi.on('scroll', onScroll);
         emblaApi.on('reInit', onScroll);
-        emblaApi.on('reInit', onSelect);
 
         return () => {
-            emblaApi.off('select', onSelect);
             emblaApi.off('scroll', onScroll);
         }
-    }, [emblaApi, onSelect, onScroll]);
+    }, [emblaApi, onScroll]);
 
     const stats = useMemo(() => [
         { label: 'Easy', solved: easy.solved, total: easy.total, color: 'text-emerald-400' },
@@ -324,3 +315,4 @@ const LeetCodeStats = () => {
 };
 
 export default LeetCodeStats;
+
