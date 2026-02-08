@@ -92,7 +92,7 @@ const LeetCodeStats = () => {
     
     const [isExpanded, setIsExpanded] = useState(false);
     const [isHoveringStats, setIsHoveringStats] = useState(false);
-    const [mostRecentBadge] = useState(badges[0]);
+    const mostRecentBadge = useMemo(() => badges.find(b => b.alt.includes("January 2026")) || badges[0], []);
 
     const [emblaRef, emblaApi] = useEmblaCarousel(
       { loop: true, align: 'center' },
@@ -177,10 +177,15 @@ const LeetCodeStats = () => {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -30, transition: { duration: 0.3 } }}
                                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                                className="md:col-span-2 flex flex-col gap-6 p-6 bg-slate-900/50 rounded-xl border border-slate-700"
+                                className="md:col-span-2 flex flex-col gap-4 p-6 bg-slate-900/50 rounded-xl border border-slate-700"
                                 onMouseEnter={() => setIsHoveringStats(true)}
                                 onMouseLeave={() => setIsHoveringStats(false)}
                             >
+                                <div className="text-center">
+                                    <p className="text-xs text-slate-400">Global Rank</p>
+                                    <p className="text-2xl font-bold text-white">~{ranking.toLocaleString()}</p>
+                                </div>
+                                
                                 <div className="flex items-center justify-between gap-4">
                                     <div className="relative w-[150px] h-[150px]">
                                         <AnimatePresence mode="wait">
@@ -200,13 +205,9 @@ const LeetCodeStats = () => {
                                                     </>
                                                 ) : (
                                                     <div className="flex flex-col items-center justify-center h-full">
-                                                        <div className="absolute top-4">
-                                                          <p className="text-xs text-slate-400">Global Rank</p>
-                                                          <p className="text-lg font-bold text-white">~{ranking.toLocaleString()}</p>
-                                                        </div>
-                                                        <div className="mt-8">
-                                                          <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
-                                                          <p className="text-sm text-emerald-400 flex items-center justify-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
+                                                        <div>
+                                                            <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
+                                                            <p className="text-sm text-emerald-400 flex items-center justify-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
                                                         </div>
                                                     </div>
                                                 )}
