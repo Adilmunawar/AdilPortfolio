@@ -95,7 +95,7 @@ const LeetCodeStats = () => {
 
     const [emblaRef, emblaApi] = useEmblaCarousel(
       { loop: true, align: 'center' },
-      [Autoplay({ delay: 2500, stopOnInteraction: true, stopOnMouseEnter: true })]
+      [Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true })]
     );
     const [scales, setScales] = useState<number[]>([]);
 
@@ -105,7 +105,7 @@ const LeetCodeStats = () => {
         setMostRecentBadge(badges[selectedIndex]);
     }, []);
 
-    const TWEEN_FACTOR = 2.2;
+    const TWEEN_FACTOR = 1.8;
     const onScroll = useCallback(() => {
         if (!emblaApi) return;
         const engine = emblaApi.internalEngine();
@@ -243,7 +243,7 @@ const LeetCodeStats = () => {
                                     exit={{ opacity: 0 }}
                                 >
                                     <div className="flex justify-between items-center mb-4">
-                                        <h4 className="text-lg font-bold text-white flex items-center gap-2"><Award className="w-5 h-5 text-amber-400"/> All Badges</h4>
+                                        <h4 className="text-lg font-bold text-white flex items-center gap-2">All Badges</h4>
                                         <button onClick={() => setIsExpanded(false)} className="p-2 rounded-full hover:bg-slate-700 transition-colors">
                                             <X className="w-5 h-5 text-slate-300" />
                                         </button>
@@ -257,7 +257,7 @@ const LeetCodeStats = () => {
                                                 transition={{ duration: 0.3, delay: index * 0.03 }}
                                                 className="group relative flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-slate-800/50 transition-colors"
                                             >
-                                                <Image src={badge.src} alt={badge.alt} width={128} height={128} className="rounded-lg transition-transform duration-300 group-hover:scale-105" />
+                                                <Image src={badge.src} alt={badge.alt} width={256} height={256} className="rounded-lg transition-transform duration-300 group-hover:scale-105" />
                                                 <p className="text-xs text-center text-slate-400 group-hover:text-white transition-colors h-8 flex items-center">
                                                     {badge.alt}
                                                 </p>
@@ -274,18 +274,21 @@ const LeetCodeStats = () => {
                                     className="flex flex-col flex-grow"
                                 >
                                     <div className="flex justify-between items-start mb-2">
-                                        <h4 className="text-sm font-semibold text-white flex items-center gap-2">
-                                            <Award className="w-4 h-4 text-amber-400"/> Badges: <span className="text-xl font-bold">{badges.length}</span>
+                                      <div>
+                                        <h4 className="text-sm font-semibold text-white">
+                                            Badges: <span className="text-xl font-bold">{badges.length}</span>
                                         </h4>
-                                        <button onClick={() => setIsExpanded(true)} className="p-2 -mr-2 -mt-2 rounded-full hover:bg-slate-700 transition-colors">
-                                            <ArrowRight className="w-5 h-5 text-slate-300" />
-                                        </button>
+                                        <div className="flex items-center gap-2 text-xs text-slate-400 mt-1">
+                                            <span>Most Recent:</span> 
+                                            <span className="font-semibold text-slate-200 truncate">{mostRecentBadge.alt}</span>
+                                        </div>
+                                      </div>
+                                      <button onClick={() => setIsExpanded(true)} className="p-2 -mr-2 -mt-2 rounded-full hover:bg-slate-700 transition-colors">
+                                          <ArrowRight className="w-5 h-5 text-slate-300" />
+                                      </button>
                                     </div>
-                                    <div className="flex items-center gap-2 text-xs text-slate-400 mb-4">
-                                        <span>Most Recent:</span> 
-                                        <span className="font-semibold text-slate-200 truncate">{mostRecentBadge.alt}</span>
-                                    </div>
-                                    <div className="relative mt-auto h-24 flex items-center justify-center">
+                                    
+                                    <div className="relative mt-auto h-32 flex items-center justify-center">
                                         <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-slate-900/50 to-transparent z-10 pointer-events-none" />
                                         <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-900/50 to-transparent z-10 pointer-events-none" />
                                         <div ref={emblaRef} className="overflow-hidden cursor-grab active:cursor-grabbing w-full">
@@ -293,11 +296,11 @@ const LeetCodeStats = () => {
                                                 {badges.map((badge, index) => (
                                                     <motion.div
                                                         key={index}
-                                                        className="relative flex-[0_0_90px] h-24 pl-4"
+                                                        className="relative flex-[0_0_120px] h-32 pl-4"
                                                         style={{ transform: `scale(${scales[index] || 0.8})` }}
                                                         transition={{ type: 'spring', stiffness: 400, damping: 30}}
                                                     >
-                                                        <Image src={badge.src} alt={badge.alt} width={128} height={128} className="object-contain w-full h-full" />
+                                                        <Image src={badge.src} alt={badge.alt} width={256} height={256} className="object-contain w-full h-full" />
                                                     </motion.div>
                                                 ))}
                                             </div>
