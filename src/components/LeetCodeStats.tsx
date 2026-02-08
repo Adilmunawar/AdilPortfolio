@@ -10,14 +10,14 @@ import useEmblaCarousel, { type EmblaCarouselType } from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 
 const badges = [
-    { src: '/leetcode/202508.png', alt: 'August 2025 Daily Challenge' },
-    { src: '/leetcode/202509.png', alt: 'September 2025 Daily Challenge' },
-    { src: '/leetcode/202510.png', alt: 'October 2025 Daily Challenge' },
-    { src: '/leetcode/202511.png', alt: 'November 2025 Daily Challenge' },
-    { src: '/leetcode/202512.png', alt: 'December 2025 Daily Challenge' },
     { src: '/leetcode/202601.png', alt: 'January 2026 Daily Challenge' },
-    { src: '/leetcode/2550.png', alt: '50 Day Badge' },
+    { src: '/leetcode/202512.png', alt: 'December 2025 Daily Challenge' },
+    { src: '/leetcode/202511.png', alt: 'November 2025 Daily Challenge' },
+    { src: '/leetcode/202510.png', alt: 'October 2025 Daily Challenge' },
+    { src: '/leetcode/202509.png', alt: 'September 2025 Daily Challenge' },
+    { src: '/leetcode/202508.png', alt: 'August 2025 Daily Challenge' },
     { src: '/leetcode/25100.png', alt: '100 Day Badge' },
+    { src: '/leetcode/2550.png', alt: '50 Day Badge' },
 ];
 
 const THEME = {
@@ -95,7 +95,7 @@ const LeetCodeStats = () => {
 
     const [emblaRef, emblaApi] = useEmblaCarousel(
       { loop: true, align: 'center' },
-      [Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true })]
+      [Autoplay({ delay: 2500, stopOnInteraction: true, stopOnMouseEnter: true })]
     );
     const [scales, setScales] = useState<number[]>([]);
 
@@ -273,23 +273,22 @@ const LeetCodeStats = () => {
                                     exit={{ opacity: 0 }}
                                     className="flex flex-col flex-grow"
                                 >
-                                    <div className="flex justify-between items-start">
-                                        <div>
-                                            <p className="text-xs text-slate-400 uppercase tracking-wider">Badges</p>
-                                            <p className="text-5xl font-bold text-white">{badges.length}</p>
-                                        </div>
-                                        <button onClick={() => setIsExpanded(true)} className="p-2 rounded-full hover:bg-slate-700 transition-colors">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h4 className="text-sm font-semibold text-white flex items-center gap-2">
+                                            <Award className="w-4 h-4 text-amber-400"/> Badges: <span className="text-xl font-bold">{badges.length}</span>
+                                        </h4>
+                                        <button onClick={() => setIsExpanded(true)} className="p-2 -mr-2 -mt-2 rounded-full hover:bg-slate-700 transition-colors">
                                             <ArrowRight className="w-5 h-5 text-slate-300" />
                                         </button>
                                     </div>
-                                    <div className="mt-4">
-                                        <p className="text-xs text-slate-400 uppercase tracking-wider">Most Recent Badge</p>
-                                        <p className="text-lg font-bold text-white truncate">{mostRecentBadge.alt}</p>
+                                    <div className="flex items-center gap-2 text-xs text-slate-400 mb-4">
+                                        <span>Most Recent:</span> 
+                                        <span className="font-semibold text-slate-200 truncate">{mostRecentBadge.alt}</span>
                                     </div>
                                     <div className="relative mt-auto h-24 flex items-center justify-center">
                                         <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-slate-900/50 to-transparent z-10 pointer-events-none" />
                                         <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-900/50 to-transparent z-10 pointer-events-none" />
-                                        <div ref={emblaRef} className="overflow-hidden cursor-grab active:cursor-grabbing">
+                                        <div ref={emblaRef} className="overflow-hidden cursor-grab active:cursor-grabbing w-full">
                                             <div className="flex items-center -ml-4">
                                                 {badges.map((badge, index) => (
                                                     <motion.div
