@@ -74,9 +74,9 @@ const LeetCodeBadges = () => {
                   <Image
                     src={badge.src}
                     alt={badge.alt}
-                    width={120}
-                    height={120}
-                    className="rounded-lg transition-transform duration-300 group-hover:scale-105"
+                    width={256}
+                    height={256}
+                    className="rounded-lg transition-transform duration-300 group-hover:scale-105 w-32 h-32"
                   />
                   <p className="text-xs text-center text-frost-cyan/70 group-hover:text-frost-white transition-colors">
                     {badge.alt}
