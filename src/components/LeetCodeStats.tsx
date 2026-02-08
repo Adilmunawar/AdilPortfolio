@@ -29,66 +29,70 @@ const THEME = {
   foreground: 'hsl(var(--foreground))',
 };
 
-const GaugeCircle = ({ easy, medium, hard, size = 150, stroke = 10 }) => {
-    const totalSolved = easy + medium + hard;
-    if (totalSolved === 0) { // Avoid division by zero
-        easy = medium = hard = 1/3;
-    } else {
-        easy = easy / totalSolved;
-        medium = medium / totalSolved;
-        hard = hard / totalSolved;
-    }
+const GaugeCircle = ({ easy, medium, hard, totalSolved, totalQuestions, size = 150, stroke = 10 }) => {
+    // Ratio of total solved problems to total available problems
+    const solvedRatioOfAll = totalQuestions > 0 ? totalSolved / totalQuestions : 0;
+
+    // Ratios of solved problems *within the solved set*
+    const easyRatioOfSolved = totalSolved > 0 ? easy / totalSolved : 0;
+    const mediumRatioOfSolved = totalSolved > 0 ? medium / totalSolved : 0;
     
     const radius = (size - stroke) / 2;
     const circumference = radius * 2 * Math.PI;
-    const arc = circumference * (270 / 360);
+    const fullArc = circumference * (270 / 360); // The full 270-degree arc for the background
 
-    const easyOffset = 0;
-    const mediumOffset = arc * easy;
-    const hardOffset = arc * (easy + medium);
+    // The length of the filled part of the arc
+    const filledArcLength = fullArc * solvedRatioOfAll;
 
-    const easyDash = arc * easy;
-    const mediumDash = arc * medium;
-    const hardDash = arc * hard;
+    // The length of each colored segment is its proportion of the filledArcLength
+    const easyDash = filledArcLength * easyRatioOfSolved;
+    const mediumDash = filledArcLength * mediumRatioOfSolved;
+    const hardDash = filledArcLength * (1 - easyRatioOfSolved - mediumRatioOfSolved);
+
+    // Offsets are cumulative lengths of the segments before the current one
+    const mediumOffset = -easyDash;
+    const hardOffset = -(easyDash + mediumDash);
 
     return (
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-[225deg]">
-            <circle
+            <circle // The background track for all possible questions
                 cx={size / 2} cy={size / 2} r={radius}
                 fill="none"
                 stroke={THEME.background}
                 strokeOpacity="0.2"
                 strokeWidth={stroke}
-                strokeDasharray={`${arc} ${circumference - arc}`}
+                strokeDasharray={`${fullArc} ${circumference - fullArc}`}
             />
+            
+            {/* The colored segments representing solved questions */}
             {/* Hard */}
             <motion.circle
                 cx={size / 2} cy={size / 2} r={radius}
                 fill="none" stroke={THEME.hard} strokeWidth={stroke} strokeLinecap="round"
-                strokeDasharray={`${hardDash} ${circumference - hardDash}`}
-                strokeDashoffset={-hardOffset}
-                initial={{ strokeDashoffset: -hardOffset + arc }}
-                animate={{ strokeDashoffset: -hardOffset }}
-                transition={{ duration: 1, ease: 'easeOut', delay: 0.4 }}
+                strokeDasharray={`${hardDash} ${circumference}`}
+                strokeDashoffset={hardOffset}
+                initial={{ strokeDasharray: `0 ${circumference}` }}
+                animate={{ strokeDasharray: `${hardDash} ${circumference}` }}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.6 }}
             />
             {/* Medium */}
             <motion.circle
                 cx={size / 2} cy={size / 2} r={radius}
                 fill="none" stroke={THEME.medium} strokeWidth={stroke} strokeLinecap="round"
-                strokeDasharray={`${mediumDash} ${circumference - mediumDash}`}
-                strokeDashoffset={-mediumOffset}
-                 initial={{ strokeDashoffset: -mediumOffset + arc }}
-                animate={{ strokeDashoffset: -mediumOffset }}
-                transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
+                strokeDasharray={`${mediumDash} ${circumference}`}
+                strokeDashoffset={mediumOffset}
+                 initial={{ strokeDasharray: `0 ${circumference}` }}
+                animate={{ strokeDasharray: `${mediumDash} ${circumference}` }}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
             />
             {/* Easy */}
             <motion.circle
                 cx={size / 2} cy={size / 2} r={radius}
                 fill="none" stroke={THEME.easy} strokeWidth={stroke} strokeLinecap="round"
-                strokeDasharray={`${easyDash} ${circumference - easyDash}`}
-                strokeDashoffset={-easyOffset}
-                 initial={{ strokeDashoffset: -easyOffset + arc }}
-                animate={{ strokeDashoffset: -easyOffset }}
+                strokeDasharray={`${easyDash} ${circumference}`}
+                strokeDashoffset={0}
+                 initial={{ strokeDasharray: `0 ${circumference}` }}
+                animate={{ strokeDasharray: `${easyDash} ${circumference}` }}
                 transition={{ duration: 1, ease: 'easeOut' }}
             />
         </svg>
@@ -160,17 +164,13 @@ const LeetCodeStats = () => {
         { label: 'Hard', solved: hard.solved, total: hard.total, color: 'text-rose-500' },
     ], [easy, medium, hard]);
 
-    const solvedRatios = useMemo(() => ({
-        easy: totalSolved > 0 ? easy.solved / totalSolved : 0,
-        medium: totalSolved > 0 ? medium.solved / totalSolved : 0,
-        hard: totalSolved > 0 ? hard.solved / totalSolved : 0,
-    }), [easy.solved, medium.solved, hard.solved, totalSolved]);
-
     const solvedPortions = useMemo(() => ({
         easy: easy.solved,
         medium: medium.solved,
         hard: hard.solved,
-    }), [easy.solved, medium.solved, hard.solved]);
+        totalSolved: totalSolved,
+        totalQuestions: totalQuestions,
+    }), [easy.solved, medium.solved, hard.solved, totalSolved, totalQuestions]);
 
 
     return (
@@ -306,8 +306,8 @@ const LeetCodeStats = () => {
                                             {badges.map((badge, index) => (
                                                 <motion.div
                                                     key={index}
-                                                    className="relative flex-[0_0_80px] h-20 transition-transform duration-200"
-                                                    style={{ transform: `scale(${scales[index] || 0})` }}
+                                                    className="relative flex-[0_0_80px] h-20"
+                                                    style={{ transform: `scale(${scales[index] || 0.8})` }}
                                                 >
                                                     <Image src={badge.src} alt={badge.alt} width={128} height={128} className="object-contain w-full h-full" />
                                                 </motion.div>
