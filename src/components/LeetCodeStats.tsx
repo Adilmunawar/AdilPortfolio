@@ -1,24 +1,22 @@
 
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CheckCircle2, TrendingUp, X } from 'lucide-react';
-import Image from 'next/image';
+import { CheckCircle2, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import leetCodeStats from '@/lib/leetcode-stats.json';
-import useEmblaCarousel from 'embla-carousel-react'
-import Autoplay from 'embla-carousel-autoplay'
+import { LogoLoop } from './LogoLoop';
 
 const badges = [
-    { src: '/leetcode/202601.png', alt: 'January 2026 Daily Challenge' },
-    { src: '/leetcode/202512.png', alt: 'December 2025 Daily Challenge' },
-    { src: '/leetcode/202511.png', alt: 'November 2025 Daily Challenge' },
-    { src: '/leetcode/202510.png', alt: 'October 2025 Daily Challenge' },
-    { src: '/leetcode/202509.png', alt: 'September 2025 Daily Challenge' },
-    { src: '/leetcode/202508.png', alt: 'August 2025 Daily Challenge' },
-    { src: '/leetcode/25100.png', alt: '100 Day Badge' },
-    { src: '/leetcode/2550.png', alt: '50 Day Badge' },
+    { src: '/leetcode/Top_SQL_50.gif', alt: 'Top SQL 50' },
+    { src: '/leetcode/Introduction_to_Pandas.gif', alt: 'Introduction to Pandas' },
+    { src: '/leetcode/202511.gif', alt: 'November 2025 Daily Challenge' },
+    { src: '/leetcode/202510.gif', alt: 'October 2025 Daily Challenge' },
+    { src: '/leetcode/202509.gif', alt: 'September 2025 Daily Challenge' },
+    { src: '/leetcode/202508.gif', alt: 'August 2025 Daily Challenge' },
+    { src: '/leetcode/25100.gif', alt: '100 Day Badge' },
+    { src: '/leetcode/2550.gif', alt: '50 Day Badge' },
 ];
 
 const THEME = {
@@ -89,60 +87,8 @@ const GaugeCircle = ({ easy, medium, hard, totalSolved, totalQuestions, size = 1
 
 const LeetCodeStats = () => {
     const { totalSolved, easy, medium, hard, acceptanceRate, totalQuestions, ranking } = leetCodeStats;
-    
-    const [isExpanded, setIsExpanded] = useState(false);
     const [isHoveringStats, setIsHoveringStats] = useState(false);
-    const mostRecentBadge = useMemo(() => badges.find(b => b.alt.includes("January 2026")) || badges[0], []);
-
-    const [emblaRef, emblaApi] = useEmblaCarousel(
-      { loop: true, align: 'center' },
-      [Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: false })]
-    );
-    const [scales, setScales] = useState<number[]>([]);
-    
-    const onScroll = useCallback(() => {
-        if (!emblaApi) return;
-
-        const engine = emblaApi.internalEngine();
-        const scrollProgress = emblaApi.scrollProgress();
-
-        const newScales = emblaApi.scrollSnapList().map((scrollSnap, index) => {
-            let diff = scrollSnap - scrollProgress;
-            
-            if (engine.options.loop) {
-                engine.slideLooper.loopPoints.forEach((loopItem) => {
-                    const target = loopItem.target();
-                    if (index === loopItem.index && target !== 0) {
-                        const sign = Math.sign(target);
-                        if (sign === -1) diff = scrollSnap - (1 + scrollProgress);
-                        if (sign === 1) diff = scrollSnap + (1 - scrollProgress);
-                    }
-                });
-            }
-            
-            const TWEEN_FACTOR = 4.2;
-            const tweenValue = 1 - Math.abs(diff * TWEEN_FACTOR);
-            
-            const baseScale = 0.6;
-            const scaleRange = 0.4;
-            const scale = baseScale + scaleRange * Math.max(0, tweenValue);
-            
-            return scale;
-        });
-        setScales(newScales);
-    }, [emblaApi]);
-
-
-    useEffect(() => {
-        if (!emblaApi) return;
-        onScroll();
-        emblaApi.on('scroll', onScroll);
-        emblaApi.on('reInit', onScroll);
-
-        return () => {
-            emblaApi.off('scroll', onScroll);
-        }
-    }, [emblaApi, onScroll]);
+    const mostRecentBadge = badges[0];
 
     const stats = useMemo(() => [
         { label: 'Easy', solved: easy.solved, total: easy.total, color: 'text-emerald-400' },
@@ -169,146 +115,89 @@ const LeetCodeStats = () => {
                 </div>
 
                 <motion.div layout className="grid grid-cols-1 md:grid-cols-5 gap-6">
-                    <AnimatePresence>
-                        {!isExpanded && (
-                            <motion.div
-                                layoutId="stats-box"
-                                initial={{ opacity: 0, x: -30 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -30, transition: { duration: 0.3 } }}
-                                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                                className="md:col-span-2 p-6 bg-slate-900/50 rounded-xl border border-slate-700"
-                                onMouseEnter={() => setIsHoveringStats(true)}
-                                onMouseLeave={() => setIsHoveringStats(false)}
-                            >
-                                <div className="flex flex-col sm:flex-row items-stretch justify-between gap-6 sm:gap-4 h-full">
-                                    <div className="flex flex-col items-center justify-between">
-                                        <div className="text-center">
-                                            <p className="text-xs text-slate-400">Global Rank</p>
-                                            <p className="text-xl font-bold text-white">{ranking.toLocaleString()}</p>
-                                        </div>
-                                        <div className="relative w-[150px] h-[150px]">
-                                            <AnimatePresence mode="wait">
-                                                <motion.div
-                                                    key={isHoveringStats ? 'acceptance' : 'solved'}
-                                                    initial={{ opacity: 0, scale: 0.8 }}
-                                                    animate={{ opacity: 1, scale: 1 }}
-                                                    exit={{ opacity: 0, scale: 0.8 }}
-                                                    transition={{ duration: 0.2 }}
-                                                    className="absolute inset-0 flex flex-col items-center justify-center text-center"
-                                                >
-                                                    {isHoveringStats ? (
-                                                        <>
-                                                            <TrendingUp className="w-7 h-7 text-neon-cyan mb-1" />
-                                                            <p className="text-3xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
-                                                            <p className="text-xs text-slate-400 mt-1">Acceptance</p>
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
-                                                            <p className="text-sm text-emerald-400 flex items-center justify-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
-                                                        </>
-                                                    )}
-                                                </motion.div>
-                                            </AnimatePresence>
-                                            <GaugeCircle {...solvedPortions} />
-                                        </div>
+                    <motion.div
+                        layoutId="stats-box"
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                        className="md:col-span-2 p-6 bg-slate-900/50 rounded-xl border border-slate-700"
+                        onMouseEnter={() => setIsHoveringStats(true)}
+                        onMouseLeave={() => setIsHoveringStats(false)}
+                    >
+                        <div className="flex items-center justify-center h-full">
+                           <div className="flex flex-col items-center justify-between gap-4 h-full w-full sm:flex-row">
+                                <div className="flex flex-col items-center justify-between">
+                                    <div className="text-center">
+                                        <p className="text-xs text-slate-400">Global Rank</p>
+                                        <p className="text-xl font-bold text-white">~{ranking.toLocaleString()}</p>
                                     </div>
-                                    <div className="flex w-full sm:w-auto flex-col gap-2.5">
-                                        {stats.map(stat => (
-                                            <div key={stat.label} className="p-3 rounded-lg bg-slate-800/70 border border-slate-700">
-                                                <p className={`text-sm font-medium ${stat.color}`}>{stat.label}</p>
-                                                <p className="text-lg font-bold text-white">{stat.solved}<span className="text-xs text-slate-400">/{stat.total}</span></p>
-                                            </div>
-                                        ))}
+                                    <div className="relative w-[150px] h-[150px]">
+                                        <AnimatePresence mode="wait">
+                                            <motion.div
+                                                key={isHoveringStats ? 'acceptance' : 'solved'}
+                                                initial={{ opacity: 0, scale: 0.8 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.8 }}
+                                                transition={{ duration: 0.2 }}
+                                                className="absolute inset-0 flex flex-col items-center justify-center text-center"
+                                            >
+                                                {isHoveringStats ? (
+                                                    <>
+                                                        <TrendingUp className="w-7 h-7 text-neon-cyan mb-1" />
+                                                        <p className="text-3xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
+                                                        <p className="text-xs text-slate-400 mt-1">Acceptance</p>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <p className="text-3xl font-bold text-white">{totalSolved}<span className="text-base text-slate-400">/{totalQuestions}</span></p>
+                                                        <p className="text-sm text-emerald-400 flex items-center justify-center gap-1 mt-1"><CheckCircle2 size={14}/> Solved</p>
+                                                    </>
+                                                )}
+                                            </motion.div>
+                                        </AnimatePresence>
+                                        <GaugeCircle {...solvedPortions} />
                                     </div>
                                 </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                                <div className="flex w-full sm:w-auto flex-col gap-2.5">
+                                    {stats.map(stat => (
+                                        <div key={stat.label} className="p-3 rounded-lg bg-slate-800/70 border border-slate-700">
+                                            <p className={cn(`text-sm font-medium`, stat.color)}>{stat.label}</p>
+                                            <p className="text-lg font-bold text-white">{stat.solved}<span className="text-xs text-slate-400">/{stat.total}</span></p>
+                                        </div>
+                                    ))}
+                                </div>
+                           </div>
+                        </div>
+                    </motion.div>
 
                     <motion.div
                         layout
                         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                         className={cn(
-                            "relative p-6 bg-slate-900/50 rounded-xl border border-slate-700 flex flex-col",
-                            isExpanded ? "md:col-span-5 min-h-[400px]" : "md:col-span-3"
+                            "relative p-6 bg-slate-900/50 rounded-xl border border-slate-700 flex flex-col md:col-span-3 min-h-[268px]"
                         )}
                     >
-                        <AnimatePresence mode="wait">
-                            {isExpanded ? (
-                                <motion.div
-                                    key="expanded-badges"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                >
-                                    <div className="flex justify-between items-center mb-4">
-                                        <h4 className="text-lg font-bold text-white flex items-center gap-2">All Badges</h4>
-                                        <button onClick={() => setIsExpanded(false)} className="p-2 rounded-full hover:bg-slate-700 transition-colors">
-                                            <X className="w-5 h-5 text-slate-300" />
-                                        </button>
-                                    </div>
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
-                                        {badges.map((badge, index) => (
-                                            <motion.div
-                                                key={index}
-                                                initial={{ opacity: 0, scale: 0.8 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ duration: 0.3, delay: index * 0.03 }}
-                                                className="group relative flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-slate-800/50 transition-colors"
-                                            >
-                                                <Image src={badge.src} alt={badge.alt} width={256} height={256} className="rounded-lg transition-transform duration-300 group-hover:scale-105" />
-                                                <p className="text-xs text-center text-slate-400 group-hover:text-white transition-colors h-8 flex items-center">
-                                                    {badge.alt}
-                                                </p>
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                </motion.div>
-                            ) : (
-                                <motion.div
-                                    key="collapsed-badges"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="flex flex-col flex-grow"
-                                >
-                                    <div className="flex justify-between items-start mb-2">
-                                      <div className="flex items-baseline gap-4">
-                                        <h4 className="text-sm font-semibold text-white">
-                                            Badges: <span className="text-xl font-bold">{badges.length}</span>
-                                        </h4>
-                                        <div className="flex items-center gap-2 text-xs text-slate-400">
-                                            <span>Most Recent:</span> 
-                                            <span className="font-semibold text-slate-200 truncate">{mostRecentBadge.alt}</span>
-                                        </div>
-                                      </div>
-                                      <button onClick={() => setIsExpanded(true)} className="p-2 -mr-2 -mt-2 rounded-full hover:bg-slate-700 transition-colors">
-                                          <ArrowRight className="w-5 h-5 text-slate-300" />
-                                      </button>
-                                    </div>
-                                    
-                                    <div className="relative mt-auto h-40 flex items-center justify-center">
-                                        <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-slate-900/50 to-transparent z-10 pointer-events-none" />
-                                        <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-900/50 to-transparent z-10 pointer-events-none" />
-                                        <div ref={emblaRef} className="overflow-hidden cursor-grab active:cursor-grabbing w-full">
-                                            <div className="flex items-center -ml-4">
-                                                {badges.map((badge, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className="relative flex-[0_0_150px] h-40 pl-4"
-                                                        style={{ transform: `scale(${scales[index] || 0.6})`, transition: 'transform 0.3s ease-out' }}
-                                                    >
-                                                        <Image src={badge.src} alt={badge.alt} width={256} height={256} className="object-contain w-full h-full" />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                        <div className="flex justify-between items-start mb-4">
+                            <h4 className="text-sm font-semibold text-white">
+                                Badges: <span className="text-xl font-bold">{badges.length}</span>
+                            </h4>
+                            <div className="flex items-center gap-2 text-xs text-slate-400">
+                                <span>Most Recent:</span> 
+                                <span className="font-semibold text-slate-200 truncate">{mostRecentBadge.alt}</span>
+                            </div>
+                        </div>
+                        
+                        <div className="flex-grow flex items-center justify-center">
+                            <LogoLoop
+                                logos={badges}
+                                speed={60}
+                                fadeOut={true}
+                                logoHeight={90}
+                                gap={48}
+                                scaleOnHover={true}
+                                fadeOutColor="hsl(215 28% 17% / 0.5)"
+                            />
+                        </div>
                     </motion.div>
                 </motion.div>
             </div>
