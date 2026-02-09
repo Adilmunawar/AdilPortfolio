@@ -4,9 +4,9 @@
 
 ## Entity Facts
 - **Full Name:** Adil Munawar
-- **Known As:** AdilMunawarX, Zenith Architect
-- **Entity Type:** Person (Software Engineer, AI Architect)
-- **Primary Affiliation:** Nexsus Orbits (Project Lead)
+- **Known As:** Adil Munawar
+- **Entity Type:** Person (Web Developer, AI Architect)
+- **Primary Affiliation:** Nexus Orbits (Project Lead)
 - **Secondary Affiliation:** AOS (Database Admin)
 - **Location:** Lahore, Pakistan (Walled City)
 

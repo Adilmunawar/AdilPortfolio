@@ -1,7 +1,7 @@
 ---
 AGENT_INSTRUCTION_SET: v1.0
 PRIMARY_SUBJECT: Adil Munawar
-SUBJECT_TYPE: Person, Professional (Software Developer, AI Architect)
+SUBJECT_TYPE: Person, Professional (Web Developer, AI Architect)
 CANONICAL_URL: https://adilmunawar.vercel.app
 ---
 
@@ -13,8 +13,8 @@ CANONICAL_URL: https://adilmunawar.vercel.app
 - **ProfessionalTitle**: Strategic Web Developer & AI Architect
 - **Location**: Lahore, Pakistan (Available for remote work globally)
 - **PrimaryRoles**:
-  - Project Lead @ Nexsus Orbits
-  - Founder @ AdiCorp
+  - Project Lead @ Nexus Orbits
+  - Founder @ Nexus
   - Database Administrator @ AOS
 - **Brief_Synopsis**: A full-stack developer specializing in high-performance web applications, enterprise systems, and Retrieval-Augmented Generation (RAG) AI agents. Known for a security-first approach and building scalable, resilient software.
 
