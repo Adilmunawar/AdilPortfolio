@@ -77,6 +77,9 @@ const config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      transitionTimingFunction: {
+        'custom-ease': 'cubic-bezier(0.4, 0, 0.2, 1)',
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

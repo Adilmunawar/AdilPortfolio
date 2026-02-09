@@ -27,7 +27,17 @@ const THEME = {
   foreground: 'hsl(var(--foreground))',
 };
 
-const GaugeCircle = ({ easy, medium, hard, totalSolved, totalQuestions, size = 150, stroke = 10 }) => {
+interface GaugeCircleProps {
+    easy: number;
+    medium: number;
+    hard: number;
+    totalSolved: number;
+    totalQuestions: number;
+    size?: number;
+    stroke?: number;
+}
+
+const GaugeCircle: React.FC<GaugeCircleProps> = ({ easy, medium, hard, totalSolved, totalQuestions, size = 150, stroke = 10 }) => {
     const easyRatioOfAll = totalQuestions > 0 ? easy / totalQuestions : 0;
     const mediumRatioOfAll = totalQuestions > 0 ? medium / totalQuestions : 0;
     const hardRatioOfAll = totalQuestions > 0 ? hard / totalQuestions : 0;
