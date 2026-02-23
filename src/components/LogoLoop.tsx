@@ -130,48 +130,62 @@ const useAnimationLoop = (
   const lastTimestampRef = useRef<number | null>(null);
   const offsetRef = useRef(0);
   const velocityRef = useRef(0);
+  
+  // ⚡ NEW: Track if component is visible on screen
+  const isVisibleRef = useRef(true); 
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
+    // ⚡ NEW: Intersection Observer setup
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting && lastTimestampRef.current !== null) {
+          // Reset timestamp so it doesn't "jump" when scrolling back
+          lastTimestampRef.current = performance.now(); 
+        }
+      },
+      { threshold: 0 } // Trigger as soon as 1 pixel is off/on screen
+    );
+    observer.observe(track);
+
     const seqSize = isVertical ? seqHeight : seqWidth;
 
-    if (seqSize > 0) {
-      offsetRef.current = ((offsetRef.current % seqSize) + seqSize) % seqSize;
-      const transformValue = isVertical
-        ? `translate3d(0, ${-offsetRef.current}px, 0)`
-        : `translate3d(${-offsetRef.current}px, 0, 0)`;
-      track.style.transform = transformValue;
-    }
-
     const animate = (timestamp: number) => {
-      if (lastTimestampRef.current === null) {
+      // ⚡ NEW: ONLY animate if the user can actually see it!
+      if (isVisibleRef.current) {
+        if (lastTimestampRef.current === null) {
+          lastTimestampRef.current = timestamp;
+        }
+
+        const deltaTime = Math.max(0, timestamp - lastTimestampRef.current) / 1000;
         lastTimestampRef.current = timestamp;
-      }
 
-      const deltaTime = Math.max(0, timestamp - lastTimestampRef.current) / 1000;
-      lastTimestampRef.current = timestamp;
+        let target = targetVelocity;
+        if (isFrozen) {
+          target = 0;
+        } else if (isHovered && hoverSpeed !== undefined) {
+          target = hoverSpeed;
+        }
+        
+        const easingFactor = 1 - Math.exp(-deltaTime / ANIMATION_CONFIG.SMOOTH_TAU);
+        velocityRef.current += (target - velocityRef.current) * easingFactor;
 
-      let target = targetVelocity;
-      if (isFrozen) {
-        target = 0;
-      } else if (isHovered && hoverSpeed !== undefined) {
-        target = hoverSpeed;
-      }
-      
-      const easingFactor = 1 - Math.exp(-deltaTime / ANIMATION_CONFIG.SMOOTH_TAU);
-      velocityRef.current += (target - velocityRef.current) * easingFactor;
+        if (seqSize > 0) {
+          let nextOffset = offsetRef.current + velocityRef.current * deltaTime;
+          nextOffset = ((nextOffset % seqSize) + seqSize) % seqSize;
+          offsetRef.current = nextOffset;
 
-      if (seqSize > 0) {
-        let nextOffset = offsetRef.current + velocityRef.current * deltaTime;
-        nextOffset = ((nextOffset % seqSize) + seqSize) % seqSize;
-        offsetRef.current = nextOffset;
-
-        const transformValue = isVertical
-          ? `translate3d(0, ${-offsetRef.current}px, 0)`
-          : `translate3d(${-offsetRef.current}px, 0, 0)`;
-        track.style.transform = transformValue;
+          const transformValue = isVertical
+            ? `translate3d(0, ${-offsetRef.current}px, 0)`
+            : `translate3d(${-offsetRef.current}px, 0, 0)`;
+          track.style.transform = transformValue;
+        }
+      } else {
+        // If not visible, keep last timestamp updated so we don't jump when it becomes visible
+        lastTimestampRef.current = timestamp;
       }
 
       rafRef.current = requestAnimationFrame(animate);
@@ -180,6 +194,7 @@ const useAnimationLoop = (
     rafRef.current = requestAnimationFrame(animate);
 
     return () => {
+      observer.disconnect(); // Clean up observer
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
