@@ -51,19 +51,21 @@ const HeroSection = () => {
   
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent, index: number) => {
-      const ref = skillRefs.current[index];
-      if (!ref) return;
+      requestAnimationFrame(() => {
+        const ref = skillRefs.current[index];
+        if (!ref) return;
 
-      const rect = ref.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+        const rect = ref.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-      const rotateX = (y / rect.height - 0.5) * -20; // Tilt range
-      const rotateY = (x / rect.width - 0.5) * 20;
+        const rotateX = (y / rect.height - 0.5) * -20; // Tilt range
+        const rotateY = (x / rect.width - 0.5) * 20;
 
-      ref.style.setProperty('--rotate-x', `${rotateX}deg`);
-      ref.style.setProperty('--rotate-y', `${rotateY}deg`);
-      ref.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+        ref.style.setProperty('--rotate-x', `${rotateX}deg`);
+        ref.style.setProperty('--rotate-y', `${rotateY}deg`);
+        ref.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+      });
     };
 
     const handleMouseLeave = (index: number) => {

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { motion, useAnimation } from 'framer-motion';
+import Image from 'next/image';
 
 const certificates = [
   { 
@@ -115,10 +116,12 @@ const Achievements = () => {
             style={{ width: '320px', height: '224px' }}
           >
             <div className="relative w-full h-full rounded-lg overflow-hidden transition-all duration-300 transform-gpu group-hover:scale-105">
-              <img
+              <Image
                 src={item.src}
                 alt={item.alt || ''}
-                className="p-2 object-contain w-full h-full"
+                fill
+                sizes="(max-width: 768px) 100vw, 320px"
+                className="p-2 object-contain"
               />
               <div className="absolute inset-0 bg-cyber-dark/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
                 <p className="text-center text-sm text-frost-cyan leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-150">
