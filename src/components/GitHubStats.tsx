@@ -1,4 +1,4 @@
-'use client';
+// 🚀 NOTICE: Removed 'use client'. This runs entirely on the Vercel server now.
 import { Card } from '@/components/ui/card';
 import contributionData from '@/lib/github-contributions.json';
 
@@ -26,6 +26,7 @@ const GitHubStats = () => {
     }
   };
 
+  // This heavy loop now runs on the server, saving the client's CPU!
   const getWeeks = () => {
     if (!contributions || contributions.length === 0) {
       return [];
