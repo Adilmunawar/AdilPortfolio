@@ -1,8 +1,8 @@
 {
-  "totalSolved": 1067,
+  "totalSolved": 1068,
   "totalQuestions": 3865,
-  "acceptanceRate": 88.46994535519126,
-  "ranking": 22820,
+  "acceptanceRate": 88.38604143947656,
+  "ranking": 22771,
   "easy": {
     "total": 930,
     "solved": 250
@@ -13,6 +13,6 @@
   },
   "hard": {
     "total": 913,
-    "solved": 384
+    "solved": 385
   }
 }
