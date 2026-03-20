@@ -1,48 +1,48 @@
 'use client';
 import { Card } from '@/components/ui/card';
-import { Code, Smartphone, Search, Wrench, TrendingUp, Zap } from 'lucide-react';
+import { Code, Server, Globe, Wrench, Zap, Database, Cloud, Settings } from 'lucide-react';
 
 const ServicesSection = () => {
   const services = [
     {
       Icon: Code,
-      title: 'Full-Stack Development',
-      description: 'End-to-end web application development using modern technologies like React, Node.js, and cloud platforms. Creating scalable and efficient solutions for your business needs.',
+      title: 'Full-Stack Web Development',
+      description: 'Engineering complex, full-scale web applications from scratch. Mastery of the MERN/Next.js stack with a focus on maintainable, optimized codebases.',
       gradient: 'from-cyan-900 to-sky-900',
       accentColor: 'text-neon-cyan'
     },
     {
-      Icon: Smartphone,
-      title: 'Mobile App Development',
-      description: 'Cross-platform mobile applications with seamless user experiences. Specializing in React Native and hybrid app development with native performance.',
+      Icon: Cloud,
+      title: 'Deployment & CI/CD Strategies',
+      description: 'Architecting robust deployment pipelines using GitHub Actions, Docker, and Kubernetes. Ensuring high availability and zero-downtime releases.',
       gradient: 'from-cyan-800 to-sky-800',
       accentColor: 'text-neon-cyan'
     },
     {
-      Icon: TrendingUp,
-      title: 'Digital Solutions',
-      description: 'Custom digital solutions including corporate management systems, social platforms, and automation tools designed to streamline business operations.',
+      Icon: Database,
+      title: 'Enterprise Database Design',
+      description: 'Expert-level T-SQL and PostgreSQL architecture. Handling massive datasets with complex relationships, indexing strategies, and real-time synchronization.',
       gradient: 'from-cyan-900 to-sky-900',
       accentColor: 'text-neon-cyan'
     },
     {
-      Icon: Wrench,
-      title: 'System Integration',
-      description: 'Seamless integration of various systems and APIs to create unified digital ecosystems. Database management and server configuration expertise.',
+      Icon: Settings,
+      title: 'Codebase Management & Scaling',
+      description: 'Refactoring legacy systems into modern architectures. implementing strict typing, automated testing, and scalable folder structures for large teams.',
       gradient: 'from-cyan-800 to-sky-800',
-      accentColor: 'text-neon-cyan'
-    },
-    {
-      Icon: Search,
-      title: 'Performance Optimization',
-      description: 'Website and application performance optimization, SEO implementation, and user experience enhancement to maximize your digital presence.',
-      gradient: 'from-cyan-900 to-sky-900',
       accentColor: 'text-neon-cyan'
     },
     {
       Icon: Zap,
-      title: 'Rapid Prototyping',
-      description: 'Quick development of MVPs and prototypes to validate ideas and accelerate time-to-market using agile development methodologies.',
+      title: 'AI & RAG Implementation',
+      description: 'Integrating Generative AI and Retrieval-Augmented Generation (RAG) into production environments to automate workflows and enhance user intelligence.',
+      gradient: 'from-cyan-900 to-sky-900',
+      accentColor: 'text-neon-cyan'
+    },
+    {
+      Icon: Globe,
+      title: 'GIS & Mapping Automation',
+      description: 'Specialized services in Geographic Information Systems, automating parcel digitization and boundary tracing from high-resolution satellite imagery.',
       gradient: 'from-cyan-800 to-sky-800',
       accentColor: 'text-neon-cyan'
     },
@@ -53,10 +53,10 @@ const ServicesSection = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient-slow animate-fade-in-up drop-shadow-lg">
-            Services
+            Specialized Services
           </h2>
           <p className="text-xl text-frost-cyan max-w-3xl mx-auto animate-fade-in-up drop-shadow-md" style={{ animationDelay: '0.2s' }}>
-            Delivering cutting-edge solutions with modern technologies and best practices
+            Delivering high-concurrency web systems and enterprise-grade deployment architectures
           </p>
         </div>
 
