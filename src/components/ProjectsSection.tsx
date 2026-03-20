@@ -1,4 +1,3 @@
-
 'use client';
 import { Sparkles, Github, ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -75,11 +74,11 @@ const ProjectsSection = () => {
               Featured Work
             </span>
           </div>
-          <p className="text-xl text-frost-cyan max-w-4xl mx-auto leading-relaxed">
+          <h2 className="text-xl text-frost-cyan max-w-4xl mx-auto leading-relaxed">
             Explore my latest creations showcasing modern web technologies, 
             <span className="text-frost-white font-semibold"> innovative solutions</span>, and 
             cutting-edge design principles
-          </p>
+          </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">

@@ -95,17 +95,17 @@ const HeroSection = () => {
     <section id="home" className="min-h-screen flex items-center justify-center px-4 pt-16 relative overflow-hidden">
       <div className="max-w-7xl mx-auto text-center relative z-10">
         <div className="animate-fade-in-up">
-          {/* Professional name with subtle effects */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 drop-shadow-lg relative">
+          {/* H1 fix: Perfect match for Meta Title with hidden keywords */}
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 drop-shadow-lg relative flex flex-col items-center">
             <a href="#home" className="text-frost-white relative z-10 animate-text-glow">Adil Munawar</a>
+            <span className="sr-only"> - Strategic Web Developer & AI Architect</span>
           </h1>
           
-          {/* Professional subtitle */}
+          {/* Subtitle uses P/Div instead of H3 for heading diet */}
           <div className="relative mb-8 h-12 flex items-center justify-center">
             <TextRoller roles={toRotate} />
           </div>
 
-          {/* Skills preview */}
           <div className="flex flex-wrap justify-center gap-4 mb-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             {skills.map((skill, index) => (
               <div
@@ -123,7 +123,6 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Redesigned social links with advanced animations */}
         <div className="flex justify-center space-x-4 mb-12 animate-scale-in" style={{
           animationDelay: '0.6s'
         }}>
@@ -161,7 +160,6 @@ const HeroSection = () => {
           ))}
         </div>
 
-        {/* Professional CTA button */}
         <div className="animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
           <a
             href="#about"

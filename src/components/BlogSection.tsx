@@ -143,10 +143,10 @@ const BlogSection = () => {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16 animate-fade-in-up">
             <div className="inline-block mb-8">
-              <span className="text-frost-cyan text-sm font-semibold tracking-widest uppercase bg-cyber-dark/50 px-6 py-3 rounded-full border border-neon-cyan/30 backdrop-blur-sm">
+              <h2 className="text-frost-cyan text-sm font-semibold tracking-widest uppercase bg-cyber-dark/50 px-6 py-3 rounded-full border border-neon-cyan/30 backdrop-blur-sm">
                 <Rss className="inline w-4 h-4 mr-2 text-neon-cyan" />
                 From the Desk of a Developer
-              </span>
+              </h2>
             </div>
             <p className="text-xl text-frost-cyan max-w-4xl mx-auto leading-relaxed">
               Sharing insights on web development, cybersecurity, and the art of code.
@@ -198,8 +198,7 @@ const BlogSection = () => {
                           {post.excerpt}
                         </p>
                       </div>
-                      <button
-                        tabIndex={-1}
+                      <div
                         className="mt-6 inline-flex items-center text-neon-cyan font-semibold group-hover:text-frost-white transition-colors"
                       >
                         Read More{' '}
@@ -207,7 +206,7 @@ const BlogSection = () => {
                           size={16}
                           className="ml-2 transition-transform duration-300 group-hover:translate-x-1"
                         />
-                      </button>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>

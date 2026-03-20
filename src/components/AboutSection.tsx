@@ -121,9 +121,9 @@ const AboutSection = () => {
             About Me
           </h2>
           <div className="h-10 mb-8">
-            <h3 className="text-2xl md:text-3xl font-medium text-frost-cyan">
+            <p className="text-2xl md:text-3xl font-medium text-frost-cyan">
               {dynamicTexts[currentTextIndex]}
-            </h3>
+            </p>
           </div>
         </div>
         
@@ -174,7 +174,7 @@ const AboutSection = () => {
                     }
                   }}
                 >
-                  <h3 className="text-xl font-bold text-frost-white mb-4 text-center">{activeBatch.title}</h3>
+                  <p className="text-xl font-bold text-frost-white mb-4 text-center">{activeBatch.title}</p>
                   <div className="flex flex-col gap-4">
                     {activeBatch.events.map((milestone, index) => (
                       <motion.div
@@ -188,7 +188,7 @@ const AboutSection = () => {
                         >
                           <div className="relative z-10">
                               <div>
-                                <h4 className="font-bold text-lg text-frost-white mb-2">{milestone.title}</h4>
+                                <p className="font-bold text-lg text-frost-white mb-2">{milestone.title}</p>
                                 <p className="text-sm text-frost-cyan leading-relaxed">{milestone.description}</p>
                               </div>
                             </div>

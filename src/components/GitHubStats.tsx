@@ -1,4 +1,3 @@
-// 🚀 NOTICE: Removed 'use client'. This runs entirely on the Vercel server now.
 import { Card } from '@/components/ui/card';
 import contributionData from '@/lib/github-contributions.json';
 
@@ -26,7 +25,6 @@ const GitHubStats = () => {
     }
   };
 
-  // This heavy loop now runs on the server, saving the client's CPU!
   const getWeeks = () => {
     if (!contributions || contributions.length === 0) {
       return [];
@@ -41,7 +39,6 @@ const GitHubStats = () => {
     
     const today = new Date();
     const endDate = new Date(today);
-    // Align end date to the end of the week (Saturday)
     endDate.setDate(today.getDate() + (6 - today.getDay()));
 
     const startDate = new Date(endDate);
@@ -80,10 +77,10 @@ const GitHubStats = () => {
     <div className="p-8 group relative">
       <div className="relative z-10">
         <div className="text-center mb-6">
-          <h3 className="text-2xl font-bold text-white animate-fade-in-up">
+          <p className="text-2xl font-bold text-white">
             GitHub Contributions
-          </h3>
-          <div className="text-gray-300 text-lg font-bold animate-scale-in mt-2">
+          </p>
+          <div className="text-gray-300 text-lg font-bold mt-2">
             <span className="inline-block text-neon-cyan">
               {totalContributions.toLocaleString()}
             </span>
@@ -92,7 +89,7 @@ const GitHubStats = () => {
         </div>
         
         <div className="text-center mb-6">
-          <div className="text-sm text-gray-400 mb-3 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+          <div className="text-sm text-gray-400 mb-3">
             @AdilMunawar - Last 12 months
           </div>
         </div>
@@ -122,7 +119,7 @@ const GitHubStats = () => {
            </div>
         </div>
         
-        <div className="flex justify-between items-center mt-6 text-xs text-gray-400 animate-fade-in-up max-w-xs mx-auto" style={{ animationDelay: '400ms' }}>
+        <div className="flex justify-between items-center mt-6 text-xs text-gray-400 max-w-xs mx-auto">
           <span className="hover:text-gray-300 transition-colors">Less</span>
           <div className="flex gap-1">
             {[0, 1, 2, 3, 4].map(level => (

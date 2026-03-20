@@ -1,4 +1,3 @@
-
 'use client';
 import { Card } from '@/components/ui/card';
 import { Mail, Phone, Github, Instagram, MessageSquare, Linkedin, Send, MapPin, Clock, ArrowUp } from 'lucide-react';
@@ -184,7 +183,7 @@ const ContactSection = () => {
                   <method.Icon size={36} className={`group-hover:drop-shadow-lg transition-all duration-500 ${method.color}`} />
                 </div>
                 
-                <h3 className="font-bold text-xl text-frost-white mb-2 group-hover:text-white transition-colors duration-500">{method.label}</h3>
+                <p className="font-bold text-xl text-frost-white mb-2 group-hover:text-white transition-colors duration-500">{method.label}</p>
                 <p className="text-frost-cyan/80 text-sm mb-3 group-hover:text-frost-cyan transition-colors duration-500">{method.description}</p>
                 <p className={`text-sm font-semibold group-hover:text-white transition-colors duration-500 ${method.color}`}>{method.value}</p>
                 
@@ -213,10 +212,10 @@ const ContactSection = () => {
           <div className="flex flex-col lg:flex-row justify-between items-center gap-8 animate-fade-in-up" style={{ animationDelay: '1s' }}>
             <div className="text-center lg:text-left relative">
               <div className="inline-block relative">
-                <h4 className="text-2xl font-bold text-frost-white mb-2">
+                <p className="text-2xl font-bold text-frost-white mb-2">
                   Crafted with <span className="text-red-500 animate-pulse">♥</span> by 
                   <span className="text-gradient-slow ml-2">Adil Munawar</span>
-                </h4>
+                </p>
                 <p className="text-frost-cyan/80 mb-2">Full Stack Developer & UI/UX Enthusiast</p>
                 <p className="text-frost-cyan/60 text-sm">© 2026 All Rights Reserved.</p>
                 
@@ -258,7 +257,6 @@ const ContactSection = () => {
             >
                 <ArrowUp size={28} className="transition-transform duration-300 group-hover:-translate-y-1" />
                 
-                {/* Ripple Effect */}
                 <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-neon-cyan rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
                 <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-neon-cyan rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s 1s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
             </button>

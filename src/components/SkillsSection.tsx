@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useEffect } from 'react';
 import { LogoLoop } from './LogoLoop';
@@ -63,7 +62,6 @@ const SkillsSection = () => {
     <section id="skills" className="py-20 px-4 relative overflow-hidden">
       <Achievements />
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Section Title */}
         <div className="text-center mb-16">
           <h2 className={`text-5xl md:text-7xl font-bold mb-6 transition-all duration-1000 ${
             isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-12'
@@ -77,12 +75,11 @@ const SkillsSection = () => {
           </p>
         </div>
 
-        {/* Frontend Frameworks */}
         <div className={`transition-all duration-1000 delay-200 mb-12 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <h3 className="text-2xl font-bold text-center text-frost-white mb-8">Frontend Frameworks</h3>
+          <p className="text-2xl font-bold text-center text-frost-white mb-8">Frontend Frameworks</p>
           <LogoLoop 
             logos={frontendSkills} 
             speed={40} 
@@ -102,12 +99,11 @@ const SkillsSection = () => {
           />
         </div>
 
-        {/* Backend & Databases */}
         <div className={`transition-all duration-1000 delay-300 mb-12 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <h3 className="text-2xl font-bold text-center text-frost-white mb-8">Backend & Databases</h3>
+          <p className="text-2xl font-bold text-center text-frost-white mb-8">Backend & Databases</p>
           <LogoLoop 
             logos={backendSkills} 
             speed={40}
@@ -128,15 +124,14 @@ const SkillsSection = () => {
           />
         </div>
 
-        {/* Tools & Technologies */}
         <div className={`transition-all duration-1000 delay-400 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <h3 className="text-2xl font-bold text-center text-frost-white mb-8">Tools & Technologies</h3>
+          <p className="text-2xl font-bold text-center text-frost-white mb-8">Tools & Technologies</p>
           <LogoLoop 
             logos={toolsSkills} 
-            speed={40}
+            speed={40} 
             direction="left"
             fadeOut={true} 
             logoHeight={80}

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -21,9 +20,9 @@ const badges = [
 
 
 const THEME = {
-  easy: '#34d399',      // emerald-400
-  medium: '#f59e0b',     // amber-500
-  hard: '#f43f5e',       // rose-500
+  easy: '#34d399',
+  medium: '#f59e0b',
+  hard: '#f43f5e',
   background: 'hsl(var(--muted))',
   foreground: 'hsl(var(--foreground))',
 };
@@ -120,9 +119,9 @@ const LeetCodeStats = () => {
         <motion.div layout className="relative bg-transparent rounded-2xl">
             <div className="p-6 md:p-8">
                 <div className="flex justify-between items-start mb-6">
-                    <h3 className="text-2xl font-bold text-white tracking-widest uppercase">
+                    <p className="text-2xl font-bold text-white tracking-widest uppercase">
                         LeetCode Stats
-                    </h3>
+                    </p>
                 </div>
 
                 <motion.div layout className="grid grid-cols-1 md:grid-cols-5 gap-6">
@@ -187,9 +186,9 @@ const LeetCodeStats = () => {
                         )}
                     >
                         <div className="flex justify-between items-start mb-4">
-                            <h4 className="text-sm font-semibold text-white">
+                            <p className="text-sm font-semibold text-white">
                                 Badges: <span className="text-xl font-bold">{badges.length}</span>
-                            </h4>
+                            </p>
                             <div className="flex items-center gap-2 text-xs text-slate-400">
                                 <span>Most Recent:</span> 
                                 <span className="font-semibold text-slate-200 truncate">{mostRecentBadge.alt}</span>
