@@ -1,48 +1,49 @@
+
 'use client';
 import { Card } from '@/components/ui/card';
-import { Code, Server, Globe, Wrench, Zap, Database, Cloud, Settings } from 'lucide-react';
+import { Code, Database, Cloud, Settings, Zap, Layers } from 'lucide-react';
 
 const ServicesSection = () => {
   const services = [
     {
       Icon: Code,
-      title: 'Full-Stack Web Development',
-      description: 'Engineering complex, full-scale web applications from scratch. Mastery of the MERN/Next.js stack with a focus on maintainable, optimized codebases.',
+      title: 'Full-Stack Systems Engineering',
+      description: 'Engineering high-concurrency, full-scale web applications. Focused on building maintainable, performance-optimized digital platforms for global use.',
       gradient: 'from-cyan-900 to-sky-900',
       accentColor: 'text-neon-cyan'
     },
     {
       Icon: Cloud,
-      title: 'Deployment & CI/CD Strategies',
-      description: 'Architecting robust deployment pipelines using GitHub Actions, Docker, and Kubernetes. Ensuring high availability and zero-downtime releases.',
+      title: 'Cloud Infrastructure & DevOps',
+      description: 'Architecting robust deployment strategies and automated CI/CD pipelines. Ensuring high availability, security, and zero-downtime environments.',
       gradient: 'from-cyan-800 to-sky-800',
       accentColor: 'text-neon-cyan'
     },
     {
       Icon: Database,
-      title: 'Enterprise Database Design',
-      description: 'Expert-level T-SQL and PostgreSQL architecture. Handling massive datasets with complex relationships, indexing strategies, and real-time synchronization.',
+      title: 'Advanced Database Architecture',
+      description: 'Expert-level data systems design. Handling massive datasets with complex relationships, optimized indexing, and real-time synchronization.',
       gradient: 'from-cyan-900 to-sky-900',
       accentColor: 'text-neon-cyan'
     },
     {
       Icon: Settings,
-      title: 'Codebase Management & Scaling',
-      description: 'Refactoring legacy systems into modern architectures. implementing strict typing, automated testing, and scalable folder structures for large teams.',
+      title: 'Codebase Modernization',
+      description: 'Refactoring legacy systems into modern architectures. Implementing strict standards, automated testing, and scalable structures for high-performing teams.',
       gradient: 'from-cyan-800 to-sky-800',
       accentColor: 'text-neon-cyan'
     },
     {
       Icon: Zap,
-      title: 'AI & RAG Implementation',
-      description: 'Integrating Generative AI and Retrieval-Augmented Generation (RAG) into production environments to automate workflows and enhance user intelligence.',
+      title: 'Intelligent AI Automation',
+      description: 'Integrating state-of-the-art Generative AI and retrieval systems into production environments to automate workflows and enhance intelligence.',
       gradient: 'from-cyan-900 to-sky-900',
       accentColor: 'text-neon-cyan'
     },
     {
-      Icon: Globe,
-      title: 'GIS & Mapping Automation',
-      description: 'Specialized services in Geographic Information Systems, automating parcel digitization and boundary tracing from high-resolution satellite imagery.',
+      Icon: Layers,
+      title: 'Technical Strategy & Architecture',
+      description: 'Providing end-to-end technical blueprints and strategic consulting. Bridging the gap between complex ideas and robust, shippable products.',
       gradient: 'from-cyan-800 to-sky-800',
       accentColor: 'text-neon-cyan'
     },
@@ -56,7 +57,7 @@ const ServicesSection = () => {
             Specialized Services
           </h2>
           <p className="text-xl text-frost-cyan max-w-3xl mx-auto animate-fade-in-up drop-shadow-md" style={{ animationDelay: '0.2s' }}>
-            Delivering high-concurrency web systems and enterprise-grade deployment architectures
+            Delivering high-concurrency web systems and enterprise-grade architectural solutions
           </p>
         </div>
 
@@ -64,7 +65,7 @@ const ServicesSection = () => {
           {services.map((service, index) => (
             <Card 
               key={index} 
-              className="group relative p-8 glass-card transition-all duration-700 hover:scale-105 animate-scale-in overflow-hidden"
+              className="group relative p-8 glass-card transition-all duration-700 hover:scale-105 animate-scale-in overflow-hidden border-neon-cyan/20"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Animated background gradient */}

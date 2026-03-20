@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -195,7 +196,7 @@ const LeetCodeStats = () => {
                             </div>
                         </div>
                         
-                        <div className="relative flex-grow flex items-center justify-center overflow-hidden">
+                        <div className="relative flex-grow flex items-center justify-center overflow-hidden min-h-[120px]">
                             <LogoLoop
                                 logos={badges}
                                 speed={40}
