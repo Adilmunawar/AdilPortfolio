@@ -181,5 +181,6 @@
 ├── tsconfig.app.json
 ├── tsconfig.json
 ├── tsconfig.node.json
+├── tsconfig.tsbuildinfo
 └── vite.config.ts.timestamp-1751098616751-1f5463cb8a393.mjs
 ```
