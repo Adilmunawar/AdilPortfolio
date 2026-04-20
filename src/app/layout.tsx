@@ -1,6 +1,7 @@
 
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Analytics } from '@vercel/analytics/next';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -263,6 +264,7 @@ export default function RootLayout({
             gtag('config', 'G-8L6JGGFF0R');
           `}
         </Script>
+        <Analytics />
       </body>
     </html>
   );
