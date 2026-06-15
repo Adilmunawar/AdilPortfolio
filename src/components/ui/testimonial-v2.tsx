@@ -110,10 +110,10 @@ const TestimonialsColumn = (props: {
                     y: -8,
                     transition: { type: "spring", stiffness: 400, damping: 17 }
                   }}
-                  className="p-8 rounded-3xl max-w-xs w-full glass-card transition-all duration-300 cursor-default select-none group focus:outline-none focus:ring-2 focus:ring-neon-cyan/50" 
+                  className="p-8 rounded-3xl max-w-xs w-full glass-card transition-all duration-300 cursor-default select-none group focus:outline-none focus:ring-2 focus:ring-vivid-blue/50" 
                 >
                   <blockquote className="m-0 p-0">
-                    <p className="text-frost-cyan/80 leading-relaxed font-normal m-0 transition-colors duration-300">
+                    <p className="text-frost-blue/80 leading-relaxed font-normal m-0 transition-colors duration-300">
                       {text}
                     </p>
                     <footer className="flex items-center gap-4 mt-6">
@@ -122,13 +122,13 @@ const TestimonialsColumn = (props: {
                         height={40}
                         src={image}
                         alt={`Avatar of ${name}`}
-                        className="h-10 w-10 rounded-full object-cover border-2 border-neon-cyan/30 group-hover:border-neon-cyan transition-all duration-300 ease-in-out"
+                        className="h-10 w-10 rounded-full object-cover border-2 border-vivid-blue/30 group-hover:border-vivid-blue transition-all duration-300 ease-in-out"
                       />
                       <div className="flex flex-col">
                         <cite className="font-semibold not-italic tracking-tight leading-5 text-frost-white transition-colors duration-300">
                           {name}
                         </cite>
-                        <span className="text-sm leading-5 tracking-tight text-frost-cyan/70 mt-0.5 transition-colors duration-300">
+                        <span className="text-sm leading-5 tracking-tight text-frost-blue/70 mt-0.5 transition-colors duration-300">
                           {role}
                         </span>
                       </div>
@@ -163,11 +163,11 @@ export const TestimonialsV2 = () => {
       >
         <div className="flex flex-col items-center justify-center max-w-3xl mx-auto mb-16">
           <div className="flex justify-center mb-6">
-            <div className="border border-neon-cyan/30 py-2 px-6 rounded-full text-sm font-semibold tracking-wide uppercase text-frost-cyan bg-cyber-dark/50 backdrop-blur-sm">
+            <div className="border border-vivid-blue/30 py-2 px-6 rounded-full text-sm font-semibold tracking-wide uppercase text-frost-blue bg-cyber-dark/50 backdrop-blur-sm">
               Testimonials
             </div>
           </div>
-          <p className="text-center mt-5 text-frost-cyan text-lg leading-relaxed max-w-2xl">
+          <p className="text-center mt-5 text-frost-blue text-lg leading-relaxed max-w-2xl">
             Here's what people I've worked with have to say.
           </p>
         </div>

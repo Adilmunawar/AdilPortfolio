@@ -15,10 +15,10 @@ const GitHubStats = () => {
 
   const getLevelColor = (level: number) => {
     switch (level) {
-      case 1: return 'bg-sky-900';
-      case 2: return 'bg-sky-700';
-      case 3: return 'bg-sky-500';
-      case 4: return 'bg-sky-400';
+      case 1: return 'bg-blue-900';
+      case 2: return 'bg-blue-700';
+      case 3: return 'bg-blue-500';
+      case 4: return 'bg-blue-400';
       case 0:
       default:
         return 'bg-gray-800/80';
@@ -65,7 +65,7 @@ const GitHubStats = () => {
   if (!totalContributions) {
     return (
       <div className="p-8">
-        <div className="text-center text-frost-cyan">
+        <div className="text-center text-frost-blue">
           <p className="font-semibold text-lg mb-2">Generating GitHub Contributions...</p>
           <p className="text-sm">Run the 'Update GitHub Contribution Stats' action in your repository's Actions tab to populate data.</p>
         </div>
@@ -81,7 +81,7 @@ const GitHubStats = () => {
             GitHub Contributions
           </p>
           <div className="text-gray-300 text-lg font-bold mt-2">
-            <span className="inline-block text-neon-cyan">
+            <span className="inline-block text-vivid-blue">
               {totalContributions.toLocaleString()}
             </span>
             <span className="ml-2 text-sm text-gray-400">contributions</span>
@@ -106,7 +106,7 @@ const GitHubStats = () => {
                     return (
                       <div
                         key={day.date}
-                        className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-sky-400/50 transition-all duration-300 cursor-pointer group/day hover:scale-125`}
+                        className={`w-3 h-3 rounded-sm ${getLevelColor(day.level)} hover:ring-2 hover:ring-blue-400/50 transition-all duration-300 cursor-pointer group/day hover:scale-125`}
                         title={`${day.count} contributions on ${new Date(day.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}`}
                       >
                         <div className="w-full h-full rounded-sm group-hover/day:animate-pulse transition-all duration-200"></div>

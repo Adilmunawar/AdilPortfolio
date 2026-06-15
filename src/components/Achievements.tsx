@@ -124,7 +124,7 @@ const Achievements = () => {
                 className="p-2 object-contain"
               />
               <div className="absolute inset-0 bg-cyber-dark/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-                <p className="text-center text-sm text-frost-cyan leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-150">
+                <p className="text-center text-sm text-frost-blue leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-150">
                   {item.description}
                 </p>
               </div>

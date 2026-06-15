@@ -13,11 +13,11 @@ const ContactSection = () => {
       value: 'adilmunawarx@gmail.com',
       description: 'Drop me a line anytime',
       link: 'mailto:adilmunawarx@gmail.com',
-      color: 'text-neon-cyan',
-      bgColor: 'from-neon-cyan/5 to-frost-cyan/5',
-      hoverColor: 'hover:from-neon-cyan/15 hover:to-frost-cyan/15',
-      borderColor: 'border-neon-cyan/20 hover:border-neon-cyan/40',
-      glowColor: 'shadow-neon-cyan/10'
+      color: 'text-vivid-blue',
+      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
+      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
+      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
+      glowColor: 'shadow-vivid-blue/10'
     },
     {
       Icon: Phone,
@@ -25,11 +25,11 @@ const ContactSection = () => {
       value: '+92 324 4965220',
       description: 'Quick chat & instant replies',
       link: 'https://wa.me/923244965220',
-      color: 'text-frost-cyan',
-      bgColor: 'from-neon-cyan/5 to-frost-cyan/5',
-      hoverColor: 'hover:from-neon-cyan/15 hover:to-frost-cyan/15',
-      borderColor: 'border-neon-cyan/20 hover:border-neon-cyan/40',
-      glowColor: 'shadow-neon-cyan/10'
+      color: 'text-frost-blue',
+      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
+      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
+      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
+      glowColor: 'shadow-vivid-blue/10'
     },
     {
       Icon: Instagram,
@@ -37,11 +37,11 @@ const ContactSection = () => {
       value: '@adilmunawarx',
       description: 'Creative content & stories',
       link: 'https://instagram.com/adilmunawarx',
-      color: 'text-neon-cyan',
-      bgColor: 'from-neon-cyan/5 to-frost-cyan/5',
-      hoverColor: 'hover:from-neon-cyan/15 hover:to-frost-cyan/15',
-      borderColor: 'border-neon-cyan/20 hover:border-neon-cyan/40',
-      glowColor: 'shadow-neon-cyan/10'
+      color: 'text-vivid-blue',
+      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
+      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
+      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
+      glowColor: 'shadow-vivid-blue/10'
     },
     {
       Icon: MessageSquare,
@@ -49,11 +49,11 @@ const ContactSection = () => {
       value: '@adilmunawarx',
       description: 'Secure messaging platform',
       link: 'https://t.me/adilmunawar',
-      color: 'text-frost-cyan',
-      bgColor: 'from-neon-cyan/5 to-frost-cyan/5',
-      hoverColor: 'hover:from-neon-cyan/15 hover:to-frost-cyan/15',
-      borderColor: 'border-neon-cyan/20 hover:border-neon-cyan/40',
-      glowColor: 'shadow-neon-cyan/10'
+      color: 'text-frost-blue',
+      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
+      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
+      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
+      glowColor: 'shadow-vivid-blue/10'
     },
     {
       Icon: Linkedin,
@@ -61,11 +61,11 @@ const ContactSection = () => {
       value: 'Professional Network',
       description: 'Connect for opportunities',
       link: 'https://linkedin.com/in/adilmunawar',
-      color: 'text-neon-cyan',
-      bgColor: 'from-neon-cyan/5 to-frost-cyan/5',
-      hoverColor: 'hover:from-neon-cyan/15 hover:to-frost-cyan/15',
-      borderColor: 'border-neon-cyan/20 hover:border-neon-cyan/40',
-      glowColor: 'shadow-neon-cyan/10'
+      color: 'text-vivid-blue',
+      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
+      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
+      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
+      glowColor: 'shadow-vivid-blue/10'
     },
     {
       Icon: Github,
@@ -73,11 +73,11 @@ const ContactSection = () => {
       value: 'Open Source Projects',
       description: 'Explore my repositories',
       link: 'https://github.com/adilmunawar',
-      color: 'text-frost-cyan',
-      bgColor: 'from-neon-cyan/5 to-frost-cyan/5',
-      hoverColor: 'hover:from-neon-cyan/15 hover:to-frost-cyan/15',
-      borderColor: 'border-neon-cyan/20 hover:border-neon-cyan/40',
-      glowColor: 'shadow-neon-cyan/10'
+      color: 'text-frost-blue',
+      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
+      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
+      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
+      glowColor: 'shadow-vivid-blue/10'
     }
   ];
 
@@ -86,51 +86,51 @@ const ContactSection = () => {
       Icon: Linkedin,
       link: 'https://linkedin.com/in/adilmunawar',
       color: 'hover:text-white',
-      bgGradient: 'from-neon-cyan/10 to-frost-cyan/10',
-      hoverGradient: 'hover:from-neon-cyan/25 hover:to-frost-cyan/25',
-      borderColor: 'border-neon-cyan/20 hover:border-neon-cyan/40',
-      shadowColor: 'hover:shadow-neon-cyan/20',
-      dotColor: 'bg-neon-cyan'
+      bgGradient: 'from-vivid-blue/10 to-frost-blue/10',
+      hoverGradient: 'hover:from-vivid-blue/25 hover:to-frost-blue/25',
+      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
+      shadowColor: 'hover:shadow-vivid-blue/20',
+      dotColor: 'bg-vivid-blue'
     },
     {
       Icon: Github,
       link: 'https://github.com/adilmunawar',
       color: 'hover:text-white',
-      bgGradient: 'from-neon-cyan/10 to-frost-cyan/10',
-      hoverGradient: 'hover:from-neon-cyan/25 hover:to-frost-cyan/25',
-      borderColor: 'border-neon-cyan/20 hover:border-neon-cyan/40',
-      shadowColor: 'hover:shadow-neon-cyan/20',
-      dotColor: 'bg-neon-cyan'
+      bgGradient: 'from-vivid-blue/10 to-frost-blue/10',
+      hoverGradient: 'hover:from-vivid-blue/25 hover:to-frost-blue/25',
+      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
+      shadowColor: 'hover:shadow-vivid-blue/20',
+      dotColor: 'bg-vivid-blue'
     },
     {
       Icon: Instagram,
       link: 'https://instagram.com/adilmunawarx',
       color: 'hover:text-white',
-      bgGradient: 'from-neon-cyan/10 to-frost-cyan/10',
-      hoverGradient: 'hover:from-neon-cyan/25 hover:to-frost-cyan/25',
-      borderColor: 'border-neon-cyan/20 hover:border-neon-cyan/40',
-      shadowColor: 'hover:shadow-neon-cyan/20',
-      dotColor: 'bg-neon-cyan'
+      bgGradient: 'from-vivid-blue/10 to-frost-blue/10',
+      hoverGradient: 'hover:from-vivid-blue/25 hover:to-frost-blue/25',
+      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
+      shadowColor: 'hover:shadow-vivid-blue/20',
+      dotColor: 'bg-vivid-blue'
     },
     {
       imgSrc: '/adil-munawar-uploads/discord.svg',
       link: 'https://discordapp.com/users/adilmunawar',
       color: 'hover:text-white',
-      bgGradient: 'from-neon-cyan/10 to-frost-cyan/10',
-      hoverGradient: 'hover:from-neon-cyan/25 hover:to-frost-cyan/25',
-      borderColor: 'border-neon-cyan/20 hover:border-neon-cyan/40',
-      shadowColor: 'hover:shadow-neon-cyan/20',
-      dotColor: 'bg-neon-cyan'
+      bgGradient: 'from-vivid-blue/10 to-frost-blue/10',
+      hoverGradient: 'hover:from-vivid-blue/25 hover:to-frost-blue/25',
+      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
+      shadowColor: 'hover:shadow-vivid-blue/20',
+      dotColor: 'bg-vivid-blue'
     },
     {
       Icon: Phone,
       link: 'https://wa.me/+923244965220',
       color: 'hover:text-white',
-      bgGradient: 'from-neon-cyan/10 to-frost-cyan/10',
-      hoverGradient: 'hover:from-neon-cyan/25 hover:to-frost-cyan/25',
-      borderColor: 'border-neon-cyan/20 hover:border-neon-cyan/40',
-      shadowColor: 'hover:shadow-neon-cyan/20',
-      dotColor: 'bg-neon-cyan'
+      bgGradient: 'from-vivid-blue/10 to-frost-blue/10',
+      hoverGradient: 'hover:from-vivid-blue/25 hover:to-frost-blue/25',
+      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
+      shadowColor: 'hover:shadow-vivid-blue/20',
+      dotColor: 'bg-vivid-blue'
     }
   ];
 
@@ -139,24 +139,24 @@ const ContactSection = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-20">
           <div className="inline-block mb-8">
-            <span className="text-frost-cyan text-sm font-semibold tracking-widest uppercase bg-neon-cyan/5 px-6 py-3 rounded-full border border-neon-cyan/20 backdrop-blur-sm animate-pulse">
+            <span className="text-frost-blue text-sm font-semibold tracking-widest uppercase bg-vivid-blue/5 px-6 py-3 rounded-full border border-vivid-blue/20 backdrop-blur-sm animate-pulse">
               Get In Touch
             </span>
           </div>
           <h2 className="text-5xl md:text-7xl font-bold mb-8 text-gradient-slow animate-fade-in-up drop-shadow-2xl">
             Let's Connect
           </h2>
-          <p className="text-xl text-frost-cyan animate-fade-in-up max-w-4xl mx-auto leading-relaxed" style={{ animationDelay: '0.2s' }}>
+          <p className="text-xl text-frost-blue animate-fade-in-up max-w-4xl mx-auto leading-relaxed" style={{ animationDelay: '0.2s' }}>
             Ready to start a conversation? Choose your preferred 
             <span className="text-frost-white font-semibold"> communication channel</span> and 
             let's bring your ideas to life together
           </p>
           <div className="flex justify-center gap-8 mt-12">
-            <div className="flex items-center gap-3 text-frost-cyan/80 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+            <div className="flex items-center gap-3 text-frost-blue/80 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
               <MapPin size={20} className="text-frost-white" />
               <span>Pakistan (Remote Available)</span>
             </div>
-            <div className="flex items-center gap-3 text-frost-cyan/80 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+            <div className="flex items-center gap-3 text-frost-blue/80 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
               <Clock size={20} className="text-frost-white" />
               <span>Usually responds within 24h</span>
             </div>
@@ -184,7 +184,7 @@ const ContactSection = () => {
                 </div>
                 
                 <p className="font-bold text-xl text-frost-white mb-2 group-hover:text-white transition-colors duration-500">{method.label}</p>
-                <p className="text-frost-cyan/80 text-sm mb-3 group-hover:text-frost-cyan transition-colors duration-500">{method.description}</p>
+                <p className="text-frost-blue/80 text-sm mb-3 group-hover:text-frost-blue transition-colors duration-500">{method.description}</p>
                 <p className={`text-sm font-semibold group-hover:text-white transition-colors duration-500 ${method.color}`}>{method.value}</p>
                 
                 <div className="mt-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
@@ -205,8 +205,8 @@ const ContactSection = () => {
 
         <div className="relative">
           <div className="relative mb-12">
-            <div className="h-px bg-gradient-to-r from-transparent via-neon-cyan/30 to-transparent"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-neon-cyan rounded-full animate-pulse"></div>
+            <div className="h-px bg-gradient-to-r from-transparent via-vivid-blue/30 to-transparent"></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-vivid-blue rounded-full animate-pulse"></div>
           </div>
           
           <div className="flex flex-col lg:flex-row justify-between items-center gap-8 animate-fade-in-up" style={{ animationDelay: '1s' }}>
@@ -216,10 +216,10 @@ const ContactSection = () => {
                   Crafted with <span className="text-red-500 animate-pulse">♥</span> by 
                   <span className="text-gradient-slow ml-2">Adil Munawar</span>
                 </p>
-                <p className="text-frost-cyan/80 mb-2">Full Stack Developer & UI/UX Enthusiast</p>
-                <p className="text-frost-cyan/60 text-sm">© 2026 All Rights Reserved.</p>
+                <p className="text-frost-blue/80 mb-2">Full Stack Developer & UI/UX Enthusiast</p>
+                <p className="text-frost-blue/60 text-sm">© 2026 All Rights Reserved.</p>
                 
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-neon-cyan to-frost-cyan group-hover:w-full transition-all duration-700"></div>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-vivid-blue to-frost-blue group-hover:w-full transition-all duration-700"></div>
               </div>
             </div>
             
@@ -243,7 +243,7 @@ const ContactSection = () => {
                   
                   <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${social.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
                   
-                  <div className="absolute inset-0 rounded-2xl border-2 border-neon-cyan/30 scale-0 group-hover:scale-110 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                  <div className="absolute inset-0 rounded-2xl border-2 border-vivid-blue/30 scale-0 group-hover:scale-110 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                 </a>
               ))}
             </div>
@@ -253,12 +253,12 @@ const ContactSection = () => {
         <div className="fixed bottom-8 right-8 z-50">
             <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="group relative w-16 h-16 bg-cyber-dark/50 text-neon-cyan rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg shadow-neon-cyan/20 hover:shadow-neon-cyan/40 backdrop-blur-sm border-2 border-neon-cyan/30 animate-float overflow-hidden"
+                className="group relative w-16 h-16 bg-cyber-dark/50 text-vivid-blue rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg shadow-vivid-blue/20 hover:shadow-vivid-blue/40 backdrop-blur-sm border-2 border-vivid-blue/30 animate-float overflow-hidden"
             >
                 <ArrowUp size={28} className="transition-transform duration-300 group-hover:-translate-y-1" />
                 
-                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-neon-cyan rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
-                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-neon-cyan rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s 1s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
+                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-vivid-blue rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
+                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-vivid-blue rounded-full opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-700" style={{ animation: 'ripple 3s 1s infinite cubic-bezier(0, 0, 0.2, 1)' }}></span>
             </button>
         </div>
       </div>

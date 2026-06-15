@@ -152,7 +152,7 @@ const LeetCodeStats = () => {
                                     >
                                         {isHoveringStats ? (
                                             <>
-                                                <TrendingUp className="w-7 h-7 text-neon-cyan mb-1" />
+                                                <TrendingUp className="w-7 h-7 text-vivid-blue mb-1" />
                                                 <p className="text-3xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
                                                 <p className="text-xs text-slate-400 mt-1">Acceptance</p>
                                             </>

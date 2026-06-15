@@ -88,7 +88,7 @@
 
 /* Professional gradient text - slower and more subtle */
 .text-gradient {
-  background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue), var(--cyber-cyan));
+  background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue), var(--cyber-blue));
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -98,7 +98,7 @@
 
 /* Slower professional gradient text */
 .text-gradient-slow {
-  background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue), var(--cyber-cyan));
+  background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue), var(--cyber-blue));
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -335,7 +335,7 @@
 :root {
   --cyber-dark: #1E1E39;
   --cyber-gray: #2a2a3e;
-  --cyber-cyan: #3730a3; /* Darker Indigo */
+  --cyber-blue-accent: #3730a3; /* Darker Indigo */
   --cyber-blue: #4338ca; /* Darker Indigo */
   --cyber-purple: #3b1d8a; /* Darker Violet */
   --cyber-pink: #ff0080;
@@ -355,7 +355,7 @@
 
 /* More subtle morphing backgrounds */
 .morph-bg {
-  background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-blue), var(--cyber-cyan), var(--cyber-pink));
+  background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-blue), var(--cyber-blue), var(--cyber-pink));
   background-size: 300% 300%;
   animation: morphBackground 30s ease infinite;
 }
@@ -476,7 +476,7 @@
 }
 .glitch-text:after {
   animation: glitch 2s infinite linear alternate-reverse;
-  text-shadow: 2px 0 var(--cyber-cyan);
+  text-shadow: 2px 0 var(--cyber-blue);
 }
 
 .group-hover\/cta .glitch-text:before,
@@ -515,7 +515,7 @@
   @apply absolute rounded-full;
   content: '';
   inset: -3px;
-  background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue), var(--cyber-cyan));
+  background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue), var(--cyber-blue));
   z-index: -1;
   transition: all 0.4s ease;
   filter: blur(8px);

@@ -12,37 +12,37 @@ const HeroSection = () => {
       Icon: Instagram,
       href: 'https://instagram.com/adilmunawarx',
       label: 'Instagram',
-      color: 'text-frost-cyan',
-      glowColorStart: 'rgba(34, 211, 238, 0.4)',
-      glowColorEnd: 'rgba(34, 211, 238, 0.7)',
-      gradientColor: 'var(--neon-cyan)',
+      color: 'text-frost-blue',
+      glowColorStart: 'rgba(0, 102, 255, 0.4)',
+      glowColorEnd: 'rgba(0, 102, 255, 0.7)',
+      gradientColor: 'var(--vivid-blue)',
     },
     {
       Icon: Github,
       href: 'https://github.com/adilmunawar',
       label: 'GitHub',
-      color: 'text-frost-cyan',
-      glowColorStart: 'rgba(34, 211, 238, 0.4)',
-      glowColorEnd: 'rgba(34, 211, 238, 0.7)',
-      gradientColor: 'var(--neon-cyan)',
+      color: 'text-frost-blue',
+      glowColorStart: 'rgba(0, 102, 255, 0.4)',
+      glowColorEnd: 'rgba(0, 102, 255, 0.7)',
+      gradientColor: 'var(--vivid-blue)',
     },
     {
       Icon: Linkedin,
       href: 'https://linkedin.com/in/adilmunawar',
       label: 'LinkedIn',
-      color: 'text-frost-cyan',
-      glowColorStart: 'rgba(34, 211, 238, 0.4)',
-      glowColorEnd: 'rgba(34, 211, 238, 0.7)',
-      gradientColor: 'var(--neon-cyan)',
+      color: 'text-frost-blue',
+      glowColorStart: 'rgba(0, 102, 255, 0.4)',
+      glowColorEnd: 'rgba(0, 102, 255, 0.7)',
+      gradientColor: 'var(--vivid-blue)',
     },
     {
       Icon: Phone,
       href: 'tel:+923244965220',
       label: 'Phone',
-      color: 'text-frost-cyan',
-      glowColorStart: 'rgba(34, 211, 238, 0.4)',
-      glowColorEnd: 'rgba(34, 211, 238, 0.7)',
-      gradientColor: 'var(--neon-cyan)',
+      color: 'text-frost-blue',
+      glowColorStart: 'rgba(0, 102, 255, 0.4)',
+      glowColorEnd: 'rgba(0, 102, 255, 0.7)',
+      gradientColor: 'var(--vivid-blue)',
     },
   ];
 
@@ -114,8 +114,8 @@ const HeroSection = () => {
                 className="group relative px-4 py-2 rounded-full transition-all duration-300 bg-gray-800/40 border border-white/10 backdrop-blur-sm hover:bg-gray-700/60"
                 style={{ transition: 'transform 0.1s ease-out' }}
               >
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-neon-cyan to-frost-cyan opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md"></div>
-                <span className="relative text-frost-cyan text-sm font-medium transition-colors duration-300 group-hover:text-frost-white">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-vivid-blue to-frost-blue opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md"></div>
+                <span className="relative text-frost-blue text-sm font-medium transition-colors duration-300 group-hover:text-frost-white">
                   {skill}
                 </span>
               </div>
@@ -137,14 +137,14 @@ const HeroSection = () => {
                   aria-label={social.label}
                 >
                   <div 
-                    className="absolute -inset-0.5 rounded-full bg-transparent group-hover:bg-[conic-gradient(from_90deg_at_50%_50%,var(--neon-cyan)_50%,var(--gradient-color)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-rotate"
+                    className="absolute -inset-0.5 rounded-full bg-transparent group-hover:bg-[conic-gradient(from_90deg_at_50%_50%,var(--vivid-blue)_50%,var(--gradient-color)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-rotate"
                     style={{ '--gradient-color': social.gradientColor } as React.CSSProperties}
                   ></div>
                   <div 
-                    className="relative w-14 h-14 bg-cyber-dark rounded-full transition-all duration-300 group-hover:scale-110 flex items-center justify-center border-2 border-neon-cyan/50 group-hover:border-neon-cyan animate-social-icon-pulse"
+                    className="relative w-14 h-14 bg-cyber-dark rounded-full transition-all duration-300 group-hover:scale-110 flex items-center justify-center border-2 border-vivid-blue/50 group-hover:border-vivid-blue animate-social-icon-pulse"
                     style={{
-                      '--glow-color-start': 'var(--neon-cyan)',
-                      '--glow-color-end': 'rgba(34, 211, 238, 0.7)',
+                      '--glow-color-start': 'var(--vivid-blue)',
+                      '--glow-color-end': 'rgba(0, 102, 255, 0.7)',
                     } as React.CSSProperties}
                   >
                     <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyber-dark to-slate-800 opacity-80 group-hover:opacity-50 transition-opacity duration-300"></div>

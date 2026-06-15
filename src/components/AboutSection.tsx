@@ -121,7 +121,7 @@ const AboutSection = () => {
             About Me
           </h2>
           <div className="h-10 mb-8">
-            <p className="text-2xl md:text-3xl font-medium text-frost-cyan">
+            <p className="text-2xl md:text-3xl font-medium text-frost-blue">
               {dynamicTexts[currentTextIndex]}
             </p>
           </div>
@@ -184,12 +184,12 @@ const AboutSection = () => {
                         transition={{ duration: 0.5, delay: 0.2 + index * 0.15 }}
                       >
                         <Card
-                          className="p-6 bg-cyber-dark/80 border border-neon-cyan/30 transition-all duration-300 shadow-lg backdrop-blur-sm h-full"
+                          className="p-6 bg-cyber-dark/80 border border-vivid-blue/30 transition-all duration-300 shadow-lg backdrop-blur-sm h-full"
                         >
                           <div className="relative z-10">
                               <div>
                                 <p className="font-bold text-lg text-frost-white mb-2">{milestone.title}</p>
-                                <p className="text-sm text-frost-cyan leading-relaxed">{milestone.description}</p>
+                                <p className="text-sm text-frost-blue leading-relaxed">{milestone.description}</p>
                               </div>
                             </div>
                         </Card>

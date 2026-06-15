@@ -66,12 +66,12 @@
   background-position: 0 0, 0 0, 50% 50%, 0 0;
   background-image: 
     radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y), 
-      hsla(189, 84%, 70%, var(--card-opacity)) 4%,       /* Lighter neon-cyan */
-      hsla(189, 84%, 60%, calc(var(--card-opacity) * 0.75)) 10%, /* neon-cyan */
-      hsla(195, 100%, 80%, calc(var(--card-opacity) * 0.5)) 50%, /* frost-cyan */
+      hsla(189, 84%, 70%, var(--card-opacity)) 4%,       /* Lighter vivid-blue */
+      hsla(189, 84%, 60%, calc(var(--card-opacity) * 0.75)) 10%, /* vivid-blue */
+      hsla(195, 100%, 80%, calc(var(--card-opacity) * 0.5)) 50%, /* frost-blue */
       hsla(240, 0%, 30%, 0) 100%),
-    radial-gradient(35% 52% at 55% 20%, var(--neon-cyan) 0%, #1e1b4b00 100%),
-    conic-gradient(from 124deg at 50% 50%, var(--neon-cyan) 0%, #0f172a 40%, #0891b2 60%, var(--neon-cyan) 100%);
+    radial-gradient(35% 52% at 55% 20%, var(--vivid-blue) 0%, #1e1b4b00 100%),
+    conic-gradient(from 124deg at 50% 50%, var(--vivid-blue) 0%, #0f172a 40%, #0891b2 60%, var(--vivid-blue) 100%);
   overflow: hidden;
 }
 
@@ -240,7 +240,7 @@
   justify-content: space-between;
   background: rgba(15, 23, 42, 0.3); /* cyber-dark transparent */
   backdrop-filter: blur(30px);
-  border: 1px solid rgba(207, 250, 254, 0.2); /* frost-cyan transparent */
+  border: 1px solid rgba(207, 250, 254, 0.2); /* frost-blue transparent */
   border-radius: 15px;
   padding: 12px 14px;
   pointer-events: auto;
@@ -257,7 +257,7 @@
   height: 48px;
   border-radius: 50%;
   overflow: hidden;
-  border: 1px solid rgba(207, 250, 254, 0.2); /* frost-cyan transparent */
+  border: 1px solid rgba(207, 250, 254, 0.2); /* frost-blue transparent */
   flex-shrink: 0;
 }
 
@@ -289,7 +289,7 @@
 
 .pc-status {
   font-size: 14px;
-  color: #cffafe; /* frost-cyan */
+  color: #dbeafe; /* frost-blue */
   line-height: 1;
 }
 
@@ -307,7 +307,7 @@
 }
 
 .pc-contact-btn:hover {
-  border-color: #22d3ee; /* neon-cyan */
+  border-color: #0066ff; /* vivid-blue */
   transform: translateY(-1px);
   transition: all 0.2s ease;
 }
@@ -335,7 +335,7 @@
   margin: 0;
   font-size: min(5svh, 2.5em);
   margin: 0;
-  background-image: linear-gradient(to bottom, #f0f9ff, #cffafe); /* frost-white to frost-cyan */
+  background-image: linear-gradient(to bottom, #f0f9ff, #dbeafe); /* frost-white to frost-blue */
   background-size: 1em 1.5em;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -350,7 +350,7 @@
   font-size: 16px;
   margin: 0 auto;
   width: min-content;
-  background-image: linear-gradient(to bottom, #f0f9ff, #22d3ee); /* frost-white to neon-cyan */
+  background-image: linear-gradient(to bottom, #f0f9ff, #0066ff); /* frost-white to vivid-blue */
   background-size: 1em 1.5em;
   -webkit-text-fill-color: transparent;
   background-clip: text;

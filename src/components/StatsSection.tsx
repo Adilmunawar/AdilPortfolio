@@ -11,7 +11,7 @@ const StatsSection = () => {
             <h2 className="text-5xl md:text-7xl font-bold mb-6 text-gradient-slow">
                 Stats & Achievements
             </h2>
-            <p className="text-xl text-frost-cyan max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl text-frost-blue max-w-4xl mx-auto leading-relaxed">
                 A data-driven look at my coding journey and accomplishments.
             </p>
         </div>

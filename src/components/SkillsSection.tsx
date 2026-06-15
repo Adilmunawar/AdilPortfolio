@@ -68,7 +68,7 @@ const SkillsSection = () => {
           }`}>
             <span className="text-gradient animate-shimmer">Skills & Expertise</span>
           </h2>
-          <p className={`text-xl text-frost-cyan max-w-3xl mx-auto transition-all duration-1000 delay-300 ${
+          <p className={`text-xl text-frost-blue max-w-3xl mx-auto transition-all duration-1000 delay-300 ${
             isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-8'
           }`}>
             Mastering the latest technologies to build exceptional digital experiences
@@ -92,7 +92,7 @@ const SkillsSection = () => {
               'src' in item ? (
                 <div className="flex flex-col items-center justify-center text-center gap-2">
                   <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
-                  <span className="text-xs text-frost-cyan/80">{item.alt}</span>
+                  <span className="text-xs text-frost-blue/80">{item.alt}</span>
                 </div>
               ) : null
             )}
@@ -117,7 +117,7 @@ const SkillsSection = () => {
                'src' in item ? (
                 <div className="flex flex-col items-center justify-center text-center gap-2">
                   <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
-                  <span className="text-xs text-frost-cyan/80">{item.alt}</span>
+                  <span className="text-xs text-frost-blue/80">{item.alt}</span>
                 </div>
               ) : null
             )}
@@ -142,7 +142,7 @@ const SkillsSection = () => {
                'src' in item ? (
                 <div className="flex flex-col items-center justify-center text-center gap-2">
                   <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
-                  <span className="text-xs text-frost-cyan/80">{item.alt}</span>
+                  <span className="text-xs text-frost-blue/80">{item.alt}</span>
                 </div>
               ) : null
             )}

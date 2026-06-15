@@ -160,7 +160,7 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, isInitiallyLoading
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                className="relative w-full max-w-2xl h-[600px] max-h-[85vh] flex flex-col rounded-3xl border border-white/10 bg-black/90 shadow-2xl shadow-cyan-500/20 overflow-hidden"
+                className="relative w-full max-w-2xl h-[600px] max-h-[85vh] flex flex-col rounded-3xl border border-white/10 bg-black/90 shadow-2xl shadow-blue-500/20 overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
                 <button onClick={onClose} className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-colors z-20">
@@ -182,14 +182,14 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, isInitiallyLoading
                         >
                             <motion.div 
                                 whileHover={{ scale: 1.1, rotate: 5 }}
-                                className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center cursor-pointer overflow-hidden", msg.role === 'user' ? 'bg-cyan-700' : 'bg-cyber-gray/80')}
+                                className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center cursor-pointer overflow-hidden", msg.role === 'user' ? 'bg-blue-700' : 'bg-cyber-gray/80')}
                             >
                                 {msg.role === 'user' ? <User size={18} /> : <Image src="/zenith.png" alt="Zenith Avatar" width={32} height={32} className="object-cover" />}
                             </motion.div>
                             <div className={cn(
                                 "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-md",
                                 msg.role === 'user'
-                                ? "bg-cyan-600 text-white rounded-br-sm"
+                                ? "bg-blue-600 text-white rounded-br-sm"
                                 : "bg-cyber-gray/50 border border-white/10 text-frost-white rounded-bl-sm"
                             )}>
                                 <ReactMarkdown className="prose prose-sm prose-invert max-w-none prose-p:my-0">{msg.content}</ReactMarkdown>
@@ -211,7 +211,7 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, isInitiallyLoading
                 <div className="p-4 pt-2">
                     <form
                     onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-                    className="flex items-center gap-2 bg-black/50 border border-white/10 rounded-full p-2 focus-within:border-cyan-400/50 transition-all duration-300"
+                    className="flex items-center gap-2 bg-black/50 border border-white/10 rounded-full p-2 focus-within:border-blue-400/50 transition-all duration-300"
                     >
                     <input
                         type="text"
@@ -225,12 +225,12 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, isInitiallyLoading
                         disabled={!input.trim() || currentLoadingState}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        className="p-2 w-10 h-10 flex items-center justify-center bg-cyan-600 hover:bg-cyan-700 text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+                        className="p-2 w-10 h-10 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
                     >
                         <Send size={16} className="group-hover:translate-x-0.5 transition-transform"/>
                     </motion.button>
                     </form>
-                    <p className="text-xs text-center text-cyan-400/40 mt-2">
+                    <p className="text-xs text-center text-blue-400/40 mt-2">
                         Zenith - Developed by Adil Munawar
                     </p>
                 </div>

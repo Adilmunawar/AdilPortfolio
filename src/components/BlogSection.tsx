@@ -32,12 +32,12 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
   };
 
   return !inline && match ? (
-    <div className="relative my-4 rounded-lg bg-cyber-dark border border-neon-cyan/20 overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-2 bg-cyber-gray/50 border-b border-neon-cyan/20">
-        <span className="text-xs text-frost-cyan font-mono">{lang}</span>
+    <div className="relative my-4 rounded-lg bg-cyber-dark border border-vivid-blue/20 overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-2 bg-cyber-gray/50 border-b border-vivid-blue/20">
+        <span className="text-xs text-frost-blue font-mono">{lang}</span>
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1 text-xs text-frost-cyan hover:text-white transition-colors"
+          className="flex items-center gap-1 text-xs text-frost-blue hover:text-white transition-colors"
         >
           {isCopied ? <Check size={14} /> : <Copy size={14} />}
           {isCopied ? 'Copied!' : 'Copy'}
@@ -55,7 +55,7 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
       </SyntaxHighlighter>
     </div>
   ) : (
-    <code className={cn("text-sm font-mono bg-neon-cyan/10 text-neon-cyan px-1 py-0.5 rounded break-words", className)} {...props}>
+    <code className={cn("text-sm font-mono bg-vivid-blue/10 text-vivid-blue px-1 py-0.5 rounded break-words", className)} {...props}>
       {children}
     </code>
   );
@@ -143,12 +143,12 @@ const BlogSection = () => {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16 animate-fade-in-up">
             <div className="inline-block mb-8">
-              <h2 className="text-frost-cyan text-sm font-semibold tracking-widest uppercase bg-cyber-dark/50 px-6 py-3 rounded-full border border-neon-cyan/30 backdrop-blur-sm">
-                <Rss className="inline w-4 h-4 mr-2 text-neon-cyan" />
+              <h2 className="text-frost-blue text-sm font-semibold tracking-widest uppercase bg-cyber-dark/50 px-6 py-3 rounded-full border border-vivid-blue/30 backdrop-blur-sm">
+                <Rss className="inline w-4 h-4 mr-2 text-vivid-blue" />
                 From the Desk of a Developer
               </h2>
             </div>
-            <p className="text-xl text-frost-cyan max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl text-frost-blue max-w-4xl mx-auto leading-relaxed">
               Sharing insights on web development, cybersecurity, and the art of code.
             </p>
           </div>
@@ -166,7 +166,7 @@ const BlogSection = () => {
                 <div key={post.id} className="flex-shrink-0 w-[320px] snap-center">
                   <Card
                     onClick={() => handleReadMore(post)}
-                    className="group relative h-full glass-card rounded-2xl overflow-hidden transition-all duration-500 hover:border-neon-cyan/80 hover:shadow-2xl hover:shadow-neon-cyan/20 hover:-translate-y-2 flex flex-col cursor-pointer"
+                    className="group relative h-full glass-card rounded-2xl overflow-hidden transition-all duration-500 hover:border-vivid-blue/80 hover:shadow-2xl hover:shadow-vivid-blue/20 hover:-translate-y-2 flex flex-col cursor-pointer"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <div className="relative overflow-hidden h-48">
@@ -185,7 +185,7 @@ const BlogSection = () => {
                           {post.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="px-3 py-1 text-xs rounded-full bg-neon-cyan/10 border border-neon-cyan/20 text-neon-cyan"
+                              className="px-3 py-1 text-xs rounded-full bg-vivid-blue/10 border border-vivid-blue/20 text-vivid-blue"
                             >
                               {tag}
                             </span>
@@ -194,12 +194,12 @@ const BlogSection = () => {
                         <h3 className="text-xl font-bold text-frost-white mb-2 group-hover:text-white transition-colors">
                           {post.title}
                         </h3>
-                        <p className="text-frost-cyan/80 text-sm leading-relaxed">
+                        <p className="text-frost-blue/80 text-sm leading-relaxed">
                           {post.excerpt}
                         </p>
                       </div>
                       <div
-                        className="mt-6 inline-flex items-center text-neon-cyan font-semibold group-hover:text-frost-white transition-colors"
+                        className="mt-6 inline-flex items-center text-vivid-blue font-semibold group-hover:text-frost-white transition-colors"
                       >
                         Read More{' '}
                         <ArrowRight
@@ -220,7 +220,7 @@ const BlogSection = () => {
 
       {selectedPost && (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-          <DialogContent className="max-w-5xl w-[90vw] h-[90vh] bg-cyber-dark/90 backdrop-blur-lg border-neon-cyan/30 text-frost-white p-0 flex flex-col">
+          <DialogContent className="max-w-5xl w-[90vw] h-[90vh] bg-cyber-dark/90 backdrop-blur-lg border-vivid-blue/30 text-frost-white p-0 flex flex-col">
              <ScrollArea 
                 ref={vSliderRef}
                 className={cn("h-full w-full rounded-lg custom-scrollbar", isVDragging ? "cursor-grabbing" : "cursor-grab")}
@@ -241,18 +241,18 @@ const BlogSection = () => {
                     </div>
                     <DialogHeader className="p-6 md:px-8 -mt-20 relative z-10 !space-y-0">
                         <DialogTitle className="text-2xl md:text-3xl font-bold text-gradient-slow mb-2">{selectedPost.title}</DialogTitle>
-                        <DialogDescription className="text-frost-cyan/80 flex flex-wrap gap-2 py-2">
+                        <DialogDescription className="text-frost-blue/80 flex flex-wrap gap-2 py-2">
                             {selectedPost.tags.map((tag) => (
                                 <span
                                 key={tag}
-                                className="px-3 py-1 text-xs rounded-full bg-neon-cyan/10 border border-neon-cyan/20 text-neon-cyan"
+                                className="px-3 py-1 text-xs rounded-full bg-vivid-blue/10 border border-vivid-blue/20 text-vivid-blue"
                                 >
                                 {tag}
                                 </span>
                             ))}
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="prose prose-sm md:prose-base prose-invert prose-p:text-frost-cyan/90 prose-p:break-words prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-neon-cyan prose-table:border-neon-cyan/20 prose-th:text-frost-white prose-tr:border-neon-cyan/20 max-w-none px-6 md:px-8 pb-8">
+                    <div className="prose prose-sm md:prose-base prose-invert prose-p:text-frost-blue/90 prose-p:break-words prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-vivid-blue prose-table:border-vivid-blue/20 prose-th:text-frost-white prose-tr:border-vivid-blue/20 max-w-none px-6 md:px-8 pb-8">
                         <ReactMarkdown
                            components={{
                              code: CodeBlock,

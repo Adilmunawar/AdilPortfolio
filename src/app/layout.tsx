@@ -244,7 +244,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-200">
+      <body className="antialiased bg-background text-foreground selection:bg-blue-500/30 selection:text-blue-200">
         <TooltipProvider>
           <Toaster />
           <Sonner />

@@ -38,11 +38,11 @@ export const ZenithOrb = ({ onClick, isOpen }: ZenithOrbProps) => {
           whileTap={{ scale: 0.95 }}
           className="fixed bottom-6 left-6 z-40 group"
         >
-          <div className="relative flex items-center gap-3 pl-3 pr-5 py-3 rounded-full bg-black/60 backdrop-blur-lg border border-white/10 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 transition-all duration-300 hover:border-cyan-400/30">
+          <div className="relative flex items-center gap-3 pl-3 pr-5 py-3 rounded-full bg-black/60 backdrop-blur-lg border border-white/10 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all duration-300 hover:border-blue-400/30">
             
             {/* Avatar Circle */}
             <motion.div 
-              className="relative w-14 h-14 rounded-full bg-gradient-to-br from-cyan-600 to-blue-800 flex items-center justify-center border-2 border-white/20 shadow-inner overflow-hidden group-hover:from-cyan-500 group-hover:to-blue-700 transition-colors"
+              className="relative w-14 h-14 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center border-2 border-white/20 shadow-inner overflow-hidden group-hover:from-blue-500 group-hover:to-blue-700 transition-colors"
             >
               <motion.div whileHover={{ scale: 1.1, rotate: 5 }} className="w-full h-full">
                 <Image src="/zenith.png" alt="Zenith Avatar" width={56} height={56} className="object-cover" />
@@ -66,7 +66,7 @@ export const ZenithOrb = ({ onClick, isOpen }: ZenithOrbProps) => {
                   animate={{ y: '0%', opacity: 1 }}
                   exit={{ y: '-100%', opacity: 0 }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-[11px] text-cyan-400/80 font-medium block"
+                  className="text-[11px] text-blue-400/80 font-medium block"
                 >
                   {subtitles[currentSubtitle]}
                 </motion.span>
@@ -74,7 +74,7 @@ export const ZenithOrb = ({ onClick, isOpen }: ZenithOrbProps) => {
             </div>
             
             {/* Glow Effect */}
-            <div className="absolute inset-0 rounded-full bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl"></div>
+            <div className="absolute inset-0 rounded-full bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl"></div>
           </div>
         </motion.button>
       )}

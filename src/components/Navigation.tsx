@@ -67,7 +67,7 @@ const Navigation = () => {
   return (
     <nav className={cn(
       "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-      scrolled ? "bg-cyber-dark/80 backdrop-blur-lg border-b border-neon-cyan/20" : "bg-transparent border-b border-transparent"
+      scrolled ? "bg-cyber-dark/80 backdrop-blur-lg border-b border-vivid-blue/20" : "bg-transparent border-b border-transparent"
     )}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-center h-16">
@@ -78,17 +78,17 @@ const Navigation = () => {
                 href={item.href}
                 onClick={(e) => handleLinkClick(e, item.href)}
                 className={cn(
-                  "text-frost-cyan hover:text-frost-white px-3 py-2 text-sm font-medium transition-all duration-300 relative group whitespace-nowrap",
+                  "text-frost-blue hover:text-frost-white px-3 py-2 text-sm font-medium transition-all duration-300 relative group whitespace-nowrap",
                   activeSection === getSectionIdFromHref(item.href) && "text-frost-white"
                 )}
               >
                 {item.name}
                 <span className={cn(
-                  "absolute bottom-0 left-0 w-0 h-0.5 bg-neon-cyan transition-all duration-300 group-hover:w-full",
+                  "absolute bottom-0 left-0 w-0 h-0.5 bg-vivid-blue transition-all duration-300 group-hover:w-full",
                   activeSection === getSectionIdFromHref(item.href) && "w-full"
                 )}></span>
                 
-                <div className="absolute inset-0 bg-neon-cyan/10 rounded opacity-0 group-hover:opacity-100 transition-all duration-300 -z-10"></div>
+                <div className="absolute inset-0 bg-vivid-blue/10 rounded opacity-0 group-hover:opacity-100 transition-all duration-300 -z-10"></div>
               </a>
             ))}
           </div>
@@ -96,7 +96,7 @@ const Navigation = () => {
           <div className="md:hidden flex-1 flex justify-end">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-frost-cyan hover:text-frost-white transition-colors duration-300"
+              className="text-frost-blue hover:text-frost-white transition-colors duration-300"
               aria-label="Toggle mobile menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -107,13 +107,13 @@ const Navigation = () => {
 
       {isOpen && (
         <div className="md:hidden transform transition-transform duration-300 ease-in-out">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-cyber-dark/95 backdrop-blur-lg border-t border-neon-cyan/20">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-cyber-dark/95 backdrop-blur-lg border-t border-vivid-blue/20">
             {navItems.map((item, index) => (
               <a
                 key={item.name}
                 href={item.href}
                 onClick={(e) => handleLinkClick(e, item.href)}
-                className="text-frost-cyan hover:text-frost-white block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 hover:bg-neon-cyan/10 animate-fade-in-up"
+                className="text-frost-blue hover:text-frost-white block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 hover:bg-vivid-blue/10 animate-fade-in-up"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 {item.name}

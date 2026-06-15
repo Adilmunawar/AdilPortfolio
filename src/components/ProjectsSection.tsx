@@ -69,7 +69,7 @@ const ProjectsSection = () => {
   return (
     <section id="projects" className="py-32 px-4 relative overflow-hidden">
       {/* Background Decorative Elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-neon-cyan/5 blur-[120px] rounded-full -z-10" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-vivid-blue/5 blur-[120px] rounded-full -z-10" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/5 blur-[120px] rounded-full -z-10" />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -78,7 +78,7 @@ const ProjectsSection = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyber-dark/50 border border-neon-cyan/20 text-neon-cyan backdrop-blur-md"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyber-dark/50 border border-vivid-blue/20 text-vivid-blue backdrop-blur-md"
           >
             <Sparkles className="w-4 h-4 animate-pulse" />
             <span className="text-xs font-bold uppercase tracking-widest">Featured Ecosystem</span>
@@ -98,7 +98,7 @@ const ProjectsSection = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-frost-cyan/70 max-w-3xl mx-auto leading-relaxed font-medium"
+            className="text-xl text-frost-blue/70 max-w-3xl mx-auto leading-relaxed font-medium"
           >
             A collection of high-concurrency systems, AI integrations, and open-source tools designed for modern digital environments.
           </motion.p>
@@ -114,7 +114,7 @@ const ProjectsSection = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card 
-                className="group h-full flex flex-col bg-cyber-dark/40 backdrop-blur-xl border border-white/10 rounded-[2rem] overflow-hidden transition-all duration-500 hover:border-neon-cyan/50 hover:shadow-[0_0_40px_-15px_rgba(34,211,238,0.3)]"
+                className="group h-full flex flex-col bg-cyber-dark/40 backdrop-blur-xl border border-white/10 rounded-[2rem] overflow-hidden transition-all duration-500 hover:border-vivid-blue/50 hover:shadow-[0_0_40px_-15px_rgba(0, 102, 255,0.3)]"
               >
                 {/* Image Container */}
                 <div className="relative h-56 overflow-hidden">
@@ -127,11 +127,11 @@ const ProjectsSection = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/20 to-transparent" />
                   
                   {/* Hover Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-neon-cyan/10 backdrop-blur-[2px]">
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-vivid-blue/10 backdrop-blur-[2px]">
                     <div className="flex gap-4">
                       <Button
                         size="icon"
-                        className="w-12 h-12 rounded-full bg-white text-black hover:bg-neon-cyan hover:text-white transition-all duration-300"
+                        className="w-12 h-12 rounded-full bg-white text-black hover:bg-vivid-blue hover:text-white transition-all duration-300"
                         onClick={() => window.open(project.live, '_blank')}
                         title="View Live Site"
                       >
@@ -150,20 +150,20 @@ const ProjectsSection = () => {
                 </div>
 
                 <CardHeader className="p-8 pb-4">
-                  <CardTitle className="text-2xl font-bold text-white group-hover:text-neon-cyan transition-colors">
+                  <CardTitle className="text-2xl font-bold text-white group-hover:text-vivid-blue transition-colors">
                     {project.title}
                   </CardTitle>
                 </CardHeader>
 
                 <CardContent className="px-8 flex-grow">
-                  <p className="text-frost-cyan/70 text-sm leading-relaxed mb-8 line-clamp-4 font-medium">
+                  <p className="text-frost-blue/70 text-sm leading-relaxed mb-8 line-clamp-4 font-medium">
                     {project.description}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {project.tech.map((techItem) => (
                       <span
                         key={techItem}
-                        className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full bg-white/5 border border-white/5 text-frost-cyan group-hover:border-neon-cyan/20 group-hover:text-white transition-all"
+                        className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full bg-white/5 border border-white/5 text-frost-blue group-hover:border-vivid-blue/20 group-hover:text-white transition-all"
                       >
                         {techItem}
                       </span>
@@ -173,7 +173,7 @@ const ProjectsSection = () => {
 
                 <CardFooter className="p-8 pt-4 flex gap-4">
                   <Button
-                    className="flex-1 h-12 rounded-2xl bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black border border-neon-cyan/20 font-bold text-xs uppercase tracking-widest transition-all duration-300"
+                    className="flex-1 h-12 rounded-2xl bg-vivid-blue/10 text-vivid-blue hover:bg-vivid-blue hover:text-black border border-vivid-blue/20 font-bold text-xs uppercase tracking-widest transition-all duration-300"
                     onClick={() => window.open(project.live, '_blank')}
                   >
                     <ExternalLink size={14} className="mr-2" />

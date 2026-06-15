@@ -32,12 +32,12 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
   };
 
   return !inline && match ? (
-    <div className="relative my-6 rounded-xl bg-black/60 border border-neon-cyan/20 overflow-hidden shadow-2xl">
+    <div className="relative my-6 rounded-xl bg-black/60 border border-vivid-blue/20 overflow-hidden shadow-2xl">
       <div className="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/10">
-        <span className="text-[10px] text-frost-cyan font-mono uppercase tracking-widest">{lang}</span>
+        <span className="text-[10px] text-frost-blue font-mono uppercase tracking-widest">{lang}</span>
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 text-xs text-frost-cyan hover:text-white transition-colors"
+          className="flex items-center gap-1.5 text-xs text-frost-blue hover:text-white transition-colors"
         >
           {isCopied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
           <span className="font-medium">{isCopied ? 'Copied' : 'Copy'}</span>
@@ -61,7 +61,7 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
       </SyntaxHighlighter>
     </div>
   ) : (
-    <code className={cn("text-xs font-mono bg-neon-cyan/10 text-neon-cyan px-1.5 py-0.5 rounded border border-neon-cyan/20", className)} {...props}>
+    <code className={cn("text-xs font-mono bg-vivid-blue/10 text-vivid-blue px-1.5 py-0.5 rounded border border-vivid-blue/20", className)} {...props}>
       {children}
     </code>
   );
@@ -91,8 +91,8 @@ export default function CaseStudiesSection() {
     <>
       <section className="relative py-32 overflow-hidden" id="case-studies">
         {/* Background Decorative Elements */}
-        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-neon-cyan/10 to-transparent -z-10" />
-        <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-neon-cyan/10 to-transparent -z-10" />
+        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-vivid-blue/10 to-transparent -z-10" />
+        <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-vivid-blue/10 to-transparent -z-10" />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-24 space-y-6">
@@ -100,7 +100,7 @@ export default function CaseStudiesSection() {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-cyan-500/5 border border-cyan-500/20 text-cyan-400 backdrop-blur-md"
+              className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-blue-500/5 border border-blue-500/20 text-blue-400 backdrop-blur-md"
             >
               <Target className="w-4 h-4 animate-pulse" />
               <span className="font-bold text-xs uppercase tracking-[0.2em]">Engineering Deep Dives</span>
@@ -112,14 +112,14 @@ export default function CaseStudiesSection() {
               viewport={{ once: true }}
               className="text-5xl md:text-7xl font-black text-white tracking-tighter"
             >
-              The <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-blue-600 animate-shimmer bg-[length:200%_auto]">Architectural</span> Journal
+              The <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-white to-blue-600 animate-shimmer bg-[length:200%_auto]">Architectural</span> Journal
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-frost-cyan/60 max-w-2xl mx-auto text-lg font-medium"
+              className="text-frost-blue/60 max-w-2xl mx-auto text-lg font-medium"
             >
               Detailed dissections of complex systems, performance optimizations, and enterprise-grade solutions.
             </motion.p>
@@ -138,7 +138,7 @@ export default function CaseStudiesSection() {
               >
                 {/* Horizontal Card Layout */}
                 <div className={cn(
-                  "flex flex-col lg:flex-row gap-8 lg:gap-0 bg-black/40 backdrop-blur-xl border border-white/10 rounded-[2.5rem] overflow-hidden transition-all duration-500 hover:border-cyan-500/40 hover:shadow-[0_0_50px_-12px_rgba(34,211,238,0.2)]",
+                  "flex flex-col lg:flex-row gap-8 lg:gap-0 bg-black/40 backdrop-blur-xl border border-white/10 rounded-[2.5rem] overflow-hidden transition-all duration-500 hover:border-blue-500/40 hover:shadow-[0_0_50px_-12px_rgba(0, 102, 255,0.2)]",
                   index % 2 !== 0 && "lg:flex-row-reverse"
                 )}>
                   {/* Image Side */}
@@ -155,12 +155,12 @@ export default function CaseStudiesSection() {
                     <div className="absolute bottom-8 left-8 right-8 flex items-center justify-between">
                       <div className="flex gap-2">
                         {study.techStack.slice(0, 3).map((tech, i) => (
-                          <Badge key={i} className="bg-black/60 backdrop-blur-md border-white/10 text-[10px] font-bold text-frost-cyan">
+                          <Badge key={i} className="bg-black/60 backdrop-blur-md border-white/10 text-[10px] font-bold text-frost-blue">
                             {tech}
                           </Badge>
                         ))}
                       </div>
-                      <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-neon-cyan group-hover:text-black transition-all duration-500 group-hover:rotate-45">
+                      <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-vivid-blue group-hover:text-black transition-all duration-500 group-hover:rotate-45">
                         <ArrowUpRight className="w-6 h-6" />
                       </div>
                     </div>
@@ -176,7 +176,7 @@ export default function CaseStudiesSection() {
                         <h3 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
                           {study.title}
                         </h3>
-                        <p className="text-frost-cyan/70 text-lg leading-relaxed line-clamp-3 font-medium">
+                        <p className="text-frost-blue/70 text-lg leading-relaxed line-clamp-3 font-medium">
                           {study.excerpt}
                         </p>
                       </div>
@@ -193,8 +193,8 @@ export default function CaseStudiesSection() {
                         </div>
 
                         <div className="flex gap-5">
-                          <div className="mt-1 w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                            <Zap className="w-5 h-5 text-cyan-400" />
+                          <div className="mt-1 w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
+                            <Zap className="w-5 h-5 text-blue-400" />
                           </div>
                           <div>
                             <p className="text-[10px] text-white/40 uppercase tracking-widest font-black mb-1">The Solution</p>
@@ -216,7 +216,7 @@ export default function CaseStudiesSection() {
           <DialogContent className="max-w-6xl w-[95vw] h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border-white/10 text-frost-white p-0 overflow-hidden shadow-2xl">
             {/* Reading Progress Bar */}
             <motion.div 
-              className="absolute top-0 left-0 right-0 h-1 bg-neon-cyan origin-left z-50"
+              className="absolute top-0 left-0 right-0 h-1 bg-vivid-blue origin-left z-50"
               style={{ scaleX }}
             />
 
@@ -224,13 +224,13 @@ export default function CaseStudiesSection() {
               {/* Sticky Modal Header */}
               <div className="p-6 md:px-12 bg-black/40 border-b border-white/5 flex items-center justify-between backdrop-blur-xl shrink-0">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-neon-cyan/10 border border-neon-cyan/30 flex items-center justify-center">
-                    <BookOpen className="w-5 h-5 text-neon-cyan" />
+                  <div className="w-10 h-10 rounded-xl bg-vivid-blue/10 border border-vivid-blue/30 flex items-center justify-center">
+                    <BookOpen className="w-5 h-5 text-vivid-blue" />
                   </div>
                   <div>
                     <DialogTitle className="text-xl md:text-2xl font-black tracking-tight text-white">{selectedPost.title}</DialogTitle>
                     <div className="flex items-center gap-3 text-[10px] text-white/40 uppercase tracking-widest font-bold">
-                      <Clock className="w-3 h-3 text-neon-cyan" />
+                      <Clock className="w-3 h-3 text-vivid-blue" />
                       <span>12 Min Read</span>
                       <span className="w-1 h-1 bg-white/20 rounded-full" />
                       <span>Technical Architecture</span>
@@ -255,7 +255,7 @@ export default function CaseStudiesSection() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
                   </div>
 
-                  <div className="prose prose-lg prose-invert prose-p:text-frost-cyan/80 prose-p:leading-relaxed prose-headings:text-white prose-headings:font-black prose-headings:tracking-tighter prose-strong:text-white prose-a:text-neon-cyan prose-table:border-white/10 prose-th:text-white prose-tr:border-white/10 max-w-none prose-pre:bg-transparent prose-pre:p-0">
+                  <div className="prose prose-lg prose-invert prose-p:text-frost-blue/80 prose-p:leading-relaxed prose-headings:text-white prose-headings:font-black prose-headings:tracking-tighter prose-strong:text-white prose-a:text-vivid-blue prose-table:border-white/10 prose-th:text-white prose-tr:border-white/10 max-w-none prose-pre:bg-transparent prose-pre:p-0">
                     <ReactMarkdown components={{ code: CodeBlock }}>
                       {selectedPost.content}
                     </ReactMarkdown>
@@ -263,8 +263,8 @@ export default function CaseStudiesSection() {
                   
                   {/* Closing Footer */}
                   <div className="mt-20 pt-12 border-t border-white/10 flex flex-col items-center text-center gap-6">
-                    <div className="w-16 h-px bg-neon-cyan/30" />
-                    <p className="text-frost-cyan/40 text-sm font-medium italic">End of Engineering Dissection</p>
+                    <div className="w-16 h-px bg-vivid-blue/30" />
+                    <p className="text-frost-blue/40 text-sm font-medium italic">End of Engineering Dissection</p>
                     <Button 
                       onClick={() => setIsModalOpen(false)}
                       variant="outline" 
