@@ -11,32 +11,9 @@ interface Message {
 
 export default function ZenithAssistant() {
   const [isOpen, setIsOpen] = useState(false);
-  const [initialMessage, setInitialMessage] = useState<Message | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleOpen = async () => {
+  const handleOpen = () => {
     setIsOpen(true);
-    if (!initialMessage) {
-      setIsLoading(true);
-      try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: [] }),
-        });
-        const data = await res.json();
-        
-        if (data.error) {
-          setInitialMessage({ role: 'assistant', content: `Error: ${data.error}` });
-        } else {
-          setInitialMessage(data);
-        }
-      } catch (error: any) {
-        setInitialMessage({ role: 'assistant', content: `Error: ${error.message}` });
-      } finally {
-        setIsLoading(false);
-      }
-    }
   };
 
   const handleClose = () => {
@@ -49,8 +26,6 @@ export default function ZenithAssistant() {
       <ZenithChat 
         isOpen={isOpen} 
         onClose={handleClose} 
-        initialMessage={initialMessage}
-        isInitiallyLoading={isLoading}
       />
     </>
   );

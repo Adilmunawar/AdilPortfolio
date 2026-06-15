@@ -56,12 +56,13 @@ export async function POST(req: Request) {
       content: systemMessageContent
     };
 
-    // 3. Call OpenRouter using the SDK
-    const completion = await openai.chat.completions.create({
+    // 3. Call OpenRouter using the SDK with stream: true
+    const responseStream = await openai.chat.completions.create({
       model: "google/gemini-2.5-flash-lite", 
       messages: [systemMessage, ...messages],
       temperature: 0.7,
       max_tokens: 2000,
+      stream: true,
       extra_body: {
         safety_settings: [
             {
@@ -70,18 +71,32 @@ export async function POST(req: Request) {
             },
         ],
       }
-    } as any);
+    } as any) as unknown as AsyncIterable<any>;
 
-    const aiMessage = completion.choices[0]?.message;
+    // 4. Convert the stream to a Web ReadableStream
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of responseStream) {
+            const text = chunk.choices[0]?.delta?.content || "";
+            if (text) {
+              controller.enqueue(new TextEncoder().encode(text));
+            }
+          }
+        } catch (err) {
+          controller.error(err);
+        } finally {
+          controller.close();
+        }
+      }
+    });
 
-    if (!aiMessage) {
-      throw new Error("No response received from AI.");
-    }
-
-    // 4. Return the clean response
-    return NextResponse.json({
-      role: 'assistant',
-      content: aiMessage.content
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
     });
 
   } catch (error: any) {

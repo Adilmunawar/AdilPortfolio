@@ -15,11 +15,9 @@ interface Message {
 interface ZenithChatProps {
   isOpen: boolean;
   onClose: () => void;
-  initialMessage: Message | null;
-  isInitiallyLoading: boolean;
 }
 
-export const ZenithChat = ({ isOpen, onClose, initialMessage, isInitiallyLoading }: ZenithChatProps) => {
+export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -64,25 +62,64 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, isInitiallyLoading
   };
 
 
-  useEffect(() => {
-    if (initialMessage && messages.length === 0) {
-      setMessages([initialMessage]);
-      // Speak the initial message when it arrives
+  const streamResponse = async (chatHistory: Message[]) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: chatHistory }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'The AI is taking a break. Please try again later.');
+      }
+      
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error("No response body");
+      
+      const decoder = new TextDecoder();
+      let done = false;
+      let fullContent = '';
+      
+      // Add an initial empty assistant message to stream into
+      setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
+      
+      // Hide the "thinking" indicator because we are now typing
+      setIsLoading(false); 
+
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        if (value) {
+           const chunkValue = decoder.decode(value, { stream: true });
+           fullContent += chunkValue;
+           // Update the last message dynamically
+           setMessages(prev => {
+             const newMessages = [...prev];
+             newMessages[newMessages.length - 1] = { role: 'assistant', content: fullContent };
+             return newMessages;
+           });
+        }
+      }
+
+      // Speak only after full text has finished streaming
       if (voices.length > 0) {
-        speak(initialMessage.content);
+        speak(fullContent);
       }
+
+    } catch (error: any) {
+       setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${error.message}` }]);
+       setIsLoading(false);
     }
-  }, [initialMessage, messages.length, voices]);
-  
+  };
+
   useEffect(() => {
-    // If voices load after the initial message is set, speak it.
-    if (initialMessage && messages.length === 1 && voices.length > 0) {
-      const isInitialMessagePresent = messages.some(msg => msg.content === initialMessage.content);
-      if (isInitialMessagePresent) {
-        speak(initialMessage.content);
-      }
+    if (isOpen && messages.length === 0 && !isLoading) {
+      streamResponse([]);
     }
-  }, [voices, initialMessage, messages]);
+  }, [isOpen]);
 
 
   useEffect(() => {
@@ -115,34 +152,14 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, isInitiallyLoading
     }
 
     const userMsg: Message = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMsg]);
+    const newHistory = [...messages, userMsg];
+    setMessages(newHistory);
     setInput('');
-    setIsLoading(true);
-
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages, userMsg] }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'The AI is taking a break. Please try again later.');
-      }
-      
-      const data = await response.json();
-      setMessages(prev => [...prev, data]);
-      speak(data.content);
-
-    } catch (error: any) {
-       setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${error.message}` }]);
-    } finally {
-      setIsLoading(false);
-    }
+    
+    await streamResponse(newHistory);
   };
 
-  const currentLoadingState = isInitiallyLoading || isLoading;
+  const currentLoadingState = isLoading;
 
   return (
     <AnimatePresence>
@@ -156,11 +173,11 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, isInitiallyLoading
             onClick={onClose}
         >
             <motion.div
-                initial={{ scale: 0.95, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                className="relative w-full max-w-2xl h-[600px] max-h-[85vh] flex flex-col rounded-3xl border border-white/10 bg-black/90 shadow-2xl shadow-blue-500/20 overflow-hidden"
+                initial={{ scale: 0.8, opacity: 0, x: '-20vw', y: '20vh' }}
+                animate={{ scale: 1, opacity: 1, x: 0, y: 0 }}
+                exit={{ scale: 0.8, opacity: 0, x: '-20vw', y: '20vh' }}
+                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                className="relative w-full max-w-2xl h-[600px] max-h-[85vh] flex flex-col rounded-3xl border border-white/10 bg-black/90 shadow-[0_0_40px_rgba(0,102,255,0.25)] overflow-hidden origin-bottom-left"
                 onClick={(e) => e.stopPropagation()}
             >
                 <button onClick={onClose} className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-colors z-20">
@@ -199,10 +216,11 @@ export const ZenithChat = ({ isOpen, onClose, initialMessage, isInitiallyLoading
                     </AnimatePresence>
 
                     {currentLoadingState && (
-                    <div className="flex items-center gap-2 text-white/40 text-xs ml-11">
-                        <motion.span animate={{ y: [0, -2, 0] }} transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}>●</motion.span>
-                        <motion.span animate={{ y: [0, -2, 0] }} transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut', delay: 0.1 }}>●</motion.span>
-                        <motion.span animate={{ y: [0, -2, 0] }} transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}>●</motion.span>
+                    <div className="flex items-center gap-1 text-vivid-blue/60 text-xs ml-11 font-medium tracking-wide">
+                        <span>Zenith is thinking</span>
+                        <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}>.</motion.span>
+                        <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}>.</motion.span>
+                        <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}>.</motion.span>
                     </div>
                     )}
                 </div>
