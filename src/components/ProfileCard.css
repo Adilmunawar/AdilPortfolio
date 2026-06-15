@@ -24,6 +24,7 @@
   touch-action: none;
   max-width: 320px;
   margin: 0 auto;
+  border-radius: var(--card-radius);
 }
 
 .pc-card-wrapper::before {
@@ -66,13 +67,15 @@
   background-position: 0 0, 0 0, 50% 50%, 0 0;
   background-image: 
     radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y), 
-      hsla(189, 84%, 70%, var(--card-opacity)) 4%,       /* Lighter vivid-blue */
-      hsla(189, 84%, 60%, calc(var(--card-opacity) * 0.75)) 10%, /* vivid-blue */
-      hsla(195, 100%, 80%, calc(var(--card-opacity) * 0.5)) 50%, /* frost-blue */
+      rgba(153, 194, 255, var(--card-opacity)) 4%,       /* Lighter vivid-blue */
+      rgba(0, 102, 255, calc(var(--card-opacity) * 0.75)) 10%, /* vivid-blue */
+      rgba(0, 60, 153, calc(var(--card-opacity) * 0.5)) 50%, /* darker-blue */
       hsla(240, 0%, 30%, 0) 100%),
     radial-gradient(35% 52% at 55% 20%, var(--vivid-blue) 0%, #1e1b4b00 100%),
-    conic-gradient(from 124deg at 50% 50%, var(--vivid-blue) 0%, #0f172a 40%, #0891b2 60%, var(--vivid-blue) 100%);
+    conic-gradient(from 124deg at 50% 50%, var(--vivid-blue) 0%, #0f172a 40%, #003380 60%, var(--vivid-blue) 100%);
   overflow: hidden;
+  -webkit-mask-image: -webkit-linear-gradient(white, white);
+  mask-image: linear-gradient(white, white);
 }
 
 .pc-card:hover,
@@ -121,16 +124,16 @@
   background-position: center;
   background-image: 
     repeating-linear-gradient(0deg, 
-      hsl(195, 100%, 85%) calc(var(--space) * 1), 
-      hsl(189, 84%, 75%) calc(var(--space) * 2), 
-      hsl(195, 100%, 80%) calc(var(--space) * 3), 
-      hsl(189, 84%, 70%) calc(var(--space) * 4), 
-      hsl(195, 100%, 85%) calc(var(--space) * 5)), 
+      #99c2ff calc(var(--space) * 1), 
+      #4d94ff calc(var(--space) * 2), 
+      #0066ff calc(var(--space) * 3), 
+      #0047b3 calc(var(--space) * 4), 
+      #99c2ff calc(var(--space) * 5)), 
     repeating-linear-gradient(var(--angle), 
       #0f172a 0%, 
-      hsl(195, 30%, 80%) 3.8%, 
-      hsl(189, 40%, 70%) 4.5%, 
-      hsl(195, 30%, 80%) 5.2%, 
+      #99c2ff 3.8%, 
+      #4d94ff 4.5%, 
+      #99c2ff 5.2%, 
       #0f172a 10%, 
       #0f172a 12%), 
     radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), 
@@ -168,13 +171,13 @@
 .pc-shine::before {
   background-image: 
     linear-gradient(45deg, 
-      hsl(195, 100%, 97%), 
-      hsl(189, 84%, 80%), 
-      hsl(195, 100%, 90%), 
-      hsl(189, 84%, 70%)), 
+      #ffffff, 
+      #99c2ff, 
+      #4d94ff, 
+      #0066ff), 
     radial-gradient(circle at var(--pointer-x) var(--pointer-y), 
-      hsl(189, 84%, 60%) 0%, 
-      hsla(195, 50%, 40%, 0.2) 90%), 
+      #0066ff 0%, 
+      rgba(0, 51, 128, 0.2) 90%), 
     var(--grain);
   background-size: 250% 250%, 100% 100%, 220px 220px;
   background-position: var(--pointer-x) var(--pointer-y), center, calc(var(--pointer-x) * 0.01) calc(var(--pointer-y) * 0.01);
@@ -194,8 +197,8 @@
   transform: translate3d(0, 0, 1.1px);
   overflow: hidden;
   background-image: radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), 
-    hsla(195, 100%, 97%, 0.8) 12%, 
-    hsla(189, 84%, 53%, 0.7) 90%);
+    rgba(255, 255, 255, 0.8) 12%, 
+    rgba(0, 102, 255, 0.7) 90%);
   mix-blend-mode: overlay;
   filter: brightness(0.8) contrast(1.2);
   z-index: 4;
@@ -218,10 +221,16 @@
 .pc-avatar-content::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -15px;
   z-index: 1;
   backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   mask: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 60%,
+      rgba(0, 0, 0, 1) 90%,
+      rgba(0, 0, 0, 1) 100%);
+  -webkit-mask: linear-gradient(to bottom,
       rgba(0, 0, 0, 0) 0%,
       rgba(0, 0, 0, 0) 60%,
       rgba(0, 0, 0, 1) 90%,
