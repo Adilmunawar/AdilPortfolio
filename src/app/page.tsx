@@ -6,7 +6,6 @@ import { NeonOrbs } from '@/components/ui/neon-orbs';
 
 // ⚡ LAZY LOADING: These chunks of JavaScript will not load until the browser is idle
 // or the user scrolls near them. This saves massive amounts of memory on low-end devices.
-const AboutSection = dynamic(() => import('@/components/AboutSection'));
 const StatsSection = dynamic(() => import('@/components/StatsSection'));
 const SkillsSection = dynamic(() => import('@/components/SkillsSection'));
 const ServicesSection = dynamic(() => import('@/components/ServicesSection'));
@@ -27,7 +26,6 @@ export default function Home() {
         <HeroSection />
         
         {/* These load lazily in the background */}
-        <AboutSection />
         <StatsSection />
         <SkillsSection />
         <ServicesSection />
