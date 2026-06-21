@@ -60,20 +60,17 @@ const SkillsSection = () => {
 
   return (
     <section id="skills" className="py-20 px-4 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto relative z-10 text-center mb-10">
+        <h2 className={`text-5xl md:text-7xl font-bold transition-all duration-1000 ${
+          isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-12'
+        }`}>
+          <span className="text-gradient animate-shimmer">Certifications</span>
+        </h2>
+      </div>
+
       <Achievements />
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <h2 className={`text-5xl md:text-7xl font-bold mb-6 transition-all duration-1000 ${
-            isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-12'
-          }`}>
-            <span className="text-gradient animate-shimmer">Skills & Expertise</span>
-          </h2>
-          <p className={`text-xl text-frost-blue max-w-3xl mx-auto transition-all duration-1000 delay-300 ${
-            isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-8'
-          }`}>
-            Mastering the latest technologies to build exceptional digital experiences
-          </p>
-        </div>
+
+      <div className="max-w-7xl mx-auto relative z-10 mt-16">
 
         <div className={`transition-all duration-1000 delay-200 mb-12 ${
             isVisible ? 'opacity-100' : 'opacity-0'

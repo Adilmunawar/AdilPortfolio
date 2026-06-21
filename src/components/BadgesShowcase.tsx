@@ -98,9 +98,9 @@ const BadgeItemComponent = ({ badge, glowColor }: { badge: BadgeItem, glowColor:
   );
 };
 
-const BadgeRow = ({ title, badges, glowColor }: { title: string, badges: BadgeItem[], glowColor: string }) => {
+const BadgeRow = ({ title, badges, glowColor, isLast = false }: { title: string, badges: BadgeItem[], glowColor: string, isLast?: boolean }) => {
   return (
-    <div className="w-full flex flex-col items-center mb-24 relative">
+    <div className={`w-full flex flex-col items-center ${isLast ? 'mb-0' : 'mb-24'} relative`}>
       <div className="w-full flex justify-center mb-10 px-4">
         <h4 className="text-xl md:text-2xl font-semibold text-slate-200 tracking-wider uppercase">
           {title}
@@ -118,7 +118,7 @@ const BadgeRow = ({ title, badges, glowColor }: { title: string, badges: BadgeIt
 
 export default function BadgesShowcase() {
   return (
-    <div className="w-full flex flex-col items-center py-20 relative overflow-hidden">
+    <div className="w-full flex flex-col items-center pt-20 pb-0 relative overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-blue-600/5 blur-[150px] rounded-full pointer-events-none -z-20" />
       <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-500/5 blur-[150px] rounded-full pointer-events-none -z-20" />
@@ -126,7 +126,7 @@ export default function BadgesShowcase() {
       <BadgeRow title="GitHub Badges" badges={GITHUB_BADGES} glowColor="#0066ff" />
       <BadgeRow title="LeetCode Badges" badges={LEETCODE_BADGES} glowColor="#0066ff" />
       <BadgeRow title="Microsoft & AWS Badges" badges={MS_AWS_BADGES} glowColor="#0066ff" />
-      <BadgeRow title="Google Badges" badges={GOOGLE_BADGES} glowColor="#0066ff" />
+      <BadgeRow title="Google Badges" badges={GOOGLE_BADGES} glowColor="#0066ff" isLast={true} />
     </div>
   );
 }

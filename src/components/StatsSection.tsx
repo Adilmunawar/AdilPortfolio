@@ -6,7 +6,7 @@ import BadgesShowcase from './BadgesShowcase';
 
 const StatsSection = () => {
   return (
-    <section id="stats" className="py-20 px-4 relative overflow-hidden">
+    <section id="stats" className="pt-20 pb-0 px-4 relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* GitHub and LeetCode side by side on large screens */}
