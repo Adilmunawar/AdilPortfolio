@@ -75,7 +75,7 @@ export default function CaseStudiesSection() {
 
   // Vertical scroll progress for modal
   const vSliderRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ container: vSliderRef });
+  const { scrollYProgress } = useScroll({ container: vSliderRef, layoutEffect: false });
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,

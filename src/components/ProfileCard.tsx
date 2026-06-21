@@ -60,11 +60,16 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   const animationHandlers = useMemo(() => {
     if (!enableTilt || !isMounted) return null;
     let rafId: number | null = null;
-    const updateCardTransform = (offsetX: number, offsetY: number, card: HTMLElement, wrap: HTMLElement) => {
-      const width = card.clientWidth;
-      const height = card.clientHeight;
-      const percentX = clamp(100 / width * offsetX);
-      const percentY = clamp(100 / height * offsetY);
+    let writeRafId: number | null = null;
+    
+    // Pass width and height to avoid reading layout properties inside loops
+    const updateCardTransform = (offsetX: number, offsetY: number, width: number, height: number, wrap: HTMLElement) => {
+      // Prevent NaN calculation if dimensions are 0 on initial mount
+      const safeWidth = width || 320;
+      const safeHeight = height || 450;
+      
+      const percentX = clamp(100 / safeWidth * offsetX);
+      const percentY = clamp(100 / safeHeight * offsetY);
       const centerX = percentX - 50;
       const centerY = percentY - 50;
       const properties = {
@@ -78,27 +83,40 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         "--rotate-x": `${round(-(centerX / 5))}deg`,
         "--rotate-y": `${round(centerY / 4)}deg`
       };
-      Object.entries(properties).forEach(([property, value]) => {
-        wrap.style.setProperty(property, value);
+
+      // Batch style writes in the next animation frame to prevent synchronous reflows on pointermove
+      if (writeRafId) cancelAnimationFrame(writeRafId);
+      writeRafId = requestAnimationFrame(() => {
+        Object.entries(properties).forEach(([property, value]) => {
+          wrap.style.setProperty(property, value);
+        });
       });
     };
+
     const createSmoothAnimation = (duration: number, startX: number, startY: number, card: HTMLElement, wrap: HTMLElement) => {
       const startTime = performance.now();
-      const targetX = wrap.clientWidth / 2;
-      const targetY = wrap.clientHeight / 2;
+      // Cache dimensions OUTSIDE the loop. This completely eliminates Forced Reflows.
+      const width = card.clientWidth || 320;
+      const height = card.clientHeight || 450;
+      const targetX = (wrap.clientWidth || 320) / 2;
+      const targetY = (wrap.clientHeight || 450) / 2;
+      
       const animationLoop = (currentTime: number) => {
         const elapsed = currentTime - startTime;
         const progress = clamp(elapsed / duration);
         const easedProgress = easeInOutCubic(progress);
         const currentX = adjust(easedProgress, 0, 1, startX, targetX);
         const currentY = adjust(easedProgress, 0, 1, startY, targetY);
-        updateCardTransform(currentX, currentY, card, wrap);
+        
+        updateCardTransform(currentX, currentY, width, height, wrap);
+        
         if (progress < 1) {
           rafId = requestAnimationFrame(animationLoop);
         }
       };
       rafId = requestAnimationFrame(animationLoop);
     };
+
     return {
       updateCardTransform,
       createSmoothAnimation,
@@ -107,15 +125,20 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
           cancelAnimationFrame(rafId);
           rafId = null;
         }
+        if (writeRafId) {
+          cancelAnimationFrame(writeRafId);
+          writeRafId = null;
+        }
       }
     };
   }, [enableTilt, isMounted]);
+
   const handlePointerMove = useCallback((event: PointerEvent) => {
     const card = cardRef.current;
     const wrap = wrapRef.current;
     if (!card || !wrap || !animationHandlers) return;
     const rect = card.getBoundingClientRect();
-    animationHandlers.updateCardTransform(event.clientX - rect.left, event.clientY - rect.top, card, wrap);
+    animationHandlers.updateCardTransform(event.clientX - rect.left, event.clientY - rect.top, rect.width, rect.height, wrap);
   }, [animationHandlers]);
   const handlePointerEnter = useCallback(() => {
     const card = cardRef.current;
@@ -148,9 +171,12 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     
     // Only run initial animation on mount
     if (isMounted) {
-      const initialX = wrap.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
+      const safeWrapWidth = wrap.clientWidth || 320;
+      const initialX = safeWrapWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
       const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
-      animationHandlers.updateCardTransform(initialX, initialY, card, wrap);
+      const width = card.clientWidth || 320;
+      const height = card.clientHeight || 450;
+      animationHandlers.updateCardTransform(initialX, initialY, width, height, wrap);
       animationHandlers.createSmoothAnimation(ANIMATION_CONFIG.INITIAL_DURATION, initialX, initialY, card, wrap);
     }
     

@@ -67,18 +67,18 @@ const BadgeItemComponent = ({ badge, glowColor }: { badge: BadgeItem, glowColor:
       onClick={() => setShowName(!showName)}
       className="relative w-24 h-24 sm:w-28 sm:h-28 flex flex-col items-center justify-center cursor-pointer group"
     >
-      {/* Smooth synchronized float with intensely bright contour-hugging glow */}
+      {/* Smooth synchronized float with professional, subtle contour-hugging glow */}
       <motion.div
         animate={{ 
-          y: [0, -10, 0],
+          y: [0, -6, 0],
           filter: [
-            `drop-shadow(0px 0px 8px ${glowColor}60) drop-shadow(0px 0px 8px ${glowColor}00)`,
-            `drop-shadow(0px 0px 15px ${glowColor}) drop-shadow(0px 0px 35px ${glowColor})`,
-            `drop-shadow(0px 0px 8px ${glowColor}60) drop-shadow(0px 0px 8px ${glowColor}00)`
+            `drop-shadow(0px 0px 6px ${glowColor}40) drop-shadow(0px 0px 6px ${glowColor}00)`,
+            `drop-shadow(0px 0px 12px ${glowColor}90) drop-shadow(0px 0px 20px ${glowColor}60)`,
+            `drop-shadow(0px 0px 6px ${glowColor}40) drop-shadow(0px 0px 6px ${glowColor}00)`
           ]
         }}
-        transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
-        className="relative w-full h-full transform transition-transform duration-500 group-hover:scale-110 group-hover:z-20 z-10"
+        transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
+        className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-110 group-hover:z-20 z-10"
       >
          <Image
             src={badge.src}
@@ -90,7 +90,7 @@ const BadgeItemComponent = ({ badge, glowColor }: { badge: BadgeItem, glowColor:
       
       {/* Name Badge (Visible on hover OR click) */}
       <div 
-        className={`absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2 w-[120px] sm:w-[140px] bg-cyber-dark/95 text-[10px] sm:text-xs px-2 py-1.5 rounded-lg border border-white/10 backdrop-blur-xl z-30 font-medium tracking-wide flex items-center justify-center text-center shadow-lg transition-all duration-300 ${showName ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto'}`}
+        className={`absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2 w-[120px] sm:w-[140px] bg-cyber-dark/95 text-[10px] sm:text-xs px-2 py-1.5 rounded-lg border border-white/10 backdrop-blur-xl z-30 font-medium tracking-wide flex items-center justify-center text-center shadow-lg transition-all duration-500 ${showName ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto'}`}
       >
         <span className="line-clamp-2 text-slate-200">{badge.alt}</span>
       </div>
@@ -120,13 +120,13 @@ export default function BadgesShowcase() {
   return (
     <div className="w-full flex flex-col items-center py-20 relative overflow-hidden">
       {/* Background Ambience */}
-      <div className="absolute top-1/4 left-0 w-96 h-96 bg-purple-500/5 blur-[150px] rounded-full pointer-events-none -z-20" />
+      <div className="absolute top-1/4 left-0 w-96 h-96 bg-blue-600/5 blur-[150px] rounded-full pointer-events-none -z-20" />
       <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-500/5 blur-[150px] rounded-full pointer-events-none -z-20" />
 
-      <BadgeRow title="GitHub Badges" badges={GITHUB_BADGES} glowColor="#a855f7" /> {/* Purple glow */}
-      <BadgeRow title="LeetCode Badges" badges={LEETCODE_BADGES} glowColor="#fbbf24" /> {/* Yellow glow */}
-      <BadgeRow title="Microsoft & AWS Badges" badges={MS_AWS_BADGES} glowColor="#3b82f6" /> {/* Blue glow */}
-      <BadgeRow title="Google Badges" badges={GOOGLE_BADGES} glowColor="#10b981" /> {/* Green glow */}
+      <BadgeRow title="GitHub Badges" badges={GITHUB_BADGES} glowColor="#0066ff" />
+      <BadgeRow title="LeetCode Badges" badges={LEETCODE_BADGES} glowColor="#0066ff" />
+      <BadgeRow title="Microsoft & AWS Badges" badges={MS_AWS_BADGES} glowColor="#0066ff" />
+      <BadgeRow title="Google Badges" badges={GOOGLE_BADGES} glowColor="#0066ff" />
     </div>
   );
 }
