@@ -1,185 +1,88 @@
+# Adil Munawar - Software Engineering Portfolio
 
-```text
-.
-├── .github/
-│   └── workflows/
-│       ├── auto-readme.yml
-│       ├── update-contributions.yml
-│       ├── update-leetcode-stats.yml
-│       └── update-year.yml
-├── docs/
-│   └── blueprint.md
-├── public/
-│   ├── adil-munawar-uploads/
-│   │   ├── discord.svg
-│   │   └── eaf50e40-682a-4730-ac3c-407cf3e4896e.png
-│   ├── blogpic/
-│   │   ├── gameserverhack.jpg
-│   │   ├── publicwifi.jpg
-│   │   └── recong.jpg
-│   ├── casestudy/
-│   │   ├── adigaze.jpg
-│   │   ├── agent.jpg
-│   │   └── supabase.jpg
-│   ├── leetcode/
-│   │   ├── 202508.png
-│   │   ├── 202509.png
-│   │   ├── 202510.png
-│   │   ├── 202511.png
-│   │   ├── 202512.png
-│   │   ├── 202601.png
-│   │   ├── 25100.png
-│   │   ├── 2550.png
-│   │   └── temp
-│   ├── testimonials/
-│   │   ├── alice.png
-│   │   ├── AmnaAli.jpg
-│   │   ├── esha.jpg
-│   │   └── zoya.jpg
-│   ├── adicorp.jpg
-│   ├── adiflux.jpg
-│   ├── adify.jpg
-│   ├── adigaze.jpg
-│   ├── adigon.jpg
-│   ├── adinox.jpg
-│   ├── aditron.jpg
-│   ├── advance webhook concepts.png
-│   ├── advanced performance measurements.png
-│   ├── application modern.png
-│   ├── aws.png
-│   ├── CCAI frontend Integrations.png
-│   ├── favicon.ico
-│   ├── Google Ads apps.png
-│   ├── Linkedin Content and creative design.png
-│   ├── llm.txt
-│   ├── llms.txt
-│   ├── Microsoft-azure-professional.png
-│   ├── MLOPS with vertex AI.png
-│   ├── MLOPS.png
-│   ├── placeholder.svg
-│   ├── robots.txt
-│   ├── RuntimeError43
-│   └── zenith.png
-├── scripts/
-│   ├── templates/
-│   │   └── GitHubStats.tsx.template
-│   ├── generate-architecture.mjs
-│   ├── scaffold-github-stats.mjs
-│   ├── scaffold-leetcode-stats.mjs
-│   └── update-github-stats.mjs
-├── src/
-│   ├── app/
-│   │   ├── api/
-│   │   │   └── chat/
-│   │   │       └── route.ts
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   ├── manifest.ts
-│   │   ├── page.tsx
-│   │   ├── robots.ts
-│   │   └── sitemap.ts
-│   ├── components/
-│   │   ├── ui/
-│   │   │   ├── accordion.tsx
-│   │   │   ├── alert-dialog.tsx
-│   │   │   ├── alert.tsx
-│   │   │   ├── aspect-ratio.tsx
-│   │   │   ├── avatar.tsx
-│   │   │   ├── badge.tsx
-│   │   │   ├── breadcrumb.tsx
-│   │   │   ├── button.tsx
-│   │   │   ├── calendar.tsx
-│   │   │   ├── card.tsx
-│   │   │   ├── carousel.tsx
-│   │   │   ├── chart.tsx
-│   │   │   ├── checkbox.tsx
-│   │   │   ├── collapsible.tsx
-│   │   │   ├── command.tsx
-│   │   │   ├── context-menu.tsx
-│   │   │   ├── dialog.tsx
-│   │   │   ├── drawer.tsx
-│   │   │   ├── dropdown-menu.tsx
-│   │   │   ├── form.tsx
-│   │   │   ├── hover-card.tsx
-│   │   │   ├── input-otp.tsx
-│   │   │   ├── input.tsx
-│   │   │   ├── label.tsx
-│   │   │   ├── menubar.tsx
-│   │   │   ├── minimal-testimonial.tsx
-│   │   │   ├── navigation-menu.tsx
-│   │   │   ├── neon-orbs.tsx
-│   │   │   ├── pagination.tsx
-│   │   │   ├── popover.tsx
-│   │   │   ├── progress.tsx
-│   │   │   ├── radio-group.tsx
-│   │   │   ├── resizable.tsx
-│   │   │   ├── scroll-area.tsx
-│   │   │   ├── select.tsx
-│   │   │   ├── separator.tsx
-│   │   │   ├── sheet.tsx
-│   │   │   ├── sidebar.tsx
-│   │   │   ├── skeleton.tsx
-│   │   │   ├── slider.tsx
-│   │   │   ├── sonner.tsx
-│   │   │   ├── switch.tsx
-│   │   │   ├── table.tsx
-│   │   │   ├── tabs.tsx
-│   │   │   ├── testimonial-v2.tsx
-│   │   │   ├── textarea.tsx
-│   │   │   ├── toast.tsx
-│   │   │   ├── toaster.tsx
-│   │   │   ├── toggle-group.tsx
-│   │   │   ├── toggle.tsx
-│   │   │   └── tooltip.tsx
-│   │   ├── Zenith/
-│   │   │   ├── ZenithAssistant.tsx
-│   │   │   ├── ZenithChat.tsx
-│   │   │   └── ZenithOrb.tsx
-│   │   ├── Achievements.tsx
-│   │   ├── BlogSection.tsx
-│   │   ├── CaseStudiesSection.tsx
-│   │   ├── CertificationsSection.tsx
-│   │   ├── ContactSection.tsx
-│   │   ├── GitHubStats.tsx
-│   │   ├── HeroSection.tsx
-│   │   ├── LeetCodeBadges.tsx
-│   │   ├── LeetCodeStats.tsx
-│   │   ├── LogoLoop.css
-│   │   ├── LogoLoop.tsx
-│   │   ├── Navigation.tsx
-│   │   ├── ProfileCard.css
-│   │   ├── ProfileCard.tsx
-│   │   ├── ProjectsSection.tsx
-│   │   ├── ServicesSection.tsx
-│   │   ├── SkillsSection.tsx
-│   │   ├── StatsSection.tsx
-│   │   ├── TestimonialsSection.tsx
-│   │   └── TextRoller.tsx
-│   ├── hooks/
-│   │   ├── use-mobile.tsx
-│   │   └── use-toast.ts
-│   ├── lib/
-│   │   ├── blog-data.json
-│   │   ├── case-studies.json
-│   │   ├── github-contributions.json
-│   │   ├── leetcode-stats.json
-│   │   └── utils.ts
-│   ├── globals.css
-│   └── vite-env.d.ts
-├── .gitignore
-├── .modified
-├── components.json
-├── eslint.config.js
-├── next-env.d.ts
-├── next.config.js
-├── next.config.mjs
-├── package.json
-├── postcss.config.mjs
-├── README.md
-├── tailwind.config.ts
-├── tsconfig.app.json
-├── tsconfig.json
-├── tsconfig.node.json
-├── tsconfig.tsbuildinfo
-└── vite.config.ts.timestamp-1751098616751-1f5463cb8a393.mjs
+## Overview
+A comprehensive digital portfolio showcasing enterprise-grade full-stack systems engineering, artificial intelligence integrations, and advanced cloud architectures. Built with a focus on performance optimization, scalable design, and high-concurrency environments.
+
+## Core Capabilities
+* Full-Stack Web Development (Next.js, TypeScript, React)
+* Machine Learning and AI Integration
+* Enterprise RAG (Retrieval-Augmented Generation) Pipelines
+* Custom MCP (Model Context Protocol) Server Architectures
+* Cloud Infrastructure and MLOps
+* Autonomous Agentic Workflows
+
+## Technical Architecture
+
+```mermaid
+graph TD
+    %% Styling Configuration
+    classDef client fill:#0f172a,stroke:#3b82f6,stroke-width:2px,color:#f8fafc,rx:5px,ry:5px
+    classDef server fill:#1e1b4b,stroke:#8b5cf6,stroke-width:2px,color:#f8fafc,rx:5px,ry:5px
+    classDef ai fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#f8fafc,rx:5px,ry:5px
+    classDef storage fill:#450a0a,stroke:#ef4444,stroke-width:2px,color:#f8fafc,rx:5px,ry:5px
+    
+    subgraph Frontend ["Client Presentation Layer (Next.js & React)"]
+        UI[Glassmorphism UI Components]:::client
+        FM[Framer Motion Animation Engine]:::client
+        RSC[React Server Components]:::client
+        
+        UI <--> FM
+        UI <--> RSC
+    end
+
+    subgraph Backend ["Enterprise Backend & MLOps"]
+        API[Next.js API Routes / Edge Functions]:::server
+        MCP[Custom MCP Edge Servers]:::server
+        RAG[Enterprise RAG Pipeline Engine]:::server
+        
+        RSC <-->|Secure REST / gRPC| API
+        API <--> MCP
+        API <--> RAG
+    end
+    
+    subgraph Intelligence ["Artificial Intelligence Subsystem"]
+        LLM[Large Language Model Inference]:::ai
+        Agents[Autonomous Agentic Workflows]:::ai
+        Model[Custom Fine-Tuned ML Models]:::ai
+        
+        MCP <-->|Secure Context Provisioning| Agents
+        RAG <-->|Vector Context Retrieval| LLM
+        Agents <--> Model
+    end
+    
+    subgraph DataLayer ["Data Infrastructure"]
+        VDB[(High-Dimensional Vector DB)]:::storage
+        SDB[(Distributed Relational DB)]:::storage
+        Assets[Static JSON & Blob Storage]:::storage
+        
+        RAG <-->|Semantic Embeddings| VDB
+        API <--> SDB
+        RSC <--> Assets
+    end
 ```
+
+## Project Structure
+The repository follows a modular, feature-based architectural pattern:
+* `/src/components`: Contains highly encapsulated, reusable React components including specialized data visualizers, interactive cards, and layout wrappers.
+* `/src/lib`: Core utilities, data fetching logic, and static JSON data configurations.
+* `/public`: Static assets, optimized imagery, and certification verification documents.
+* `/scripts`: Build and automation scripts for continuous integration and metric aggregation.
+
+## Setup and Installation
+
+### Prerequisites
+* Node.js 20.x or higher
+* npm or yarn package manager
+
+### Local Development
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
+4. Access the local environment at `http://localhost:3000`
+
+### Build Process
+Execute the following command to generate an optimized production build:
+`npm run build`
+
+## Licensing and Usage
+This repository serves as a personal portfolio and demonstration of technical proficiency. All source code is proprietary unless explicitly stated otherwise.
