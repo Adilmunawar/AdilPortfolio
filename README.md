@@ -135,7 +135,6 @@
 │   │   │   ├── ZenithAssistant.tsx
 │   │   │   ├── ZenithChat.tsx
 │   │   │   └── ZenithOrb.tsx
-│   │   ├── AboutSection.tsx
 │   │   ├── Achievements.tsx
 │   │   ├── BlogSection.tsx
 │   │   ├── CaseStudiesSection.tsx
