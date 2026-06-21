@@ -71,6 +71,11 @@ const certifications = [
     issuer: 'HackerRank',
     image: '/certifications/software-egeenier-hacker-rank.png',
   },
+  {
+    title: 'Agile Foundations',
+    issuer: 'LinkedIn & PMI',
+    image: '/certifications/agile-foundation-by-linkedin.jpeg',
+  },
 ];
 
 const CertificationsSection = () => {

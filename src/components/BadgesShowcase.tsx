@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
@@ -54,43 +55,62 @@ const GOOGLE_BADGES: BadgeItem[] = [
   { id: 'ggl-dom', src: '/Badges/DOM Detective.svg', alt: 'DOM Detective' },
 ];
 
-const BadgeRow = ({ title, badges }: { title: string, badges: BadgeItem[] }) => {
+const BadgeItemComponent = ({ badge, glowColor }: { badge: BadgeItem, glowColor: string }) => {
+  const [showName, setShowName] = useState(false);
+
   return (
-    <div className="w-full flex flex-col items-center mb-16">
-      <h4 className="text-xl font-semibold text-slate-300 mb-8 uppercase tracking-widest">{title}</h4>
-      <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10">
-        {badges.map((badge, index) => (
-          <motion.div
-            key={badge.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.05 }}
-            className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center cursor-pointer group"
-          >
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{
-                duration: 4,
-                ease: "easeInOut",
-                repeat: Infinity,
-                delay: (index % 5) * 0.2, // Offset animation so they don't move exactly together
-              }}
-              className="relative w-full h-full transform transition-transform duration-300 group-hover:scale-110"
-            >
-               <Image
-                  src={badge.src}
-                  alt={badge.alt}
-                  fill
-                  className="object-contain filter drop-shadow-lg group-hover:drop-shadow-[0_0_15px_rgba(59,130,246,0.6)] transition-all duration-300"
-               />
-            </motion.div>
-            
-            {/* Tooltip on hover */}
-            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap bg-slate-900/90 text-xs text-white px-3 py-1 rounded-md border border-slate-700 backdrop-blur-md z-10">
-              {badge.alt}
-            </div>
-          </motion.div>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6 }}
+      onClick={() => setShowName(!showName)}
+      className="relative w-24 h-24 sm:w-28 sm:h-28 flex flex-col items-center justify-center cursor-pointer group"
+    >
+      {/* Smooth synchronized glow */}
+      <motion.div
+        animate={{ opacity: [0.3, 0.7, 0.3], scale: [0.9, 1.2, 0.9] }}
+        transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
+        className="absolute inset-0 rounded-full blur-[20px] -z-10"
+        style={{ backgroundColor: glowColor }}
+      />
+
+      {/* Smooth synchronized float */}
+      <motion.div
+        animate={{ y: [0, -10, 0] }}
+        transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
+        className="relative w-full h-full transform transition-transform duration-500 group-hover:scale-110 group-hover:z-20 z-10"
+      >
+         <Image
+            src={badge.src}
+            alt={badge.alt}
+            fill
+            className="object-contain filter drop-shadow-xl transition-all duration-300"
+         />
+      </motion.div>
+      
+      {/* Click-to-reveal Name Badge */}
+      <div 
+        className={`absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2 w-[120px] sm:w-[140px] bg-cyber-dark/95 text-[10px] sm:text-xs px-2 py-1.5 rounded-lg border border-white/10 backdrop-blur-xl z-30 font-medium tracking-wide flex items-center justify-center text-center shadow-lg transition-all duration-300 ${showName ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+      >
+        <span className="line-clamp-2 text-slate-200">{badge.alt}</span>
+      </div>
+    </motion.div>
+  );
+};
+
+const BadgeRow = ({ title, badges, glowColor }: { title: string, badges: BadgeItem[], glowColor: string }) => {
+  return (
+    <div className="w-full flex flex-col items-center mb-24 relative">
+      <div className="w-full flex justify-center mb-10 px-4">
+        <h4 className="text-xl md:text-2xl font-semibold text-slate-200 tracking-wider uppercase">
+          {title}
+        </h4>
+      </div>
+
+      <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-16 md:gap-x-12 px-4 max-w-6xl">
+        {badges.map((badge) => (
+          <BadgeItemComponent key={badge.id} badge={badge} glowColor={glowColor} />
         ))}
       </div>
     </div>
@@ -99,11 +119,15 @@ const BadgeRow = ({ title, badges }: { title: string, badges: BadgeItem[] }) => 
 
 export default function BadgesShowcase() {
   return (
-    <div className="w-full flex flex-col items-center py-10">
-      <BadgeRow title="GitHub Badges" badges={GITHUB_BADGES} />
-      <BadgeRow title="LeetCode Badges" badges={LEETCODE_BADGES} />
-      <BadgeRow title="Microsoft & AWS Badges" badges={MS_AWS_BADGES} />
-      <BadgeRow title="Google Badges" badges={GOOGLE_BADGES} />
+    <div className="w-full flex flex-col items-center py-20 relative overflow-hidden">
+      {/* Background Ambience */}
+      <div className="absolute top-1/4 left-0 w-96 h-96 bg-purple-500/5 blur-[150px] rounded-full pointer-events-none -z-20" />
+      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-500/5 blur-[150px] rounded-full pointer-events-none -z-20" />
+
+      <BadgeRow title="GitHub Badges" badges={GITHUB_BADGES} glowColor="#a855f7" /> {/* Purple glow */}
+      <BadgeRow title="LeetCode Badges" badges={LEETCODE_BADGES} glowColor="#fbbf24" /> {/* Yellow glow */}
+      <BadgeRow title="Microsoft & AWS Badges" badges={MS_AWS_BADGES} glowColor="#3b82f6" /> {/* Blue glow */}
+      <BadgeRow title="Google Badges" badges={GOOGLE_BADGES} glowColor="#10b981" /> {/* Green glow */}
     </div>
   );
 }

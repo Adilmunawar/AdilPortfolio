@@ -69,6 +69,11 @@ const certificates = [
     alt: 'HackerRank Software Engineer',
     description: 'Verified top-tier software engineering proficiency and problem-solving skills through HackerRank assessments.'
   },
+  {
+    src: '/certifications/agile-foundation-by-linkedin.jpeg',
+    alt: 'Agile Foundations Certificate',
+    description: 'Completed Agile Foundations training by LinkedIn Learning in collaboration with the Project Management Institute (PMI).'
+  },
 ];
 
 const Achievements = () => {
