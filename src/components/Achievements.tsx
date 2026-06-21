@@ -5,52 +5,52 @@ import Image from 'next/image';
 
 const certificates = [
   { 
-    src: '/advance webhook concepts.png', 
+    src: '/certifications/advance webhook concepts.png', 
     alt: 'Advanced Webhook Concepts Certificate',
     description: 'Mastered advanced webhook concepts enabling robust real-time data synchronization between modern applications.'
   },
   { 
-    src: '/advanced performance measurements.png', 
+    src: '/certifications/advanced performance measurements.png', 
     alt: 'Advanced Performance Measurements Certificate',
     description: 'Achieved certification in enterprise performance measurements, focusing on high-speed application efficiency.'
   },
   { 
-    src: '/CCAI frontend Integrations.png', 
+    src: '/certifications/CCAI frontend Integrations.png', 
     alt: 'CCAI Frontend Integrations Certificate',
     description: 'Proficient in CCAI Frontend Integrations, bridging artificial intelligence capabilities with user-centric interfaces.'
   },
   { 
-    src: '/MLOPS.png', 
+    src: '/certifications/MLOPS.png', 
     alt: 'MLOPS Certificate',
     description: 'Expertise in MLOps workflows, streamlining the entire machine learning lifecycle from dev to deployment.'
   },
   { 
-    src: '/MLOPS with vertex AI.png', 
+    src: '/certifications/MLOPS with vertex AI.png', 
     alt: 'MLOPS with Vertex AI Certificate',
     description: 'Specialized in MLOps using Vertex AI, managing high-scale machine learning models on Google Cloud.'
   },
   { 
-    src: '/application modern.png', 
+    src: '/certifications/application modern.png', 
     alt: 'Application Modernization Certificate',
     description: 'Skilled in modernizing legacy architectures to improve overall performance, scalability, and security.'
   },
   { 
-    src: '/Google Ads apps.png', 
+    src: '/certifications/Google Ads apps.png', 
     alt: 'Google Ads Apps Certificate',
     description: 'Certified in developing and integrating applications with Google Ads APIs for automated campaign management.'
   },
   { 
-    src: '/aws.png', 
+    src: '/certifications/aws.png', 
     alt: 'AWS Certificate',
     description: 'Proficient in deploying and managing scalable, fault-tolerant infrastructure on Amazon Web Services.'
   },
   { 
-    src: '/Linkedin Content and creative design.png', 
+    src: '/certifications/Linkedin Content and creative design.png', 
     alt: 'LinkedIn Content and Creative Design Certificate',
     description: 'Adept at creating high-engagement technical content and visually appealing creative assets.'
   },
   { 
-    src: '/Microsoft-azure-professional.png', 
+    src: '/certifications/Microsoft-azure-professional.png', 
     alt: 'Microsoft Azure Professional Certificate',
     description: 'Qualified to architect and manage secure, scalable enterprise solutions using Microsoft Azure cloud services.'
   },
