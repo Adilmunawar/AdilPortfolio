@@ -109,7 +109,7 @@ const CertificationsSection = () => {
             className="text-xl text-frost-blue/70 max-w-3xl mx-auto leading-relaxed font-medium"
           >
             A testament to my commitment to continuous learning and achieving mastery in cloud architecture, AI, and advanced web technologies.
-          </p>
+          </motion.p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
