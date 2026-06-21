@@ -60,12 +60,12 @@ const SkillsSection = () => {
 
   return (
     <section id="skills" className="py-20 px-4 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto relative z-10 text-center mb-10">
-        <h2 className={`text-5xl md:text-7xl font-bold transition-all duration-1000 ${
-          isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-12'
+      <div className="max-w-7xl mx-auto relative z-10 text-center">
+        <h4 className={`text-xl md:text-2xl font-semibold text-slate-200 tracking-wider uppercase mb-8 transition-all duration-1000 ${
+          isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-8'
         }`}>
-          <span className="text-gradient animate-shimmer">Certifications</span>
-        </h2>
+          Certifications
+        </h4>
       </div>
 
       <Achievements />
