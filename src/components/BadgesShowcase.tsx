@@ -67,17 +67,16 @@ const BadgeItemComponent = ({ badge, glowColor }: { badge: BadgeItem, glowColor:
       onClick={() => setShowName(!showName)}
       className="relative w-24 h-24 sm:w-28 sm:h-28 flex flex-col items-center justify-center cursor-pointer group"
     >
-      {/* Smooth synchronized glow */}
+      {/* Smooth synchronized float with intensely bright contour-hugging glow */}
       <motion.div
-        animate={{ opacity: [0.3, 0.7, 0.3], scale: [0.9, 1.2, 0.9] }}
-        transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
-        className="absolute inset-0 rounded-full blur-[20px] -z-10"
-        style={{ backgroundColor: glowColor }}
-      />
-
-      {/* Smooth synchronized float */}
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
+        animate={{ 
+          y: [0, -10, 0],
+          filter: [
+            `drop-shadow(0px 0px 8px ${glowColor}60) drop-shadow(0px 0px 8px ${glowColor}00)`,
+            `drop-shadow(0px 0px 15px ${glowColor}) drop-shadow(0px 0px 35px ${glowColor})`,
+            `drop-shadow(0px 0px 8px ${glowColor}60) drop-shadow(0px 0px 8px ${glowColor}00)`
+          ]
+        }}
         transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
         className="relative w-full h-full transform transition-transform duration-500 group-hover:scale-110 group-hover:z-20 z-10"
       >
@@ -85,13 +84,13 @@ const BadgeItemComponent = ({ badge, glowColor }: { badge: BadgeItem, glowColor:
             src={badge.src}
             alt={badge.alt}
             fill
-            className="object-contain filter drop-shadow-xl transition-all duration-300"
+            className="object-contain transition-all duration-300"
          />
       </motion.div>
       
-      {/* Click-to-reveal Name Badge */}
+      {/* Name Badge (Visible on hover OR click) */}
       <div 
-        className={`absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2 w-[120px] sm:w-[140px] bg-cyber-dark/95 text-[10px] sm:text-xs px-2 py-1.5 rounded-lg border border-white/10 backdrop-blur-xl z-30 font-medium tracking-wide flex items-center justify-center text-center shadow-lg transition-all duration-300 ${showName ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+        className={`absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2 w-[120px] sm:w-[140px] bg-cyber-dark/95 text-[10px] sm:text-xs px-2 py-1.5 rounded-lg border border-white/10 backdrop-blur-xl z-30 font-medium tracking-wide flex items-center justify-center text-center shadow-lg transition-all duration-300 ${showName ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto'}`}
       >
         <span className="line-clamp-2 text-slate-200">{badge.alt}</span>
       </div>
