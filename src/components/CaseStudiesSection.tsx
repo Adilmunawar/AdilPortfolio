@@ -96,16 +96,6 @@ export default function CaseStudiesSection() {
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-24 space-y-6">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-blue-500/5 border border-blue-500/20 text-blue-400 backdrop-blur-md"
-            >
-              <Target className="w-4 h-4 animate-pulse" />
-              <span className="font-bold text-xs uppercase tracking-[0.2em]">Engineering Deep Dives</span>
-            </motion.div>
-            
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

@@ -142,12 +142,6 @@ const BlogSection = () => {
       <section id="blog" className="py-20 px-4 relative overflow-hidden">
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16 animate-fade-in-up">
-            <div className="inline-block mb-8">
-              <h2 className="text-frost-blue text-sm font-semibold tracking-widest uppercase bg-cyber-dark/50 px-6 py-3 rounded-full border border-vivid-blue/30 backdrop-blur-sm">
-                <Rss className="inline w-4 h-4 mr-2 text-vivid-blue" />
-                From the Desk of a Developer
-              </h2>
-            </div>
             <p className="text-xl text-frost-blue max-w-4xl mx-auto leading-relaxed">
               Sharing insights on web development, cybersecurity, and the art of code.
             </p>

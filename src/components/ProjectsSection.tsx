@@ -74,16 +74,6 @@ const ProjectsSection = () => {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-24 space-y-6">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyber-dark/50 border border-vivid-blue/20 text-vivid-blue backdrop-blur-md"
-          >
-            <Sparkles className="w-4 h-4 animate-pulse" />
-            <span className="text-xs font-bold uppercase tracking-widest">Featured Ecosystem</span>
-          </motion.div>
-          
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
