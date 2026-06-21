@@ -13,6 +13,44 @@
 │   ├── adil-munawar-uploads/
 │   │   ├── discord.svg
 │   │   └── eaf50e40-682a-4730-ac3c-407cf3e4896e.png
+│   ├── Badges/
+│   │   ├── 100 days badge leetcode 2025.png
+│   │   ├── 100 days badge leetcode 2026.png
+│   │   ├── 50 days badge leetcode 2025.png
+│   │   ├── 50 days badge leetcode 2026.png
+│   │   ├── algorithm deconstructor badge leetcode.png
+│   │   ├── Android Studio User.svg
+│   │   ├── architecture builder badge leetcode.png
+│   │   ├── AWS certified generative AI developer.webp
+│   │   ├── Azure virtual machines badge.svg
+│   │   ├── data navigator badge leetcode.png
+│   │   ├── Deploy and manage Azure compute resources badge.svg
+│   │   ├── DOM Detective.svg
+│   │   ├── Firebase Studio Developer Community.svg
+│   │   ├── galaxy brain badge github silver.png
+│   │   ├── Gemini CLI user Badge.png
+│   │   ├── Github Actions badge.webp
+│   │   ├── Github Admin Badge.webp
+│   │   ├── github advance securtiy badge.webp
+│   │   ├── github-agentic-ai-developer.svg
+│   │   ├── Google Cloud & NVIDIA community member.svg
+│   │   ├── Google Cloud Innovator.svg
+│   │   ├── Google Developer Program premium tier.svg
+│   │   ├── google generative AI leader.webp
+│   │   ├── Implement a Lakehouse with Microsoft Fabric.svg
+│   │   ├── Introduction_to_Pandas_Badge leetcode.png
+│   │   ├── Manage and review models in Azure Machine Learning.svg
+│   │   ├── Manage Microsoft Entra Identity Protection.svg
+│   │   ├── mathematical insight badge leetcode.png
+│   │   ├── MD-102 Explore endpoint management.svg
+│   │   ├── Microsoft Azure Data core data concepts.svg
+│   │   ├── mitigate-threats-using-microsoft-365-defender.svg
+│   │   ├── pair extraordinary gold github badge.png
+│   │   ├── Protect your virtual machines by using Azure Backup badge.svg
+│   │   ├── pull shark gold badge leetcode.png
+│   │   ├── storage-security-configure badge.svg
+│   │   ├── Top_SQL_50 leetcode.png
+│   │   └── Use DAX time intelligence functions in semantic models.svg
 │   ├── blogpic/
 │   │   ├── gameserverhack.jpg
 │   │   ├── publicwifi.jpg
@@ -21,16 +59,21 @@
 │   │   ├── adigaze.jpg
 │   │   ├── agent.jpg
 │   │   └── supabase.jpg
-│   ├── leetcode/
-│   │   ├── 202508.png
-│   │   ├── 202509.png
-│   │   ├── 202510.png
-│   │   ├── 202511.png
-│   │   ├── 202512.png
-│   │   ├── 202601.png
-│   │   ├── 25100.png
-│   │   ├── 2550.png
-│   │   └── temp
+│   ├── certifications/
+│   │   ├── advance-webhook-concepts.png
+│   │   ├── advanced-performance-measurements.png
+│   │   ├── agile-foundation-by-linkedin.jpeg
+│   │   ├── anthropic---claude-with-amazon-bedrock.jpg
+│   │   ├── application-modern.png
+│   │   ├── building-language-models-on-AWS.png
+│   │   ├── CCAI-frontend-Integrations.png
+│   │   ├── digital-skill-web-analytics_certificate_of_achievement_v6zgddz_page-0001.jpg
+│   │   ├── Google-Ads-apps.png
+│   │   ├── Linkedin-Content-and-creative-design.png
+│   │   ├── Microsoft-azure-professional.png
+│   │   ├── MLOPS-with-vertex-AI.png
+│   │   ├── MLOPS.png
+│   │   └── software-egeenier-hacker-rank.png
 │   ├── testimonials/
 │   │   ├── alice.png
 │   │   ├── AmnaAli.jpg
@@ -43,22 +86,10 @@
 │   ├── adigon.jpg
 │   ├── adinox.jpg
 │   ├── aditron.jpg
-│   ├── advance webhook concepts.png
-│   ├── advanced performance measurements.png
-│   ├── application modern.png
-│   ├── aws.png
-│   ├── CCAI frontend Integrations.png
-│   ├── favicon.ico
-│   ├── Google Ads apps.png
-│   ├── Linkedin Content and creative design.png
 │   ├── llm.txt
 │   ├── llms.txt
-│   ├── Microsoft-azure-professional.png
-│   ├── MLOPS with vertex AI.png
-│   ├── MLOPS.png
 │   ├── placeholder.svg
 │   ├── robots.txt
-│   ├── RuntimeError43
 │   └── zenith.png
 ├── scripts/
 │   ├── templates/
@@ -72,6 +103,7 @@
 │   │   ├── api/
 │   │   │   └── chat/
 │   │   │       └── route.ts
+│   │   ├── favicon.ico
 │   │   ├── globals.css
 │   │   ├── layout.tsx
 │   │   ├── manifest.ts
@@ -136,6 +168,7 @@
 │   │   │   ├── ZenithChat.tsx
 │   │   │   └── ZenithOrb.tsx
 │   │   ├── Achievements.tsx
+│   │   ├── BadgesShowcase.tsx
 │   │   ├── BlogSection.tsx
 │   │   ├── CaseStudiesSection.tsx
 │   │   ├── CertificationsSection.tsx
