@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 const testimonials = [
     {
@@ -114,9 +115,11 @@ export function TestimonialsMinimal() {
               >
                 {/* Avatar with smooth ring animation */}
                 <div className="relative flex-shrink-0">
-                  <img
+                  <Image
                     src={testimonial.avatar || "/placeholder.svg"}
                     alt={testimonial.author}
+                    width={48}
+                    height={48}
                     className={cn(
                       "w-12 h-12 rounded-full object-cover",
                       "transition-all duration-500 ease-custom-ease",

@@ -84,6 +84,7 @@ const BadgeItemComponent = ({ badge, glowColor }: { badge: BadgeItem, glowColor:
             src={badge.src}
             alt={badge.alt}
             fill
+            sizes="(max-width: 768px) 96px, 112px"
             className="object-contain transition-all duration-300"
          />
       </motion.div>

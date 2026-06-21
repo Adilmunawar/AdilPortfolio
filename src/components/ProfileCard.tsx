@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useCallback, useMemo, useState } from "react";
+import Image from "next/image";
 import "./ProfileCard.css";
 interface ProfileCardProps {
   avatarUrl: string;
@@ -203,18 +204,11 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
           <div className="pc-shine" />
           <div className="pc-glare" />
           <div className="pc-content pc-avatar-content">
-            <img className="avatar" src={avatarUrl} alt={`${name || "User"} avatar`} loading="lazy" onError={e => {
-            const target = e.target as HTMLImageElement;
-            target.style.display = "none";
-          }} />
+            <Image width={400} height={500} className="avatar object-cover" src={avatarUrl} alt={`${name || "User"} avatar`} priority />
             {showUserInfo && <div className="pc-user-info">
                 <div className="pc-user-details">
                   <div className="pc-mini-avatar">
-                    <img src={miniAvatarUrl || avatarUrl} alt={`${name || "User"} mini avatar`} loading="lazy" onError={e => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.opacity = "0.5";
-                  target.src = avatarUrl;
-                }} />
+                    <Image width={60} height={60} className="object-cover" src={miniAvatarUrl || avatarUrl} alt={`${name || "User"} mini avatar`} />
                   </div>
                   <div className="pc-user-text">
                     <div className="pc-handle">@{handle}</div>
