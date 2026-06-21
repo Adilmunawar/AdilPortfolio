@@ -5,17 +5,17 @@ import Image from 'next/image';
 
 const certificates = [
   { 
-    src: '/certifications/advance webhook concepts.png', 
+    src: '/certifications/advance-webhook-concepts.png', 
     alt: 'Advanced Webhook Concepts Certificate',
     description: 'Mastered advanced webhook concepts enabling robust real-time data synchronization between modern applications.'
   },
   { 
-    src: '/certifications/advanced performance measurements.png', 
+    src: '/certifications/advanced-performance-measurements.png', 
     alt: 'Advanced Performance Measurements Certificate',
     description: 'Achieved certification in enterprise performance measurements, focusing on high-speed application efficiency.'
   },
   { 
-    src: '/certifications/CCAI frontend Integrations.png', 
+    src: '/certifications/CCAI-frontend-Integrations.png', 
     alt: 'CCAI Frontend Integrations Certificate',
     description: 'Proficient in CCAI Frontend Integrations, bridging artificial intelligence capabilities with user-centric interfaces.'
   },
@@ -25,27 +25,27 @@ const certificates = [
     description: 'Expertise in MLOps workflows, streamlining the entire machine learning lifecycle from dev to deployment.'
   },
   { 
-    src: '/certifications/MLOPS with vertex AI.png', 
+    src: '/certifications/MLOPS-with-vertex-AI.png', 
     alt: 'MLOPS with Vertex AI Certificate',
     description: 'Specialized in MLOps using Vertex AI, managing high-scale machine learning models on Google Cloud.'
   },
   { 
-    src: '/certifications/application modern.png', 
+    src: '/certifications/application-modern.png', 
     alt: 'Application Modernization Certificate',
     description: 'Skilled in modernizing legacy architectures to improve overall performance, scalability, and security.'
   },
   { 
-    src: '/certifications/Google Ads apps.png', 
+    src: '/certifications/Google-Ads-apps.png', 
     alt: 'Google Ads Apps Certificate',
     description: 'Certified in developing and integrating applications with Google Ads APIs for automated campaign management.'
   },
   { 
-    src: '/certifications/aws.png', 
+    src: '/certifications/building-language-models-on-AWS.png', 
     alt: 'AWS Certificate',
     description: 'Proficient in deploying and managing scalable, fault-tolerant infrastructure on Amazon Web Services.'
   },
   { 
-    src: '/certifications/Linkedin Content and creative design.png', 
+    src: '/certifications/Linkedin-Content-and-creative-design.png', 
     alt: 'LinkedIn Content and Creative Design Certificate',
     description: 'Adept at creating high-engagement technical content and visually appealing creative assets.'
   },
@@ -53,6 +53,21 @@ const certificates = [
     src: '/certifications/Microsoft-azure-professional.png', 
     alt: 'Microsoft Azure Professional Certificate',
     description: 'Qualified to architect and manage secure, scalable enterprise solutions using Microsoft Azure cloud services.'
+  },
+  { 
+    src: '/certifications/anthropic---claude-with-amazon-bedrock.jpg', 
+    alt: 'Anthropic Claude with Amazon Bedrock',
+    description: 'Certified in integrating and optimizing Anthropic Claude models on AWS Amazon Bedrock for generative AI solutions.'
+  },
+  { 
+    src: '/certifications/digital-skill-web-analytics_certificate_of_achievement_v6zgddz_page-0001.jpg', 
+    alt: 'FutureLearn Digital Skill Web Analytics',
+    description: 'Completed FutureLearn certification in digital skills and advanced web analytics for data-driven decisions.'
+  },
+  { 
+    src: '/certifications/software-egeenier-hacker-rank.png', 
+    alt: 'HackerRank Software Engineer',
+    description: 'Verified top-tier software engineering proficiency and problem-solving skills through HackerRank assessments.'
   },
 ];
 

@@ -94,8 +94,8 @@ const GitHubStats = () => {
           </div>
         </div>
         
-        <div className="overflow-x-auto pb-2">
-           <div className="flex justify-center">
+        <div className="overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+           <div className="flex justify-center min-w-max mx-auto">
              <div className="grid grid-flow-col auto-cols-max gap-1">
               {weekColumns.map((week, weekIndex) => (
                 <div key={weekIndex} className="grid grid-cols-1 gap-1">

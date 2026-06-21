@@ -38,11 +38,6 @@ const StatsSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.6 }}
         >
-            <div className="text-center mb-10">
-                <h3 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-                    Earned Badges
-                </h3>
-            </div>
             <BadgesShowcase />
         </motion.div>
 
