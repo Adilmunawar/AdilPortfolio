@@ -25,6 +25,9 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
 
   useEffect(() => {
+    // Check if speechSynthesis is supported
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+
     // The voices are loaded asynchronously. We need to listen for the voiceschanged event.
     const loadVoices = () => {
       const availableVoices = window.speechSynthesis.getVoices();
@@ -137,7 +140,7 @@ export const ZenithChat = ({ isOpen, onClose }: ZenithChatProps) => {
     // Cleanup function to stop speech synthesis when the component is closed or unmounted
     return () => {
         document.body.style.overflow = 'auto';
-        if ('speechSynthesis' in window) {
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
             window.speechSynthesis.cancel();
         }
     };
