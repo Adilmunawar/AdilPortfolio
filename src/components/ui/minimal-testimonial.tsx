@@ -120,6 +120,7 @@ export function TestimonialsMinimal() {
                     alt={testimonial.author}
                     width={48}
                     height={48}
+                    priority
                     className={cn(
                       "w-12 h-12 rounded-full object-cover",
                       "transition-all duration-500 ease-custom-ease",

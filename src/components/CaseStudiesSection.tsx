@@ -19,11 +19,18 @@ import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import caseStudiesData from '@/lib/case-studies.json';
+import dynamic from 'next/dynamic';
+
+const MermaidDiagram = dynamic(() => import('./ui/MermaidDiagram').then(mod => mod.MermaidDiagram), { ssr: false });
 
 const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
   const [isCopied, setIsCopied] = useState(false);
   const match = /language-(\w+)/.exec(className || '');
   const lang = match ? match[1] : 'bash';
+
+  if (lang === 'mermaid') {
+    return <MermaidDiagram chart={String(children)} />;
+  }
 
   const handleCopy = () => {
     navigator.clipboard.writeText(String(children).replace(/\n$/, ''));

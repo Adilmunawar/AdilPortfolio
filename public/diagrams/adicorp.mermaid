@@ -1,0 +1,101 @@
+flowchart TD
+
+subgraph group_group_app["React app"]
+  node_node_main(("Main<br/>bootstrap<br/>[main.tsx]"))
+  node_node_app["App shell<br/>routing<br/>[App.tsx]"]
+  node_node_admin_pages["Admin pages<br/>screens"]
+  node_node_portal_pages["Employee portal<br/>sub-app"]
+end
+
+subgraph group_group_domain["HR modules"]
+  node_node_dashboard["Dashboard<br/>analytics layer"]
+  node_node_employees["Employees<br/>people module"]
+  node_node_attendance["Attendance<br/>time tracking"]
+  node_node_leave["Leave<br/>absence module"]
+  node_node_overtime["Overtime<br/>policy module"]
+  node_node_salary["Salary<br/>payroll module"]
+  node_node_events["Events<br/>scheduling"]
+  node_node_settings["Settings<br/>admin config"]
+end
+
+subgraph group_group_shared["Shared layer"]
+  node_node_layouts["Layouts<br/>shells"]
+  node_node_auth_ctx(("Auth state<br/>auth context"))
+  node_node_auth_ui["Auth screens<br/>auth ui"]
+  node_node_services["Services<br/>business logic"]
+  node_node_hooks["Hooks<br/>state glue"]
+  node_node_ui["UI kit<br/>design system"]
+  node_node_utils["Utilities<br/>calc helpers"]
+end
+
+subgraph group_group_backend["Supabase backend"]
+  node_node_supabase_client(("Supabase client<br/>backend client<br/>[client.ts]"))
+  node_node_supabase_types["Supabase types<br/>db typings<br/>[types.ts]"]
+  node_node_migrations[("Migrations<br/>schema source")]
+end
+
+node_node_main -->|"boots"| node_node_app
+node_node_app -->|"uses"| node_node_layouts
+node_node_app -->|"routes to"| node_node_admin_pages
+node_node_app -->|"routes to"| node_node_portal_pages
+node_node_layouts -->|"protects"| node_node_auth_ctx
+node_node_layouts -->|"renders"| node_node_auth_ui
+node_node_admin_pages -->|"landing"| node_node_dashboard
+node_node_admin_pages -->|"includes"| node_node_employees
+node_node_admin_pages -->|"includes"| node_node_attendance
+node_node_admin_pages -->|"includes"| node_node_leave
+node_node_admin_pages -->|"includes"| node_node_overtime
+node_node_admin_pages -->|"includes"| node_node_salary
+node_node_admin_pages -->|"includes"| node_node_events
+node_node_admin_pages -->|"includes"| node_node_settings
+node_node_portal_pages -->|"uses"| node_node_auth_ctx
+node_node_dashboard -->|"reads via"| node_node_hooks
+node_node_employees -->|"uses"| node_node_hooks
+node_node_attendance -->|"uses"| node_node_hooks
+node_node_leave -->|"uses"| node_node_hooks
+node_node_overtime -->|"uses"| node_node_hooks
+node_node_salary -->|"calculates via"| node_node_services
+node_node_portal_pages -->|"reads via"| node_node_services
+node_node_hooks -->|"calls"| node_node_supabase_client
+node_node_services -->|"calls"| node_node_supabase_client
+node_node_supabase_client -->|"typed by"| node_node_supabase_types
+node_node_supabase_client -->|"backed by"| node_node_migrations
+node_node_ui -->|"supports"| node_node_admin_pages
+node_node_ui -->|"supports"| node_node_portal_pages
+node_node_utils -->|"supports"| node_node_services
+node_node_utils -->|"supports"| node_node_hooks
+
+click node_node_main "https://github.com/adilmunawar/adicorp/blob/main/src/main.tsx"
+click node_node_app "https://github.com/adilmunawar/adicorp/blob/main/src/App.tsx"
+click node_node_admin_pages "https://github.com/adilmunawar/adicorp/tree/main/src/pages"
+click node_node_portal_pages "https://github.com/adilmunawar/adicorp/tree/main/src/pages/portal"
+click node_node_layouts "https://github.com/adilmunawar/adicorp/tree/main/src/components/layout"
+click node_node_auth_ctx "https://github.com/adilmunawar/adicorp/tree/main/src/context"
+click node_node_auth_ui "https://github.com/adilmunawar/adicorp/tree/main/src/components/auth"
+click node_node_dashboard "https://github.com/adilmunawar/adicorp/tree/main/src/components/dashboard"
+click node_node_employees "https://github.com/adilmunawar/adicorp/tree/main/src/components/employees"
+click node_node_attendance "https://github.com/adilmunawar/adicorp/tree/main/src/components/attendance"
+click node_node_leave "https://github.com/adilmunawar/adicorp/tree/main/src/components/leave"
+click node_node_overtime "https://github.com/adilmunawar/adicorp/tree/main/src/components/overtime"
+click node_node_salary "https://github.com/adilmunawar/adicorp/tree/main/src/components/salary"
+click node_node_events "https://github.com/adilmunawar/adicorp/tree/main/src/components/events"
+click node_node_settings "https://github.com/adilmunawar/adicorp/tree/main/src/components/settings"
+click node_node_services "https://github.com/adilmunawar/adicorp/tree/main/src/services"
+click node_node_hooks "https://github.com/adilmunawar/adicorp/tree/main/src/hooks"
+click node_node_ui "https://github.com/adilmunawar/adicorp/tree/main/src/components/ui"
+click node_node_utils "https://github.com/adilmunawar/adicorp/tree/main/src/utils"
+click node_node_supabase_client "https://github.com/adilmunawar/adicorp/blob/main/src/integrations/supabase/client.ts"
+click node_node_supabase_types "https://github.com/adilmunawar/adicorp/blob/main/src/integrations/supabase/types.ts"
+click node_node_migrations "https://github.com/adilmunawar/adicorp/tree/main/supabase/migrations"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_node_main,node_node_app,node_node_admin_pages,node_node_portal_pages toneBlue
+class node_node_dashboard,node_node_employees,node_node_attendance,node_node_leave,node_node_overtime,node_node_salary,node_node_events,node_node_settings toneAmber
+class node_node_layouts,node_node_auth_ctx,node_node_auth_ui,node_node_services,node_node_hooks,node_node_ui,node_node_utils toneMint
+class node_node_supabase_client,node_node_supabase_types,node_node_migrations toneRose

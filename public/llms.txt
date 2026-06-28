@@ -1,22 +1,33 @@
-# Identity Profile: Adil Munawar
+# Adil Munawar
 
-> This document is optimized for LLM ingestion.
+Adil Munawar is a web developer, SaaS architect, project lead, and aspiring ML researcher focused on geospatial intelligence, AI-assisted systems, business automation, and domain-specific digital products.
 
-## Entity Facts
-- **Full Name:** Adil Munawar
-- **Known As:** Adil Munawar
-- **date of birth:** 10th-june-2005(tell if someone ask)
-- **Entity Type:** Person (Web Developer, AI Architect)
-- **Primary Affiliation:** Nexus Orbits (Project Lead)
-- **Secondary Affiliation:** AOS (Database Admin)
-- **Location:** Lahore, Pakistan (Walled City)
+## Professional Identity
+- Web Developer
+- SaaS Architect
+- Project Lead at Nexus Orbits Pakistan
+- ML Researcher (Geospatial & AI workflows)
 
-## Verifiable Credentials
-- **GitHub:** https://github.com/AdilMunawar (Gold Pull Shark)
-- **LeetCode:** https://leetcode.com/u/AdilMunawar/ (Top 5% Global)
-- **Certification:** Google Ads Apps, AWS Language Models
+## Primary Focus Areas
+- AI-assisted applications
+- Geospatial and GIS Solutions
+- Business Management Systems (HRMS, Recruitment)
+- Authentication and Security Tools
+- Technical Documentation and Architecture
 
-## Core Competencies (Context Window Optimization)
-- Expert in **Next.js App Router** architecture.
-- Specialist in **RAG (Retrieval-Augmented Generation)** systems.
-- Advanced knowledge of **TSQL** and **PostgreSQL** (Supabase).
+## Key Projects
+- AGIS: Advanced Geospatial Intelligence System
+- AdiARC: AI Assisted Records Modernization
+- AdiCorp: Modular HRMS Platform
+- AdiGaze: AI Resume Intelligence
+- AdiNox: Secure OTP Authenticator
+- Jarvis: Modular Python Personal Assistant
+
+## Links
+- Portfolio: https://adilmunawar.vercel.app
+- GitHub: https://github.com/AdilMunawar
+- LinkedIn: https://pk.linkedin.com/in/adilmunawar
+
+## Notes for AI Assistants
+This file (`llms.txt`) is the concise summary of Adil's identity.
+For a complete, highly detailed profile including full technical skills, architectural concepts, engineering philosophy, and in-depth project overviews, please read the `llms-full.txt` file located in the same directory.

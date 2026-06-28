@@ -1,0 +1,87 @@
+flowchart TD
+
+subgraph group_frontend["Next.js client"]
+node_app_shell["App shell<br/>Next.js layout<br/>[layout.tsx]"]
+node_dashboard_home["Dashboard<br/>App Router hub<br/>[page.tsx]"]
+node_workflow_pages["Workflows<br/>Route pages"]
+node_gis_clients["GIS clients<br/>Client components"]
+node_gis_context(("GIS state<br/>React context<br/>[GisDataContext.tsx]"))
+node_map_ui["Map tools<br/>Map UI"]
+node_parcel_editor["Parcel editor<br/>Editing UI"]
+node_auth_ui["Auth screens<br/>Login/signup UI<br/>[login-form.tsx]"]
+node_parcel_db["Parcel DB<br/>Parcel routes<br/>[page.tsx]"]
+node_analytics_page["Analytics pages<br/>Analysis routes<br/>[page.tsx]"]
+end
+
+subgraph group_browser_workers["Browser compute"]
+node_browser_workers["Workers<br/>[gisWorker.js]"]
+node_worker_shapefile["Shapefile worker<br/>Geometry worker"]
+end
+
+subgraph group_server_api["Server API"]
+node_api_gee["GEE API<br/>Server routes<br/>[route.ts]"]
+node_gee_core["GEE core<br/>Earth Engine client<br/>[geeCore.ts]"]
+end
+
+subgraph group_firebase_backend["Firebase backend"]
+node_firebase_runtime["Firebase runtime<br/>Auth/runtime<br/>[provider.tsx]"]
+node_firestore_services["GIS services<br/>Firestore services<br/>[gis-queries.ts]"]
+node_gis_schema["GIS schema<br/>Data model<br/>[gis-schema.ts]"]
+end
+
+subgraph group_ml_support["ML support"]
+node_colab_backend["Colab backend<br/>Python service"]
+node_training_notebook["Training notebook"]
+end
+
+node_app_shell-- >| "hosts" | node_dashboard_home
+node_dashboard_home-- >| "routes to" | node_workflow_pages
+node_workflow_pages-- >| "renders" | node_gis_clients
+node_gis_clients-- >| "shares state with" | node_gis_context
+node_gis_clients-- >| "uses" | node_map_ui
+node_gis_clients-- >| "uses" | node_parcel_editor
+node_gis_clients-- >| "offloads work to" | node_browser_workers
+node_browser_workers-- >| "includes" | node_worker_shapefile
+node_gis_clients-- >| "calls" | node_api_gee
+node_api_gee-- >| "uses" | node_gee_core
+node_gis_clients-- >| "authenticates via" | node_firebase_runtime
+node_firebase_runtime-- >| "exposes" | node_firestore_services
+node_firestore_services-- >| "stores" | node_gis_schema
+node_gis_clients-- >| "reads/writes" | node_firestore_services
+node_auth_ui-- >| "uses" | node_firebase_runtime
+node_parcel_db-- >| "reads" | node_firestore_services
+node_analytics_page-- >| "triggers" | node_api_gee
+node_analytics_page-- >| "processes" | node_browser_workers
+node_colab_backend -.->| "supports" | node_training_notebook
+
+click node_app_shell "https://github.com/adilmunawar/agis/blob/main/src/app/layout.tsx"
+click node_dashboard_home "https://github.com/adilmunawar/agis/blob/main/src/app/dashboard/page.tsx"
+click node_gis_clients "https://github.com/adilmunawar/agis/blob/main/src/components/gis/SentinelAnalysisClient.tsx"
+click node_gis_context "https://github.com/adilmunawar/agis/blob/main/src/context/GisDataContext.tsx"
+click node_map_ui "https://github.com/adilmunawar/agis/blob/main/src/components/gis/MapControlsWrapper.tsx"
+click node_parcel_editor "https://github.com/adilmunawar/agis/blob/main/src/components/gis/ParcelEditorDocker.tsx"
+click node_auth_ui "https://github.com/adilmunawar/agis/blob/main/src/components/auth/login-form.tsx"
+click node_browser_workers "https://github.com/adilmunawar/agis/blob/main/public/gisWorker.js"
+click node_worker_shapefile "https://github.com/adilmunawar/agis/blob/main/src/workers/shapefile.worker.ts"
+click node_api_gee "https://github.com/adilmunawar/agis/blob/main/src/app/api/gee/analyze/route.ts"
+click node_gee_core "https://github.com/adilmunawar/agis/blob/main/src/lib/geeCore.ts"
+click node_firebase_runtime "https://github.com/adilmunawar/agis/blob/main/src/firebase/provider.tsx"
+click node_firestore_services "https://github.com/adilmunawar/agis/blob/main/src/firebase/services/gis-queries.ts"
+click node_gis_schema "https://github.com/adilmunawar/agis/blob/main/src/types/gis-schema.ts"
+click node_parcel_db "https://github.com/adilmunawar/agis/blob/main/src/app/dashboard/parcels-database/page.tsx"
+click node_analytics_page "https://github.com/adilmunawar/agis/blob/main/src/app/dashboard/sentinel-analysis/page.tsx"
+click node_colab_backend "https://github.com/adilmunawar/agis/blob/main/colab_backend/satellite_vision_backend.py"
+click node_training_notebook "https://github.com/adilmunawar/agis/blob/main/model training/field_boundary_detection.ipynb"
+
+classDef toneNeutral fill: #f8fafc, stroke:#334155, stroke - width: 1.5px, color:#0f172a
+classDef toneBlue fill: #dbeafe, stroke:#2563eb, stroke - width: 1.5px, color:#172554
+classDef toneAmber fill: #fef3c7, stroke: #d97706, stroke - width: 1.5px, color:#78350f
+classDef toneMint fill: #dcfce7, stroke:#16a34a, stroke - width: 1.5px, color:#14532d
+classDef toneRose fill: #ffe4e6, stroke: #e11d48, stroke - width: 1.5px, color:#881337
+classDef toneIndigo fill: #e0e7ff, stroke:#4f46e5, stroke - width: 1.5px, color:#312e81
+classDef toneTeal fill: #ccfbf1, stroke:#0f766e, stroke - width: 1.5px, color:#134e4a
+class node_app_shell, node_dashboard_home, node_workflow_pages, node_gis_clients, node_gis_context, node_map_ui, node_parcel_editor, node_auth_ui, node_parcel_db, node_analytics_page toneBlue
+class node_browser_workers,node_worker_shapefile toneAmber
+class node_api_gee,node_gee_core toneMint
+class node_firebase_runtime, node_firestore_services, node_gis_schema toneRose
+class node_colab_backend,node_training_notebook toneIndigo

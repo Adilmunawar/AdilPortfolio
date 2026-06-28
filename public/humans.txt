@@ -1,0 +1,20 @@
+# humans.txt
+
+Developer: Adil Munawar
+Role: Web Developer, SaaS Architect, Project Lead, ML and Geospatial AI Researcher
+Company: Nexus Orbits Pakistan
+
+Portfolio: https://adilmunawar.vercel.app
+GitHub: https://github.com/AdilMunawar
+LinkedIn: https://pk.linkedin.com/in/adilmunawar
+
+Focus:
+- Web application development
+- SaaS platforms
+- AI-assisted tools
+- Geospatial intelligence
+- ML research for satellite and GIS workflows
+- HRMS systems
+- Recruitment automation
+- Authentication utilities
+- Python assistant automation

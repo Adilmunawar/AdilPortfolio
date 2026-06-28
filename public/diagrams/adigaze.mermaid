@@ -1,0 +1,96 @@
+flowchart TD
+
+subgraph group_frontend["Frontend app"]
+  node_main(("Entry<br/>bootstrap<br/>[main.tsx]"))
+  node_app["App shell<br/>router/layout<br/>[App.tsx]"]
+  node_sidebar["Sidebar shell<br/>dashboard layout"]
+  node_auth_hook(("Auth hook<br/>session hook<br/>[useAuth.tsx]"))
+  node_auth_page["Auth page<br/>login UI<br/>[Auth.tsx]"]
+  node_resume_upload["Resume upload<br/>ingestion UI<br/>[ResumeUpload.tsx]"]
+  node_candidate_hunting["Candidate hunt<br/>matching UI"]
+  node_external_submissions["External submissions<br/>ingestion UI"]
+  node_candidate_pages["Workspaces<br/>product pages"]
+  node_ops_ui["Ops widgets<br/>status/telemetry UI"]
+  node_ui_kit["UI primitives<br/>component library"]
+  node_processing_ctx(("Processing state<br/>context"))
+  node_supabase_client["Supabase client<br/>data client<br/>[client.ts]"]
+end
+
+subgraph group_backend["Supabase backend"]
+  node_db[("Postgres<br/>app database")]
+  node_storage[("Storage<br/>resume files")]
+  node_edge_runtime["Edge functions<br/>serverless runtime"]
+  node_parse_resume{{"Parse resume<br/>ingest function<br/>[index.ts]"}}
+  node_match_candidates{{"Match candidates<br/>ranking function<br/>[index.ts]"}}
+  node_external_ingest{{"External ingest<br/>submission pipeline<br/>[index.ts]"}}
+  node_external_process{{"Process submission<br/>normalization function<br/>[index.ts]"}}
+  node_totp{{"TOTP auth<br/>mfa function<br/>[index.ts]"}}
+end
+
+subgraph group_integrations["External services"]
+  node_drive{{"Drive integration<br/>backup/restore<br/>[index.ts]"}}
+  node_gemini(("Gemini<br/>AI service"))
+end
+
+node_main -->|"boot"| node_app
+node_app -->|"layout"| node_sidebar
+node_app -->|"route"| node_auth_page
+node_auth_page -->|"session"| node_auth_hook
+node_sidebar -->|"navigate"| node_candidate_pages
+node_sidebar -->|"upload"| node_resume_upload
+node_sidebar -->|"match"| node_candidate_hunting
+node_sidebar -->|"ingest"| node_external_submissions
+node_sidebar -->|"observe"| node_ops_ui
+node_candidate_pages -->|"compose"| node_ui_kit
+node_ops_ui -->|"state"| node_processing_ctx
+node_resume_upload -->|"upload/call"| node_supabase_client
+node_candidate_hunting -->|"query/call"| node_supabase_client
+node_external_submissions -->|"call"| node_supabase_client
+node_supabase_client -->|"read/write"| node_db
+node_supabase_client -->|"files"| node_storage
+node_supabase_client -->|"invoke"| node_edge_runtime
+node_edge_runtime -->|"runs"| node_parse_resume
+node_edge_runtime -->|"runs"| node_match_candidates
+node_edge_runtime -->|"runs"| node_external_ingest
+node_edge_runtime -->|"runs"| node_external_process
+node_edge_runtime -->|"runs"| node_totp
+node_edge_runtime -->|"runs"| node_drive
+node_parse_resume -->|"read file"| node_storage
+node_parse_resume -->|"write candidate"| node_db
+node_parse_resume -->|"extract"| node_gemini
+node_match_candidates -->|"query candidates"| node_db
+node_match_candidates -->|"score"| node_gemini
+node_external_ingest -->|"handoff"| node_external_process
+node_external_process -->|"normalize write"| node_db
+node_drive -->|"sync metadata"| node_db
+
+click node_main "https://github.com/adilmunawar/adigaze/blob/main/src/main.tsx"
+click node_app "https://github.com/adilmunawar/adigaze/blob/main/src/App.tsx"
+click node_sidebar "https://github.com/adilmunawar/adigaze/blob/main/src/components/AppSidebarLayout.tsx"
+click node_auth_hook "https://github.com/adilmunawar/adigaze/blob/main/src/hooks/useAuth.tsx"
+click node_auth_page "https://github.com/adilmunawar/adigaze/blob/main/src/pages/Auth.tsx"
+click node_resume_upload "https://github.com/adilmunawar/adigaze/blob/main/src/components/ResumeUpload.tsx"
+click node_candidate_hunting "https://github.com/adilmunawar/adigaze/blob/main/src/components/CandidateHunting.tsx"
+click node_external_submissions "https://github.com/adilmunawar/adigaze/blob/main/src/pages/ExternalSubmissions.tsx"
+click node_ui_kit "https://github.com/adilmunawar/adigaze/tree/main/src/components/ui"
+click node_processing_ctx "https://github.com/adilmunawar/adigaze/blob/main/src/contexts/ProcessingContext.tsx"
+click node_supabase_client "https://github.com/adilmunawar/adigaze/blob/main/src/integrations/supabase/client.ts"
+click node_db "https://github.com/adilmunawar/adigaze/tree/main/supabase/migrations"
+click node_edge_runtime "https://github.com/adilmunawar/adigaze/tree/main/supabase/functions"
+click node_parse_resume "https://github.com/adilmunawar/adigaze/blob/main/supabase/functions/parse-resume/index.ts"
+click node_match_candidates "https://github.com/adilmunawar/adigaze/blob/main/supabase/functions/match-candidates/index.ts"
+click node_external_ingest "https://github.com/adilmunawar/adigaze/blob/main/supabase/functions/receive-external-resume/index.ts"
+click node_external_process "https://github.com/adilmunawar/adigaze/blob/main/supabase/functions/process-external-submission/index.ts"
+click node_totp "https://github.com/adilmunawar/adigaze/blob/main/supabase/functions/totp-auth/index.ts"
+click node_drive "https://github.com/adilmunawar/adigaze/blob/main/supabase/functions/google-drive-backup/index.ts"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_main,node_app,node_sidebar,node_auth_hook,node_auth_page,node_resume_upload,node_candidate_hunting,node_external_submissions,node_candidate_pages,node_ops_ui,node_ui_kit,node_processing_ctx,node_supabase_client toneBlue
+class node_db,node_storage,node_edge_runtime,node_parse_resume,node_match_candidates,node_external_ingest,node_external_process,node_totp toneAmber
+class node_drive,node_gemini toneMint

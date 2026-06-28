@@ -1,0 +1,86 @@
+flowchart TD
+
+subgraph group_grp_app["Next.js App"]
+  node_n_app_shell["App shell<br/>Next.js layout<br/>[layout.tsx]"]
+  node_n_app_routes["Dashboard pages<br/>route pages<br/>[page.tsx]"]
+end
+
+subgraph group_grp_ui["Dashboard UI"]
+  node_n_shell["Auth shell<br/>layout guard<br/>[AuthProvider.tsx]"]
+  node_n_tabs["Tool tabs<br/>dashboard modules<br/>[AiAssistantTab.tsx]"]
+  node_n_wirasat_ui["Wirasat UI<br/>family-tree view"]
+  node_n_ui_kit["UI kit<br/>component primitives<br/>[button.tsx]"]
+end
+
+subgraph group_grp_api["API Routes"]
+  node_n_api_db["DB status API<br/>route handler<br/>[route.ts]"]
+  node_n_api_scan["Scan API<br/>route handler<br/>[route.ts]"]
+  node_n_api_sync["Sync API<br/>route handler<br/>[route.ts]"]
+end
+
+subgraph group_grp_ai["AI Layer"]
+  node_n_ai_flow{{"AI flow<br/>Genkit flow"}}
+  node_n_ai_schema["AI schema<br/>domain schema<br/>[lrims_schema.txt]"]
+end
+
+subgraph group_grp_lib["Domain Libs"]
+  node_n_lib_core["Core libs<br/>domain helpers"]
+  node_n_worker["Inventory worker<br/>web worker"]
+end
+
+subgraph group_grp_ops["Operational Assets"]
+  node_n_sql_assets["SQL assets<br/>sql scripts"]
+  node_n_schema_assets["Schema assets<br/>schema files<br/>[schema.sql]"]
+  node_n_ps_assets["PowerShell queries<br/>ops scripts"]
+  node_n_manuals["Manuals<br/>static docs"]
+end
+
+node_n_app_shell -->|"wraps"| node_n_shell
+node_n_shell -->|"hosts"| node_n_app_routes
+node_n_app_routes -->|"mounts"| node_n_tabs
+node_n_tabs -->|"uses"| node_n_ui_kit
+node_n_tabs -->|"calls"| node_n_api_db
+node_n_tabs -->|"calls"| node_n_api_scan
+node_n_tabs -->|"calls"| node_n_api_sync
+node_n_tabs -->|"invokes"| node_n_ai_flow
+node_n_ai_flow -->|"uses"| node_n_ai_schema
+node_n_tabs -->|"computes"| node_n_lib_core
+node_n_lib_core -->|"offloads"| node_n_worker
+node_n_tabs -->|"references"| node_n_sql_assets
+node_n_tabs -->|"references"| node_n_ps_assets
+node_n_tabs -->|"references"| node_n_schema_assets
+node_n_tabs -->|"documents"| node_n_manuals
+node_n_lib_core -.->|"supports"| node_n_api_db
+node_n_lib_core -.->|"supports"| node_n_api_scan
+
+click node_n_app_shell "https://github.com/adilmunawar/adiarc/blob/main/src/app/layout.tsx"
+click node_n_app_routes "https://github.com/adilmunawar/adiarc/blob/main/src/app/page.tsx"
+click node_n_shell "https://github.com/adilmunawar/adiarc/blob/main/src/components/layout/AuthProvider.tsx"
+click node_n_tabs "https://github.com/adilmunawar/adiarc/blob/main/src/components/dashboard-tabs/AiAssistantTab.tsx"
+click node_n_wirasat_ui "https://github.com/adilmunawar/adiarc/blob/main/src/components/wirasat/FamilyTreeDiagram.tsx"
+click node_n_ui_kit "https://github.com/adilmunawar/adiarc/blob/main/src/components/ui/button.tsx"
+click node_n_api_db "https://github.com/adilmunawar/adiarc/blob/main/src/app/api/db-status/route.ts"
+click node_n_api_scan "https://github.com/adilmunawar/adiarc/blob/main/src/app/api/mauza-scanner/route.ts"
+click node_n_api_sync "https://github.com/adilmunawar/adiarc/blob/main/src/app/api/sync/route.ts"
+click node_n_ai_flow "https://github.com/adilmunawar/adiarc/blob/main/src/ai/flows/db-assistant-flow.ts"
+click node_n_ai_schema "https://github.com/adilmunawar/adiarc/blob/main/src/ai/schema/lrims_schema.txt"
+click node_n_lib_core "https://github.com/adilmunawar/adiarc/blob/main/src/lib/wirasat-calculator.ts"
+click node_n_worker "https://github.com/adilmunawar/adiarc/blob/main/src/workers/inventory-scanner.worker.ts"
+click node_n_sql_assets "https://github.com/adilmunawar/adiarc/blob/main/nodeconfigs/Daily Progress Query.sql"
+click node_n_schema_assets "https://github.com/adilmunawar/adiarc/blob/main/Schemas/schema.sql"
+click node_n_ps_assets "https://github.com/adilmunawar/adiarc/tree/main/powershellQueries/dailyprogressMutations_JSON"
+click node_n_manuals "https://github.com/adilmunawar/adiarc/tree/main/public/Manual"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_n_app_shell,node_n_app_routes toneBlue
+class node_n_shell,node_n_tabs,node_n_wirasat_ui,node_n_ui_kit toneAmber
+class node_n_api_db,node_n_api_scan,node_n_api_sync toneMint
+class node_n_ai_flow,node_n_ai_schema toneRose
+class node_n_lib_core,node_n_worker toneIndigo
+class node_n_sql_assets,node_n_schema_assets,node_n_ps_assets,node_n_manuals toneTeal

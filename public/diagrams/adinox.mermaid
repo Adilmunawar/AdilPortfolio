@@ -1,0 +1,125 @@
+flowchart TD
+    %% Actors
+    User["End User"]:::external
+
+    %% Browser / Client Boundary
+    subgraph "Browser / Client"
+        direction TB
+
+        %% Entry & Routing
+        subgraph "Entry Point & Routing"
+            direction TB
+            Main["main.tsx"]:::config
+            App["App.tsx"]:::frontend
+        end
+
+        %% UI Layer
+        subgraph "UI Layer"
+            direction TB
+            AuthPage["AuthPage"]:::frontend
+            IndexPage["Index"]:::frontend
+            NotFoundPage["NotFound"]:::frontend
+            TokenList["TokenList"]:::frontend
+            AddTokenForm["AddTokenForm"]:::frontend
+            TokenCard["TokenCard"]:::frontend
+            UIPrimitives["UI Primitives"]:::frontend
+        end
+
+        %% State Layer
+        subgraph "State Layer"
+            direction TB
+            AuthContext["AuthContext"]:::context
+            TokenContext["TokenContext"]:::context
+            ThemeContext["ThemeContext"]:::context
+        end
+
+        %% Business Logic
+        subgraph "Business Logic"
+            direction TB
+            UtilsLib["Utils (utils.ts)"]:::logic
+            TokenUtils["TokenGenerator (tokenUtils.ts)"]:::logic
+        end
+
+        %% Custom Hooks
+        subgraph "Custom Hooks"
+            direction TB
+            UseMobile["use-mobile"]:::hook
+            UseToast["use-toast"]:::hook
+        end
+
+        %% Local Storage
+        LocalStorage["LocalStorage / IndexedDB"]:::storage
+    end
+
+    %% External Services
+    subgraph "External Services"
+        direction TB
+        Supabase["Supabase Auth & DB"]:::external
+    end
+
+    %% Connections
+    User -->|uses| AuthPage
+    User -->|browses| IndexPage
+
+    Main --> App
+    App --> AuthPage
+    App --> IndexPage
+    App --> NotFoundPage
+
+    AuthPage -->|dispatch auth actions| AuthContext
+    IndexPage -->|reads tokens| TokenContext
+    AddTokenForm -->|add/delete token| TokenContext
+    TokenList -->|display list| TokenContext
+    TokenCard -->|show OTP| TokenUtils
+
+    AuthContext -->|calls supabase.auth API| Supabase
+    Supabase -->|returns session| AuthContext
+    AuthContext -->|update state| TokenContext
+
+    TokenContext -->|persist secrets| LocalStorage
+    LocalStorage -->|load secrets| TokenContext
+
+    TokenContext -->|provide tokens| TokenList
+    TokenUtils -->|generate OTP| TokenCard
+    TokenUtils -->|helper functions| UtilsLib
+
+    UseMobile -->|responsive UI| UIPrimitives
+    UseToast -->|notifications| UIPrimitives
+
+    %% Click Events
+    click AuthPage "https://github.com/adilmunawar/adinox/blob/main/src/pages/AuthPage.tsx"
+    click IndexPage "https://github.com/adilmunawar/adinox/blob/main/src/pages/Index.tsx"
+    click NotFoundPage "https://github.com/adilmunawar/adinox/blob/main/src/pages/NotFound.tsx"
+    click TokenList "https://github.com/adilmunawar/adinox/blob/main/src/components/tokens/TokenList.tsx"
+    click AddTokenForm "https://github.com/adilmunawar/adinox/blob/main/src/components/tokens/AddTokenForm.tsx"
+    click TokenCard "https://github.com/adilmunawar/adinox/blob/main/src/components/tokens/TokenCard.tsx"
+    click UIPrimitives "https://github.com/adilmunawar/adinox/tree/main/src/components/ui"
+    click AuthContext "https://github.com/adilmunawar/adinox/blob/main/src/context/AuthContext.tsx"
+    click TokenContext "https://github.com/adilmunawar/adinox/blob/main/src/context/TokenContext.tsx"
+    click ThemeContext "https://github.com/adilmunawar/adinox/blob/main/src/context/ThemeContext.tsx"
+    click UtilsLib "https://github.com/adilmunawar/adinox/blob/main/src/lib/utils.ts"
+    click TokenUtils "https://github.com/adilmunawar/adinox/blob/main/src/utils/tokenUtils.ts"
+    click UseMobile "https://github.com/adilmunawar/adinox/blob/main/src/hooks/use-mobile.tsx"
+    click UseToast "https://github.com/adilmunawar/adinox/blob/main/src/hooks/use-toast.ts"
+    click Supabase "https://github.com/adilmunawar/adinox/blob/main/src/integrations/supabase/client.ts"
+    click Supabase "https://github.com/adilmunawar/adinox/blob/main/src/integrations/supabase/types.ts"
+    click Main "https://github.com/adilmunawar/adinox/blob/main/src/main.tsx"
+    click App "https://github.com/adilmunawar/adinox/blob/main/src/App.tsx"
+    click LocalStorage "https://github.com/adilmunawar/adinox/blob/main/src/index.css"
+    click LocalStorage "https://github.com/adilmunawar/adinox/blob/main/src/App.css"
+    click Supabase "https://github.com/adilmunawar/adinox/blob/main/supabase/config.toml"
+    click Main "https://github.com/adilmunawar/adinox/blob/main/vite.config.ts"
+    click Main "https://github.com/adilmunawar/adinox/blob/main/tsconfig.json"
+    click Main "https://github.com/adilmunawar/adinox/blob/main/tsconfig.app.json"
+    click Main "https://github.com/adilmunawar/adinox/blob/main/tsconfig.node.json"
+    click Main "https://github.com/adilmunawar/adinox/blob/main/tailwind.config.ts"
+    click Main "https://github.com/adilmunawar/adinox/blob/main/postcss.config.js"
+
+    %% Styles
+    classDef frontend fill:#E8F5E9,stroke:#388E3C,color:#2E7D32
+    classDef context fill:#E3F2FD,stroke:#1976D2,color:#0D47A1
+    classDef logic fill:#FFF3E0,stroke:#FB8C00,color:#E65100
+    classDef storage fill:#F3E5F5,stroke:#8E24AA,color:#6A1B9A
+    classDef external fill:#ECEFF1,stroke:#546E7A,color:#37474F
+    classDef hook fill:#FCE4EC,stroke:#D81B60,color:#880E4F
+    classDef config fill:#FAFAFA,stroke:#B0BEC5,color:#455A64
