@@ -1,41 +1,6 @@
 {
-  "totalContributions": 8283,
+  "totalContributions": 8287,
   "contributions": [
-    {
-      "date": "2025-07-27",
-      "count": 22,
-      "level": 1
-    },
-    {
-      "date": "2025-07-28",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2025-07-29",
-      "count": 0,
-      "level": 0
-    },
-    {
-      "date": "2025-07-30",
-      "count": 10,
-      "level": 1
-    },
-    {
-      "date": "2025-07-31",
-      "count": 7,
-      "level": 1
-    },
-    {
-      "date": "2025-08-01",
-      "count": 18,
-      "level": 1
-    },
-    {
-      "date": "2025-08-02",
-      "count": 0,
-      "level": 0
-    },
     {
       "date": "2025-08-03",
       "count": 10,
@@ -1853,6 +1818,11 @@
     },
     {
       "date": "2026-08-01",
+      "count": 4,
+      "level": 1
+    },
+    {
+      "date": "2026-08-02",
       "count": 0,
       "level": 0
     }
