@@ -113,7 +113,7 @@ const config = {
       },
       // Role-based type scale (mobile → desktop via clamp). One class per role.
       fontSize: {
-        display: ["clamp(2.5rem, 1.6rem + 4vw, 4rem)", { lineHeight: "1.05", letterSpacing: "-0.03em", fontWeight: "600" }],
+        display: ["clamp(1.625rem, 0.6rem + 4.6vw, 4rem)", { lineHeight: "1.05", letterSpacing: "-0.03em", fontWeight: "600" }],
         h1: ["clamp(2.125rem, 1.5rem + 2.75vw, 3rem)", { lineHeight: "1.1", letterSpacing: "-0.025em", fontWeight: "600" }],
         h2: ["clamp(1.75rem, 1.25rem + 2.2vw, 2.5rem)", { lineHeight: "1.15", letterSpacing: "-0.02em", fontWeight: "600" }],
         h3: ["clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem)", { lineHeight: "1.3", letterSpacing: "-0.01em", fontWeight: "600" }],

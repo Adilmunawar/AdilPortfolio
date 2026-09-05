@@ -115,13 +115,13 @@ const toolkit: { group: string; icon: LucideIcon; items: string[] }[] = [
 
 const SkillsSection = () => {
   return (
-    <section id="skills" className="px-5 py-16 sm:px-8 lg:py-28">
+    <section id="skills" className="px-5 py-10 sm:px-8 lg:py-28">
       <div className="mx-auto max-w-[1120px]">
-        <Reveal className="mb-8 lg:mb-12">
-          <h2 className="text-[28px] font-semibold leading-[1.15] tracking-[-0.02em] text-[#f2f4f8] lg:text-[40px]">
+        <Reveal className="mb-6 lg:mb-12">
+          <h2 className="text-[24px] font-semibold leading-[1.15] tracking-[-0.02em] text-[#f2f4f8] lg:text-[40px]">
             Certifications
           </h2>
-          <p className="mt-3 max-w-[680px] text-[17px] leading-normal text-[#a4adbe] lg:text-[20px]">
+          <p className="mt-3 max-w-[680px] text-[15px] leading-normal text-[#a4adbe] lg:text-[20px]">
             Courses and assessments from Google Cloud, AWS, Microsoft, MIT Professional Education, EUSPA, Anthropic, GitHub and LinkedIn.
           </p>
         </Reveal>
@@ -131,11 +131,11 @@ const SkillsSection = () => {
         </Reveal>
 
         <div className="mt-16 lg:mt-24">
-          <Reveal className="mb-8 lg:mb-12">
-            <h2 className="text-[28px] font-semibold leading-[1.15] tracking-[-0.02em] text-[#f2f4f8] lg:text-[40px]">
+          <Reveal className="mb-6 lg:mb-12">
+            <h2 className="text-[24px] font-semibold leading-[1.15] tracking-[-0.02em] text-[#f2f4f8] lg:text-[40px]">
               Toolkit
             </h2>
-            <p className="mt-3 max-w-[680px] text-[17px] leading-normal text-[#a4adbe] lg:text-[20px]">
+            <p className="mt-3 max-w-[680px] text-[15px] leading-normal text-[#a4adbe] lg:text-[20px]">
               What I reach for day to day, grouped by the kind of work.
             </p>
           </Reveal>
@@ -171,20 +171,20 @@ const SkillsSection = () => {
             })}
           </div>
 
-          <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-white/[0.06] pt-10 lg:mt-16 lg:grid-cols-4 lg:gap-8 lg:pt-12">
+          <div className="mt-10 grid grid-cols-4 gap-x-3 gap-y-6 border-t border-white/[0.06] pt-8 lg:mt-16 lg:gap-8 lg:pt-12">
             {toolkit.map((column, i) => {
               const Icon = column.icon;
               return (
                 <Reveal key={column.group} delay={Math.min(i, 2) * 60} className="min-w-0">
-                  <div className="flex items-center gap-2.5">
-                    <span className="stat-tile__icon shrink-0" aria-hidden>
+                  <div className="flex items-start gap-2">
+                    <span className="stat-tile__icon hidden shrink-0 sm:inline-flex" aria-hidden>
                       <Icon size={15} strokeWidth={1.75} />
                     </span>
-                    <p className="text-[13px] font-medium text-[#a4adbe]">{column.group}</p>
+                    <p className="text-[11px] font-medium leading-tight text-[#a4adbe] lg:text-[13px]">{column.group}</p>
                   </div>
                   <ul className="mt-3 space-y-1.5">
                     {column.items.map((item) => (
-                      <li key={item} className="text-[15px] leading-relaxed text-[#a4adbe]">
+                      <li key={item} className="text-[11px] leading-snug text-[#a4adbe] sm:text-[13px] lg:text-[15px] lg:leading-relaxed">
                         {item}
                       </li>
                     ))}

@@ -26,14 +26,15 @@ const wrap = (text: string, max: number): string[] => {
 
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-const Corners = ({ color, inset = 30, size = 22 }: { color: string; inset?: number; size?: number }) => {
+const Corners = ({ color, inset = 30, size = 22, top }: { color: string; inset?: number; size?: number; top?: number }) => {
   const a = inset;
+  const t = top ?? inset;
   const b = 640 - inset;
   const c = 480 - inset;
   return (
     <g fill="none" stroke={color} strokeWidth="1.25">
-      <path d={`M${a} ${a + size} V${a} H${a + size}`} />
-      <path d={`M${b - size} ${a} H${b} V${a + size}`} />
+      <path d={`M${a} ${t + size} V${t} H${a + size}`} />
+      <path d={`M${b - size} ${t} H${b} V${t + size}`} />
       <path d={`M${a} ${c - size} V${c} H${a + size}`} />
       <path d={`M${b - size} ${c} H${b} V${c - size}`} />
     </g>
@@ -43,12 +44,12 @@ const Corners = ({ color, inset = 30, size = 22 }: { color: string; inset?: numb
 const Seal = ({ id, cx, cy, ring, core, text, font = SANS }: { id: string; cx: number; cy: number; ring: string; core: string; text: string; font?: string }) => (
   <g transform={`translate(${cx} ${cy})`}>
     <defs>
-      <path id={`${id}-arc`} d="M -27 0 a 27 27 0 1 1 54 0 a 27 27 0 1 1 -54 0" />
+      <path id={`${id}-arc`} d="M 0 28 a 28 28 0 1 1 0 -56 a 28 28 0 1 1 0 56" />
     </defs>
     <circle r="38" fill="none" stroke={ring} strokeWidth="1.5" />
     <circle r="34" fill="none" stroke={ring} strokeOpacity="0.45" strokeWidth="0.75" strokeDasharray="2 2.5" />
     <circle r="17" fill={core} />
-    <text fontFamily={font} fontSize="6.6" letterSpacing="2.2" fill={ring} fontWeight="600">
+    <text fontFamily={font} fontSize="6" letterSpacing="1.1" fill={ring} fontWeight="600">
       <textPath href={`#${id}-arc`} startOffset="50%" textAnchor="middle">
         {text}
       </textPath>
@@ -172,7 +173,7 @@ const EuspaDocument = ({ id, title, issued, credentialId }: CertificateDocumentP
       <text x="60" y="110" fontFamily={SANS} fontSize="10.5" letterSpacing="1.8" fill="#dfe7ff">CERTIFICATE OF COMPLETION</text>
 
       <rect x="28" y="152" width="584" height="300" fill="none" stroke={navy} strokeOpacity="0.2" strokeWidth="1" />
-      <Corners color={navy} inset={34} size={18} />
+      <Corners color={navy} inset={34} top={158} size={18} />
 
       <text x="60" y="190" fontFamily={SANS} fontSize="11.5" fill={muted}>This certificate is awarded to</text>
       <text x="60" y="232" fontFamily={SERIF} fontSize="36" fill={ink}>Adil Munawar</text>

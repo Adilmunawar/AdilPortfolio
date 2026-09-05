@@ -92,17 +92,17 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="pt-16 md:pt-28 px-5 md:px-8">
+    <section id="contact" className="pt-10 md:pt-28 px-5 md:px-8">
       <div className="max-w-[1120px] mx-auto">
         <Reveal className="max-w-[680px]">
-          <h2 className="text-[28px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
+          <h2 className="text-[24px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
             Let&apos;s work together
           </h2>
-          <p className="mt-3 md:mt-4 text-[17px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
+          <p className="mt-3 md:mt-4 text-[15px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
             I take on a small number of ML, geospatial and full-stack engagements. Email is best; I reply within a day.
           </p>
 
-          <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3">
+          <div className="mt-5 md:mt-8 flex flex-row flex-wrap gap-2 sm:gap-3">
             <a
               href={`mailto:${EMAIL}`}
               className={cn(
@@ -141,11 +141,11 @@ const ContactSection = () => {
         </Reveal>
 
         <Reveal variant="none" delay={60} className="mt-10 md:mt-14">
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 border-t border-white/[0.06]">
+          <ul className="grid grid-cols-2 gap-x-4 md:gap-x-8 border-t border-white/[0.06]">
             {channels.map((c) => (
               <li
                 key={c.label}
-                className="group flex items-center gap-3 min-h-[56px] py-2 border-b border-white/[0.06] text-[14px]"
+                className="group flex items-center gap-2 md:gap-3 min-h-[48px] md:min-h-[56px] py-2 border-b border-white/[0.06] text-[12px] md:text-[14px]"
               >
                 <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[rgba(0,102,255,0.12)] border border-[rgba(0,102,255,0.22)] text-[#5c9dff] transition-colors duration-150 md:group-hover:bg-[rgba(0,102,255,0.2)]">
                   <c.Icon size={16} strokeWidth={1.75} aria-hidden="true" />

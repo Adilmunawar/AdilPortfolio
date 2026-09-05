@@ -1,4 +1,5 @@
-import type { ReactNode, SVGProps } from 'react';
+import { useId, type ReactNode, type SVGProps } from 'react';
+import { ARTICLE_COVERS } from './articles';
 
 export type NoteCoverId = 'game-economy' | 'public-wifi' | 'recon';
 
@@ -312,6 +313,9 @@ const COVERS: Record<NoteCoverId, (p: CoverProps) => JSX.Element> = {
 };
 
 export function NoteCover({ cover, title, className }: { cover?: string; title: string; className?: string }) {
+  const uid = `nt-${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
+  const Article = cover ? ARTICLE_COVERS[cover] : undefined;
+  if (Article) return <Article uid={uid} title={title} className={className} />;
   const Cover = (cover && COVERS[cover as NoteCoverId]) || Fallback;
   return <Cover title={title} className={className} />;
 }

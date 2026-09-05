@@ -20,6 +20,7 @@
 }
 
 .pc-card-wrapper {
+  container-type: inline-size;
   perspective: 500px;
   transform: translate3d(0, 0, 0.1px);
   position: relative;
@@ -354,7 +355,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .pc-card {
-    height: 400px;
+    height: auto;
   }
 
   .pc-details {
@@ -396,7 +397,7 @@
 
 @media (max-width: 480px) {
   .pc-card {
-    height: 350px;
+    height: auto;
   }
 
   .pc-card-wrapper {
@@ -408,12 +409,12 @@
   }
 
   .pc-details h3 {
-    font-size: min(3.5svh, 1.8em);
+    font-size: clamp(14px, 12cqw, 1.8em);
   }
 
   .pc-details p {
-    font-size: 12px;
-    top: -6px;
+    font-size: clamp(8px, 6cqw, 12px);
+    top: -4px;
   }
 
   .pc-user-info {
@@ -425,20 +426,28 @@
   }
 
   .pc-mini-avatar {
-    width: 32px;
-    height: 32px;
+    width: clamp(20px, 14cqw, 32px);
+    height: clamp(20px, 14cqw, 32px);
   }
 
   .pc-user-details {
-    gap: 8px;
+    gap: 6px;
   }
 
   .pc-handle {
-    font-size: 11px;
+    font-size: clamp(8px, 5.5cqw, 11px);
   }
 
   .pc-status {
-    font-size: 10px;
+    font-size: clamp(7px, 5cqw, 10px);
+  }
+
+  .pc-user-info {
+    bottom: 6px;
+    left: 6px;
+    right: 6px;
+    padding: 5px 6px;
+    border-radius: 8px;
   }
 }
 

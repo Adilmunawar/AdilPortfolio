@@ -88,19 +88,19 @@ function CaseStudyCard({ study, index, onOpen }: { study: CaseStudy; index: numb
             />
           </div>
 
-          <div className="flex flex-col flex-1 p-5 md:p-6">
-            <div className="flex items-center gap-2 text-[12px] text-[#6f7888]">
+          <div className="flex flex-col flex-1 p-3 md:p-6">
+            <div className="flex items-center gap-2 text-[10px] md:text-[12px] text-[#6f7888]">
               <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] bg-[rgba(0,102,255,0.12)] border border-[rgba(0,102,255,0.22)] text-[#5c9dff]">
                 <Icon size={14} strokeWidth={1.75} aria-hidden="true" />
               </span>
               <span className="font-mono">Case study {String(index + 1).padStart(2, '0')}</span>
             </div>
-            <h3 className="mt-3 text-[18px] md:text-[20px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8]">
+            <h3 className="mt-2 md:mt-3 text-[13px] sm:text-[16px] md:text-[20px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8]">
               {study.title}
             </h3>
-            <p className="mt-2 text-[15px] leading-[1.6] text-[#a4adbe] line-clamp-3">{study.excerpt}</p>
+            <p className="mt-1.5 md:mt-2 text-[11px] sm:text-[13px] md:text-[15px] leading-[1.5] md:leading-[1.6] text-[#a4adbe] line-clamp-2 md:line-clamp-3">{study.excerpt}</p>
 
-            <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="Technologies">
+            <ul className="mt-3 hidden sm:flex flex-wrap gap-1.5 md:mt-4" aria-label="Technologies">
               {chips.map((tech) => (
                 <li key={tech} className={CHIP}>
                   {tech}
@@ -109,12 +109,12 @@ function CaseStudyCard({ study, index, onOpen }: { study: CaseStudy; index: numb
               {overflow > 0 && <li className="inline-flex items-center h-6 px-2 text-[12px] text-[#6f7888]">+{overflow}</li>}
             </ul>
 
-            <div className="mt-auto pt-4 flex items-center justify-between gap-3 border-t border-white/[0.06] min-h-[44px]">
-              <span className="inline-flex items-center gap-1.5 text-[12px] text-[#6f7888]">
+            <div className="mt-auto pt-2.5 md:pt-4 flex items-center justify-between gap-2 border-t border-white/[0.06] min-h-[36px] md:min-h-[44px]">
+              <span className="inline-flex items-center gap-1.5 text-[10px] md:text-[12px] text-[#6f7888]">
                 <Clock size={12} strokeWidth={1.75} aria-hidden="true" />
                 {READ_TIME[study.id]} min read
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#5c9dff] transition-colors duration-150 md:group-hover:text-[#f2f4f8]">
+              <span className="inline-flex items-center gap-1.5 text-[11px] md:text-[13px] font-medium text-[#5c9dff] transition-colors duration-150 md:group-hover:text-[#f2f4f8]">
                 Read case study
                 <ArrowRight
                   size={14}
@@ -141,18 +141,18 @@ export default function CaseStudiesSection() {
 
   return (
     <>
-      <section id="case-studies" className="py-16 md:py-28 px-5 md:px-8">
+      <section id="case-studies" className="py-10 md:py-28 px-5 md:px-8">
         <div className="max-w-[1120px] mx-auto">
           <Reveal className="max-w-[680px]">
-            <h2 className="text-[28px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
+            <h2 className="text-[24px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
               Case studies
             </h2>
-            <p className="mt-3 md:mt-4 text-[17px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
+            <p className="mt-3 md:mt-4 text-[15px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
               Longer write-ups on how three systems were designed, what broke, and what I&apos;d change.
             </p>
           </Reveal>
 
-          <div className="mt-8 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="mt-6 md:mt-12 grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {caseStudiesData.map((study, index) => (
               <CaseStudyCard key={study.id} study={study} index={index} onOpen={handleReadMore} />
             ))}

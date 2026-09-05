@@ -120,7 +120,7 @@ function IconTile({ Icon, className }: { Icon: LucideIcon; className?: string })
 }
 
 // Encoder / decoder block glyph for datasheet plates.
-function SpecStrip({ project }: { project: Project }) {
+function SpecStrip({ project, className }: { project: Project; className?: string }) {
   const rows = (
     [
       ['Architecture', project.spec?.architecture],
@@ -131,7 +131,7 @@ function SpecStrip({ project }: { project: Project }) {
   ).filter((r): r is [string, string] => Boolean(r[1]));
   if (!rows.length) return null;
   return (
-    <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 font-mono text-[11px] md:text-[12px] leading-[1.45]">
+    <dl className={cn('grid grid-cols-2 gap-x-4 gap-y-2 font-mono text-[11px] md:text-[12px] leading-[1.45]', className ?? 'mt-3')}>
       {rows.map(([key, value]) => (
         <div key={key} className="min-w-0">
           <dt className="text-[#6f7888]">{key}</dt>
@@ -142,11 +142,11 @@ function SpecStrip({ project }: { project: Project }) {
   );
 }
 
-function Plate({ project }: { project: Project; fill?: boolean; sizes?: string }) {
+function Plate({ project, fill }: { project: Project; fill?: boolean; sizes?: string }) {
   const Icon = CATEGORY_ICON[project.category] ?? Layers;
   return (
-    <div>
-      <div className="relative aspect-[16/10] rounded-[8px] overflow-hidden bg-[#0b0f17] border border-white/[0.06]">
+    <div className={fill ? 'h-full' : undefined}>
+      <div className={cn('relative rounded-[8px] overflow-hidden bg-[#0b0f17] border border-white/[0.06]', fill ? 'h-full min-h-[150px] sm:min-h-[200px] md:min-h-[260px]' : 'aspect-[16/10]')}>
         <ProjectCover id={project.id} title={project.title} className="absolute inset-0 h-full w-full transition-transform duration-500 ease-out-expo md:group-hover:scale-[1.03]" />
         <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#111622]/80 to-transparent" />
         <span className="absolute left-3 bottom-3 inline-flex items-center gap-2 text-[12px] text-[#a4adbe]">
@@ -155,7 +155,7 @@ function Plate({ project }: { project: Project; fill?: boolean; sizes?: string }
         </span>
         <span className="absolute right-3 top-3 font-mono text-[10px] uppercase tracking-[0.12em] text-[#6f7888]">{KIND_LABEL[project.kind]}</span>
       </div>
-      <SpecStrip project={project} />
+      {!fill && <SpecStrip project={project} />}
     </div>
   );
 }
@@ -218,44 +218,34 @@ function FeaturedRow({ project, index }: { project: Project; index: number }) {
   const meta = projectMeta(project);
   const flip = index % 2 === 1;
   const numeral = String(index + 1).padStart(2, '0');
+  const Icon = CATEGORY_ICON[project.category] ?? Layers;
   return (
     <Reveal>
       <Hairline>
-        <article className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 p-5 md:p-6 rounded-[12px] overflow-hidden">
-          <div className={cn('lg:col-span-5 min-w-0', flip && 'lg:order-2')}>
-            <Plate project={project} fill sizes="(max-width: 1024px) 100vw, 440px" />
+        <article className="grid grid-cols-12 gap-3 md:gap-6 p-3 md:p-5 rounded-[12px] overflow-hidden">
+          <div className={cn('col-span-5 min-w-0', flip && 'order-2')}>
+            <Plate project={project} fill />
           </div>
-          <div className={cn('relative isolate lg:col-span-7 min-w-0 flex flex-col', flip && 'lg:order-1')}>
-            <span
-              aria-hidden="true"
-              className={cn(
-                'pointer-events-none select-none absolute -z-10 -top-5 md:-top-8 font-semibold leading-none tracking-[-0.05em] tabular-nums text-[88px] md:text-[136px] text-white/[0.04] transition-transform duration-500 ease-out-expo md:group-hover:-translate-y-1',
-                flip ? 'left-0' : 'right-0'
-              )}
-            >
-              {numeral}
-            </span>
-            <p className={cn('text-[12px] font-mono text-[#5c9dff]', LINE)} style={lineDelay(0)}>
-              {numeral} · Featured
-            </p>
-            <h3
-              className={cn('mt-2 text-[18px] md:text-[20px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8]', LINE)}
-              style={lineDelay(1)}
-            >
+          <div className={cn('col-span-7 min-w-0 flex flex-col', flip && 'order-1')}>
+            <div className="flex items-center justify-between gap-2">
+              <p className="inline-flex items-center gap-2 text-[10px] md:text-[12px] font-mono text-[#5c9dff]">
+                <span className="hidden sm:inline-flex"><IconTile Icon={Icon} /></span>
+                {numeral} · Featured
+              </p>
+              <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.12em] text-[#6f7888]">{KIND_LABEL[project.kind]}</span>
+            </div>
+            <h3 className="mt-2 md:mt-3 text-[14px] sm:text-[17px] md:text-[22px] font-semibold tracking-[-0.01em] leading-[1.25] text-[#f2f4f8]">
               {project.title}
             </h3>
-            {meta && (
-              <p className={cn('mt-1 text-[12px] text-[#6f7888]', LINE)} style={lineDelay(1)}>
-                {meta}
-              </p>
-            )}
-            <p className={cn('mt-3 text-[15px] md:text-[16px] leading-[1.6] text-[#a4adbe]', LINE)} style={lineDelay(2)}>
+            {meta && <p className="mt-0.5 md:mt-1 text-[10px] md:text-[12px] text-[#6f7888]">{meta}</p>}
+            <p className="mt-2 md:mt-3 text-[11px] sm:text-[13px] md:text-[15px] leading-[1.5] md:leading-[1.6] text-[#a4adbe] line-clamp-3 md:line-clamp-none">
               {project.description}
             </p>
-            <div className={cn('mt-4', LINE)} style={lineDelay(3)}>
+            <SpecStrip project={project} className="mt-3 md:mt-4 border-t border-white/[0.06] pt-3 md:pt-4 sm:grid-cols-4" />
+            <div className="mt-3 hidden sm:block md:mt-4">
               <TechChips tech={project.tech} />
             </div>
-            <div className={cn('mt-3', LINE)} style={lineDelay(4)}>
+            <div className="mt-auto pt-2 md:pt-3">
               <Links project={project} />
             </div>
           </div>
@@ -270,17 +260,17 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
     <Reveal delay={(index % 3) * 60} className="h-full">
       <Hairline className="h-full">
-        <article className="h-full flex flex-col p-5 md:p-6">
+        <article className="h-full flex flex-col p-3 md:p-6">
           <Plate project={project} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px" />
-          <h3 className="mt-4 text-[18px] md:text-[20px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8]">
+          <h3 className="mt-2.5 md:mt-4 text-[13px] sm:text-[16px] md:text-[20px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8]">
             {project.title}
           </h3>
-          {meta && <p className="mt-1 text-[12px] text-[#6f7888]">{meta}</p>}
-          <p className="mt-3 text-[15px] leading-[1.6] text-[#a4adbe] line-clamp-4 md:line-clamp-3">{project.description}</p>
-          <div className="mt-4">
+          {meta && <p className="mt-0.5 md:mt-1 text-[10px] md:text-[12px] text-[#6f7888]">{meta}</p>}
+          <p className="mt-1.5 md:mt-3 text-[11px] sm:text-[13px] md:text-[15px] leading-[1.5] md:leading-[1.6] text-[#a4adbe] line-clamp-3">{project.description}</p>
+          <div className="mt-2 hidden sm:block md:mt-4">
             <TechChips tech={project.tech} max={MAX_CHIPS} />
           </div>
-          <div className="mt-auto pt-3">
+          <div className="mt-auto pt-2 md:pt-3">
             <Links project={project} />
           </div>
         </article>
@@ -305,13 +295,13 @@ const ProjectsSection = () => {
   const hidden = rest.length - visible.length;
 
   return (
-    <section id="projects" className="py-16 md:py-28 px-5 md:px-8">
+    <section id="projects" className="py-10 md:py-28 px-5 md:px-8">
       <div className="max-w-[1120px] mx-auto">
         <Reveal className="max-w-[680px]">
-          <h2 className="text-[28px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
+          <h2 className="text-[24px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
             Selected work
           </h2>
-          <p className="mt-3 md:mt-4 text-[17px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
+          <p className="mt-3 md:mt-4 text-[15px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
             Models and pipelines for private agri-tech clients, summarised by architecture, task and framework,
             alongside public products with source available.
           </p>
@@ -365,7 +355,7 @@ const ProjectsSection = () => {
         </Reveal>
 
         {featured.length > 0 && (
-          <div className="mt-8 md:mt-12 flex flex-col gap-4 md:gap-6">
+          <div className="mt-6 md:mt-12 flex flex-col gap-3 md:gap-6">
             {featured.map((project, index) => (
               <FeaturedRow key={project.id} project={project} index={index} />
             ))}
@@ -373,7 +363,7 @@ const ProjectsSection = () => {
         )}
 
         {visible.length > 0 ? (
-          <div className="mt-4 md:mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="mt-3 md:mt-6 grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {visible.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} />
             ))}

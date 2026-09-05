@@ -44,6 +44,7 @@ const Navigation = () => {
     let viewport = window.innerHeight;
     let maxScroll = 1;
     let bounds: Bound[] = [];
+    lockUntil.current = performance.now() + 800;
 
     const measureLayout = () => {
       viewport = window.innerHeight;

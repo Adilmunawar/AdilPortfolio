@@ -5,13 +5,13 @@ import BadgesShowcase from './BadgesShowcase';
 
 const StatsSection = () => {
   return (
-    <section id="stats" className="px-5 py-16 sm:px-8 lg:py-28">
+    <section id="stats" className="px-5 py-10 sm:px-8 lg:py-28">
       <div className="mx-auto max-w-[1120px]">
-        <Reveal className="mb-8 lg:mb-12">
-          <h2 className="text-[28px] font-semibold leading-[1.15] tracking-[-0.02em] text-[#f2f4f8] lg:text-[40px]">
+        <Reveal className="mb-6 lg:mb-12">
+          <h2 className="text-[24px] font-semibold leading-[1.15] tracking-[-0.02em] text-[#f2f4f8] lg:text-[40px]">
             Activity
           </h2>
-          <p className="mt-3 max-w-[680px] text-[17px] leading-normal text-[#a4adbe] lg:text-[20px]">
+          <p className="mt-3 max-w-[680px] text-[15px] leading-normal text-[#a4adbe] lg:text-[20px]">
             Public commits and problem-solving over the last year, plus the credentials behind them. Updated automatically.
           </p>
         </Reveal>

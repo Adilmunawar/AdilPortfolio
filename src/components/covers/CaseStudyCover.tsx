@@ -1,4 +1,5 @@
-import type { ReactNode, SVGProps } from 'react';
+import { useId, type ReactNode, type SVGProps } from 'react';
+import { ARTICLE_COVERS } from './articles';
 
 export type CoverId = 'recruitment-engine' | 'agent-orchestration' | 'realtime-data';
 
@@ -285,6 +286,9 @@ const COVERS: Record<CoverId, (p: CoverProps) => JSX.Element> = {
 };
 
 export function CaseStudyCover({ cover, title, className }: { cover: string; title: string; className?: string }) {
+  const uid = `cs-${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
+  const Article = ARTICLE_COVERS[cover];
+  if (Article) return <Article uid={uid} title={title} className={className} />;
   const Cover = COVERS[cover as CoverId] ?? Fallback;
   return <Cover title={title} className={className} />;
 }

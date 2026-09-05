@@ -90,7 +90,7 @@ export function TestimonialsMinimal() {
     >
       <figure
         aria-live="polite"
-        className="relative flex min-w-0 flex-col rounded-xl border border-white/[0.06] bg-[#111622] p-5 sm:p-6 lg:p-8"
+        className="relative flex min-w-0 flex-col rounded-xl border border-white/[0.06] bg-[#111622] p-4 sm:p-6 lg:p-8"
       >
         <span
           aria-hidden="true"
@@ -105,7 +105,7 @@ export function TestimonialsMinimal() {
             swapping ? "translate-y-1 opacity-0" : "translate-y-0 opacity-100",
           )}
         >
-          <blockquote className="mt-5 text-[18px] leading-[1.55] text-[#f2f4f8] lg:min-h-[7.75rem] lg:text-[20px] lg:leading-[1.5]">
+          <blockquote className="mt-4 text-[15px] leading-[1.55] text-[#f2f4f8] sm:mt-5 sm:text-[18px] lg:min-h-[7.75rem] lg:text-[20px] lg:leading-[1.5]">
             &ldquo;{active.quote}&rdquo;
           </blockquote>
 

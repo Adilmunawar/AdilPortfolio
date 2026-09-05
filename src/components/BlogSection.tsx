@@ -76,21 +76,21 @@ const BlogSection = () => {
 
   return (
     <>
-      <section id="blog" className="py-16 md:py-28 px-5 md:px-8">
+      <section id="blog" className="py-10 md:py-28 px-5 md:px-8">
         <div className="max-w-[1120px] mx-auto">
           <Reveal className="max-w-[680px]">
-            <h2 className="text-[28px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
+            <h2 className="text-[24px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
               Notes
             </h2>
-            <p className="mt-3 md:mt-4 text-[17px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
+            <p className="mt-3 md:mt-4 text-[15px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
               Occasional write-ups on models, pipelines and security research.
             </p>
           </Reveal>
 
-          <div className="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
+          <div className="mt-6 md:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-6">
             {featured && (
-              <Reveal className="lg:col-span-7">
-                <Hairline className="h-full">
+              <Reveal className="lg:col-span-7 lg:self-start">
+                <Hairline>
                   <article
                     role="button"
                     tabIndex={0}
@@ -115,12 +115,12 @@ const BlogSection = () => {
                         Latest note
                       </span>
                     </div>
-                    <div className="p-5 md:p-6 flex flex-col flex-grow">
+                    <div className="p-3.5 md:p-6 flex flex-col flex-grow">
                       <Meta post={featured} />
-                      <h3 className="mt-2 text-[18px] md:text-[20px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8]">
+                      <h3 className="mt-2 text-[15px] md:text-[20px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8]">
                         {featured.title}
                       </h3>
-                      <p className="mt-2 text-[15px] leading-[1.6] text-[#a4adbe] line-clamp-3">{featured.excerpt}</p>
+                      <p className="mt-2 text-[12px] md:text-[15px] leading-[1.5] md:leading-[1.6] text-[#a4adbe] line-clamp-2 md:line-clamp-3">{featured.excerpt}</p>
                       <span className="mt-auto pt-4 inline-flex items-center gap-1.5 min-h-[44px] text-[13px] font-medium text-[#5c9dff] transition-colors duration-150 md:group-hover:text-[#f2f4f8]">
                         Read note
                         <ArrowRight
@@ -149,7 +149,7 @@ const BlogSection = () => {
                       onTouchStart={preload}
                       onFocus={preload}
                       className={cn(
-                        'group flex items-start gap-4 py-4 md:py-5 px-2 -mx-2 rounded-[8px] cursor-pointer transition-colors duration-150 md:hover:bg-[#171d2b]',
+                        'group flex items-start gap-3 md:gap-4 py-2.5 md:py-5 px-2 -mx-2 rounded-[8px] cursor-pointer transition-colors duration-150 md:hover:bg-[#171d2b]',
                         FOCUS
                       )}
                     >
@@ -158,16 +158,16 @@ const BlogSection = () => {
                           aria-hidden="true"
                           className={cn('absolute inset-0 rounded-[9px] opacity-0 transition-opacity duration-200 md:group-hover:opacity-100', GRADIENT_HOVER)}
                         />
-                        <span className="relative block w-24 h-[60px] rounded-[8px] overflow-hidden bg-[#0b0f17]">
+                        <span className="relative block w-16 h-10 md:w-24 md:h-[60px] rounded-[8px] overflow-hidden bg-[#0b0f17]">
                           <NoteCover cover={post.cover} title={post.title} className="absolute inset-0 w-full h-full pointer-events-none" />
                         </span>
                       </span>
                       <div className="min-w-0 flex-1">
-                        <h3 className="text-[16px] md:text-[18px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8] line-clamp-2">
+                        <h3 className="text-[13px] md:text-[18px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8] line-clamp-2">
                           {post.title}
                         </h3>
-                        <p className="mt-1 text-[14px] leading-[1.5] text-[#a4adbe] line-clamp-2">{post.excerpt}</p>
-                        <Meta post={post} className="mt-2" />
+                        <p className="mt-1 hidden md:block text-[14px] leading-[1.5] text-[#a4adbe] line-clamp-2">{post.excerpt}</p>
+                        <Meta post={post} className="mt-1 md:mt-2" />
                       </div>
                       <ArrowRight
                         size={16}

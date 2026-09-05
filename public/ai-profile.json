@@ -685,7 +685,91 @@
   ],
   "case_studies": [
     {
-      "title": "AdiGaze – AI Recruitment Engine",
+      "title": "Delineating Terraced Field Boundaries in Kishtwar with HRNet-W48",
+      "excerpt": "How we turned high resolution imagery of terraced farmland into a topology-clean parcel layer for Zaraat Dost, using an HRNet-W48 boundary model, overlap-stitched tiled inference, watershed instancing and shared-arc vectorisation.",
+      "tech_stack": [
+        "PyTorch",
+        "HRNet-W48",
+        "Rasterio",
+        "GeoPandas",
+        "QGIS"
+      ],
+      "challenge": "Kishtwar's terraced parcels are small, irregular and packed so tightly that neighbouring fields share crop, stage and texture; the only evidence of a boundary is a bund or riser one or two pixels wide. Zaraat Dost needed those boundaries as closed, non-overlapping polygons their GIS team could edit, not a probability raster, and standard encoder-decoder segmentation blurred the thin edges into merged strips.",
+      "solution": "We trained an HRNet-W48 model whose full resolution stream never drops the detail, with a boundary channel, an interior mask and a distance-weighted loss that concentrates the penalty at edges. Inference runs over overlapping rasterio windows blended with cosine ramp weights so no tile seam survives, followed by hysteresis thresholding, skeletonisation, marker-based watershed, and a vectorisation step that simplifies shared arcs once before rebuilding faces, delivered as GeoJSON and GeoPackage with per-parcel confidence.",
+      "url": "https://adilmunawar.vercel.app/#case-studies"
+    },
+    {
+      "title": "Crop Type Classification from Sentinel-2 Time Series",
+      "excerpt": "Per-parcel crop mapping for Zaraat Dost Private Limited: cloud-masked Sentinel-2 index series resampled onto a regular grid, a bidirectional GRU with attention pooling, and scheduled district-wide inference delivered as a PostGIS layer.",
+      "tech_stack": [
+        "Sentinel-2 L2A",
+        "xarray",
+        "PyTorch",
+        "XGBoost",
+        "PostGIS"
+      ],
+      "challenge": "Label every parcel in a district with its crop from Sentinel-2 alone, in a region where the monsoon removes weeks of usable imagery, the scene classification layer misses haze and small shadows, survey labels carry spatial and temporal errors, and two major crops dwarf the minor crops the client most wanted mapped.",
+      "solution": "We built per-parcel index series from L2A with a combined SCL and U-Net mask, resampled them onto a ten-day grid with explicit observed and age channels instead of smoothing over gaps, moved from an XGBoost baseline through a temporal CNN to a bidirectional GRU with attention pooling, validated with spatial block folds and a held-out season, and ran inference as idempotent scheduled stages that write a per-parcel prediction layer to PostGIS.",
+      "url": "https://adilmunawar.vercel.app/#case-studies"
+    },
+    {
+      "title": "Serving Remote Sensing Models: On Demand Inference and Scheduled Jobs",
+      "excerpt": "The deployment layer behind the farmland models: ONNX export with a parity gate, a FastAPI service with a warm session and bounded concurrency, scheduled jobs that claim work by idempotency key and write versioned rows to PostGIS, and an MLflow promotion flow that rolls back by moving an alias.",
+      "tech_stack": [
+        "Docker",
+        "FastAPI",
+        "ONNX Runtime",
+        "PostgreSQL",
+        "Cron / Airflow",
+        "MLflow"
+      ],
+      "challenge": "The segmentation and classification models lived as PyTorch checkpoints run by hand, so every new area of interest meant a person, a machine and a script. Serving them needed a runtime that does not silently change the model, a service that stays responsive under concurrent requests, scheduled runs that survive duplicate ticks and evicted containers, and a way to know which model version produced any row in the database.",
+      "solution": "Models are exported to ONNX with dynamic axes and only registered after a parity check on held-out tiles; a FastAPI service holds one warm ONNX Runtime session per process behind a semaphore that rejects rather than queues. Scheduled jobs discover new scenes with a spatial query, claim each unit through a unique idempotency key, retry with backoff, and write outputs and run status in one transaction. MLflow aliases decide which version runs, every output carries that version, drift on input statistics is flagged on the run row, and rollback is the promotion procedure in reverse.",
+      "url": "https://adilmunawar.vercel.app/#case-studies"
+    },
+    {
+      "title": "An Enterprise RAG Pipeline That Can Say It Does Not Know",
+      "excerpt": "Grounded question answering over a private knowledge base, built so that refusal is a designed outcome: structure-aware chunking, hybrid retrieval fused by reciprocal rank, a cross-encoder reranker, verified citations, and an evaluation harness that existed before any prompt was tuned.",
+      "tech_stack": [
+        "pgvector",
+        "PostgreSQL",
+        "FastAPI",
+        "Redis",
+        "Claude API"
+      ],
+      "challenge": "The client wanted question answering over policies, manuals and support tickets, with one non-negotiable: a confident wrong answer about a policy or a safety procedure was worse than no answer. Fixed-window chunking split tables and lost section context, dense retrieval missed exact product codes, and without a measurement of retrieval and faithfulness there was no honest way to tune anything.",
+      "solution": "Documents are parsed into trees and chunked along their own structure with heading paths attached. Dense pgvector search and BM25 run side by side and are merged with reciprocal rank fusion, a cross-encoder reranks the candidates, and a gate compares the best score with a calibrated threshold before generation. Every cited sentence is verified against its source span, unsupported answers are rejected, and a CI harness reports retrieval recall at k, faithfulness and refusal accuracy for every release, with content-hash, query and reranker caches keyed by index version.",
+      "url": "https://adilmunawar.vercel.app/#case-studies"
+    },
+    {
+      "title": "AdiNox: Building a TOTP Authenticator with a Biometric Gate",
+      "excerpt": "How AdiNox parses otpauth QR codes, generates TOTP codes with WebCrypto, keeps secrets in an AES-GCM vault under a PBKDF2 key, and puts a face-api.js check in front of the code list without pretending a face is a key.",
+      "tech_stack": [
+        "React",
+        "TypeScript",
+        "Supabase",
+        "face-api.js"
+      ],
+      "challenge": "An authenticator holds the one secret that can produce every future login code for an account, inside a browser where storage is readable by any script in the origin, screens are photographed, and devices get lost. AdiNox had to keep secrets encrypted at rest, keep codes off the screen when nobody is looking, survive device loss, and stay honest about what a webcam check can and cannot protect.",
+      "solution": "We parse otpauth URIs with the platform URL class and normalise every field, generate codes over crypto.subtle with non-extractable HMAC keys, and seal the vault with AES-GCM under a PBKDF2 key that lives only in memory. The face-api.js gate sits in front of the rendered codes within an unlocked session, cold starts always ask for the passphrase, the encrypted vault doubles as the backup format, and Supabase holds the account and preferences but never a secret.",
+      "url": "https://adilmunawar.vercel.app/#case-studies"
+    },
+    {
+      "title": "Farm Digitisation and Parcel Mapping at District Scale",
+      "excerpt": "Four disagreeing descriptions of the same fields, GPS tracks, scanned cadastral sheets, operator polygons and model boundaries, were georeferenced, conflated with confidence scoring and reviewed by people, then delivered as a versioned parcel layer to the client's GIS and to PostGIS.",
+      "tech_stack": [
+        "PostGIS",
+        "GeoPandas",
+        "GDAL",
+        "QGIS",
+        "Python"
+      ],
+      "challenge": "Zaraat Dost Private Limited needed one authoritative parcel layer for a district, but the parcels already existed in four incompatible forms: partial GPS survey tracks, scanned paper cadastral sheets with no coordinates, quickly drawn operator polygons in Web Mercator, and dense HRNet-derived boundaries that knew nothing about ownership. None was complete, none was fully trustworthy, and every downstream system would store whatever identifiers we issued.",
+      "solution": "We reprojected everything into one metric CRS, warped the paper sheets with ground control points and a thin plate spline, and treated every input polygon as a scored candidate rather than as truth. A PostGIS conflation query clustered overlapping candidates by intersection over union, a confidence function picked a winner and kept alternates, and close calls went to a QGIS review queue where every decision wrote a new parcel version. Exports to GeoPackage, Shapefile and PostGIS carried stable identifiers with versions, and a field audit fed back into the source priors.",
+      "url": "https://adilmunawar.vercel.app/#case-studies"
+    },
+    {
+      "title": "AdiGaze: AI Recruitment Engine",
       "excerpt": "AdiGaze turns a batch of mixed-format resumes into structured, ranked candidate records, and it was built to keep finishing the batch when a provider throttles or a file takes minutes to parse.",
       "tech_stack": [
         "React (Vite)",
@@ -699,7 +783,7 @@
     },
     {
       "title": "The Agentic Blueprint",
-      "excerpt": "A field guide to building AI systems that actually finish work: five patterns — structured cognition, parallel workers, self-healing reflexes, vector memory, and an input immune system — drawn from the recruitment engine, RAG pipeline, and MCP server.",
+      "excerpt": "A field guide to building AI systems that actually finish work: five patterns (structured cognition, parallel workers, self-healing reflexes, vector memory, and an input immune system) drawn from the recruitment engine, RAG pipeline, and MCP server.",
       "tech_stack": [
         "System Design",
         "AI",
@@ -707,13 +791,13 @@
         "pgvector",
         "Resilience"
       ],
-      "challenge": "Most teams treat a language model as a vending machine — prompt in, text out — and then struggle to make it act reliably, run concurrently, or recover from failure. The challenge is turning a passive model into a system that decides, uses tools, and heals itself.",
+      "challenge": "Most teams treat a language model as a vending machine (prompt in, text out) and then struggle to make it act reliably, run concurrently, or recover from failure. The challenge is turning a passive model into a system that decides, uses tools, and heals itself.",
       "solution": "A five-part blueprint: constrain the model to a schema so its output is data, run a bounded pool of workers sized to the rate limit, add backoff and graceful fallback, give it vector memory paired with a cheap SQL pre-filter, and sanitize every input while the database enforces least privilege.",
       "url": "https://adilmunawar.vercel.app/#case-studies"
     },
     {
       "title": "The Supabase Sovereign",
-      "excerpt": "How I keep Postgres-backed backends fast and secure on Supabase under serverless load — connection pooling, targeted indexing, edge compute, async webhooks, and Row Level Security — with the trade-off behind each decision.",
+      "excerpt": "How I keep Postgres-backed backends fast and secure on Supabase under serverless load: connection pooling, targeted indexing, edge compute, async webhooks, and Row Level Security, with the trade-off behind each decision.",
       "tech_stack": [
         "Supabase",
         "Postgres",
@@ -728,8 +812,117 @@
   ],
   "notes": [
     {
+      "title": "What Actually Makes LLM Inference Fast: KV Cache, Batching and Speculative Decoding",
+      "excerpt": "Why decode is bound by memory bandwidth rather than compute, how large the KV cache really gets, what paged attention and continuous batching recover, how speculative decoding speeds up generation without changing the output distribution, and the three numbers to measure before believing any serving benchmark.",
+      "tags": [
+        "LLM",
+        "Inference",
+        "GPU",
+        "Systems"
+      ],
+      "url": "https://adilmunawar.vercel.app/#blog"
+    },
+    {
+      "title": "Tiled Inference on Large Rasters Without Seams",
+      "excerpt": "How we ran a field boundary model over district-scale rasters: halos and overlap, Gaussian blending instead of averaging, test time augmentation, a rolling buffer for windowed writes, and a detector that flags seams before anyone opens the output.",
+      "tags": [
+        "Segmentation",
+        "Raster",
+        "PyTorch",
+        "GIS"
+      ],
+      "url": "https://adilmunawar.vercel.app/#blog"
+    },
+    {
+      "title": "Inside HNSW: How Approximate Nearest Neighbour Search Trades Recall for Latency",
+      "excerpt": "How the layered graph behind pgvector and hnswlib routes a query, what M, efConstruction and efSearch each change, why deletes and filters break the usual assumptions, how IVF and product quantisation compare, and how to measure recall against brute force before trusting an index in production.",
+      "tags": [
+        "Vector Search",
+        "HNSW",
+        "pgvector",
+        "Algorithms"
+      ],
+      "url": "https://adilmunawar.vercel.app/#blog"
+    },
+    {
+      "title": "Boundary Aware Losses for Thin Structure Segmentation",
+      "excerpt": "Why pixel cross-entropy and Dice fail on one to two pixel boundaries, how distance weighting and the signed distance boundary loss fix it, and why the boundary F score with a tolerance band is the metric to trust.",
+      "tags": [
+        "Deep Learning",
+        "Loss Functions",
+        "Segmentation"
+      ],
+      "url": "https://adilmunawar.vercel.app/#blog"
+    },
+    {
+      "title": "Where the GPU Memory Goes: Fitting a Large Model on One Card",
+      "excerpt": "The memory budget of a training step: weights, gradients, the two Adam moments, activations and workspace. How bf16, loss scaling, checkpointing, accumulation, channels_last and fused optimisers move each term, and how to find the real peak with the PyTorch memory snapshot.",
+      "tags": [
+        "PyTorch",
+        "GPU",
+        "Training",
+        "Systems"
+      ],
+      "url": "https://adilmunawar.vercel.app/#blog"
+    },
+    {
+      "title": "Designing MCP Tool Servers an Agent Can Actually Use",
+      "excerpt": "What we changed in a Model Context Protocol tool server after the first week of real agent traffic: schemas as the real prompt, idempotency keys, budgets, an error taxonomy the model can act on, permission tiers, audit rows, and replay tests built from recorded traces.",
+      "tags": [
+        "MCP",
+        "Agents",
+        "TypeScript",
+        "LLM"
+      ],
+      "url": "https://adilmunawar.vercel.app/#blog"
+    },
+    {
+      "title": "Row Level Security Done Properly: Multi Tenant Isolation in Postgres and Supabase",
+      "excerpt": "Why tenant filters in application code leak, how USING and WITH CHECK are evaluated, where the tenant id comes from, the per row function and missing index traps and the InitPlan fix, a policy test script, service role discipline and migrations that do not lock everyone out.",
+      "tags": [
+        "PostgreSQL",
+        "Supabase",
+        "Security",
+        "Backend"
+      ],
+      "url": "https://adilmunawar.vercel.app/#blog"
+    },
+    {
+      "title": "Build the RAG Evaluation Harness Before You Touch the Prompt",
+      "excerpt": "How the evaluation harness for an enterprise RAG pipeline is put together: a golden set from real questions, recall at k, MRR and nDCG with their blind spots, a calibrated LLM judge for faithfulness and citation precision, cost and latency budgets, and the CI gate that caught a change which raised recall while quietly breaking grounding.",
+      "tags": [
+        "RAG",
+        "Evaluation",
+        "LLM",
+        "Python"
+      ],
+      "url": "https://adilmunawar.vercel.app/#blog"
+    },
+    {
+      "title": "Streaming Model Output Without Leaking Resources: SSE, Backpressure and Cancellation",
+      "excerpt": "Zenith streams every reply through a Next.js route handler. This note covers the transport choice, propagating AbortSignal upstream, backpressure with pull, heartbeats, resuming with Last-Event-ID, and stopping generation the moment nobody is reading.",
+      "tags": [
+        "Next.js",
+        "Streaming",
+        "TypeScript",
+        "LLM"
+      ],
+      "url": "https://adilmunawar.vercel.app/#blog"
+    },
+    {
+      "title": "How a TOTP Authenticator Really Works: HMAC, Time Windows and the Mistakes That Break Them",
+      "excerpt": "From the otpauth QR code to an accepted six digit code: HMAC-SHA1 over a counter, dynamic truncation, the thirty second step, verification windows, replay protection, constant time comparison and the base32 edge cases, with AdiNox as the worked example.",
+      "tags": [
+        "Security",
+        "Cryptography",
+        "TypeScript",
+        "Authentication"
+      ],
+      "url": "https://adilmunawar.vercel.app/#blog"
+    },
+    {
       "title": "Recon for Juicy Endpoints via URLScan Dorking",
-      "excerpt": "A methodology for authorized testers: narrowing a huge in-scope estate down to the few hosts worth a human's time through passive discovery, polite confirmation, and triage — plus the defensive mirror for asset owners.",
+      "excerpt": "A methodology for authorized testers: narrowing a huge in-scope estate down to the few hosts worth a human's time through passive discovery, polite confirmation, and triage, plus the defensive mirror for asset owners.",
       "tags": [
         "URLScan",
         "Hacking",
@@ -740,7 +933,7 @@
     },
     {
       "title": "How Attackers Exploit Public WiFi to Sniff Decrypted Network Packets",
-      "excerpt": "How public-WiFi attacks actually work — evil-twin access points, on-path interception, TLS downgrade — and why end-to-end encryption, HSTS preload, encrypted DNS, and a VPN make an attacker's position on the wire close to worthless.",
+      "excerpt": "How public-WiFi attacks actually work (evil-twin access points, on-path interception, TLS downgrade) and why end-to-end encryption, HSTS preload, encrypted DNS, and a VPN make an attacker's position on the wire close to worthless.",
       "tags": [
         "WiFi Security",
         "Hacking",
@@ -750,7 +943,7 @@
     },
     {
       "title": "Securing In-Game Economies Against Value Tampering",
-      "excerpt": "Where game economies get tampered with — memory edits, forged packets, race conditions, injection — and how server-side authority, atomic transactions, and audit logging shut it down. A defensive guide.",
+      "excerpt": "Where game economies get tampered with (memory edits, forged packets, race conditions, injection) and how server-side authority, atomic transactions, and audit logging shut it down. A defensive guide.",
       "tags": [
         "Hacking",
         "Game Security",

@@ -30,7 +30,9 @@ There is no working lint setup. `tsconfig.tsbuildinfo` is tracked by mistake; ig
 ## Content data files
 
 - `src/lib/projects.json` — drives `ProjectsSection.tsx`. `kind: "model"` and client/agentic entries have **no GitHub link** (`github: null`); only existing public web projects link to GitHub. Never invent metrics, dates or client names.
-- `src/lib/case-studies.json`, `src/lib/blog-data.json` — markdown content rendered in the dialogs (tables via `remark-gfm`, `mermaid` fences supported in case studies).
+- `src/lib/case-studies.json`, `src/lib/blog-data.json` — markdown content rendered in the dialogs (tables via `remark-gfm`, `mermaid` fences, and `figure` fences). No em or en dashes in any prose; rewrite with commas, colons or full stops.
+- Article covers and inline figures live in `src/components/covers/articles/<slug>.tsx`, one module per article exporting `COVER` and `FIGURES` (keys `<slug>/<figure>`), built on `covers/shared.tsx` (`CoverFrame`, `ANIM`). `covers/articles/index.ts` registers them; `CaseStudyCover`/`NoteCover` fall back to it by the `cover` field. A figure fence is ```` ```figure ```` with the figure id on the first line and a caption on the next; `ArticleFigure.tsx` renders it in a 16:9 box. Motion must depict the real process, never decoration.
+- Certificates: `src/components/Achievements.tsx` masonry. Entries without an image render `CertificateDocument.tsx` (issuer themed: MIT red, EUSPA navy, Google) with the real credential ID.
 - `src/lib/github-contributions.json`, `src/lib/leetcode-stats.json` — refreshed by GitHub Actions (`scripts/scaffold-*.mjs`).
 
 ## Working in parallel

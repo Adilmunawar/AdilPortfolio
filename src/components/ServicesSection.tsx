@@ -91,7 +91,7 @@ const Check = () => (
 
 const ServicesSection = () => {
   return (
-    <section id="services" className="px-5 py-16 sm:px-8 lg:py-28">
+    <section id="services" className="px-5 py-10 sm:px-8 lg:py-28">
       <div className="mx-auto max-w-page">
         <Reveal className="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between lg:mb-12">
           <div className="max-w-prose">
@@ -104,7 +104,7 @@ const ServicesSection = () => {
           </a>
         </Reveal>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:gap-6">
+        <div className="grid grid-cols-2 gap-3 md:gap-4 lg:gap-6">
           {services.map((service, i) => {
             const Glyph = serviceGlyphs[service.glyph];
             return (
@@ -122,13 +122,13 @@ const ServicesSection = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-1 flex-col p-5 sm:p-6 lg:p-8">
-                      <h3 className="text-h3 text-primary">{service.title}</h3>
-                      <p className="mt-2 text-body text-secondary">{service.positioning}</p>
+                    <div className="flex flex-1 flex-col p-3 sm:p-6 lg:p-8">
+                      <h3 className="text-[13px] font-semibold leading-snug text-primary sm:text-h3">{service.title}</h3>
+                      <p className="mt-1.5 text-[11px] leading-[1.5] text-secondary sm:mt-2 sm:text-body">{service.positioning}</p>
 
-                      <ul className="mt-5 space-y-2">
+                      <ul className="mt-3 space-y-1.5 sm:mt-5 sm:space-y-2">
                         {service.deliverables.map((item) => (
-                          <li key={item} className="flex gap-2.5 text-small text-secondary">
+                          <li key={item} className="flex gap-2 text-[11px] leading-[1.45] text-secondary sm:gap-2.5 sm:text-small">
                             <Check />
                             <span className="min-w-0">{item}</span>
                           </li>
@@ -167,18 +167,17 @@ const ServicesSection = () => {
 
         <Reveal className="mt-10 lg:mt-14">
           <div className="rounded-[13px] bg-[linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0.05))] p-px">
-            <div className="rounded-lg bg-bg-1 p-5 sm:p-6 lg:p-8">
+            <div className="rounded-lg bg-bg-1 p-4 sm:p-6 lg:p-8">
               <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
                 <h3 className="text-h3 text-primary">How an engagement runs</h3>
                 <p className="text-small text-tertiary">Scope first, then short increments you can review.</p>
               </div>
-              <ol className="mt-6 grid gap-6 md:grid-cols-4 lg:mt-8">
+              <ol className="mt-5 grid grid-cols-2 gap-5 md:grid-cols-4 md:gap-6 lg:mt-8">
                 {steps.map((step, i) => (
-                  <li key={step.title} className="relative flex gap-4 md:block md:pt-7">
-                    <span aria-hidden className="relative z-10 mt-1.5 h-3 w-3 shrink-0 rounded-full border-2 border-accent-text bg-bg-1 md:absolute md:left-0 md:top-0 md:mt-0" />
+                  <li key={step.title} className="relative block pt-6 md:pt-7">
+                    <span aria-hidden className="absolute left-0 top-0 z-10 h-3 w-3 shrink-0 rounded-full border-2 border-accent-text bg-bg-1" />
                     {i < steps.length - 1 && (
                       <>
-                        <span aria-hidden className="absolute -bottom-[30px] left-[5.5px] top-[18px] w-px bg-white/10 md:hidden" />
                         <span aria-hidden className="absolute -right-6 left-3 top-[5.5px] hidden h-px bg-white/10 md:block" />
                       </>
                     )}

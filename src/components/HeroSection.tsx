@@ -20,36 +20,36 @@ const scrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
 const HeroSection = () => {
   return (
     <section id="home" className="relative w-full overflow-hidden">
-      <div className="container-page flex flex-col gap-10 py-12 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-8 lg:gap-y-4 lg:py-0 lg:min-h-[min(calc(100svh-64px),720px)]">
-        <div className="container-hero-text order-1 flex flex-col items-start lg:col-span-7">
-          <div className="hero-in inline-flex h-7 items-center gap-2 rounded-full border border-default bg-bg-1 px-3 text-small text-secondary" style={enter(0)}>
+      <div className="container-page grid grid-cols-12 items-center gap-x-4 gap-y-3 py-8 sm:gap-x-6 sm:py-12 lg:gap-x-8 lg:gap-y-4 lg:py-0 lg:min-h-[min(calc(100svh-64px),720px)]">
+        <div className="container-hero-text col-span-7 flex flex-col items-start">
+          <div className="hero-in inline-flex h-6 items-center gap-2 rounded-full border border-default bg-bg-1 px-2.5 text-[11px] text-secondary sm:h-7 sm:px-3 sm:text-small" style={enter(0)}>
             <span aria-hidden="true" className="h-2 w-2 rounded-full bg-success" />
             Available for new engagements
           </div>
 
-          <h1 className="hero-in mt-6 text-display text-primary" style={enter(60)}>
+          <h1 className="hero-in mt-4 text-display text-primary sm:mt-6" style={enter(60)}>
             Adil Munawar
           </h1>
 
-          <p className="hero-in mt-4 text-h3 font-medium text-secondary" style={enter(120)}>
+          <p className="hero-in mt-3 text-[13px] font-medium leading-snug text-secondary sm:mt-4 sm:text-h3" style={enter(120)}>
             Machine-learning engineer for <span className="text-accent-text">agricultural remote sensing</span> · full-stack developer
           </p>
 
           {/* Hairline under the role line: one light sweep on load, looping only on hover-capable desktops. */}
-          <div aria-hidden="true" className="hero-in relative mt-3 h-px w-full max-w-[220px] overflow-hidden bg-white/[0.08]" style={enter(150)}>
+          <div aria-hidden="true" className="hero-in relative mt-2.5 h-px w-full max-w-[220px] overflow-hidden bg-white/[0.08] sm:mt-3" style={enter(150)}>
             <span className="absolute inset-y-0 left-0 w-1/2 bg-[linear-gradient(90deg,transparent,#5c9dff,transparent)] animate-sweep" />
           </div>
 
-          <p className="hero-in mt-4 text-lede text-secondary" style={enter(180)}>
+          <p className="hero-in mt-3 text-[12px] leading-[1.5] text-secondary sm:mt-4 sm:text-lede" style={enter(180)}>
             I train segmentation and time-series models on satellite imagery to map fields and crops, and build the web products that put those maps in front of people.
           </p>
 
-          <div className="hero-in mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row" style={enter(240)}>
-            <a href="#projects" onClick={(e) => scrollTo(e, 'projects')} className="btn-primary group/cta h-11 sm:h-10">
+          <div className="hero-in mt-5 flex w-full flex-wrap gap-2 sm:mt-8 sm:w-auto sm:gap-3" style={enter(240)}>
+            <a href="#projects" onClick={(e) => scrollTo(e, 'projects')} className="btn-primary group/cta h-9 px-3 text-[13px] sm:h-10 sm:px-4 sm:text-[14px]">
               View selected work
               <ArrowRight size={16} aria-hidden="true" className="md:group-hover/cta:animate-arrow-nudge" />
             </a>
-            <a href="#contact" onClick={(e) => scrollTo(e, 'contact')} className="btn-secondary group/cta h-11 sm:h-10">
+            <a href="#contact" onClick={(e) => scrollTo(e, 'contact')} className="btn-secondary group/cta h-9 px-3 text-[13px] sm:h-10 sm:px-4 sm:text-[14px]">
               Get in touch
               <ArrowDown
                 size={16}
@@ -60,7 +60,7 @@ const HeroSection = () => {
           </div>
         </div>
 
-        <div className="hero-in order-3 flex flex-wrap items-center gap-x-4 lg:col-span-7" style={enter(360)}>
+        <div className="hero-in col-span-12 flex flex-wrap items-center gap-x-4 lg:col-span-7" style={enter(360)}>
           {textLinks.map((link) => (
             <a
               key={link.label}
@@ -80,8 +80,8 @@ const HeroSection = () => {
           ))}
         </div>
 
-        <div className="hero-in order-2 flex w-full justify-center lg:col-span-5 lg:row-span-2 lg:justify-end" style={enter(300)}>
-          <div className="w-full max-w-[280px] sm:max-w-[320px]">
+        <div className="hero-in col-span-5 flex w-full justify-end lg:row-span-2" style={enter(300)}>
+          <div className="w-full max-w-[320px]">
             <ProfileCard
               name="Adil Munawar"
               title="ML engineer · remote sensing"

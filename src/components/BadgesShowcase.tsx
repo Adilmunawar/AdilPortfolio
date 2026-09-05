@@ -72,7 +72,7 @@ const Badge = ({ badge, index }: { badge: BadgeItem; index: number }) => (
           <Image src={badge.src} alt={badge.alt} fill sizes="(max-width: 640px) 25vw, 88px" className="object-contain" />
         </div>
       </div>
-      <figcaption className="mt-1.5 line-clamp-2 w-full text-center text-[10px] leading-tight text-[#6f7888] sm:text-[11px]">
+      <figcaption className="mt-1 line-clamp-2 w-full text-center text-[8px] leading-tight text-[#6f7888] sm:mt-1.5 sm:text-[11px]">
         {badge.alt}
       </figcaption>
     </figure>
@@ -92,7 +92,7 @@ export default function BadgesShowcase() {
   }, []);
 
   return (
-    <div ref={rootRef} className={`space-y-8 sm:space-y-10 ${live ? 'is-live' : ''}`}>
+    <div ref={rootRef} className={`space-y-6 sm:space-y-10 ${live ? 'is-live' : ''}`}>
       {GROUPS.map((group, i) => {
         const Icon = group.icon;
         return (
@@ -103,7 +103,7 @@ export default function BadgesShowcase() {
                 {group.badges.length} {group.badges.length === 1 ? 'badge' : 'badges'}
               </span>
             </div>
-            <div className="cascade mt-4 grid grid-cols-4 gap-x-3 gap-y-5 sm:flex sm:flex-wrap sm:gap-x-4 sm:gap-y-6" role="list" aria-label={`${group.title} badges`}>
+            <div className="cascade mt-3 grid grid-cols-6 gap-x-1.5 gap-y-3 sm:mt-4 sm:flex sm:flex-wrap sm:gap-x-4 sm:gap-y-6" role="list" aria-label={`${group.title} badges`}>
               {group.badges.map((badge, j) => (
                 <Badge key={badge.id} badge={badge} index={j} />
               ))}

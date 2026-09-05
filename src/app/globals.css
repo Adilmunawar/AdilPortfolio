@@ -596,22 +596,19 @@
   animation-delay: calc(var(--i, 0) * 35ms);
 }
 
-/* Badge tile: hover lift + accent ring (desktop). */
+/* Badge tile: quiet lift on hover (desktop), no frame. */
 .badge-tile {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  padding: 6px;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1), border-color 150ms, background-color 150ms;
+  padding: 2px;
+  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1);
 }
+@media (min-width: 640px) { .badge-tile { padding: 6px; } }
+.badge-float figcaption { transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1); }
 @media (hover: hover) {
-  .badge-tile:hover {
-    transform: translate3d(0, -4px, 0);
-    border-color: rgba(0, 102, 255, 0.45);
-    background: #171d2b;
-  }
+  .badge-float:hover .badge-tile { transform: translate3d(0, -4px, 0) scale(1.05); }
+  .badge-float:hover figcaption { color: #a4adbe; }
 }
 
 /* Credentials wall: each certificate is the document itself (no frame); card lift on md+ pointer devices, lightbox. */
@@ -676,7 +673,7 @@
   .badge-float { animation: none; filter: none; }
   .svc-sweep { animation: none; opacity: 0; }
   .heatmap-cell { transition: none; }
-  .badge-tile { transition: border-color 150ms, background-color 150ms; }
+  .badge-tile { transition: none; }
   .text-gradient, .text-gradient-slow, .animate-shimmer { animation: none; }
   .animate-gradient-rotate { animation: none; }
   .animate-scroll-horizontal { animation-duration: 60s; }
@@ -722,11 +719,10 @@
 
 .cert-plate__grid { background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px); background-size: 14px 14px; mask-image: radial-gradient(70% 80% at 50% 50%, #000 30%, transparent 100%); }
 
-.cert-masonry { column-count: 2; column-gap: 6px; }
-.cert-masonry__item { break-inside: avoid; margin-bottom: 6px; }
+.cert-masonry { column-count: 4; column-gap: 4px; }
+.cert-masonry__item { break-inside: avoid; margin-bottom: 4px; }
 .cert-masonry__item > .cert-tile { display: block; }
-@media (min-width: 640px) { .cert-masonry { column-count: 3; column-gap: 6px; } }
-@media (min-width: 1024px) { .cert-masonry { column-count: 4; column-gap: 6px; } }
+@media (min-width: 640px) { .cert-masonry { column-gap: 6px; } .cert-masonry__item { margin-bottom: 6px; } }
 .cert-tile img { transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
 @media (hover: hover) and (min-width: 768px) { .cert-tile:hover img { transform: scale(1.02); } }
 
