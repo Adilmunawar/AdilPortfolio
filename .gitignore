@@ -26,3 +26,5 @@ dist-ssr
 # Build output & Caches
 /.next/
 /.idx/
+/.next-prod/
+/.next-dev-alt/

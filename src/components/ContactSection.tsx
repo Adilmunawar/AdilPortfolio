@@ -1,249 +1,313 @@
 'use client';
-import { Card } from '@/components/ui/card';
-import { Mail, Phone, Github, Instagram, MessageSquare, Linkedin, Send, MapPin, Clock, ArrowUp } from 'lucide-react';
-import { useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import {
+  Mail,
+  MessageCircle,
+  Linkedin,
+  Github,
+  Send,
+  Instagram,
+  Copy,
+  Check,
+  ArrowRight,
+  ArrowUpRight,
+  type LucideIcon,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Reveal } from './Reveal';
+
+const EMAIL = 'adilmunawarx@gmail.com';
+
+const FOCUS =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgba(0,102,255,0.45)]';
+
+type Channel = { label: string; handle: string; href: string; Icon: LucideIcon };
+
+const channels: Channel[] = [
+  { label: 'Email', handle: EMAIL, href: `mailto:${EMAIL}`, Icon: Mail },
+  { label: 'WhatsApp', handle: '+92 324 4965220', href: 'https://wa.me/923244965220', Icon: MessageCircle },
+  { label: 'LinkedIn', handle: 'linkedin.com/in/adilmunawar', href: 'https://linkedin.com/in/adilmunawar', Icon: Linkedin },
+  { label: 'GitHub', handle: 'github.com/adilmunawar', href: 'https://github.com/adilmunawar', Icon: Github },
+  { label: 'Telegram', handle: '@adilmunawar', href: 'https://t.me/adilmunawar', Icon: Send },
+  { label: 'Instagram', handle: '@adilmunawarx', href: 'https://instagram.com/adilmunawarx', Icon: Instagram },
+];
+
+const quickLinks: { label: string; href: string }[] = [
+  { label: 'Work', href: '#projects' },
+  { label: 'Case studies', href: '#case-studies' },
+  { label: 'Services', href: '#services' },
+  { label: 'Notes', href: '#blog' },
+  { label: 'Contact', href: '#contact' },
+];
+
+const connectLinks: { label: string; href: string; Icon: LucideIcon }[] = [
+  { label: 'GitHub', href: 'https://github.com/adilmunawar', Icon: Github },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/adilmunawar', Icon: Linkedin },
+  { label: 'Email', href: `mailto:${EMAIL}`, Icon: Mail },
+  { label: 'WhatsApp', href: 'https://wa.me/923244965220', Icon: MessageCircle },
+];
+
+const socialTiles: { label: string; href: string; Icon: LucideIcon }[] = [
+  { label: 'GitHub', href: 'https://github.com/adilmunawar', Icon: Github },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/adilmunawar', Icon: Linkedin },
+  { label: 'Instagram', href: 'https://instagram.com/adilmunawarx', Icon: Instagram },
+  { label: 'WhatsApp', href: 'https://wa.me/923244965220', Icon: MessageCircle },
+  { label: 'Email', href: `mailto:${EMAIL}`, Icon: Mail },
+];
+
+const FOOTER_LINK =
+  'group/link inline-flex items-center gap-2 min-h-[44px] -ml-2 px-2 rounded-[6px] text-[14px] text-[#a4adbe] transition-colors duration-150 md:hover:text-[#f2f4f8]';
+
+const LINK_ARROW =
+  'text-[#6f7888] transition-[transform,color] duration-200 ease-out-quart md:group-hover/link:text-[#5c9dff] md:group-hover/link:translate-x-0.5';
+
+const SOCIAL_TILE =
+  'group/tile relative inline-flex h-12 w-12 items-center justify-center rounded-lg border border-white/[0.08] bg-gradient-to-br from-[rgba(0,102,255,0.16)] to-[rgba(0,102,255,0.03)] text-[#5c9dff] transition-[transform,border-color,color] duration-200 ease-out-quart md:hover:-translate-y-1 md:hover:border-[rgba(0,102,255,0.45)] md:hover:text-[#f2f4f8]';
+
+const scrollToAnchor = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+  const target = document.getElementById(href.slice(1));
+  if (!target) return;
+  e.preventDefault();
+  target.scrollIntoView({ behavior: 'smooth' });
+  history.replaceState(null, '', href);
+};
+
+const isExternal = (href: string) => !href.startsWith('mailto:');
 
 const ContactSection = () => {
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const contactMethods = [
-    {
-      Icon: Mail,
-      label: 'Email',
-      value: 'adilmunawarx@gmail.com',
-      description: 'Drop me a line anytime',
-      link: 'mailto:adilmunawarx@gmail.com',
-      color: 'text-vivid-blue',
-      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
-      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
-      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
-      glowColor: 'shadow-vivid-blue/10'
-    },
-    {
-      Icon: Phone,
-      label: 'WhatsApp',
-      value: '+92 324 4965220',
-      description: 'Quick chat & instant replies',
-      link: 'https://wa.me/923244965220',
-      color: 'text-frost-blue',
-      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
-      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
-      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
-      glowColor: 'shadow-vivid-blue/10'
-    },
-    {
-      Icon: Instagram,
-      label: 'Instagram',
-      value: '@adilmunawarx',
-      description: 'Creative content & stories',
-      link: 'https://instagram.com/adilmunawarx',
-      color: 'text-vivid-blue',
-      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
-      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
-      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
-      glowColor: 'shadow-vivid-blue/10'
-    },
-    {
-      Icon: MessageSquare,
-      label: 'Telegram',
-      value: '@adilmunawarx',
-      description: 'Secure messaging platform',
-      link: 'https://t.me/adilmunawar',
-      color: 'text-frost-blue',
-      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
-      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
-      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
-      glowColor: 'shadow-vivid-blue/10'
-    },
-    {
-      Icon: Linkedin,
-      label: 'LinkedIn',
-      value: 'Professional Network',
-      description: 'Connect for opportunities',
-      link: 'https://linkedin.com/in/adilmunawar',
-      color: 'text-vivid-blue',
-      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
-      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
-      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
-      glowColor: 'shadow-vivid-blue/10'
-    },
-    {
-      Icon: Github,
-      label: 'GitHub',
-      value: 'Open Source Projects',
-      description: 'Explore my repositories',
-      link: 'https://github.com/adilmunawar',
-      color: 'text-frost-blue',
-      bgColor: 'from-vivid-blue/5 to-frost-blue/5',
-      hoverColor: 'hover:from-vivid-blue/15 hover:to-frost-blue/15',
-      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
-      glowColor: 'shadow-vivid-blue/10'
-    }
-  ];
+  const [copied, setCopied] = useState(false);
+  const timer = useRef<number | null>(null);
 
-  const footerSocials = [
-    {
-      Icon: Linkedin,
-      link: 'https://linkedin.com/in/adilmunawar',
-      color: 'hover:text-white',
-      bgGradient: 'from-vivid-blue/10 to-frost-blue/10',
-      hoverGradient: 'hover:from-vivid-blue/25 hover:to-frost-blue/25',
-      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
-      shadowColor: 'hover:shadow-vivid-blue/20',
-      dotColor: 'bg-vivid-blue'
-    },
-    {
-      Icon: Github,
-      link: 'https://github.com/adilmunawar',
-      color: 'hover:text-white',
-      bgGradient: 'from-vivid-blue/10 to-frost-blue/10',
-      hoverGradient: 'hover:from-vivid-blue/25 hover:to-frost-blue/25',
-      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
-      shadowColor: 'hover:shadow-vivid-blue/20',
-      dotColor: 'bg-vivid-blue'
-    },
-    {
-      Icon: Instagram,
-      link: 'https://instagram.com/adilmunawarx',
-      color: 'hover:text-white',
-      bgGradient: 'from-vivid-blue/10 to-frost-blue/10',
-      hoverGradient: 'hover:from-vivid-blue/25 hover:to-frost-blue/25',
-      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
-      shadowColor: 'hover:shadow-vivid-blue/20',
-      dotColor: 'bg-vivid-blue'
-    },
-    {
-      imgSrc: '/adil-munawar-uploads/discord.svg',
-      link: 'https://discordapp.com/users/adilmunawar',
-      color: 'hover:text-white',
-      bgGradient: 'from-vivid-blue/10 to-frost-blue/10',
-      hoverGradient: 'hover:from-vivid-blue/25 hover:to-frost-blue/25',
-      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
-      shadowColor: 'hover:shadow-vivid-blue/20',
-      dotColor: 'bg-vivid-blue'
-    },
-    {
-      Icon: Phone,
-      link: 'https://wa.me/+923244965220',
-      color: 'hover:text-white',
-      bgGradient: 'from-vivid-blue/10 to-frost-blue/10',
-      hoverGradient: 'hover:from-vivid-blue/25 hover:to-frost-blue/25',
-      borderColor: 'border-vivid-blue/20 hover:border-vivid-blue/40',
-      shadowColor: 'hover:shadow-vivid-blue/20',
-      dotColor: 'bg-vivid-blue'
+  useEffect(() => () => { if (timer.current) window.clearTimeout(timer.current); }, []);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard?.writeText(EMAIL).catch(() => {});
+      setCopied(true);
+      if (timer.current) window.clearTimeout(timer.current);
+      timer.current = window.setTimeout(() => setCopied(false), 1500);
+    } catch {
+      window.location.href = `mailto:${EMAIL}`;
     }
-  ];
+  };
 
   return (
-    <section id="contact" className="py-20 px-4 relative">
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-20">
-          <h2 className="text-5xl md:text-7xl font-bold mb-8 text-gradient-slow animate-fade-in-up drop-shadow-2xl">
-            Let's Connect
+    <section id="contact" className="pt-16 md:pt-28 px-5 md:px-8">
+      <div className="max-w-[1120px] mx-auto">
+        <Reveal className="max-w-[680px]">
+          <h2 className="text-[28px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
+            Let&apos;s work together
           </h2>
-          <p className="text-xl text-frost-blue animate-fade-in-up max-w-4xl mx-auto leading-relaxed" style={{ animationDelay: '0.2s' }}>
-            Ready to start a conversation? Choose your preferred 
-            <span className="text-frost-white font-semibold"> communication channel</span> and 
-            let's bring your ideas to life together
+          <p className="mt-3 md:mt-4 text-[17px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
+            I take on a small number of ML, geospatial and full-stack engagements. Email is best; I reply within a day.
           </p>
-          <div className="flex justify-center gap-8 mt-12">
-            <div className="flex items-center gap-3 text-frost-blue/80 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-              <MapPin size={20} className="text-frost-white" />
-              <span>Pakistan (Remote Available)</span>
-            </div>
-            <div className="flex items-center gap-3 text-frost-blue/80 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-              <Clock size={20} className="text-frost-white" />
-              <span>Usually responds within 24h</span>
-            </div>
-          </div>
-        </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
-          {contactMethods.map((method, index) => (
-            <Card 
-              key={index} 
-              className={`group relative p-8 bg-gray-900/40 backdrop-blur-xl border-2 ${method.borderColor} transition-all duration-700 hover:scale-105 cursor-pointer overflow-hidden animate-scale-in hover:shadow-2xl ${method.glowColor}`} 
-              style={{ animationDelay: `${index * 0.15}s` }} 
-              onClick={() => window.open(method.link, '_blank')}
-              onMouseEnter={() => setHoveredCard(index)}
-              onMouseLeave={() => setHoveredCard(null)}
+          <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3">
+            <a
+              href={`mailto:${EMAIL}`}
+              className={cn(
+                'group/cta inline-flex items-center justify-center gap-2 h-11 px-5 rounded-[8px] bg-[#0066ff] hover:bg-[#1a75ff] active:bg-[#0052cc] text-[14px] font-medium text-white transition-colors duration-150',
+                FOCUS
+              )}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${method.bgColor} opacity-0 group-hover:opacity-100 transition-all duration-700`} />
-              
-              <div className="absolute top-4 right-4 w-2 h-2 bg-white/60 rounded-full animate-ping opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="absolute bottom-6 left-6 w-1 h-1 bg-white rounded-full animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ animationDelay: '0.3s' }}></div>
-
-              <div className="relative text-center transform group-hover:translate-y-1 transition-transform duration-500">
-                <div className={`w-20 h-20 rounded-2xl border-2 ${method.borderColor} bg-gray-800/40 backdrop-blur-sm flex items-center justify-center mx-auto mb-6 group-hover:scale-125 group-hover:rotate-12 transition-all duration-700 shadow-xl ${method.glowColor} ${hoveredCard === index ? 'animate-bounce' : ''}`}>
-                  <method.Icon size={36} className={`group-hover:drop-shadow-lg transition-all duration-500 ${method.color}`} />
-                </div>
-                
-                <p className="font-bold text-xl text-frost-white mb-2 group-hover:text-white transition-colors duration-500">{method.label}</p>
-                <p className="text-frost-blue/80 text-sm mb-3 group-hover:text-frost-blue transition-colors duration-500">{method.description}</p>
-                <p className={`text-sm font-semibold group-hover:text-white transition-colors duration-500 ${method.color}`}>{method.value}</p>
-                
-                <div className="mt-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                  <Send size={16} className="mx-auto text-white animate-bounce" />
-                </div>
-              </div>
-
-              <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                <div className={`absolute inset-0 rounded-lg border-2 ${method.borderColor} animate-pulse`}></div>
-              </div>
-              
-              <div className="absolute inset-0 rounded-lg overflow-hidden">
-                <div className={`absolute w-0 h-0 rounded-full bg-gradient-to-r ${method.bgColor} group-hover:w-full group-hover:h-full transition-all duration-1000 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-20`}></div>
-              </div>
-            </Card>
-          ))}
-        </div>
-
-        <div className="relative">
-          <div className="relative mb-12">
-            <div className="h-px bg-gradient-to-r from-transparent via-vivid-blue/30 to-transparent"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-vivid-blue rounded-full animate-pulse"></div>
+              <Mail size={16} strokeWidth={1.75} aria-hidden="true" />
+              Email
+              <ArrowRight
+                size={16}
+                aria-hidden="true"
+                className="transition-transform duration-200 ease-out-quart md:group-hover/cta:translate-x-0.5"
+              />
+            </a>
+            <a
+              href="https://wa.me/923244965220"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                'group/cta inline-flex items-center justify-center gap-2 h-11 px-5 rounded-[8px] border border-white/[0.10] hover:border-white/[0.16] hover:bg-[#111622] text-[14px] font-medium text-[#f2f4f8] transition-colors duration-150',
+                FOCUS
+              )}
+            >
+              <MessageCircle size={16} strokeWidth={1.75} aria-hidden="true" />
+              WhatsApp
+              <ArrowUpRight
+                size={16}
+                aria-hidden="true"
+                className="transition-transform duration-200 ease-out-quart md:group-hover/cta:translate-x-0.5 md:group-hover/cta:-translate-y-0.5"
+              />
+            </a>
           </div>
-          
-          <div className="flex flex-col lg:flex-row justify-between items-center gap-8 animate-fade-in-up" style={{ animationDelay: '1s' }}>
-            <div className="text-center lg:text-left relative">
-              <div className="inline-block relative">
-                <p className="text-2xl font-bold text-frost-white mb-2">
-                  Crafted with <span className="text-red-500 animate-pulse">♥</span> by 
-                  <span className="text-gradient-slow ml-2">Adil Munawar</span>
-                </p>
-                <p className="text-frost-blue/80 mb-2">Full Stack Developer & UI/UX Enthusiast</p>
-                <p className="text-frost-blue/60 text-sm">© 2026 All Rights Reserved.</p>
-                
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-vivid-blue to-frost-blue group-hover:w-full transition-all duration-700"></div>
-              </div>
-            </div>
-            
-            <div className="flex space-x-6">
-              {footerSocials.map((social, index) => (
-                <a 
-                  key={index} 
-                  href={social.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className={`group relative w-16 h-16 bg-gradient-to-br ${social.bgGradient} ${social.hoverGradient} rounded-2xl flex items-center justify-center transition-all duration-700 hover:scale-125 hover:rotate-12 backdrop-blur-sm border-2 ${social.borderColor} hover:shadow-2xl ${social.shadowColor} text-primary`}
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  {social.Icon ? (
-                    <social.Icon size={24} className="transition-all duration-500 group-hover:scale-110" />
-                  ) : (
-                    'imgSrc' in social && <Image src={social.imgSrc} alt="Discord Icon" width={24} height={24} priority unoptimized className="transition-all duration-500 group-hover:scale-110 grayscale brightness-0 invert" />
+
+          <p className="mt-4 text-[13px] text-[#6f7888]">Lahore, Pakistan · Remote worldwide · UTC+5</p>
+        </Reveal>
+
+        <Reveal variant="none" delay={60} className="mt-10 md:mt-14">
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 border-t border-white/[0.06]">
+            {channels.map((c) => (
+              <li
+                key={c.label}
+                className="group flex items-center gap-3 min-h-[56px] py-2 border-b border-white/[0.06] text-[14px]"
+              >
+                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-[rgba(0,102,255,0.12)] border border-[rgba(0,102,255,0.22)] text-[#5c9dff] transition-colors duration-150 md:group-hover:bg-[rgba(0,102,255,0.2)]">
+                  <c.Icon size={16} strokeWidth={1.75} aria-hidden="true" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[12px] text-[#6f7888]">{c.label}</span>
+                  <span className="block truncate text-[#a4adbe] transition-colors duration-150 md:group-hover:text-[#f2f4f8]">{c.handle}</span>
+                </span>
+                {c.label === 'Email' && (
+                  <button
+                    type="button"
+                    onClick={copyEmail}
+                    aria-live="polite"
+                    aria-label={copied ? 'Email copied' : 'Copy email address'}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 min-h-[44px] px-2 text-[13px] font-medium text-[#a4adbe] hover:text-[#f2f4f8] transition-colors duration-150',
+                      FOCUS
+                    )}
+                  >
+                    {copied ? (
+                      <Check size={14} className="text-[#3ddc84]" aria-hidden="true" />
+                    ) : (
+                      <Copy size={14} aria-hidden="true" />
+                    )}
+                    {copied ? 'Copied' : 'Copy'}
+                  </button>
+                )}
+                <a
+                  href={c.href}
+                  target={isExternal(c.href) ? '_blank' : undefined}
+                  rel={isExternal(c.href) ? 'noopener noreferrer' : undefined}
+                  aria-label={`${c.label}: ${c.handle}`}
+                  className={cn(
+                    'group/open inline-flex items-center gap-1 min-h-[44px] px-2 -mr-2 text-[13px] font-medium text-[#5c9dff] hover:text-[#f2f4f8] transition-colors duration-150',
+                    FOCUS
                   )}
-                  
-                  <div className={`absolute -top-1 -right-1 w-3 h-3 ${social.dotColor} rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 animate-pulse`}></div>
-                  
-                  <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${social.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
-                  
-                  <div className="absolute inset-0 rounded-2xl border-2 border-vivid-blue/30 scale-0 group-hover:scale-110 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                >
+                  Open
+                  <ArrowUpRight
+                    size={14}
+                    aria-hidden="true"
+                    className="transition-transform duration-200 ease-out-quart md:group-hover/open:translate-x-0.5 md:group-hover/open:-translate-y-0.5"
+                  />
                 </a>
-              ))}
-            </div>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <footer className="mt-16 md:mt-24 pb-24 md:pb-8 text-[13px] text-[#6f7888]">
+          <div
+            aria-hidden="true"
+            className="relative h-px bg-gradient-to-r from-transparent via-[rgba(92,157,255,0.45)] to-transparent"
+          >
+            <span className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#5c9dff] shadow-[0_0_0_4px_rgba(0,102,255,0.18)]" />
           </div>
-        </div>
+
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 pt-10 md:pt-12 lg:grid-cols-12">
+            <div className="col-span-2 min-w-0 lg:col-span-6">
+              <p className="text-[18px] md:text-[20px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8]">
+                Crafted with{' '}
+                <span aria-hidden="true" className="text-[#fb7185]">♥</span>
+                <span className="sr-only">love</span>
+                {' '}by{' '}
+                <a
+                  href="#home"
+                  onClick={(e) => scrollToAnchor(e, '#home')}
+                  className={cn(
+                    'inline-block -my-3 -mx-0.5 px-0.5 py-3 rounded-[4px] text-[#5c9dff] transition-colors duration-150 md:hover:text-[#f2f4f8]',
+                    FOCUS
+                  )}
+                >
+                  Adil Munawar
+                </a>
+              </p>
+              <p className="mt-1.5 max-w-[440px] text-[14px] leading-[1.5] text-[#a4adbe]">
+                Machine-learning engineer for agricultural remote sensing · full-stack developer
+              </p>
+
+              <ul className="mt-6 flex flex-wrap gap-3" aria-label="Social profiles">
+                {socialTiles.map((s) => (
+                  <li key={s.label}>
+                    <a
+                      href={s.href}
+                      target={isExternal(s.href) ? '_blank' : undefined}
+                      rel={isExternal(s.href) ? 'noopener noreferrer' : undefined}
+                      aria-label={s.label}
+                      className={cn(SOCIAL_TILE, FOCUS)}
+                    >
+                      <s.Icon size={20} strokeWidth={1.75} aria-hidden="true" />
+                      <span
+                        aria-hidden="true"
+                        className="absolute -right-1 -top-1 h-2 w-2 rounded-full bg-[#0066ff] opacity-0 transition-opacity duration-150 md:group-hover/tile:opacity-100"
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              <p className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span className="inline-flex items-center gap-2 text-[#a4adbe]">
+                  <span aria-hidden="true" className="inline-block h-2 w-2 rounded-full bg-[#3ddc84]" />
+                  Available for new engagements
+                </span>
+                <span aria-hidden="true">·</span>
+                <span>Lahore, Pakistan · Remote worldwide · UTC+5</span>
+              </p>
+            </div>
+
+            <nav aria-label="Site sections" className="min-w-0 lg:col-span-3">
+              <p className="text-[13px] font-medium text-[#f2f4f8]">Site</p>
+              <ul className="mt-1 flex flex-col">
+                {quickLinks.map((l) => (
+                  <li key={l.href}>
+                    <a href={l.href} onClick={(e) => scrollToAnchor(e, l.href)} className={cn(FOOTER_LINK, FOCUS)}>
+                      {l.label}
+                      <ArrowRight size={12} aria-hidden="true" className={LINK_ARROW} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <nav aria-label="Connect" className="min-w-0 lg:col-span-3">
+              <p className="text-[13px] font-medium text-[#f2f4f8]">Connect</p>
+              <ul className="mt-1 flex flex-col">
+                {connectLinks.map((l) => (
+                  <li key={l.label}>
+                    <a
+                      href={l.href}
+                      target={isExternal(l.href) ? '_blank' : undefined}
+                      rel={isExternal(l.href) ? 'noopener noreferrer' : undefined}
+                      className={cn(FOOTER_LINK, FOCUS)}
+                    >
+                      <l.Icon
+                        size={16}
+                        strokeWidth={1.75}
+                        aria-hidden="true"
+                        className="text-[#6f7888] transition-colors duration-150 md:group-hover/link:text-[#5c9dff]"
+                      />
+                      {l.label}
+                      {isExternal(l.href) ? (
+                        <ArrowUpRight
+                          size={12}
+                          aria-hidden="true"
+                          className={cn(LINK_ARROW, 'md:group-hover/link:-translate-y-0.5')}
+                        />
+                      ) : (
+                        <ArrowRight size={12} aria-hidden="true" className={LINK_ARROW} />
+                      )}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+
+          <div className="mt-10 md:mt-12 pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <p className="text-[#a4adbe]">© 2026 Adil Munawar</p>
+            <p>Built with Next.js · Lahore, Pakistan</p>
+          </div>
+        </footer>
       </div>
     </section>
   );

@@ -1,149 +1,198 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { LogoLoop } from './LogoLoop';
+
+import { BrainCircuit, Cloud, Database, Monitor, Wrench, type LucideIcon } from 'lucide-react';
+import { Reveal } from './Reveal';
 import Achievements from './Achievements';
+import { LogoLoop, type LogoItem } from './LogoLoop';
+
+const DEVICON = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons';
+const INVERT = new Set(['nextjs', 'github', 'express', 'vercel']);
+
+type Logo = LogoItem & { src: string; alt: string; invert?: boolean };
+const logo = (name: string, alt: string): Logo => ({
+  src: `${DEVICON}/${name}/${name}-original.svg`,
+  alt,
+  invert: INVERT.has(name),
+});
+
+const rows: { title: string; icon: LucideIcon; direction: 'left' | 'right'; logos: Logo[] }[] = [
+  {
+    title: 'Frontend',
+    icon: Monitor,
+    direction: 'left',
+    logos: [
+      logo('react', 'React'),
+      logo('nextjs', 'Next.js'),
+      logo('typescript', 'TypeScript'),
+      logo('javascript', 'JavaScript'),
+      logo('html5', 'HTML5'),
+      logo('css3', 'CSS3'),
+      logo('tailwindcss', 'Tailwind'),
+      logo('vuejs', 'Vue.js'),
+    ],
+  },
+  {
+    title: 'Backend & data',
+    icon: Database,
+    direction: 'right',
+    logos: [
+      logo('nodejs', 'Node.js'),
+      logo('python', 'Python'),
+      logo('express', 'Express'),
+      logo('azuresqldatabase', 'SQL'),
+      logo('postgresql', 'PostgreSQL'),
+      logo('firebase', 'Firebase'),
+      logo('supabase', 'Supabase'),
+      logo('redis', 'Redis'),
+    ],
+  },
+  {
+    title: 'Machine learning',
+    icon: BrainCircuit,
+    direction: 'left',
+    logos: [
+      logo('python', 'Python'),
+      logo('pytorch', 'PyTorch'),
+      logo('tensorflow', 'TensorFlow'),
+      logo('scikitlearn', 'scikit-learn'),
+      logo('pandas', 'pandas'),
+      logo('numpy', 'NumPy'),
+      logo('opencv', 'OpenCV'),
+      logo('jupyter', 'Jupyter'),
+      logo('docker', 'Docker'),
+    ],
+  },
+  {
+    title: 'Tools & cloud',
+    icon: Wrench,
+    direction: 'right',
+    logos: [
+      logo('git', 'Git'),
+      logo('github', 'GitHub'),
+      logo('vscode', 'VS Code'),
+      logo('docker', 'Docker'),
+      logo('figma', 'Figma'),
+      logo('webpack', 'Webpack'),
+      logo('azure', 'Azure'),
+      logo('vercel', 'Vercel'),
+    ],
+  },
+];
+
+const renderLogo = (item: LogoItem) => {
+  if (!('src' in item)) return null;
+  const { src, alt, invert } = item as Logo;
+  return (
+    <figure className="logo-chip">
+      <img src={src} alt="" width={56} height={56} loading="lazy" decoding="async" draggable={false} className={invert ? 'logo-invert' : undefined} />
+      <figcaption>{alt}</figcaption>
+    </figure>
+  );
+};
+
+const toolkit: { group: string; icon: LucideIcon; items: string[] }[] = [
+  {
+    group: 'Machine learning & remote sensing',
+    icon: BrainCircuit,
+    items: ['PyTorch', 'HRNet / U-Net', 'Temporal CNN & LSTM', 'scikit-learn', 'Google Earth Engine', 'xarray'],
+  },
+  {
+    group: 'Backend & data',
+    icon: Database,
+    items: ['Python', 'Node.js', 'PostgreSQL / PostGIS', 'Supabase', 'GDAL / Rasterio', 'GeoPandas / Shapely'],
+  },
+  {
+    group: 'Frontend',
+    icon: Monitor,
+    items: ['TypeScript', 'React', 'Next.js', 'Tailwind CSS', 'HTML & CSS'],
+  },
+  {
+    group: 'Cloud & tooling',
+    icon: Cloud,
+    items: ['Docker', 'Azure', 'Vercel', 'GitHub Actions', 'RAG pipelines', 'MCP servers'],
+  },
+];
 
 const SkillsSection = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const skillsSection = document.getElementById('skills');
-    if(!skillsSection) return;
-    
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(skillsSection);
-
-    return () => observer.disconnect();
-  }, []);
-
-  const frontendSkills = [
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg", alt: "React" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg", alt: "Next.js" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg", alt: "TypeScript" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg", alt: "JavaScript" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg", alt: "HTML5" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg", alt: "CSS3" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg", alt: "Tailwind" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg", alt: "Vue.js" }
-  ];
-
-  const backendSkills = [
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg", alt: "Node.js" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg", alt: "Python" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg", alt: "Express" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuresqldatabase/azuresqldatabase-original.svg", alt: "SQL" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg", alt: "PostgreSQL" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg", alt: "Firebase" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg", alt: "Supabase" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg", alt: "Redis" }
-  ];
-
-  const toolsSkills = [
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg", alt: "Git" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg", alt: "GitHub" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg", alt: "VS Code" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg", alt: "Docker" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg", alt: "Figma" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/webpack/webpack-original.svg", alt: "Webpack" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg", alt: "Azure" },
-    { src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg", alt: "Vercel" }
-  ];
-
   return (
-    <section id="skills" className="py-20 px-4 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto relative z-10 text-center">
-        <h4 className={`text-xl md:text-2xl font-semibold text-slate-200 tracking-wider uppercase mb-8 transition-all duration-1000 ${
-          isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-8'
-        }`}>
-          Certifications
-        </h4>
-      </div>
+    <section id="skills" className="px-5 py-16 sm:px-8 lg:py-28">
+      <div className="mx-auto max-w-[1120px]">
+        <Reveal className="mb-8 lg:mb-12">
+          <h2 className="text-[28px] font-semibold leading-[1.15] tracking-[-0.02em] text-[#f2f4f8] lg:text-[40px]">
+            Certifications
+          </h2>
+          <p className="mt-3 max-w-[680px] text-[17px] leading-normal text-[#a4adbe] lg:text-[20px]">
+            Courses and assessments from Google Cloud, AWS, Microsoft, Anthropic and LinkedIn.
+          </p>
+        </Reveal>
 
-      <Achievements />
+        <Reveal delay={60}>
+          <Achievements />
+        </Reveal>
 
-      <div className="max-w-7xl mx-auto relative z-10 mt-16">
+        <div className="mt-16 lg:mt-24">
+          <Reveal className="mb-8 lg:mb-12">
+            <h2 className="text-[28px] font-semibold leading-[1.15] tracking-[-0.02em] text-[#f2f4f8] lg:text-[40px]">
+              Toolkit
+            </h2>
+            <p className="mt-3 max-w-[680px] text-[17px] leading-normal text-[#a4adbe] lg:text-[20px]">
+              What I reach for day to day, grouped by the kind of work.
+            </p>
+          </Reveal>
 
-        <div className={`transition-all duration-1000 delay-200 mb-12 ${
-            isVisible ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <p className="text-2xl font-bold text-center text-frost-white mb-8">Frontend Frameworks</p>
-          <LogoLoop 
-            logos={frontendSkills} 
-            speed={40} 
-            fadeOut={true} 
-            logoHeight={80}
-            gap={64}
-            scaleOnHover={true}
-            fadeOutColor='var(--background)'
-            renderItem={(item) => (
-              'src' in item ? (
-                <div className="flex flex-col items-center justify-center text-center gap-2">
-                  <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
-                  <span className="text-xs text-frost-blue/80">{item.alt}</span>
-                </div>
-              ) : null
-            )}
-          />
-        </div>
+          <div className="space-y-8 lg:space-y-10">
+            {rows.map((row, i) => {
+              const Icon = row.icon;
+              return (
+                <Reveal key={row.title} delay={Math.min(i, 2) * 60} className="min-w-0">
+                  <div className="mb-4 flex items-center gap-3">
+                    <span className="stat-tile__icon" aria-hidden>
+                      <Icon size={15} strokeWidth={1.75} />
+                    </span>
+                    <p className="text-[13px] font-medium text-[#f2f4f8]">{row.title}</p>
+                    <span className="font-mono text-[12px] tabular-nums text-[#6f7888]">{row.logos.length} tools</span>
+                  </div>
+                  <LogoLoop
+                    logos={row.logos}
+                    speed={36}
+                    direction={row.direction}
+                    logoHeight={56}
+                    gap={44}
+                    fadeOut
+                    fadeOutColor="#0b0f17"
+                    scaleOnHover
+                    pauseOnHover
+                    ariaLabel={`${row.title} tools`}
+                    renderItem={renderLogo}
+                    className="py-1"
+                  />
+                </Reveal>
+              );
+            })}
+          </div>
 
-        <div className={`transition-all duration-1000 delay-300 mb-12 ${
-            isVisible ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <p className="text-2xl font-bold text-center text-frost-white mb-8">Backend & Databases</p>
-          <LogoLoop 
-            logos={backendSkills} 
-            speed={40}
-            direction="right"
-            fadeOut={true} 
-            logoHeight={80}
-            gap={64}
-            scaleOnHover={true}
-            fadeOutColor='var(--background)'
-            renderItem={(item) => (
-               'src' in item ? (
-                <div className="flex flex-col items-center justify-center text-center gap-2">
-                  <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
-                  <span className="text-xs text-frost-blue/80">{item.alt}</span>
-                </div>
-              ) : null
-            )}
-          />
-        </div>
-
-        <div className={`transition-all duration-1000 delay-400 ${
-            isVisible ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <p className="text-2xl font-bold text-center text-frost-white mb-8">Tools & Technologies</p>
-          <LogoLoop 
-            logos={toolsSkills} 
-            speed={40} 
-            direction="left"
-            fadeOut={true} 
-            logoHeight={80}
-            gap={64}
-            scaleOnHover={true}
-            fadeOutColor='var(--background)'
-            renderItem={(item) => (
-               'src' in item ? (
-                <div className="flex flex-col items-center justify-center text-center gap-2">
-                  <img src={item.src} alt={item.alt || ''} style={{height: '60px', width: '60px'}} />
-                  <span className="text-xs text-frost-blue/80">{item.alt}</span>
-                </div>
-              ) : null
-            )}
-          />
+          <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-white/[0.06] pt-10 lg:mt-16 lg:grid-cols-4 lg:gap-8 lg:pt-12">
+            {toolkit.map((column, i) => {
+              const Icon = column.icon;
+              return (
+                <Reveal key={column.group} delay={Math.min(i, 2) * 60} className="min-w-0">
+                  <div className="flex items-center gap-2.5">
+                    <span className="stat-tile__icon shrink-0" aria-hidden>
+                      <Icon size={15} strokeWidth={1.75} />
+                    </span>
+                    <p className="text-[13px] font-medium text-[#a4adbe]">{column.group}</p>
+                  </div>
+                  <ul className="mt-3 space-y-1.5">
+                    {column.items.map((item) => (
+                      <li key={item} className="text-[15px] leading-relaxed text-[#a4adbe]">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </Reveal>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

@@ -1,179 +1,178 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, TrendingUp } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useEffect, useState, type CSSProperties } from 'react';
+import { CircleCheck, Flame, Target, Trophy } from 'lucide-react';
 import leetCodeStats from '@/lib/leetcode-stats.json';
+import { CountUp, useInViewOnce } from './GitHubStats';
 
-const THEME = {
+const COLORS = {
   easy: '#34d399',
-  medium: '#f59e0b',
-  hard: '#f43f5e',
-  background: 'hsl(var(--muted))',
-  foreground: 'hsl(var(--foreground))',
+  medium: '#fbbf24',
+  hard: '#fb7185',
+  track: 'rgba(255,255,255,0.06)',
 };
 
-interface GaugeCircleProps {
-    easy: number;
-    medium: number;
-    hard: number;
-    totalSolved: number;
-    totalQuestions: number;
-    size?: number;
-    stroke?: number;
+const ARC = 75; // % of the circle used by the 270° gauge
+
+interface GaugeProps {
+  easy: number;
+  medium: number;
+  hard: number;
+  total: number;
+  size?: number;
+  stroke?: number;
 }
 
-const GaugeCircle: React.FC<GaugeCircleProps> = ({ easy, medium, hard, totalSolved, totalQuestions, size = 150, stroke = 10 }) => {
-    const easyRatioOfAll = totalQuestions > 0 ? easy / totalQuestions : 0;
-    const mediumRatioOfAll = totalQuestions > 0 ? medium / totalQuestions : 0;
-    const hardRatioOfAll = totalQuestions > 0 ? hard / totalQuestions : 0;
+/* Each arc is a full circle with pathLength=100, rotated to its start and
+   revealed by animating stroke-dashoffset from its own length down to 0. */
+const Gauge = ({ easy, medium, hard, total, size = 124, stroke = 9 }: GaugeProps) => {
+  const c = size / 2;
+  const r = (size - stroke) / 2;
+  const share = (n: number) => (total > 0 ? (n / total) * ARC : 0);
+  const segments = [
+    { len: share(easy), color: COLORS.easy, delay: 0 },
+    { len: share(medium), color: COLORS.medium, delay: 120 },
+    { len: share(hard), color: COLORS.hard, delay: 240 },
+  ];
+  let start = 0;
 
-    const radius = (size - stroke) / 2;
-    const circumference = radius * 2 * Math.PI;
-    const fullArc = circumference * (270 / 360);
-
-    const easyDash = fullArc * easyRatioOfAll;
-    const mediumDash = fullArc * mediumRatioOfAll;
-    const hardDash = fullArc * hardRatioOfAll;
-
-    const mediumOffset = -easyDash;
-    const hardOffset = -(easyDash + mediumDash);
-
-    return (
-        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-[225deg]">
-            <circle
-                cx={size / 2} cy={size / 2} r={radius}
-                fill="none"
-                stroke={THEME.background}
-                strokeOpacity="0.2"
-                strokeWidth={stroke}
-                strokeDasharray={`${fullArc} ${circumference - fullArc}`}
-            />
-            
-            <motion.circle
-                cx={size / 2} cy={size / 2} r={radius}
-                fill="none" stroke={THEME.hard} strokeWidth={stroke} strokeLinecap="round"
-                strokeDasharray={`${hardDash} ${circumference}`}
-                strokeDashoffset={hardOffset}
-                initial={{ strokeDasharray: `0 ${circumference}` }}
-                animate={{ strokeDasharray: `${hardDash} ${circumference}` }}
-                transition={{ duration: 1, ease: 'easeOut', delay: 0.6 }}
-            />
-            <motion.circle
-                cx={size / 2} cy={size / 2} r={radius}
-                fill="none" stroke={THEME.medium} strokeWidth={stroke} strokeLinecap="round"
-                strokeDasharray={`${mediumDash} ${circumference}`}
-                strokeDashoffset={mediumOffset}
-                 initial={{ strokeDasharray: `0 ${circumference}` }}
-                animate={{ strokeDasharray: `${mediumDash} ${circumference}` }}
-                transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
-            />
-            <motion.circle
-                cx={size / 2} cy={size / 2} r={radius}
-                fill="none" stroke={THEME.easy} strokeWidth={stroke} strokeLinecap="round"
-                strokeDasharray={`${easyDash} ${circumference}`}
-                strokeDashoffset={0}
-                 initial={{ strokeDasharray: `0 ${circumference}` }}
-                animate={{ strokeDasharray: `${easyDash} ${circumference}` }}
-                transition={{ duration: 1, ease: 'easeOut' }}
-            />
-        </svg>
-    );
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden>
+      <circle
+        cx={c}
+        cy={c}
+        r={r}
+        fill="none"
+        stroke={COLORS.track}
+        strokeWidth={stroke}
+        strokeLinecap="round"
+        pathLength={100}
+        strokeDasharray={`${ARC} ${100 - ARC}`}
+        transform={`rotate(135 ${c} ${c})`}
+      />
+      {segments.map((seg) => {
+        const rotate = 135 + start * 3.6;
+        start += seg.len;
+        if (seg.len <= 0) return null;
+        return (
+          <circle
+            key={seg.color}
+            className="arc-draw"
+            cx={c}
+            cy={c}
+            r={r}
+            fill="none"
+            stroke={seg.color}
+            strokeWidth={stroke}
+            strokeLinecap="round"
+            pathLength={100}
+            strokeDasharray={`${seg.len} 100`}
+            transform={`rotate(${rotate} ${c} ${c})`}
+            style={{ '--len': seg.len, '--d': `${seg.delay}ms` } as CSSProperties}
+          />
+        );
+      })}
+    </svg>
+  );
 };
 
 const LeetCodeStats = () => {
-    const { totalSolved, easy, medium, hard, acceptanceRate, totalQuestions, ranking } = leetCodeStats;
-    const [isHoveringStats, setIsHoveringStats] = useState(false);
+  const { totalSolved, easy, medium, hard, acceptanceRate, totalQuestions, ranking } = leetCodeStats;
+  const [rootRef, inView] = useInViewOnce<HTMLDivElement>(0.25);
+  const [armed, setArmed] = useState(false);
+  useEffect(() => setArmed(true), []);
 
-    const stats = useMemo(() => [
-        { label: 'Easy', solved: easy.solved, total: easy.total, color: 'text-emerald-400' },
-        { label: 'Medium', solved: medium.solved, total: medium.total, color: 'text-amber-400' },
-        { label: 'Hard', solved: hard.solved, total: hard.total, color: 'text-rose-500' },
-    ], [easy, medium, hard]);
+  const rows = [
+    { label: 'Easy', solved: easy.solved, total: easy.total, color: COLORS.easy },
+    { label: 'Medium', solved: medium.solved, total: medium.total, color: COLORS.medium },
+    { label: 'Hard', solved: hard.solved, total: hard.total, color: COLORS.hard },
+  ];
 
-    const solvedPortions = useMemo(() => ({
-        easy: easy.solved,
-        medium: medium.solved,
-        hard: hard.solved,
-        totalSolved: totalSolved,
-        totalQuestions: totalQuestions,
-    }), [easy.solved, medium.solved, hard.solved, totalSolved, totalQuestions]);
+  const tiles = [
+    { icon: CircleCheck, label: 'Solved', node: <CountUp value={totalSolved} active={inView} /> },
+    {
+      icon: Target,
+      label: 'Acceptance',
+      node: (
+        <>
+          <CountUp value={Math.round(acceptanceRate * 10)} active={inView} format={(n) => (n / 10).toFixed(1)} />
+          <span className="text-[12px] text-[#6f7888]">%</span>
+        </>
+      ),
+    },
+    { icon: Flame, label: 'Hard solved', node: <CountUp value={hard.solved} active={inView} /> },
+  ];
 
+  return (
+    <div
+      ref={rootRef}
+      className={`data-card data-card--tl h-full min-w-0 ${armed ? 'motion-armed' : ''} ${inView ? 'is-in' : ''}`}
+      aria-label="LeetCode statistics"
+    >
+      <div className="data-card__body flex h-full flex-col p-5 lg:p-6">
+        <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+          <div>
+            <p className="text-sm font-medium text-[#f2f4f8]">LeetCode</p>
+            <p className="mt-0.5 text-[13px] text-[#6f7888]">Global rank</p>
+          </div>
+          <p className="flex items-center gap-2 font-mono text-[28px] font-medium leading-none tabular-nums text-[#f2f4f8] lg:text-[32px]">
+            <Trophy size={20} strokeWidth={1.75} className="text-[#fbbf24]" aria-hidden />
+            <span>
+              <span className="text-[#6f7888]">#</span>
+              <CountUp value={ranking} active={inView} />
+            </span>
+          </p>
+        </div>
 
-    return (
-        <motion.div layout className="relative bg-transparent h-full flex flex-col justify-center items-center w-full lg:w-auto p-8">
-            <div className="text-center mb-6">
-                <p className="text-2xl font-bold text-white">
-                    LeetCode Stats
-                </p>
-                <div className="text-gray-300 text-lg font-bold mt-2">
-                    <span className="inline-block text-vivid-blue">
-                        {ranking.toLocaleString()}
-                    </span>
-                    <span className="ml-2 text-sm text-gray-400">global rank</span>
-                </div>
+        <div className="mt-5 flex items-center gap-5">
+          <div className="relative h-[124px] w-[124px] shrink-0">
+            <Gauge easy={easy.solved} medium={medium.solved} hard={hard.solved} total={totalQuestions} />
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <p className="font-mono text-xl font-medium leading-none tabular-nums text-[#f2f4f8]">
+                <CountUp value={totalSolved} active={inView} />
+              </p>
+              <p className="mt-1 text-[11px] text-[#6f7888]">of {totalQuestions.toLocaleString('en-US')}</p>
             </div>
-            
-            <div className="text-center mb-6">
-              <div className="text-sm text-gray-400 mb-3 opacity-0">
-                Spacing aligner
+          </div>
+
+          <dl className="min-w-0 flex-1 space-y-3">
+            {rows.map((row, i) => (
+              <div key={row.label}>
+                <div className="flex items-center justify-between gap-3 text-[13px]">
+                  <dt className="flex items-center gap-2 text-[#a4adbe]">
+                    <span className="h-2 w-2 rounded-[2px]" style={{ backgroundColor: row.color }} aria-hidden />
+                    {row.label}
+                  </dt>
+                  <dd className="font-mono tabular-nums text-[#f2f4f8]">
+                    {row.solved}
+                    <span className="text-[#6f7888]">/{row.total}</span>
+                  </dd>
+                </div>
+                <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-white/[0.06]" aria-hidden>
+                  <div
+                    className="grow-x h-full w-full rounded-full"
+                    style={{ '--p': row.total ? row.solved / row.total : 0, '--d': `${120 * i}ms`, backgroundColor: row.color } as CSSProperties}
+                  />
+                </div>
               </div>
-            </div>
+            ))}
+          </dl>
+        </div>
 
-            <motion.div
-                layoutId="stats-box"
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                className="flex flex-row items-center justify-center gap-8"
-                onMouseEnter={() => setIsHoveringStats(true)}
-                onMouseLeave={() => setIsHoveringStats(false)}
-            >
-                <div className="relative w-[150px] h-[150px] flex-shrink-0">
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={isHoveringStats ? 'acceptance' : 'solved'}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            transition={{ duration: 0.2 }}
-                            className="absolute inset-0 flex flex-col items-center justify-center text-center"
-                        >
-                            {isHoveringStats ? (
-                                <>
-                                    <TrendingUp className="w-7 h-7 text-vivid-blue mb-1" />
-                                    <p className="text-3xl font-bold text-white">{acceptanceRate.toFixed(1)}%</p>
-                                    <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">Acceptance</p>
-                                </>
-                            ) : (
-                                <>
-                                    <p className="text-3xl font-bold text-white leading-none mb-1">
-                                      {totalSolved}<span className="text-sm text-slate-400 ml-0.5">/{totalQuestions}</span>
-                                    </p>
-                                    <p className="text-[10px] text-emerald-400 flex items-center justify-center gap-1 uppercase tracking-wider">
-                                      <CheckCircle2 size={12}/> Solved
-                                    </p>
-                                </>
-                            )}
-                        </motion.div>
-                    </AnimatePresence>
-                    <GaugeCircle {...solvedPortions} size={150} stroke={8} />
-                </div>
-                
-                <div className="flex flex-col justify-center gap-4 flex-shrink-0">
-                    {stats.map(stat => (
-                        <div key={stat.label} className="flex flex-col">
-                            <p className={cn(`text-xs uppercase tracking-wider font-semibold mb-0.5`, stat.color)}>{stat.label}</p>
-                            <p className="text-lg font-bold text-white leading-none">
-                              {stat.solved}<span className="text-xs text-slate-500 font-normal ml-0.5">/{stat.total}</span>
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            </motion.div>
-        </motion.div>
-    );
+        <div className="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
+          {tiles.map(({ icon: Icon, label, node }) => (
+            <div key={label} className="stat-tile">
+              <span className="stat-tile__icon" aria-hidden>
+                <Icon size={15} strokeWidth={1.75} />
+              </span>
+              <p className="font-mono text-lg font-medium leading-none tabular-nums text-[#f2f4f8] sm:text-xl">{node}</p>
+              <p className="text-[12px] leading-tight text-[#6f7888]">{label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default LeetCodeStats;

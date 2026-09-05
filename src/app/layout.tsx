@@ -1,14 +1,13 @@
-
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from '@vercel/analytics/next';
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import ZenithAssistant from "@/components/Zenith/ZenithAssistant";
-import { GeistSans } from 'geist/font/sans';
-import { GeistMono } from 'geist/font/mono';
+import ChunkReload from "@/components/ChunkReload";
 import "@/app/globals.css";
+
+const sans = Inter({ subsets: ["latin"], axes: ["opsz"], variable: "--font-sans", display: "swap" });
+const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono", display: "swap" });
 
 //  Metadata Base (Critical for Social Sharing)
 export const metadata: Metadata = {
@@ -17,11 +16,11 @@ export const metadata: Metadata = {
     canonical: '/', // Fixes duplicate content warning
   },
   title: {
-    default: "Adil Munawar - Strategic Web Developer & AI Architect",
+    default: "Adil Munawar — ML engineer, agricultural remote sensing",
     template: "%s | Adil Munawar"
   },
-  description: "Portfolio of Adil Munawar, Project Lead at Nexsus Orbits. Specialized in Next.js, RAG AI Agents, and Enterprise Systems. Optimized for Human & AI Interaction.",
-  keywords: ["Adil Munawar", "AdilMunawarX", "AI Architect", "Web Developer Lahore", "Next.js Expert", "RAG Agent Developer"],
+  description: "Machine-learning engineer building crop and field-mapping models from satellite imagery, and full-stack developer. Lahore, remote worldwide.",
+  keywords: ["Adil Munawar", "AdilMunawarX", "machine learning engineer", "agricultural remote sensing", "Sentinel-2", "field boundary segmentation", "full-stack developer Lahore", "Next.js"],
   authors: [{ name: "Adil Munawar", url: "https://adilmunawar.vercel.app" }],
   creator: "Adil Munawar",
   publisher: "Adil Munawar",
@@ -30,8 +29,8 @@ export const metadata: Metadata = {
     type: "profile",
     locale: "en_US",
     url: "https://adilmunawar.vercel.app",
-    title: "Adil Munawar - Strategic Web Developer",
-    description: "Building the next generation of web applications with AI and Enterprise architecture.",
+    title: "Adil Munawar — ML engineer, agricultural remote sensing",
+    description: "Machine-learning engineer building crop and field-mapping models from satellite imagery, and full-stack developer. Lahore, remote worldwide.",
     siteName: "Adil Munawar Portfolio",
     images: [{ url: "/zenith.png", width: 1200, height: 630, alt: "Adil Munawar" }],
   },
@@ -52,8 +51,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Adil Munawar - Full-Stack Developer",
-    description: "Adil Munawar Portfolio - Passionate Full-Stack Developer",
+    title: "Adil Munawar — ML engineer, agricultural remote sensing",
+    description: "Machine-learning engineer building crop and field-mapping models from satellite imagery, and full-stack developer.",
     images: ["https://adilmunawar.vercel.app/og-image.png"],
   },
   other: {
@@ -67,190 +66,215 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
+
   //  The "Master Entity" Graph
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Adil Munawar",
-    "alternateName": ["AdilMunawarX", "Zenith Architect", "Adil Khokhar"],
-    "familyName": "Khokhar",
-    "gender": "Male",
-    "url": "https://adilmunawar.vercel.app",
-    "image": {
-      "@type": "ImageObject",
-      "url": "https://adilmunawar.vercel.app/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png",
-      "width": 800,
-      "height": 800
-    },
-    
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Lahore",
-      "addressRegion": "Punjab",
-      "addressCountry": "PK"
-    },
-    "homeLocation": {
-      "@type": "Place",
-      "name": "Walled City, Lahore"
-    },
-
-    // 🎓 Education
-    "alumniOf": {
-      "@type": "CollegeOrUniversity",
-      "name": "Govt. Islamia Graduate College Civil Lines",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Lahore"
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://adilmunawar.vercel.app/#website",
+        "url": "https://adilmunawar.vercel.app",
+        "name": "Adil Munawar Portfolio",
+        "inLanguage": "en",
+        "about": { "@id": "https://adilmunawar.vercel.app/#person" },
+        "publisher": { "@id": "https://adilmunawar.vercel.app/#person" }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://adilmunawar.vercel.app/#person",
+        "name": "Adil Munawar",
+        "alternateName": ["AdilMunawarX", "Adil Khokhar"],
+        "familyName": "Khokhar",
+        "gender": "Male",
+        "url": "https://adilmunawar.vercel.app",
+        "mainEntityOfPage": { "@id": "https://adilmunawar.vercel.app/#website" },
+        "image": {
+          "@type": "ImageObject",
+          "url": "https://adilmunawar.vercel.app/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png",
+          "width": 800,
+          "height": 800
+        },
+        "email": "mailto:adilmunawarx@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lahore",
+          "addressRegion": "Punjab",
+          "addressCountry": "PK"
+        },
+        "homeLocation": {
+          "@type": "Place",
+          "name": "Walled City, Lahore"
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Govt. Islamia Graduate College Civil Lines",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Lahore"
+          }
+        },
+        "jobTitle": [
+          "Machine Learning Engineer — agricultural remote sensing",
+          "Project Lead & Web Developer at Nexsus Orbits",
+          "Database Administrator at AOS"
+        ],
+        "worksFor": [
+          {
+            "@type": "Organization",
+            "name": "Nexsus Orbits",
+            "url": "https://nexsusorbits.com"
+          },
+          {
+            "@type": "Organization",
+            "name": "AOS"
+          }
+        ],
+        "award": [
+          "LeetCode Top 5% Global Solver",
+          "GitHub Achievement: Pull Shark (Gold)",
+          "GitHub Achievement: Pair Extraordinaire (Gold)",
+          "GitHub Achievement: Galaxy Brain (Silver)",
+          "Google Ads Apps Certification (2025)",
+          "AWS Building Language Models (2025)",
+          "Microsoft Azure Cloud Computing (2025)"
+        ],
+        "sameAs": [
+          "https://github.com/AdilMunawar",
+          "https://www.linkedin.com/in/adilmunawar/",
+          "https://x.com/adilmunawarx",
+          "https://dev.to/adilmunawar",
+          "https://leetcode.com/u/AdilMunawar/",
+          "https://www.instagram.com/adilmunawarx/",
+          "https://www.facebook.com/adil.adilmunewer",
+          "https://steamcommunity.com/id/AdilMunawar",
+          "https://discordapp.com/users/adilmunawar"
+        ],
+        "knowsAbout": [
+          {
+            "@type": "DefinedTerm",
+            "name": "Machine learning",
+            "sameAs": "https://www.wikidata.org/wiki/Q2539"
+          },
+          {
+            "@type": "DefinedTerm",
+            "name": "Remote sensing"
+          },
+          {
+            "@type": "DefinedTerm",
+            "name": "Sentinel-2",
+            "url": "https://sentinel.esa.int/web/sentinel/missions/sentinel-2"
+          },
+          {
+            "@type": "DefinedTerm",
+            "name": "PyTorch",
+            "url": "https://pytorch.org",
+            "sameAs": "https://www.wikidata.org/wiki/Q47509047"
+          },
+          {
+            "@type": "DefinedTerm",
+            "name": "XGBoost",
+            "url": "https://xgboost.ai"
+          },
+          {
+            "@type": "DefinedTerm",
+            "name": "Next.js",
+            "url": "https://nextjs.org",
+            "sameAs": "https://www.wikidata.org/wiki/Q110465063"
+          },
+          {
+            "@type": "DefinedTerm",
+            "name": "PostgreSQL",
+            "url": "https://www.postgresql.org",
+            "sameAs": "https://www.wikidata.org/wiki/Q192490"
+          },
+          {
+            "@type": "DefinedTerm",
+            "name": "Model Context Protocol",
+            "url": "https://modelcontextprotocol.io"
+          },
+          "Agricultural remote sensing",
+          "Crop-type classification from satellite time series",
+          "Field boundary delineation (HRNet-W48 semantic segmentation)",
+          "Cloud and shadow masking for Sentinel-2",
+          "NDVI / EVI phenology and change detection",
+          "Crop yield prediction with XGBoost and SHAP",
+          "Temporal CNN and LSTM sequence models",
+          "U-Net and ResNet for multispectral imagery",
+          "RAG (Retrieval-Augmented Generation) with pgvector and hybrid retrieval",
+          "MCP tool servers and agentic workflows",
+          "Google Earth Engine, GDAL, Rasterio, GeoPandas, PostGIS",
+          "TypeScript, React, Next.js, Tailwind CSS",
+          "Supabase, PostgreSQL, Transact-SQL, database administration",
+          "Python, FastAPI, Docker, MLOps, Azure, Vercel, GitHub Actions"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Machine learning, geospatial and full-stack services",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Machine learning & remote sensing",
+                "description": "Segmentation and time-series models on Sentinel-2 and high-resolution imagery for field boundaries, crop type and phenology, with training, evaluation and MLOps included. You get a trained model, an evaluation report and a deployable inference endpoint.",
+                "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "RAG & agentic systems",
+                "description": "Retrieval pipelines, MCP servers and multi-step agents that connect language models to your own documents and internal APIs. You get a working system with grounded answers, an evaluation set and cost controls.",
+                "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Full-stack products",
+                "description": "Web products in Next.js, TypeScript and PostgreSQL that put models and maps in front of people, from prototype to production. You get a deployed product with source, tests and hand-over notes.",
+                "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Data & cloud engineering",
+                "description": "Geospatial and tabular pipelines built with GDAL, PostGIS and Python, deployed on Azure or Vercel with Docker and CI. You get reproducible pipelines, infrastructure as code and monitoring.",
+                "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
+              }
+            }
+          ]
+        },
+        "subjectOf": [
+          { "@type": "CreativeWork", "name": "llms.txt", "url": "https://adilmunawar.vercel.app/llms.txt", "encodingFormat": "text/markdown" },
+          { "@type": "CreativeWork", "name": "llms-full.txt", "url": "https://adilmunawar.vercel.app/llms-full.txt", "encodingFormat": "text/markdown" },
+          { "@type": "Dataset", "name": "ai-profile.json", "url": "https://adilmunawar.vercel.app/ai-profile.json", "encodingFormat": "application/json" }
+        ],
+        "description": "Adil Munawar is a machine-learning engineer for agricultural remote sensing and a full-stack developer in Lahore, Pakistan, working remotely worldwide. He trains segmentation and time-series models on Sentinel-2 and high-resolution satellite imagery for field boundary delineation, crop-type classification and phenology, builds RAG pipelines and MCP-based agentic systems, and ships Next.js, TypeScript and PostgreSQL products. He is Project Lead & Web Developer at Nexsus Orbits and Database Administrator at AOS."
       }
-    },
-    "priceRange": "$$",
-    //  Professional Roles (Multi-Role Support)
-    "jobTitle": [
-      "Project Lead & Web Developer at Nexsus Orbits",
-      "Database Administrator at AOS"
-    ],
-    "worksFor": [
-      {
-        "@type": "Organization",
-        "name": "Nexsus Orbits",
-        "url": "https://nexsusorbits.com"
-      },
-      {
-        "@type": "Organization",
-        "name": "AOS",
-        "url": "https://adilmunawar.vercel.app/#aos"
-      }
-    ],
-
-    // 🏆 The "Bragging Rights" Section
-    "award": [
-      "LeetCode Top 5% Global Solver",
-      "GitHub Achievement: Pull Shark (Gold)",
-      "GitHub Achievement: Pair Extraordinaire (Gold)",
-      "GitHub Achievement: Galaxy Brain (Silver)",
-      "Google Ads Apps Certification (2025)",
-      "AWS Building Language Models (2025)",
-      "Microsoft Azure Cloud Computing (2025)"
-    ],
-
-    //  The Social Authority Web
-    "sameAs": [
-      "https://github.com/AdilMunawar",
-      "https://www.linkedin.com/in/adilmunawar/", 
-      "https://x.com/adilmunawarx",
-      "https://dev.to/adilmunawar", 
-      "https://leetcode.com/u/AdilMunawar/",
-      "https://www.instagram.com/adilmunawarx/",
-      "https://www.facebook.com/adil.adilmunewer",
-      "https://steamcommunity.com/id/AdilMunawar",
-      "https://discordapp.com/users/adilmunawar"
-    ],
-
-    //  The "Top Notch" Skills Matrix
-    "knowsAbout": [
-      {
-        "@type": "DefinedTerm",
-        "name": "Next.js",
-        "url": "https://nextjs.org",
-        "sameAs": "https://www.wikidata.org/wiki/Q110465063"
-      },
-      {
-        "@type": "DefinedTerm",
-        "name": "Artificial Intelligence",
-        "sameAs": "https://www.wikidata.org/wiki/Q11660"
-      },
-      {
-        "@type": "DefinedTerm",
-        "name": "Software Engineering",
-        "sameAs": "https://www.wikidata.org/wiki/Q80993"
-      },
-      "MERN Stack (MongoDB, Express, React, Node.js)", "Supabase & Firebase",
-      "Transact-SQL (TSQL)", "Database Administration", "RAG (Retrieval-Augmented Generation)",
-      "Ethical Hacking (EC-Council Standards)", "Building LLMs on AWS", "Docker Containerization",
-      "Kubernetes Orchestration", "GitHub Actions (CI/CD)", "Python Automation"
-    ],
-    
-    //  Services Offered
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Web Development & AI Services",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Full-Stack Development",
-            "description": "End-to-end web application development using modern technologies like React, Node.js, and cloud platforms.",
-            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Mobile App Development",
-            "description": "Cross-platform mobile applications with seamless user experiences. Specializing in React Native and hybrid app development.",
-            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Digital Solutions",
-            "description": "Custom digital solutions including corporate management systems, social platforms, and automation tools.",
-            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "System Integration",
-            "description": "Seamless integration of various systems and APIs to create unified digital ecosystems.",
-            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Performance Optimization",
-            "description": "Website and application performance optimization and SEO implementation to maximize your digital presence.",
-            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Rapid Prototyping",
-            "description": "Quick development of MVPs and prototypes to validate ideas and accelerate time-to-market.",
-            "areaServed": [{ "@type": "City", "name": "Lahore" }, { "@type": "Place", "name": "Worldwide (Remote)" }]
-          }
-        }
-      ]
-    },
-
-    "description": "Adil Munawar is a Project Lead at Nexsus Orbits and Database Admin at AOS. A specialist in RAG AI Agents and TSQL, he holds 'Gold Pull Shark' status on GitHub and ranks in the Top 5% on LeetCode."
+    ]
   };
 
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} dark scroll-smooth`}>
+    <html lang="en" suppressHydrationWarning className={`${sans.variable} ${mono.variable} dark scroll-smooth`}>
        <head>
+        {/* Marks JS-enabled documents so scroll-reveal styles never hide
+            content from crawlers or users whose scripts fail to load. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased bg-background text-foreground selection:bg-blue-500/30 selection:text-blue-200">
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          {children}
-          <ZenithAssistant />
-        </TooltipProvider>
+      <body className="antialiased bg-bg-0 text-foreground font-sans">
+        {children}
+        <ZenithAssistant />
+        <ChunkReload />
 
         <Script
           strategy="lazyOnload"
@@ -264,7 +288,7 @@ export default function RootLayout({
             gtag('config', 'G-8L6JGGFF0R');
           `}
         </Script>
-        <Analytics />
+        {process.env.VERCEL ? <Analytics /> : null}
       </body>
     </html>
   );

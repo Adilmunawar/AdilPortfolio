@@ -1,267 +1,192 @@
 'use client';
-import { useState, useRef, MouseEvent, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import { ArrowRight, Rss, Copy, Check } from 'lucide-react';
-import Image from 'next/image';
+import { useState, type KeyboardEvent, type ReactNode } from 'react';
+import dynamic from 'next/dynamic';
+import { Clock, Tag, ArrowRight, PenLine } from 'lucide-react';
 import blogData from '@/lib/blog-data.json';
-import ReactMarkdown from 'react-markdown';
-import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Reveal } from './Reveal';
+import { DialogErrorBoundary } from './DialogErrorBoundary';
+import { NoteCover } from './covers/NoteCover';
+import type { BlogPost } from './BlogPostDialog';
 
+const loadDialog = () => import('./BlogPostDialog');
+const BlogPostDialog = dynamic(loadDialog, { ssr: false });
 
-type BlogPost = (typeof blogData)[0];
+const WORDS_PER_MINUTE = 200;
 
-const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
-  const [isCopied, setIsCopied] = useState(false);
-  const match = /language-(\w+)/.exec(className || '');
-  const lang = match ? match[1] : 'bash';
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(String(children).replace(/\n$/, ''));
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
-  };
-
-  return !inline && match ? (
-    <div className="relative my-4 rounded-lg bg-cyber-dark border border-vivid-blue/20 overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-2 bg-cyber-gray/50 border-b border-vivid-blue/20">
-        <span className="text-xs text-frost-blue font-mono">{lang}</span>
-        <button
-          onClick={handleCopy}
-          className="flex items-center gap-1 text-xs text-frost-blue hover:text-white transition-colors"
-        >
-          {isCopied ? <Check size={14} /> : <Copy size={14} />}
-          {isCopied ? 'Copied!' : 'Copy'}
-        </button>
-      </div>
-      <SyntaxHighlighter
-        style={atomDark}
-        language={lang}
-        PreTag="div"
-        {...props}
-        wrapLines={true}
-        wrapLongLines={true}
-      >
-        {String(children).replace(/\n$/, '')}
-      </SyntaxHighlighter>
-    </div>
-  ) : (
-    <code className={cn("text-sm font-mono bg-vivid-blue/10 text-vivid-blue px-1 py-0.5 rounded break-words", className)} {...props}>
-      {children}
-    </code>
-  );
+const readingTime = (content: string) => {
+  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
 };
 
+const FOCUS =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgba(0,102,255,0.45)]';
+
+const GRADIENT_REST =
+  'bg-[linear-gradient(135deg,rgba(255,255,255,0.16),rgba(255,255,255,0.05)_45%,rgba(0,102,255,0.32))]';
+const GRADIENT_HOVER =
+  'bg-[linear-gradient(135deg,rgba(92,157,255,0.6),rgba(255,255,255,0.12)_45%,rgba(0,102,255,0.7))]';
+
+function Hairline({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <div className={cn('group relative rounded-[13px] p-px', className)}>
+      <span aria-hidden="true" className={cn('absolute inset-0 rounded-[13px]', GRADIENT_REST)} />
+      <span
+        aria-hidden="true"
+        className={cn('absolute inset-0 rounded-[13px] opacity-0 transition-opacity duration-200 md:group-hover:opacity-100', GRADIENT_HOVER)}
+      />
+      <div className="relative h-full rounded-[12px] bg-[#111622] transition-colors duration-150 md:group-hover:bg-[#141a28]">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+const Meta = ({ post, className = '' }: { post: BlogPost; className?: string }) => (
+  <p className={cn('flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-[#6f7888]', className)}>
+    <span className="inline-flex items-center gap-1.5">
+      <Clock size={12} strokeWidth={1.75} aria-hidden="true" />
+      {readingTime(post.content)} min read
+    </span>
+    <span className="inline-flex items-center gap-1.5 min-w-0">
+      <Tag size={12} strokeWidth={1.75} aria-hidden="true" />
+      <span className="truncate">{post.tags.slice(0, 3).join(', ')}</span>
+    </span>
+  </p>
+);
 
 const BlogSection = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Horizontal drag state
-  const hSliderRef = useRef<HTMLDivElement>(null);
-  const [isHDragging, setIsHDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-
-  // Vertical drag state for modal
-  const vSliderRef = useRef<HTMLDivElement>(null);
-  const [isVDragging, setIsVDragging] = useState(false);
-  const [startY, setStartY] = useState(0);
-  const [scrollTop, setScrollTop] = useState(0);
-  
-  useEffect(() => {
-    // Cleanup function to reset user-select on unmount
-    return () => {
-      document.body.style.userSelect = '';
-    };
-  }, []);
-
-  const handleReadMore = (post: BlogPost) => {
+  const openPost = (post: BlogPost) => {
     setSelectedPost(post);
     setIsModalOpen(true);
   };
 
-  // Horizontal Drag Handlers
-  const onHMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    if (!hSliderRef.current) return;
-    setIsHDragging(true);
-    setStartX(e.pageX - hSliderRef.current.offsetLeft);
-    setScrollLeft(hSliderRef.current.scrollLeft);
-    document.body.style.userSelect = 'none';
+  const onCardKeyDown = (e: KeyboardEvent<HTMLElement>, post: BlogPost) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openPost(post);
+    }
   };
 
-  const onHMouseLeaveOrUp = () => {
-    setIsHDragging(false);
-    document.body.style.userSelect = '';
-  };
-
-  const onHMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!isHDragging || !hSliderRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - hSliderRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // scroll-fast
-    hSliderRef.current.scrollLeft = scrollLeft - walk;
-  };
-  
-  // Vertical Drag Handlers for Modal
-  const onVMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    const slider = vSliderRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
-    if (!slider) return;
-    setIsVDragging(true);
-    setStartY(e.pageY - (slider as HTMLElement).offsetTop);
-    setScrollTop(slider.scrollTop);
-    document.body.style.userSelect = 'none';
-  };
-
-  const onVMouseLeaveOrUp = () => {
-    setIsVDragging(false);
-    document.body.style.userSelect = '';
-  };
-
-  const onVMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    const slider = vSliderRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
-    if (!isVDragging || !slider) return;
-    e.preventDefault();
-    const y = e.pageY - (slider as HTMLElement).offsetTop;
-    const walk = (y - startY) * 2; // scroll-fast
-    slider.scrollTop = scrollTop - walk;
-  };
-
+  const preload = () => { loadDialog(); };
+  const [featured, ...rest] = blogData;
 
   return (
     <>
-      <section id="blog" className="py-20 px-4 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <p className="text-xl text-frost-blue max-w-4xl mx-auto leading-relaxed">
-              Sharing insights on web development, cybersecurity, and the art of code.
+      <section id="blog" className="py-16 md:py-28 px-5 md:px-8">
+        <div className="max-w-[1120px] mx-auto">
+          <Reveal className="max-w-[680px]">
+            <h2 className="text-[28px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
+              Notes
+            </h2>
+            <p className="mt-3 md:mt-4 text-[17px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
+              Occasional write-ups on models, pipelines and security research.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="relative">
-            <div 
-              ref={hSliderRef}
-              onMouseDown={onHMouseDown}
-              onMouseLeave={onHMouseLeaveOrUp}
-              onMouseUp={onHMouseLeaveOrUp}
-              onMouseMove={onHMouseMove}
-              className={cn("flex space-x-8 pb-8 overflow-x-auto custom-scrollbar", isHDragging ? "cursor-grabbing" : "cursor-grab")}
-            >
-              {blogData.map((post, index) => (
-                <div key={post.id} className="flex-shrink-0 w-[320px] snap-center">
-                  <Card
-                    onClick={() => handleReadMore(post)}
-                    className="group relative h-full glass-card rounded-2xl overflow-hidden transition-all duration-500 hover:border-vivid-blue/80 hover:shadow-2xl hover:shadow-vivid-blue/20 hover:-translate-y-2 flex flex-col cursor-pointer"
-                    style={{ animationDelay: `${index * 100}ms` }}
+          <div className="mt-8 md:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
+            {featured && (
+              <Reveal className="lg:col-span-7">
+                <Hairline className="h-full">
+                  <article
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Read note: ${featured.title}`}
+                    onClick={() => openPost(featured)}
+                    onKeyDown={(e) => onCardKeyDown(e, featured)}
+                    onMouseEnter={preload}
+                    onTouchStart={preload}
+                    onFocus={preload}
+                    className={cn('h-full flex flex-col rounded-[12px] overflow-hidden cursor-pointer', FOCUS)}
                   >
-                    <div className="relative overflow-hidden h-48">
-                      <Image
-                        src={post.image}
-                        alt={post.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105 pointer-events-none"
-                        data-ai-hint="hacking cybersecurity abstract"
+                    <div className="relative aspect-video bg-[#0b0f17] border-b border-white/[0.06] overflow-hidden">
+                      <NoteCover cover={featured.cover} title={featured.title} className="absolute inset-0 w-full h-full pointer-events-none" />
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#111622]/80 to-transparent"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/40 to-transparent"></div>
+                      <span className="absolute left-4 bottom-4 inline-flex items-center gap-2 text-[12px] text-[#a4adbe]">
+                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-[6px] bg-[#111622]/90 border border-[rgba(0,102,255,0.22)] text-[#5c9dff]">
+                          <PenLine size={14} strokeWidth={1.75} aria-hidden="true" />
+                        </span>
+                        Latest note
+                      </span>
                     </div>
-                    <CardContent className="p-6 flex-grow flex flex-col">
-                      <div className="flex-grow">
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {post.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="px-3 py-1 text-xs rounded-full bg-vivid-blue/10 border border-vivid-blue/20 text-vivid-blue"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <h3 className="text-xl font-bold text-frost-white mb-2 group-hover:text-white transition-colors">
+                    <div className="p-5 md:p-6 flex flex-col flex-grow">
+                      <Meta post={featured} />
+                      <h3 className="mt-2 text-[18px] md:text-[20px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8]">
+                        {featured.title}
+                      </h3>
+                      <p className="mt-2 text-[15px] leading-[1.6] text-[#a4adbe] line-clamp-3">{featured.excerpt}</p>
+                      <span className="mt-auto pt-4 inline-flex items-center gap-1.5 min-h-[44px] text-[13px] font-medium text-[#5c9dff] transition-colors duration-150 md:group-hover:text-[#f2f4f8]">
+                        Read note
+                        <ArrowRight
+                          size={14}
+                          aria-hidden="true"
+                          className="transition-transform duration-200 ease-out-quart md:group-hover:translate-x-1"
+                        />
+                      </span>
+                    </div>
+                  </article>
+                </Hairline>
+              </Reveal>
+            )}
+
+            {rest.length > 0 && (
+              <div className="lg:col-span-5 flex flex-col border-t border-white/[0.06]">
+                {rest.map((post, index) => (
+                  <Reveal key={post.id} delay={(index + 1) * 60} className="border-b border-white/[0.06]">
+                    <article
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Read note: ${post.title}`}
+                      onClick={() => openPost(post)}
+                      onKeyDown={(e) => onCardKeyDown(e, post)}
+                      onMouseEnter={preload}
+                      onTouchStart={preload}
+                      onFocus={preload}
+                      className={cn(
+                        'group flex items-start gap-4 py-4 md:py-5 px-2 -mx-2 rounded-[8px] cursor-pointer transition-colors duration-150 md:hover:bg-[#171d2b]',
+                        FOCUS
+                      )}
+                    >
+                      <span className={cn('relative shrink-0 rounded-[9px] p-px', GRADIENT_REST)}>
+                        <span
+                          aria-hidden="true"
+                          className={cn('absolute inset-0 rounded-[9px] opacity-0 transition-opacity duration-200 md:group-hover:opacity-100', GRADIENT_HOVER)}
+                        />
+                        <span className="relative block w-24 h-[60px] rounded-[8px] overflow-hidden bg-[#0b0f17]">
+                          <NoteCover cover={post.cover} title={post.title} className="absolute inset-0 w-full h-full pointer-events-none" />
+                        </span>
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-[16px] md:text-[18px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8] line-clamp-2">
                           {post.title}
                         </h3>
-                        <p className="text-frost-blue/80 text-sm leading-relaxed">
-                          {post.excerpt}
-                        </p>
+                        <p className="mt-1 text-[14px] leading-[1.5] text-[#a4adbe] line-clamp-2">{post.excerpt}</p>
+                        <Meta post={post} className="mt-2" />
                       </div>
-                      <div
-                        className="mt-6 inline-flex items-center text-vivid-blue font-semibold group-hover:text-frost-white transition-colors"
-                      >
-                        Read More{' '}
-                        <ArrowRight
-                          size={16}
-                          className="ml-2 transition-transform duration-300 group-hover:translate-x-1"
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </div>
-            <div className="absolute top-0 bottom-0 left-0 w-16 bg-gradient-to-r from-background to-transparent pointer-events-none"></div>
-            <div className="absolute top-0 bottom-0 right-0 w-16 bg-gradient-to-l from-background to-transparent pointer-events-none"></div>
+                      <ArrowRight
+                        size={16}
+                        aria-hidden="true"
+                        className="hidden sm:block shrink-0 mt-1 text-[#6f7888] transition-[transform,color] duration-200 ease-out-quart md:group-hover:translate-x-1 md:group-hover:text-[#5c9dff]"
+                      />
+                    </article>
+                  </Reveal>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
 
       {selectedPost && (
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-          <DialogContent className="max-w-5xl w-[90vw] h-[90vh] bg-cyber-dark/90 backdrop-blur-lg border-vivid-blue/30 text-frost-white p-0 flex flex-col">
-             <ScrollArea 
-                ref={vSliderRef}
-                className={cn("h-full w-full rounded-lg custom-scrollbar", isVDragging ? "cursor-grabbing" : "cursor-grab")}
-                onMouseDown={onVMouseDown}
-                onMouseLeave={onVMouseLeaveOrUp}
-                onMouseUp={onVMouseLeaveOrUp}
-                onMouseMove={onVMouseMove}
-             >
-                <div className="p-0">
-                    <div className="relative w-full h-48 md:h-64">
-                        <Image
-                            src={selectedPost.image}
-                            alt={selectedPost.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 80vw"
-                            priority
-                            className="object-cover pointer-events-none"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-cyber-dark/40 to-transparent"></div>
-                    </div>
-                    <DialogHeader className="p-6 md:px-8 -mt-20 relative z-10 !space-y-0">
-                        <DialogTitle className="text-2xl md:text-3xl font-bold text-gradient-slow mb-2">{selectedPost.title}</DialogTitle>
-                        <DialogDescription className="text-frost-blue/80 flex flex-wrap gap-2 py-2">
-                            {selectedPost.tags.map((tag) => (
-                                <span
-                                key={tag}
-                                className="px-3 py-1 text-xs rounded-full bg-vivid-blue/10 border border-vivid-blue/20 text-vivid-blue"
-                                >
-                                {tag}
-                                </span>
-                            ))}
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="prose prose-sm md:prose-base prose-invert prose-p:text-frost-blue/90 prose-p:break-words prose-headings:text-frost-white prose-strong:text-frost-white prose-a:text-vivid-blue prose-table:border-vivid-blue/20 prose-th:text-frost-white prose-tr:border-vivid-blue/20 max-w-none px-6 md:px-8 pb-8">
-                        <ReactMarkdown
-                           components={{
-                             code: CodeBlock,
-                           }}
-                        >
-                          {selectedPost.content}
-                        </ReactMarkdown>
-                    </div>
-                </div>
-            </ScrollArea>
-          </DialogContent>
-        </Dialog>
+        <DialogErrorBoundary label="note" onClose={() => setIsModalOpen(false)}>
+          <BlogPostDialog post={selectedPost} open={isModalOpen} onOpenChange={setIsModalOpen} />
+        </DialogErrorBoundary>
       )}
     </>
   );

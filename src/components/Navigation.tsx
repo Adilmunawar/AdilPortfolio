@@ -1,124 +1,158 @@
 'use client';
-import { useState, useEffect, useRef, useMemo } from 'react';
-import { Menu, X } from 'lucide-react';
-import Link from 'next/link';
+import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
-const getSectionIdFromHref = (href: string) => href.substring(1);
+const navItems = [
+  { name: 'Work', href: '#projects' },
+  { name: 'Case studies', href: '#case-studies' },
+  { name: 'Services', href: '#services' },
+  { name: 'Notes', href: '#blog' },
+  { name: 'Contact', href: '#contact' },
+];
+
+const spyIds = ['home', ...navItems.map((item) => item.href.slice(1))];
+const EMAIL = 'mailto:adilmunawarx@gmail.com';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const isMounted = useRef(false);
-  
-  const navItems = useMemo(() => [
-    { name: 'Home', href: '#home' },
-    { name: 'Stats', href: '#stats' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Services', href: '#services' },
-    { name: 'Case Studies', href: '#case-studies' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Collab', href: '#testimonials' },
-    { name: 'Blog', href: '#blog' },
-    { name: 'Contact', href: '#contact' }
-  ], []);
 
   useEffect(() => {
-    isMounted.current = true;
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
+    let ticking = false;
+    let lastScrolled = false;
+    let lastActive = 'home';
 
-  useEffect(() => {
-    if (!isMounted.current) return;
+    const update = () => {
+      ticking = false;
+      const isScrolled = window.scrollY > 8;
+      if (isScrolled !== lastScrolled) {
+        lastScrolled = isScrolled;
+        setScrolled(isScrolled);
+      }
 
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-
-      const sections = navItems.map(item => document.querySelector(item.href) as HTMLElement);
       const scrollPosition = window.scrollY + window.innerHeight / 2;
-
-      for (const section of sections) {
+      for (const id of spyIds) {
+        const section = document.getElementById(id);
         if (section && scrollPosition >= section.offsetTop && scrollPosition < section.offsetTop + section.offsetHeight) {
-          const sectionId = section.getAttribute('id');
-          if (sectionId) {
-            setActiveSection(sectionId);
-            break;
+          if (id !== lastActive) {
+            lastActive = id;
+            setActiveSection(id);
           }
+          break;
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
-    
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [navItems]);
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    update();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [isOpen]);
+
+  const handleLinkClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
-    if(isOpen) setIsOpen(false);
-  };
+    document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+    history.replaceState(null, '', href);
+    setIsOpen(false);
+  }, []);
 
   return (
-    <nav className={cn(
-      "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-      scrolled ? "bg-cyber-dark/80 backdrop-blur-lg border-b border-vivid-blue/20" : "bg-transparent border-b border-transparent"
-    )}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-center h-16">
-          <div className="hidden md:flex items-center space-x-4">
-            {navItems.map((item) => (
+    <nav
+      className={cn(
+        'sticky top-0 z-50 h-14 transition-colors duration-200 ease-standard border-b',
+        scrolled || isOpen ? 'bg-bg-0/[0.92] border-subtle' : 'bg-transparent border-transparent'
+      )}
+      aria-label="Primary"
+    >
+      <div className="container-page flex h-full items-center justify-between gap-4">
+        <a
+          href="#home"
+          onClick={(e) => handleLinkClick(e, '#home')}
+          className="text-small font-medium text-primary rounded-sm"
+        >
+          Adil Munawar
+        </a>
+
+        <div className="hidden md:flex items-center gap-1">
+          {navItems.map((item) => {
+            const active = activeSection === item.href.slice(1);
+            return (
               <a
-                key={item.name}
+                key={item.href}
                 href={item.href}
                 onClick={(e) => handleLinkClick(e, item.href)}
+                aria-current={active ? 'location' : undefined}
                 className={cn(
-                  "text-frost-blue hover:text-frost-white px-3 py-2 text-sm font-medium transition-all duration-300 relative group whitespace-nowrap",
-                  activeSection === getSectionIdFromHref(item.href) && "text-frost-white"
+                  'flex h-14 items-center px-3 text-small font-medium transition-colors duration-150 ease-standard rounded-sm',
+                  active ? 'text-primary' : 'text-secondary hover:text-primary'
                 )}
               >
-                {item.name}
-                <span className={cn(
-                  "absolute bottom-0 left-0 w-0 h-0.5 bg-vivid-blue transition-all duration-300 group-hover:w-full",
-                  activeSection === getSectionIdFromHref(item.href) && "w-full"
-                )}></span>
-                
-                <div className="absolute inset-0 bg-vivid-blue/10 rounded opacity-0 group-hover:opacity-100 transition-all duration-300 -z-10"></div>
+                <span className="relative">
+                  {item.name}
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      'absolute -bottom-1 left-0 h-0.5 w-full origin-left bg-accent transition-transform duration-200 ease-out-quart',
+                      active ? 'scale-x-100' : 'scale-x-0'
+                    )}
+                  />
+                </span>
               </a>
-            ))}
-          </div>
-
-          <div className="md:hidden flex-1 flex justify-end">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-frost-blue hover:text-frost-white transition-colors duration-300"
-              aria-label="Toggle mobile menu"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+            );
+          })}
+          <a href={EMAIL} className="btn-secondary ml-3 h-8 px-3">
+            Email
+          </a>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setIsOpen((open) => !open)}
+          className="md:hidden -mr-3 flex h-11 items-center px-3 text-small font-medium text-primary rounded-sm"
+          aria-expanded={isOpen}
+          aria-controls="mobile-nav"
+        >
+          {isOpen ? 'Close' : 'Menu'}
+        </button>
       </div>
 
       {isOpen && (
-        <div className="md:hidden transform transition-transform duration-300 ease-in-out">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-cyber-dark/95 backdrop-blur-lg border-t border-vivid-blue/20">
-            {navItems.map((item, index) => (
+        <div id="mobile-nav" className="md:hidden absolute left-0 right-0 top-full bg-bg-1 border-b border-subtle">
+          {[...navItems, { name: 'Email', href: EMAIL }].map((item, index) => {
+            const external = item.href.startsWith('mailto:');
+            return (
               <a
-                key={item.name}
+                key={item.href}
                 href={item.href}
-                onClick={(e) => handleLinkClick(e, item.href)}
-                className="text-frost-blue hover:text-frost-white block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 hover:bg-vivid-blue/10 animate-fade-in-up"
-                style={{ animationDelay: `${index * 100}ms` }}
+                onClick={external ? () => setIsOpen(false) : (e) => handleLinkClick(e, item.href)}
+                className="nav-row-in flex h-12 items-center px-5 text-base text-secondary hover:bg-bg-2 hover:text-primary transition-colors duration-150 ease-standard"
+                style={{ animationDelay: `${index * 30}ms` }}
               >
                 {item.name}
               </a>
-            ))}
-          </div>
+            );
+          })}
         </div>
       )}
     </nav>

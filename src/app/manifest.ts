@@ -1,31 +1,18 @@
-
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Adil Munawar - AI Architect',
+    name: 'Adil Munawar — ML engineer, agricultural remote sensing',
     short_name: 'Adil Munawar',
-    description: 'Portfolio of Adil Munawar, Project Lead at Nexsus Orbits.',
+    description:
+      'Machine-learning engineer building crop and field-mapping models from satellite imagery, and full-stack developer. Lahore, remote worldwide.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#030014',
-    theme_color: '#030014',
+    background_color: '#0b0f17',
+    theme_color: '#0b0f17',
     icons: [
-      {
-        src: '/favicon.ico',
-        sizes: 'any',
-        type: 'image/x-icon',
-      },
-      {
-        src: '/zenith.png',
-        sizes: '192x192',
-        type: 'image/png',
-      },
-      {
-        src: '/zenith.png',
-        sizes: '512x512',
-        type: 'image/png',
-      },
+      { src: '/favicon.ico', sizes: 'any', type: 'image/x-icon' },
+      { src: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
-  }
+  };
 }

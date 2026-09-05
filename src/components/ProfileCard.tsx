@@ -20,8 +20,8 @@ interface ProfileCardProps {
   showUserInfo?: boolean;
   onContactClick?: () => void;
 }
-const DEFAULT_BEHIND_GRADIENT = "radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),rgba(153, 194, 255,var(--card-opacity)) 4%,rgba(0, 102, 255,calc(var(--card-opacity)*0.75)) 10%,rgba(0, 60, 153,calc(var(--card-opacity)*0.5)) 50%,hsla(240, 0%, 30%,0) 100%),radial-gradient(35% 52% at 55% 20%,#0066ffc4 0%,#0f172a00 100%),radial-gradient(100% 100% at 50% 50%,#0066ffff 1%,#0f172a00 76%),conic-gradient(from 124deg at 50% 50%,#0066ffff 0%,#0047b3ff 40%,#0047b3ff 60%,#0066ffff 100%)";
-const DEFAULT_INNER_GRADIENT = "linear-gradient(145deg,#0f172a8c 0%,#dbeafe44 100%)";
+const DEFAULT_BEHIND_GRADIENT = "radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),rgba(153, 194, 255,var(--card-opacity)) 4%,rgba(0, 102, 255,calc(var(--card-opacity)*0.75)) 10%,rgba(0, 60, 153,calc(var(--card-opacity)*0.5)) 50%,hsla(240, 0%, 30%,0) 100%),radial-gradient(35% 52% at 55% 20%,#0066ffc4 0%,#11162200 100%),radial-gradient(100% 100% at 50% 50%,#0066ffff 1%,#11162200 76%),conic-gradient(from 124deg at 50% 50%,#0066ffff 0%,#0047b3ff 40%,#0047b3ff 60%,#0066ffff 100%)";
+const DEFAULT_INNER_GRADIENT = "linear-gradient(145deg,#1116228c 0%,#a4adbe33 100%)";
 const ANIMATION_CONFIG = {
   SMOOTH_DURATION: 600,
   INITIAL_DURATION: 1500,
@@ -45,30 +45,29 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   name = "Adil Munawar",
   title = "Prompt Engineer",
   handle = "Adil Munawar",
-  status = "Online",
-  contactText = "Contact Me",
+  status,
   showUserInfo = true,
-  onContactClick
 }) => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const [tiltActive, setTiltActive] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    if (!enableTilt) return;
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setTiltActive(mq.matches && !reduced.matches);
+  }, [enableTilt]);
 
   const animationHandlers = useMemo(() => {
-    if (!enableTilt || !isMounted) return null;
+    if (!tiltActive) return null;
     let rafId: number | null = null;
     let writeRafId: number | null = null;
-    
-    // Pass width and height to avoid reading layout properties inside loops
+
     const updateCardTransform = (offsetX: number, offsetY: number, width: number, height: number, wrap: HTMLElement) => {
-      // Prevent NaN calculation if dimensions are 0 on initial mount
       const safeWidth = width || 320;
       const safeHeight = height || 450;
-      
+
       const percentX = clamp(100 / safeWidth * offsetX);
       const percentY = clamp(100 / safeHeight * offsetY);
       const centerX = percentX - 50;
@@ -85,7 +84,6 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         "--rotate-y": `${round(centerY / 4)}deg`
       };
 
-      // Batch style writes in the next animation frame to prevent synchronous reflows on pointermove
       if (writeRafId) cancelAnimationFrame(writeRafId);
       writeRafId = requestAnimationFrame(() => {
         Object.entries(properties).forEach(([property, value]) => {
@@ -96,21 +94,20 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
     const createSmoothAnimation = (duration: number, startX: number, startY: number, card: HTMLElement, wrap: HTMLElement) => {
       const startTime = performance.now();
-      // Cache dimensions OUTSIDE the loop. This completely eliminates Forced Reflows.
       const width = card.clientWidth || 320;
       const height = card.clientHeight || 450;
       const targetX = (wrap.clientWidth || 320) / 2;
       const targetY = (wrap.clientHeight || 450) / 2;
-      
+
       const animationLoop = (currentTime: number) => {
         const elapsed = currentTime - startTime;
         const progress = clamp(elapsed / duration);
         const easedProgress = easeInOutCubic(progress);
         const currentX = adjust(easedProgress, 0, 1, startX, targetX);
         const currentY = adjust(easedProgress, 0, 1, startY, targetY);
-        
+
         updateCardTransform(currentX, currentY, width, height, wrap);
-        
+
         if (progress < 1) {
           rafId = requestAnimationFrame(animationLoop);
         }
@@ -132,7 +129,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         }
       }
     };
-  }, [enableTilt, isMounted]);
+  }, [tiltActive]);
 
   const handlePointerMove = useCallback((event: PointerEvent) => {
     const card = cardRef.current;
@@ -146,6 +143,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     const wrap = wrapRef.current;
     if (!card || !wrap || !animationHandlers) return;
     animationHandlers.cancelAnimation();
+    card.style.willChange = "transform";
     wrap.classList.add("active");
     card.classList.add("active");
   }, [animationHandlers]);
@@ -154,11 +152,12 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     const wrap = wrapRef.current;
     if (!card || !wrap || !animationHandlers) return;
     animationHandlers.createSmoothAnimation(ANIMATION_CONFIG.SMOOTH_DURATION, event.offsetX, event.offsetY, card, wrap);
+    card.style.willChange = "";
     wrap.classList.remove("active");
     card.classList.remove("active");
   }, [animationHandlers]);
   useEffect(() => {
-    if (!enableTilt || !animationHandlers || !isMounted) return;
+    if (!animationHandlers) return;
     const card = cardRef.current;
     const wrap = wrapRef.current;
     if (!card || !wrap) return;
@@ -167,55 +166,48 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     const pointerEnterHandler = handlePointerEnter as EventListener;
     const pointerLeaveHandler = handlePointerLeave as EventListener;
     card.addEventListener("pointerenter", pointerEnterHandler);
-    card.addEventListener("pointermove", pointerMoveHandler);
+    card.addEventListener("pointermove", pointerMoveHandler, { passive: true });
     card.addEventListener("pointerleave", pointerLeaveHandler);
-    
-    // Only run initial animation on mount
-    if (isMounted) {
-      const safeWrapWidth = wrap.clientWidth || 320;
-      const initialX = safeWrapWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
-      const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
-      const width = card.clientWidth || 320;
-      const height = card.clientHeight || 450;
-      animationHandlers.updateCardTransform(initialX, initialY, width, height, wrap);
-      animationHandlers.createSmoothAnimation(ANIMATION_CONFIG.INITIAL_DURATION, initialX, initialY, card, wrap);
-    }
-    
+
+    const safeWrapWidth = wrap.clientWidth || 320;
+    const initialX = safeWrapWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
+    const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
+    const width = card.clientWidth || 320;
+    const height = card.clientHeight || 450;
+    animationHandlers.updateCardTransform(initialX, initialY, width, height, wrap);
+    animationHandlers.createSmoothAnimation(ANIMATION_CONFIG.INITIAL_DURATION, initialX, initialY, card, wrap);
+
     return () => {
       card.removeEventListener("pointerenter", pointerEnterHandler);
       card.removeEventListener("pointermove", pointerMoveHandler);
       card.removeEventListener("pointerleave", pointerLeaveHandler);
       animationHandlers.cancelAnimation();
     };
-  }, [enableTilt, animationHandlers, handlePointerMove, handlePointerEnter, handlePointerLeave, isMounted]);
+  }, [animationHandlers, handlePointerMove, handlePointerEnter, handlePointerLeave]);
   const cardStyle = useMemo(() => ({
     "--icon": iconUrl ? `url(${iconUrl})` : "none",
     "--grain": grainUrl ? `url(${grainUrl})` : "none",
     "--behind-gradient": showBehindGradient ? behindGradient ?? DEFAULT_BEHIND_GRADIENT : "none",
     "--inner-gradient": innerGradient ?? DEFAULT_INNER_GRADIENT
   }) as React.CSSProperties, [iconUrl, grainUrl, showBehindGradient, behindGradient, innerGradient]);
-  const handleContactClick = useCallback(() => {
-    window.open("https://wa.me/+923244965220", "_blank");
-    onContactClick?.();
-  }, [onContactClick]);
-  return <div ref={wrapRef} className={`pc-card-wrapper ${className}`.trim()} style={cardStyle}>
+  return <div ref={wrapRef} className={`pc-card-wrapper ${tiltActive ? 'pc-tilt' : ''} ${className}`.trim()} style={cardStyle}>
       <section ref={cardRef} className="pc-card">
         <div className="pc-inside">
           <div className="pc-shine" />
           <div className="pc-glare" />
           <div className="pc-content pc-avatar-content">
-            <Image width={400} height={500} className="avatar object-cover" src={avatarUrl} alt={`${name || "User"} avatar`} priority />
+            <Image width={400} height={500} sizes="(max-width: 480px) 250px, 320px" className="avatar object-cover" src={avatarUrl} alt={`${name || "User"} avatar`} priority />
             {showUserInfo && <div className="pc-user-info">
                 <div className="pc-user-details">
                   <div className="pc-mini-avatar">
-                    <Image width={60} height={60} className="object-cover" src={miniAvatarUrl || avatarUrl} alt={`${name || "User"} mini avatar`} />
+                    <Image width={60} height={60} className="object-cover" src={miniAvatarUrl || avatarUrl} alt="" />
                   </div>
                   <div className="pc-user-text">
                     <div className="pc-handle">@{handle}</div>
-                    <div className="pc-status">{status}</div>
+                    {status && <div className="pc-status">{status}</div>}
                   </div>
                 </div>
-                
+
               </div>}
           </div>
           <div className="pc-content">

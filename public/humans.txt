@@ -1,20 +1,27 @@
-# humans.txt
+/* TEAM */
+	Developer: Adil Munawar
+	Role: Machine-learning engineer (agricultural remote sensing), full-stack developer
+	Also: Project Lead & Web Developer at Nexsus Orbits; Database Administrator at AOS
+	Location: Lahore, Pakistan (UTC+5), remote worldwide
+	Site: https://adilmunawar.vercel.app
+	GitHub: https://github.com/AdilMunawar
+	LinkedIn: https://www.linkedin.com/in/adilmunawar/
+	Email: adilmunawarx@gmail.com
 
-Developer: Adil Munawar
-Role: Web Developer, SaaS Architect, Project Lead, ML and Geospatial AI Researcher
-Company: Nexus Orbits Pakistan
+/* SITE */
+	Last update: 2026-09-05
+	Language: English
+	Standards: HTML5, CSS3, JSON-LD (schema.org Person + WebSite), llms.txt
+	Framework: Next.js 14 (App Router), React 18, TypeScript
+	Styling: Tailwind CSS 3, Inter and JetBrains Mono via next/font
+	Content: react-markdown, remark-gfm, Mermaid diagrams
+	Assistant: Zenith chat widget (src/app/api/chat)
+	Hosting: Vercel, Vercel Analytics, Google Analytics
+	Automation: GitHub Actions refresh LeetCode and GitHub stats
+	Machine-readable profile: /llms.txt, /llms-full.txt, /ai-profile.json
 
-Portfolio: https://adilmunawar.vercel.app
-GitHub: https://github.com/AdilMunawar
-LinkedIn: https://pk.linkedin.com/in/adilmunawar
-
-Focus:
-- Web application development
-- SaaS platforms
-- AI-assisted tools
-- Geospatial intelligence
-- ML research for satellite and GIS workflows
-- HRMS systems
-- Recruitment automation
-- Authentication utilities
-- Python assistant automation
+/* FOCUS */
+	Field boundary delineation and crop-type mapping from Sentinel-2 and high-resolution imagery
+	RAG pipelines, MCP tool servers and agentic workflows
+	Next.js, TypeScript and PostgreSQL/PostGIS products
+	Geospatial data pipelines with GDAL, Rasterio and PostGIS on Azure and Vercel
