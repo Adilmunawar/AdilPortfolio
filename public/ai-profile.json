@@ -774,7 +774,7 @@
       "description": "Hands-on introduction to MATLAB for numerical computing and data analysis.",
       "issued": "Jul 2026",
       "credential_id": null,
-      "image": null
+      "image": "https://adilmunawar.vercel.app/certifications/matlab-onramp.jpg"
     },
     {
       "name": "Advanced CloudFormation: Macros",
@@ -806,7 +806,7 @@
       "description": "Core machine learning and AI workload concepts on Microsoft Azure (AI-900).",
       "issued": "Jun 2026",
       "credential_id": "df469yub",
-      "image": null
+      "image": "https://adilmunawar.vercel.app/certifications/microsoft-certified-fundamentals-badge.svg"
     },
     {
       "name": "Web Analytics by Accenture",
@@ -833,12 +833,12 @@
       "image": "https://adilmunawar.vercel.app/certifications/agile-foundation-by-linkedin.jpeg"
     },
     {
-      "name": "SQL and Relational Databases",
-      "issuer": "Cognitive Class",
+      "name": "SQL and Relational Databases 101",
+      "issuer": "Cognitive Class / IBM Skills Network",
       "description": "Relational database design and SQL querying fundamentals.",
       "issued": "Mar 2026",
       "credential_id": "6acdbc63fde448e3a5d2304cd0333ea8",
-      "image": null
+      "image": "https://adilmunawar.vercel.app/certifications/sql-relational-databases.jpg"
     },
     {
       "name": "Claude in Amazon Bedrock",
@@ -902,7 +902,7 @@
       "description": "Administering GitHub organisations, repositories and access, including the GitHub MCP server.",
       "issued": "Mar 2025",
       "credential_id": null,
-      "image": null
+      "image": "https://adilmunawar.vercel.app/Badges/Github Admin Badge.webp"
     },
     {
       "name": "MLOps with Vertex AI",

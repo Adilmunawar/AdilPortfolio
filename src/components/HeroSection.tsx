@@ -20,7 +20,7 @@ const scrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
 const HeroSection = () => {
   return (
     <section id="home" className="relative w-full overflow-hidden">
-      <div className="container-page flex flex-col gap-10 py-12 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-8 lg:gap-y-4 lg:py-0 lg:min-h-[min(calc(100svh-56px),720px)]">
+      <div className="container-page flex flex-col gap-10 py-12 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-8 lg:gap-y-4 lg:py-0 lg:min-h-[min(calc(100svh-64px),720px)]">
         <div className="container-hero-text order-1 flex flex-col items-start lg:col-span-7">
           <div className="hero-in inline-flex h-7 items-center gap-2 rounded-full border border-default bg-bg-1 px-3 text-small text-secondary" style={enter(0)}>
             <span aria-hidden="true" className="h-2 w-2 rounded-full bg-success" />

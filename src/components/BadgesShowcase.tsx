@@ -98,9 +98,6 @@ export default function BadgesShowcase() {
         return (
           <Reveal key={group.title} delay={Math.min(i, 2) * 60}>
             <div className="flex items-center gap-3">
-              <span className="stat-tile__icon" aria-hidden>
-                <Icon size={15} strokeWidth={1.75} />
-              </span>
               <p className="text-[13px] font-medium text-[#f2f4f8]">{group.title}</p>
               <span className="font-mono text-[12px] tabular-nums text-[#6f7888]">
                 {group.badges.length} {group.badges.length === 1 ? 'badge' : 'badges'}

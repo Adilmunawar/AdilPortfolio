@@ -332,7 +332,7 @@ Courses and assessments from Google Cloud, AWS, Microsoft, Anthropic and LinkedI
 - Web Analytics by Accenture — Accenture / FutureLearn (issued Apr 2026). Web analytics for data-driven decisions, delivered by Accenture on FutureLearn. Credential ID v6zgddz.
 - Certified Software Engineer — HackerRank (issued Apr 2026). Verified software engineering and problem-solving proficiency. Credential ID b6411a6e46da.
 - Agile Foundations — LinkedIn / PMI (issued Apr 2026). Agile foundations in collaboration with the Project Management Institute.
-- SQL and Relational Databases — Cognitive Class (issued Mar 2026). Relational database design and SQL querying fundamentals. Credential ID 6acdbc63fde448e3a5d2304cd0333ea8.
+- SQL and Relational Databases 101 — Cognitive Class / IBM Skills Network (issued Mar 2026). Relational database design and SQL querying fundamentals. Credential ID 6acdbc63fde448e3a5d2304cd0333ea8.
 - Claude in Amazon Bedrock — Anthropic (issued Mar 2026). Integrating and optimizing Claude models on Amazon Bedrock, including the Model Context Protocol. Credential ID wfq8d7zjnka8.
 - Chronicle SOAR Developer — Google Cloud Skills Boost (issued Feb 2026). Building security orchestration, automation and response playbooks on Google Chronicle SOAR. Credential ID 22073529.
 - Building Language Models on AWS — AWS (issued Dec 2025). Training and deploying language models on Amazon Web Services.

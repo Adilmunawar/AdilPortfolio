@@ -726,7 +726,35 @@
 
 .cert-plate__grid { background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px); background-size: 14px 14px; mask-image: radial-gradient(70% 80% at 50% 50%, #000 30%, transparent 100%); }
 
-.cert-masonry { column-count: 2; column-gap: 12px; }
-.cert-masonry__item { break-inside: avoid; margin-bottom: 20px; }
-@media (min-width: 640px) { .cert-masonry { column-count: 3; column-gap: 16px; } .cert-masonry__item { margin-bottom: 24px; } }
-@media (min-width: 1024px) { .cert-masonry { column-count: 4; column-gap: 24px; } .cert-masonry__item { margin-bottom: 28px; } }
+.cert-masonry { column-count: 2; column-gap: 6px; }
+.cert-masonry__item { break-inside: avoid; margin-bottom: 6px; }
+@media (min-width: 640px) { .cert-masonry { column-count: 3; column-gap: 8px; } .cert-masonry__item { margin-bottom: 8px; } }
+@media (min-width: 1024px) { .cert-masonry { column-count: 4; column-gap: 8px; } .cert-masonry__item { margin-bottom: 8px; } }
+
+/* Navigation */
+/* Sliding active pill: two rounded caps plus a 1px stem scaled to width, so only transform animates. */
+.nav-pill { position: absolute; top: 4px; bottom: 4px; left: 0; width: 100%; pointer-events: none; opacity: 0; --nav-x: 0; --nav-w: 36; }
+.nav-pill.is-measured { opacity: 1; transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+.nav-pill__cap, .nav-pill__mid { position: absolute; top: 0; left: 0; height: 100%; @apply bg-bg-3; }
+.nav-pill__cap { width: 18px; }
+.nav-pill__cap--l { border-radius: 18px 0 0 18px; transform: translate3d(calc(var(--nav-x) * 1px), 0, 0); }
+.nav-pill__cap--r { border-radius: 0 18px 18px 0; transform: translate3d(calc((var(--nav-x) + var(--nav-w) - 18) * 1px), 0, 0); }
+.nav-pill__mid { width: 1px; transform-origin: left center; transform: translate3d(calc((var(--nav-x) + 17) * 1px), 0, 0) scaleX(calc(var(--nav-w) - 34)); }
+.nav-pill.is-measured > * { transition: transform 200ms cubic-bezier(0.2, 0, 0, 1); }
+
+/* Mobile sheet: full height under the 64px bar; visibility flips after the slide so it leaves the tab order. */
+.nav-sheet {
+  position: fixed; top: 4rem; right: 0; bottom: 0; left: 0;
+  display: flex; flex-direction: column; overflow-y: auto; overscroll-behavior: contain;
+  visibility: hidden; transform: translate3d(100%, 0, 0);
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 200ms;
+  @apply bg-bg-0;
+}
+.nav-sheet.is-open { visibility: visible; transform: none; transition: transform 200ms cubic-bezier(0.2, 0, 0, 1); }
+@media (min-width: 480px) { .nav-sheet { left: auto; width: min(100%, 22rem); @apply border-l border-subtle; } }
+.nav-backdrop {
+  position: fixed; top: 4rem; right: 0; bottom: 0; left: 0;
+  background: rgba(11, 15, 23, 0.6); opacity: 0; visibility: hidden;
+  transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 200ms;
+}
+.nav-backdrop.is-open { opacity: 1; visibility: visible; transition: opacity 200ms cubic-bezier(0.2, 0, 0, 1); }
