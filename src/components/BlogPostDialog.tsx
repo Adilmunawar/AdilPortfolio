@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 import { SyntaxHighlighter, atomDark } from '@/lib/syntax-highlighter';
 import { NoteCover } from './covers/NoteCover';
+import { ArticleFigure } from './covers/ArticleFigure';
 
 const MermaidDiagram = dynamic(() => import('./ui/MermaidDiagram').then(m => m.MermaidDiagram), { ssr: false });
 import type blogData from '@/lib/blog-data.json';
@@ -39,6 +40,7 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
   const lang = match ? match[1] : 'text';
   const isBlock = Boolean(match) || /\n/.test(String(children));
   if (lang === 'mermaid') return <MermaidDiagram chart={String(children)} />;
+  if (lang === 'figure') return <ArticleFigure source={String(children)} />;
 
   const handleCopy = () => {
     navigator.clipboard?.writeText(String(children).replace(/\n$/, '')).catch(() => {});

@@ -10,6 +10,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { SyntaxHighlighter, atomDark } from '@/lib/syntax-highlighter';
 import { CaseStudyCover } from './covers/CaseStudyCover';
+import { ArticleFigure } from './covers/ArticleFigure';
 import type caseStudiesData from '@/lib/case-studies.json';
 
 const MermaidDiagram = dynamic(() => import('./ui/MermaidDiagram').then(mod => mod.MermaidDiagram), { ssr: false });
@@ -41,6 +42,9 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
 
   if (lang === 'mermaid') {
     return <MermaidDiagram chart={String(children)} />;
+  }
+  if (lang === 'figure') {
+    return <ArticleFigure source={String(children)} />;
   }
 
   const handleCopy = () => {
