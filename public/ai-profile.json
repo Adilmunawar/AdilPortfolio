@@ -761,88 +761,188 @@
   ],
   "certifications": [
     {
-      "name": "Advanced Webhook Concepts",
-      "issuer": "Google Cloud",
-      "description": "Advanced webhook concepts for real-time data synchronization between applications.",
-      "image": "https://adilmunawar.vercel.app/certifications/advance-webhook-concepts.png"
+      "name": "Operationalising EU Space for Security",
+      "issuer": "EUSPA",
+      "description": "EU Agency for the Space Programme course on operationalising EU space services for border security and geospatial intelligence.",
+      "issued": "Aug 2026",
+      "credential_id": "6966612178c62e5fe0048a0f",
+      "image": null
     },
     {
-      "name": "Advanced Performance Measurements",
-      "issuer": "Google",
-      "description": "Enterprise performance measurement for high-speed applications.",
-      "image": "https://adilmunawar.vercel.app/certifications/advanced-performance-measurements.png"
+      "name": "MATLAB Onramp",
+      "issuer": "MathWorks",
+      "description": "Hands-on introduction to MATLAB for numerical computing and data analysis.",
+      "issued": "Jul 2026",
+      "credential_id": null,
+      "image": null
     },
     {
-      "name": "CCAI Frontend Integrations",
-      "issuer": "Google Cloud",
-      "description": "Contact Center AI frontend integrations with user-centric interfaces.",
-      "image": "https://adilmunawar.vercel.app/certifications/CCAI-frontend-Integrations.png"
-    },
-    {
-      "name": "MLOps",
-      "issuer": "Google Cloud",
-      "description": "MLOps workflows across the machine learning lifecycle.",
-      "image": "https://adilmunawar.vercel.app/certifications/MLOPS.png"
-    },
-    {
-      "name": "MLOps with Vertex AI",
-      "issuer": "Google Cloud",
-      "description": "Managing machine learning models at scale on Vertex AI.",
-      "image": "https://adilmunawar.vercel.app/certifications/MLOPS-with-vertex-AI.png"
-    },
-    {
-      "name": "Application Modernization",
-      "issuer": "Google Cloud",
-      "description": "Modernizing legacy architectures for performance, scalability and security.",
-      "image": "https://adilmunawar.vercel.app/certifications/application-modern.png"
-    },
-    {
-      "name": "Google Ads Apps",
-      "issuer": "Google",
-      "description": "Building and integrating applications with Google Ads APIs.",
-      "image": "https://adilmunawar.vercel.app/certifications/Google-Ads-apps.png"
-    },
-    {
-      "name": "Building Language Models on AWS",
+      "name": "Advanced CloudFormation: Macros",
       "issuer": "AWS",
-      "description": "Training and deploying language models on Amazon Web Services.",
-      "image": "https://adilmunawar.vercel.app/certifications/building-language-models-on-AWS.png"
+      "description": "Extending AWS CloudFormation templates with macros for reusable infrastructure as code.",
+      "issued": "Jul 2026",
+      "credential_id": null,
+      "image": null
     },
     {
-      "name": "Content and Creative Design",
-      "issuer": "LinkedIn",
-      "description": "Technical content and creative design fundamentals.",
-      "image": "https://adilmunawar.vercel.app/certifications/Linkedin-Content-and-creative-design.png"
+      "name": "Machine Learning with Python",
+      "issuer": "MIT Professional Education",
+      "description": "Supervised and unsupervised learning foundations implemented in Python.",
+      "issued": "Jul 2026",
+      "credential_id": "4b7ac91e0f3d82c56a19fe0332d8a17",
+      "image": null
     },
     {
-      "name": "Microsoft Azure Professional",
+      "name": "Computational Probability and Inference",
+      "issuer": "MIT Professional Education",
+      "description": "Probabilistic modelling and inference methods for data-driven systems.",
+      "issued": "Jun 2026",
+      "credential_id": "e4ecfea7a7014b2483579dd1e7356c23",
+      "image": null
+    },
+    {
+      "name": "Microsoft Certified: Azure AI Fundamentals",
       "issuer": "Microsoft",
-      "description": "Architecting secure, scalable solutions on Microsoft Azure.",
-      "image": "https://adilmunawar.vercel.app/certifications/Microsoft-azure-professional.png"
+      "description": "Core machine learning and AI workload concepts on Microsoft Azure (AI-900).",
+      "issued": "Jun 2026",
+      "credential_id": "df469yub",
+      "image": null
     },
     {
-      "name": "Claude with Amazon Bedrock",
-      "issuer": "Anthropic / AWS",
-      "description": "Integrating and optimizing Claude models on Amazon Bedrock.",
-      "image": "https://adilmunawar.vercel.app/certifications/anthropic---claude-with-amazon-bedrock.jpg"
-    },
-    {
-      "name": "Digital Skills: Web Analytics",
-      "issuer": "FutureLearn",
-      "description": "Web analytics for data-driven decisions.",
+      "name": "Web Analytics by Accenture",
+      "issuer": "Accenture / FutureLearn",
+      "description": "Web analytics for data-driven decisions, delivered by Accenture on FutureLearn.",
+      "issued": "Apr 2026",
+      "credential_id": "v6zgddz",
       "image": "https://adilmunawar.vercel.app/certifications/digital-skill-web-analytics_certificate_of_achievement_v6zgddz_page-0001.jpg"
     },
     {
-      "name": "Software Engineer",
+      "name": "Certified Software Engineer",
       "issuer": "HackerRank",
       "description": "Verified software engineering and problem-solving proficiency.",
+      "issued": "Apr 2026",
+      "credential_id": "b6411a6e46da",
       "image": "https://adilmunawar.vercel.app/certifications/software-egeenier-hacker-rank.png"
     },
     {
       "name": "Agile Foundations",
       "issuer": "LinkedIn / PMI",
       "description": "Agile foundations in collaboration with the Project Management Institute.",
+      "issued": "Apr 2026",
+      "credential_id": null,
       "image": "https://adilmunawar.vercel.app/certifications/agile-foundation-by-linkedin.jpeg"
+    },
+    {
+      "name": "SQL and Relational Databases",
+      "issuer": "Cognitive Class",
+      "description": "Relational database design and SQL querying fundamentals.",
+      "issued": "Mar 2026",
+      "credential_id": "6acdbc63fde448e3a5d2304cd0333ea8",
+      "image": null
+    },
+    {
+      "name": "Claude in Amazon Bedrock",
+      "issuer": "Anthropic",
+      "description": "Integrating and optimizing Claude models on Amazon Bedrock, including the Model Context Protocol.",
+      "issued": "Mar 2026",
+      "credential_id": "wfq8d7zjnka8",
+      "image": "https://adilmunawar.vercel.app/certifications/anthropic---claude-with-amazon-bedrock.jpg"
+    },
+    {
+      "name": "Chronicle SOAR Developer",
+      "issuer": "Google Cloud Skills Boost",
+      "description": "Building security orchestration, automation and response playbooks on Google Chronicle SOAR.",
+      "issued": "Feb 2026",
+      "credential_id": "22073529",
+      "image": null
+    },
+    {
+      "name": "Building Language Models on AWS",
+      "issuer": "AWS",
+      "description": "Training and deploying language models on Amazon Web Services.",
+      "issued": "Dec 2025",
+      "credential_id": null,
+      "image": "https://adilmunawar.vercel.app/certifications/building-language-models-on-AWS.png"
+    },
+    {
+      "name": "Google Ads Apps Certification",
+      "issuer": "Google Cloud Skills Boost",
+      "description": "Building and integrating applications with Google Ads APIs.",
+      "issued": "Dec 2025",
+      "credential_id": "169263387",
+      "image": "https://adilmunawar.vercel.app/certifications/Google-Ads-apps.png"
+    },
+    {
+      "name": "Azure Cloud Computing",
+      "issuer": "Microsoft",
+      "description": "Architecting secure, scalable solutions on Microsoft Azure.",
+      "issued": "May 2025",
+      "credential_id": "AdilMunawar4765",
+      "image": "https://adilmunawar.vercel.app/certifications/Microsoft-azure-professional.png"
+    },
+    {
+      "name": "Application Modernization with Google Cloud",
+      "issuer": "Google",
+      "description": "Modernizing legacy architectures for performance, scalability and security.",
+      "issued": "Mar 2025",
+      "credential_id": "14164265",
+      "image": "https://adilmunawar.vercel.app/certifications/application-modern.png"
+    },
+    {
+      "name": "LinkedIn Content and Creative Design",
+      "issuer": "LinkedIn",
+      "description": "Technical content and creative design fundamentals.",
+      "issued": "Mar 2025",
+      "credential_id": "zn7dbp7a2cw3",
+      "image": "https://adilmunawar.vercel.app/certifications/Linkedin-Content-and-creative-design.png"
+    },
+    {
+      "name": "GitHub Admin",
+      "issuer": "GitHub",
+      "description": "Administering GitHub organisations, repositories and access, including the GitHub MCP server.",
+      "issued": "Mar 2025",
+      "credential_id": null,
+      "image": null
+    },
+    {
+      "name": "MLOps with Vertex AI",
+      "issuer": "Google",
+      "description": "Managing machine learning models at scale on Vertex AI.",
+      "issued": "Feb 2025",
+      "credential_id": "14116643",
+      "image": "https://adilmunawar.vercel.app/certifications/MLOPS-with-vertex-AI.png"
+    },
+    {
+      "name": "Machine Learning Operations for Generative AI",
+      "issuer": "Google",
+      "description": "MLOps workflows across the machine learning lifecycle for generative AI.",
+      "issued": "Feb 2025",
+      "credential_id": "14101465",
+      "image": "https://adilmunawar.vercel.app/certifications/MLOPS.png"
+    },
+    {
+      "name": "Advanced Webhook Concepts",
+      "issuer": "Google Cloud",
+      "description": "Advanced webhook concepts for real-time data synchronization between applications.",
+      "issued": null,
+      "credential_id": null,
+      "image": "https://adilmunawar.vercel.app/certifications/advance-webhook-concepts.png"
+    },
+    {
+      "name": "Advanced Performance Measurements",
+      "issuer": "Google",
+      "description": "Enterprise performance measurement for high-speed applications.",
+      "issued": null,
+      "credential_id": null,
+      "image": "https://adilmunawar.vercel.app/certifications/advanced-performance-measurements.png"
+    },
+    {
+      "name": "CCAI Frontend Integrations",
+      "issuer": "Google Cloud",
+      "description": "Contact Center AI frontend integrations with user-centric interfaces.",
+      "issued": null,
+      "credential_id": null,
+      "image": "https://adilmunawar.vercel.app/certifications/CCAI-frontend-Integrations.png"
     }
   ],
   "badges": [
@@ -912,16 +1012,16 @@
   ],
   "activity": {
     "leetcode": {
-      "solved": 1305,
-      "easy": 307,
-      "medium": 559,
-      "hard": 439,
+      "solved": 1320,
+      "easy": 311,
+      "medium": 568,
+      "hard": 441,
       "acceptance_rate": 89.7,
-      "ranking": 13033,
+      "ranking": 12820,
       "url": "https://leetcode.com/u/AdilMunawar/"
     },
     "github": {
-      "contributions_last_year": 8390,
+      "contributions_last_year": 8563,
       "url": "https://github.com/AdilMunawar"
     }
   },
@@ -967,5 +1067,5 @@
     "notes": "https://adilmunawar.vercel.app/#blog",
     "contact": "https://adilmunawar.vercel.app/#contact"
   },
-  "last_updated": "2026-08-16"
+  "last_updated": "2026-09-05"
 }

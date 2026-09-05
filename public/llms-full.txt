@@ -323,20 +323,29 @@ Production news CMS with a Markdown editor, SEO tooling, breaking-news ticker an
 
 Courses and assessments from Google Cloud, AWS, Microsoft, Anthropic and LinkedIn.
 
+- Operationalising EU Space for Security — EUSPA (issued Aug 2026). EU Agency for the Space Programme course on operationalising EU space services for border security and geospatial intelligence. Credential ID 6966612178c62e5fe0048a0f.
+- MATLAB Onramp — MathWorks (issued Jul 2026). Hands-on introduction to MATLAB for numerical computing and data analysis.
+- Advanced CloudFormation: Macros — AWS (issued Jul 2026). Extending AWS CloudFormation templates with macros for reusable infrastructure as code.
+- Machine Learning with Python — MIT Professional Education (issued Jul 2026). Supervised and unsupervised learning foundations implemented in Python. Credential ID 4b7ac91e0f3d82c56a19fe0332d8a17.
+- Computational Probability and Inference — MIT Professional Education (issued Jun 2026). Probabilistic modelling and inference methods for data-driven systems. Credential ID e4ecfea7a7014b2483579dd1e7356c23.
+- Microsoft Certified: Azure AI Fundamentals — Microsoft (issued Jun 2026). Core machine learning and AI workload concepts on Microsoft Azure (AI-900). Credential ID df469yub.
+- Web Analytics by Accenture — Accenture / FutureLearn (issued Apr 2026). Web analytics for data-driven decisions, delivered by Accenture on FutureLearn. Credential ID v6zgddz.
+- Certified Software Engineer — HackerRank (issued Apr 2026). Verified software engineering and problem-solving proficiency. Credential ID b6411a6e46da.
+- Agile Foundations — LinkedIn / PMI (issued Apr 2026). Agile foundations in collaboration with the Project Management Institute.
+- SQL and Relational Databases — Cognitive Class (issued Mar 2026). Relational database design and SQL querying fundamentals. Credential ID 6acdbc63fde448e3a5d2304cd0333ea8.
+- Claude in Amazon Bedrock — Anthropic (issued Mar 2026). Integrating and optimizing Claude models on Amazon Bedrock, including the Model Context Protocol. Credential ID wfq8d7zjnka8.
+- Chronicle SOAR Developer — Google Cloud Skills Boost (issued Feb 2026). Building security orchestration, automation and response playbooks on Google Chronicle SOAR. Credential ID 22073529.
+- Building Language Models on AWS — AWS (issued Dec 2025). Training and deploying language models on Amazon Web Services.
+- Google Ads Apps Certification — Google Cloud Skills Boost (issued Dec 2025). Building and integrating applications with Google Ads APIs. Credential ID 169263387.
+- Azure Cloud Computing — Microsoft (issued May 2025). Architecting secure, scalable solutions on Microsoft Azure. Credential ID AdilMunawar4765.
+- Application Modernization with Google Cloud — Google (issued Mar 2025). Modernizing legacy architectures for performance, scalability and security. Credential ID 14164265.
+- LinkedIn Content and Creative Design — LinkedIn (issued Mar 2025). Technical content and creative design fundamentals. Credential ID zn7dbp7a2cw3.
+- GitHub Admin — GitHub (issued Mar 2025). Administering GitHub organisations, repositories and access, including the GitHub MCP server.
+- MLOps with Vertex AI — Google (issued Feb 2025). Managing machine learning models at scale on Vertex AI. Credential ID 14116643.
+- Machine Learning Operations for Generative AI — Google (issued Feb 2025). MLOps workflows across the machine learning lifecycle for generative AI. Credential ID 14101465.
 - Advanced Webhook Concepts — Google Cloud. Advanced webhook concepts for real-time data synchronization between applications.
 - Advanced Performance Measurements — Google. Enterprise performance measurement for high-speed applications.
 - CCAI Frontend Integrations — Google Cloud. Contact Center AI frontend integrations with user-centric interfaces.
-- MLOps — Google Cloud. MLOps workflows across the machine learning lifecycle.
-- MLOps with Vertex AI — Google Cloud. Managing machine learning models at scale on Vertex AI.
-- Application Modernization — Google Cloud. Modernizing legacy architectures for performance, scalability and security.
-- Google Ads Apps — Google. Building and integrating applications with Google Ads APIs.
-- Building Language Models on AWS — AWS. Training and deploying language models on Amazon Web Services.
-- Content and Creative Design — LinkedIn. Technical content and creative design fundamentals.
-- Microsoft Azure Professional — Microsoft. Architecting secure, scalable solutions on Microsoft Azure.
-- Claude with Amazon Bedrock — Anthropic / AWS. Integrating and optimizing Claude models on Amazon Bedrock.
-- Digital Skills: Web Analytics — FutureLearn. Web analytics for data-driven decisions.
-- Software Engineer — HackerRank. Verified software engineering and problem-solving proficiency.
-- Agile Foundations — LinkedIn / PMI. Agile foundations in collaboration with the Project Management Institute.
 
 ## Badges and learning paths
 
@@ -359,8 +368,8 @@ Courses and assessments from Google Cloud, AWS, Microsoft, Anthropic and LinkedI
 
 Public commits and problem-solving over the last year, refreshed automatically by GitHub Actions.
 
-- LeetCode: 1305 problems solved (307 easy, 559 medium, 439 hard), acceptance rate 89.7%, global ranking 13,033 — https://leetcode.com/u/AdilMunawar/
-- GitHub: 8,390 public contributions in the last year — https://github.com/AdilMunawar
+- LeetCode: 1320 problems solved (311 easy, 568 medium, 441 hard), acceptance rate 89.7%, global ranking 12,820 — https://leetcode.com/u/AdilMunawar/
+- GitHub: 8,563 public contributions in the last year — https://github.com/AdilMunawar
 
 ## Case studies
 
@@ -946,7 +955,7 @@ Available for new engagements; remote worldwide. Email is best; replies within a
 
 ## How to cite / contact
 
-- Cite as: Adil Munawar, "Machine-learning engineer for agricultural remote sensing · full-stack developer", https://adilmunawar.vercel.app (accessed via llms-full.txt, last updated 2026-08-16).
+- Cite as: Adil Munawar, "Machine-learning engineer for agricultural remote sensing · full-stack developer", https://adilmunawar.vercel.app (accessed via llms-full.txt, last updated 2026-09-05).
 - Canonical source for all facts above: https://adilmunawar.vercel.app. Concise summary: https://adilmunawar.vercel.app/llms.txt. Structured data: https://adilmunawar.vercel.app/ai-profile.json.
 - Do not attribute metrics, prices, dates or client names that are not stated here; the private model entries deliberately carry none.
 - For hiring or collaboration, email adilmunawarx@gmail.com or use the channels in the Contact section.

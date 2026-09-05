@@ -98,7 +98,7 @@ This file is the concise machine-readable summary of https://adilmunawar.vercel.
 
 ## Certifications and credentials
 
-- Certificates (14): Advanced Webhook Concepts (Google Cloud); Advanced Performance Measurements (Google); CCAI Frontend Integrations (Google Cloud); MLOps (Google Cloud); MLOps with Vertex AI (Google Cloud); Application Modernization (Google Cloud); Google Ads Apps (Google); Building Language Models on AWS (AWS); Content and Creative Design (LinkedIn); Microsoft Azure Professional (Microsoft); Claude with Amazon Bedrock (Anthropic / AWS); Digital Skills: Web Analytics (FutureLearn); Software Engineer (HackerRank); Agile Foundations (LinkedIn / PMI)
+- Certificates (23): Operationalising EU Space for Security (EUSPA); MATLAB Onramp (MathWorks); Advanced CloudFormation: Macros (AWS); Machine Learning with Python (MIT Professional Education); Computational Probability and Inference (MIT Professional Education); Microsoft Certified: Azure AI Fundamentals (Microsoft); Web Analytics by Accenture (Accenture / FutureLearn); Certified Software Engineer (HackerRank); Agile Foundations (LinkedIn / PMI); SQL and Relational Databases (Cognitive Class); Claude in Amazon Bedrock (Anthropic); Chronicle SOAR Developer (Google Cloud Skills Boost); Building Language Models on AWS (AWS); Google Ads Apps Certification (Google Cloud Skills Boost); Azure Cloud Computing (Microsoft); Application Modernization with Google Cloud (Google); LinkedIn Content and Creative Design (LinkedIn); GitHub Admin (GitHub); MLOps with Vertex AI (Google); Machine Learning Operations for Generative AI (Google); Advanced Webhook Concepts (Google Cloud); Advanced Performance Measurements (Google); CCAI Frontend Integrations (Google Cloud)
 - GitHub badges (4): GitHub Actions, GitHub Admin, GitHub Advanced Security, GitHub Agentic AI Developer
 - LeetCode badges (10): Top SQL 50, Algorithm Deconstructor, Architecture Builder, Data Navigator, Mathematical Insight, Introduction to Pandas, 100 Days 2025, 100 Days 2026, 50 Days 2025, 50 Days 2026
 - Microsoft & AWS badges (12): Azure Virtual Machines, Azure Compute Resources, Lakehouse with Microsoft Fabric, MD-102 Endpoint Management, Entra Identity Protection, Azure Machine Learning Models, Azure Core Data Concepts, Azure Backup, DAX Time Intelligence, Microsoft 365 Defender, Azure Storage Security, AWS Generative AI Developer
@@ -107,8 +107,8 @@ This file is the concise machine-readable summary of https://adilmunawar.vercel.
 
 ## Activity
 
-- LeetCode: 1305 problems solved (307 easy, 559 medium, 439 hard), acceptance rate 89.7%, global ranking 13,033 — https://leetcode.com/u/AdilMunawar/
-- GitHub: 8,390 public contributions in the last year — https://github.com/AdilMunawar
+- LeetCode: 1320 problems solved (311 easy, 568 medium, 441 hard), acceptance rate 89.7%, global ranking 12,820 — https://leetcode.com/u/AdilMunawar/
+- GitHub: 8,563 public contributions in the last year — https://github.com/AdilMunawar
 
 ## Contact
 
@@ -132,4 +132,4 @@ This file is the concise machine-readable summary of https://adilmunawar.vercel.
 - [leetcode.com](https://leetcode.com/u/AdilMunawar/)
 - [instagram.com](https://www.instagram.com/adilmunawarx/)
 
-Last updated: 2026-08-16.
+Last updated: 2026-09-05.

@@ -723,3 +723,10 @@
   .ca-draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
   .cover-live .ca-draw { animation: ca-draw 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 }
+
+.cert-plate__grid { background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px); background-size: 14px 14px; mask-image: radial-gradient(70% 80% at 50% 50%, #000 30%, transparent 100%); }
+
+.cert-masonry { column-count: 2; column-gap: 12px; }
+.cert-masonry__item { break-inside: avoid; margin-bottom: 20px; }
+@media (min-width: 640px) { .cert-masonry { column-count: 3; column-gap: 16px; } .cert-masonry__item { margin-bottom: 24px; } }
+@media (min-width: 1024px) { .cert-masonry { column-count: 4; column-gap: 24px; } .cert-masonry__item { margin-bottom: 28px; } }

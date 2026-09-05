@@ -157,7 +157,9 @@ const certifications = nonEmpty(
     name: field(b, 'alt'),
     issuer: field(b, 'issuer'),
     description: field(b, 'description'),
-    image: `${SITE}${field(b, 'src')}`,
+    image: field(b, 'src') ? `${SITE}${field(b, 'src')}` : null,
+    issued: field(b, 'issued') || null,
+    credentialId: field(b, 'credentialId') || null,
   })),
   'certificates',
 );
@@ -464,7 +466,7 @@ function buildFull() {
   out.push('');
   out.push('Courses and assessments from Google Cloud, AWS, Microsoft, Anthropic and LinkedIn.');
   out.push('');
-  certifications.forEach((c) => out.push(`- ${c.name} — ${c.issuer}. ${c.description}`));
+  certifications.forEach((c) => out.push(`- ${c.name} — ${c.issuer}${c.issued ? ` (issued ${c.issued})` : ''}. ${c.description}${c.credentialId ? ` Credential ID ${c.credentialId}.` : ''}`));
   out.push('');
   out.push('## Badges and learning paths');
   out.push('');
@@ -569,7 +571,7 @@ function buildJson() {
       url: `${SITE}/#case-studies`,
     })),
     notes: notes.map((n) => ({ title: n.title, excerpt: n.excerpt, tags: n.tags, url: `${SITE}/#blog` })),
-    certifications: certifications.map((c) => ({ name: c.name, issuer: c.issuer, description: c.description, image: c.image })),
+    certifications: certifications.map((c) => ({ name: c.name, issuer: c.issuer, description: c.description, issued: c.issued, credential_id: c.credentialId, image: c.image })),
     badges: badgeGroups,
     recognition: PROFILE.awards,
     activity: {

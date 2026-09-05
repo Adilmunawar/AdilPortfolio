@@ -122,7 +122,7 @@ const SkillsSection = () => {
             Certifications
           </h2>
           <p className="mt-3 max-w-[680px] text-[17px] leading-normal text-[#a4adbe] lg:text-[20px]">
-            Courses and assessments from Google Cloud, AWS, Microsoft, Anthropic and LinkedIn.
+            Courses and assessments from Google Cloud, AWS, Microsoft, MIT Professional Education, EUSPA, Anthropic, GitHub and LinkedIn.
           </p>
         </Reveal>
 
