@@ -801,14 +801,6 @@
       "image": null
     },
     {
-      "name": "Microsoft Certified: Azure AI Fundamentals",
-      "issuer": "Microsoft",
-      "description": "Core machine learning and AI workload concepts on Microsoft Azure (AI-900).",
-      "issued": "Jun 2026",
-      "credential_id": "df469yub",
-      "image": "https://adilmunawar.vercel.app/certifications/microsoft-certified-fundamentals-badge.svg"
-    },
-    {
       "name": "Web Analytics by Accenture",
       "issuer": "Accenture / FutureLearn",
       "description": "Web analytics for data-driven decisions, delivered by Accenture on FutureLearn.",
@@ -895,14 +887,6 @@
       "issued": "Mar 2025",
       "credential_id": "zn7dbp7a2cw3",
       "image": "https://adilmunawar.vercel.app/certifications/Linkedin-Content-and-creative-design.png"
-    },
-    {
-      "name": "GitHub Admin",
-      "issuer": "GitHub",
-      "description": "Administering GitHub organisations, repositories and access, including the GitHub MCP server.",
-      "issued": "Mar 2025",
-      "credential_id": null,
-      "image": "https://adilmunawar.vercel.app/Badges/Github Admin Badge.webp"
     },
     {
       "name": "MLOps with Vertex AI",

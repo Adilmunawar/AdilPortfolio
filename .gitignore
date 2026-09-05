@@ -28,3 +28,6 @@ dist-ssr
 /.idx/
 /.next-prod/
 /.next-dev-alt/
+
+# Claude Code local config
+/.claude/

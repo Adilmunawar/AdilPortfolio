@@ -328,7 +328,6 @@ Courses and assessments from Google Cloud, AWS, Microsoft, Anthropic and LinkedI
 - Advanced CloudFormation: Macros — AWS (issued Jul 2026). Extending AWS CloudFormation templates with macros for reusable infrastructure as code.
 - Machine Learning with Python — MIT Professional Education (issued Jul 2026). Supervised and unsupervised learning foundations implemented in Python. Credential ID 4b7ac91e0f3d82c56a19fe0332d8a17.
 - Computational Probability and Inference — MIT Professional Education (issued Jun 2026). Probabilistic modelling and inference methods for data-driven systems. Credential ID e4ecfea7a7014b2483579dd1e7356c23.
-- Microsoft Certified: Azure AI Fundamentals — Microsoft (issued Jun 2026). Core machine learning and AI workload concepts on Microsoft Azure (AI-900). Credential ID df469yub.
 - Web Analytics by Accenture — Accenture / FutureLearn (issued Apr 2026). Web analytics for data-driven decisions, delivered by Accenture on FutureLearn. Credential ID v6zgddz.
 - Certified Software Engineer — HackerRank (issued Apr 2026). Verified software engineering and problem-solving proficiency. Credential ID b6411a6e46da.
 - Agile Foundations — LinkedIn / PMI (issued Apr 2026). Agile foundations in collaboration with the Project Management Institute.
@@ -340,7 +339,6 @@ Courses and assessments from Google Cloud, AWS, Microsoft, Anthropic and LinkedI
 - Azure Cloud Computing — Microsoft (issued May 2025). Architecting secure, scalable solutions on Microsoft Azure. Credential ID AdilMunawar4765.
 - Application Modernization with Google Cloud — Google (issued Mar 2025). Modernizing legacy architectures for performance, scalability and security. Credential ID 14164265.
 - LinkedIn Content and Creative Design — LinkedIn (issued Mar 2025). Technical content and creative design fundamentals. Credential ID zn7dbp7a2cw3.
-- GitHub Admin — GitHub (issued Mar 2025). Administering GitHub organisations, repositories and access, including the GitHub MCP server.
 - MLOps with Vertex AI — Google (issued Feb 2025). Managing machine learning models at scale on Vertex AI. Credential ID 14116643.
 - Machine Learning Operations for Generative AI — Google (issued Feb 2025). MLOps workflows across the machine learning lifecycle for generative AI. Credential ID 14101465.
 - Advanced Webhook Concepts — Google Cloud. Advanced webhook concepts for real-time data synchronization between applications.
