@@ -78,14 +78,14 @@ This file is the concise machine-readable summary of https://adilmunawar.vercel.
 ## Case studies
 
 - Delineating Terraced Field Boundaries in Kishtwar with HRNet-W48: How we turned high resolution imagery of terraced farmland into a topology-clean parcel layer for Zaraat Dost, using an HRNet-W48 boundary model, overlap-stitched tiled inference, watershed instancing and shared-arc vectorisation.
-- Crop Type Classification from Sentinel-2 Time Series: Per-parcel crop mapping for Zaraat Dost Private Limited: cloud-masked Sentinel-2 index series resampled onto a regular grid, a bidirectional GRU with attention pooling, and scheduled district-wide inference delivered as a PostGIS layer.
+- Crop Type Classification from Sentinel-2 Time Series: Per parcel crop mapping for Zaraat Dost Private Limited: cloud-masked Sentinel-2 index series resampled onto a regular grid, a bidirectional GRU with attention pooling, and scheduled district-wide inference delivered as a PostGIS layer.
 - Serving Remote Sensing Models: On Demand Inference and Scheduled Jobs: The deployment layer behind the farmland models: ONNX export with a parity gate, a FastAPI service with a warm session and bounded concurrency, scheduled jobs that claim work by idempotency key and write versioned rows to PostGIS, and an MLflow promotion flow that rolls back by moving an alias.
-- An Enterprise RAG Pipeline That Can Say It Does Not Know: Grounded question answering over a private knowledge base, built so that refusal is a designed outcome: structure-aware chunking, hybrid retrieval fused by reciprocal rank, a cross-encoder reranker, verified citations, and an evaluation harness that existed before any prompt was tuned.
+- An Enterprise RAG Pipeline That Can Say It Does Not Know: Grounded question answering over a private knowledge base, built so that refusal is a designed outcome: structure aware chunking, hybrid retrieval fused by reciprocal rank, a cross-encoder reranker, verified citations, and an evaluation harness that existed before any prompt was tuned.
 - AdiNox: Building a TOTP Authenticator with a Biometric Gate: How AdiNox parses otpauth QR codes, generates TOTP codes with WebCrypto, keeps secrets in an AES-GCM vault under a PBKDF2 key, and puts a face-api.js check in front of the code list without pretending a face is a key.
 - Farm Digitisation and Parcel Mapping at District Scale: Four disagreeing descriptions of the same fields, GPS tracks, scanned cadastral sheets, operator polygons and model boundaries, were georeferenced, conflated with confidence scoring and reviewed by people, then delivered as a versioned parcel layer to the client's GIS and to PostGIS.
 - AdiGaze: AI Recruitment Engine: AdiGaze turns a batch of mixed-format resumes into structured, ranked candidate records, and it was built to keep finishing the batch when a provider throttles or a file takes minutes to parse.
 - The Agentic Blueprint: A field guide to building AI systems that actually finish work: five patterns (structured cognition, parallel workers, self-healing reflexes, vector memory, and an input immune system) drawn from the recruitment engine, RAG pipeline, and MCP server.
-- The Supabase Sovereign: How I keep Postgres-backed backends fast and secure on Supabase under serverless load: connection pooling, targeted indexing, edge compute, async webhooks, and Row Level Security, with the trade-off behind each decision.
+- The Supabase Sovereign: How I keep Postgres-backed backends fast and secure on Supabase under serverless load: connection pooling, targeted indexing, edge compute, async webhooks, and Row Level Security, with the tradeoff behind each decision.
 - [Read the case studies](https://adilmunawar.vercel.app/#case-studies)
 
 ## Notes
@@ -100,7 +100,7 @@ This file is the concise machine-readable summary of https://adilmunawar.vercel.
 - Build the RAG Evaluation Harness Before You Touch the Prompt (RAG, Evaluation, LLM, Python): How the evaluation harness for an enterprise RAG pipeline is put together: a golden set from real questions, recall at k, MRR and nDCG with their blind spots, a calibrated LLM judge for faithfulness and citation precision, cost and latency budgets, and the CI gate that caught a change which raised recall while quietly breaking grounding.
 - Streaming Model Output Without Leaking Resources: SSE, Backpressure and Cancellation (Next.js, Streaming, TypeScript, LLM): Zenith streams every reply through a Next.js route handler. This note covers the transport choice, propagating AbortSignal upstream, backpressure with pull, heartbeats, resuming with Last-Event-ID, and stopping generation the moment nobody is reading.
 - How a TOTP Authenticator Really Works: HMAC, Time Windows and the Mistakes That Break Them (Security, Cryptography, TypeScript, Authentication): From the otpauth QR code to an accepted six digit code: HMAC-SHA1 over a counter, dynamic truncation, the thirty second step, verification windows, replay protection, constant time comparison and the base32 edge cases, with AdiNox as the worked example.
-- Recon for Juicy Endpoints via URLScan Dorking (URLScan, Hacking, Pentesting, Bug Bounty): A methodology for authorized testers: narrowing a huge in-scope estate down to the few hosts worth a human's time through passive discovery, polite confirmation, and triage, plus the defensive mirror for asset owners.
+- Recon for Juicy Endpoints via URLScan Dorking (URLScan, Hacking, Pentesting, Bug Bounty): A methodology for authorized testers: narrowing a huge in scope estate down to the few hosts worth a human's time through passive discovery, polite confirmation, and triage, plus the defensive mirror for asset owners.
 - How Attackers Exploit Public WiFi to Sniff Decrypted Network Packets (WiFi Security, Hacking, Pentesting): How public-WiFi attacks actually work (evil-twin access points, on-path interception, TLS downgrade) and why end-to-end encryption, HSTS preload, encrypted DNS, and a VPN make an attacker's position on the wire close to worthless.
 - Securing In-Game Economies Against Value Tampering (Hacking, Game Security, Reverse Engineering): Where game economies get tampered with (memory edits, forged packets, race conditions, injection) and how server-side authority, atomic transactions, and audit logging shut it down. A defensive guide.
 - [Read the notes](https://adilmunawar.vercel.app/#blog)
@@ -123,8 +123,8 @@ This file is the concise machine-readable summary of https://adilmunawar.vercel.
 
 ## Activity
 
-- LeetCode: 1320 problems solved (311 easy, 568 medium, 441 hard), acceptance rate 89.7%, global ranking 12,820 — https://leetcode.com/u/AdilMunawar/
-- GitHub: 8,563 public contributions in the last year — https://github.com/AdilMunawar
+- LeetCode: 1320 problems solved (311 easy, 568 medium, 441 hard), acceptance rate 89.7%, global ranking 12,805 — https://leetcode.com/u/AdilMunawar/
+- GitHub: 8,653 public contributions in the last year — https://github.com/AdilMunawar
 
 ## Contact
 

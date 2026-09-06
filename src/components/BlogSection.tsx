@@ -78,13 +78,10 @@ const BlogSection = () => {
     <>
       <section id="blog" className="py-10 md:py-28 px-5 md:px-8">
         <div className="max-w-[1120px] mx-auto">
-          <Reveal className="max-w-[680px]">
+          <Reveal className="mx-auto max-w-[680px] text-center">
             <h2 className="text-[24px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
               Notes
             </h2>
-            <p className="mt-3 md:mt-4 text-[15px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
-              Occasional write-ups on models, pipelines and security research.
-            </p>
           </Reveal>
 
           <div className="mt-6 md:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-6">

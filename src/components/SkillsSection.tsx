@@ -114,13 +114,10 @@ const SkillsSection = () => {
   return (
     <section id="skills" className="px-5 py-10 sm:px-8 lg:py-28">
       <div className="mx-auto max-w-[1120px]">
-        <Reveal className="mb-6 lg:mb-12">
+        <Reveal className="mx-auto mb-6 max-w-[680px] text-center lg:mb-12">
           <h2 className="text-[24px] font-semibold leading-[1.15] tracking-[-0.02em] text-[#f2f4f8] lg:text-[40px]">
             Certifications
           </h2>
-          <p className="mt-3 max-w-[680px] text-[15px] leading-normal text-[#a4adbe] lg:text-[20px]">
-            Courses and assessments from Google Cloud, AWS, Microsoft, MIT Professional Education, EUSPA, Anthropic, GitHub and LinkedIn.
-          </p>
         </Reveal>
 
         <Reveal delay={60}>
@@ -128,19 +125,16 @@ const SkillsSection = () => {
         </Reveal>
 
         <div className="mt-16 lg:mt-24">
-          <Reveal className="mb-6 lg:mb-12">
+          <Reveal className="mx-auto mb-6 max-w-[680px] text-center lg:mb-12">
             <h2 className="text-[24px] font-semibold leading-[1.15] tracking-[-0.02em] text-[#f2f4f8] lg:text-[40px]">
               Toolkit
             </h2>
-            <p className="mt-3 max-w-[680px] text-[15px] leading-normal text-[#a4adbe] lg:text-[20px]">
-              What I reach for day to day, grouped by the kind of work.
-            </p>
           </Reveal>
 
           <div className="space-y-8 lg:space-y-10">
             {rows.map((row, i) => (
                 <Reveal key={row.title} delay={Math.min(i, 2) * 60} className="min-w-0">
-                  <p className="mb-3 text-[13px] font-medium text-[#f2f4f8]">{row.title}</p>
+                  <p className="mb-3 text-center text-[13px] font-medium text-[#f2f4f8]">{row.title}</p>
                   <LogoLoop
                     logos={row.logos}
                     speed={36}

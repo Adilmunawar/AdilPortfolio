@@ -93,15 +93,8 @@ const ServicesSection = () => {
   return (
     <section id="services" className="px-5 py-10 sm:px-8 lg:py-28">
       <div className="mx-auto max-w-page">
-        <Reveal className="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between lg:mb-12">
-          <div className="max-w-prose">
-            <p className="text-small font-medium text-secondary">Services</p>
-            <h2 className="mt-2 text-h2 text-primary">What I do</h2>
-            <p className="mt-3 text-lede text-secondary">Four kinds of work I take on, from a single model to a shipped product.</p>
-          </div>
-          <a href="#contact" className="btn-secondary focus-ring h-11 shrink-0 self-start md:h-10 md:self-auto">
-            Get in touch
-          </a>
+        <Reveal className="mx-auto mb-8 max-w-prose text-center lg:mb-12">
+          <h2 className="text-h2 text-primary">What I do</h2>
         </Reveal>
 
         <div className="grid grid-cols-2 gap-3 md:gap-4 lg:gap-6">
@@ -135,7 +128,7 @@ const ServicesSection = () => {
                         ))}
                       </ul>
 
-                      <div className="mt-5 flex flex-wrap items-center gap-1.5">
+                      <div className="mt-5 flex flex-wrap items-center gap-1.5 pb-5">
                         <span className="mr-1 text-caption text-tertiary">Stack</span>
                         {service.stack.map((tech) => (
                           <span key={tech} className="inline-flex h-6 items-center rounded-xs border border-subtle bg-bg-2 px-2 text-caption text-secondary">
@@ -144,11 +137,11 @@ const ServicesSection = () => {
                         ))}
                       </div>
 
-                      <p className="mt-5 text-small text-tertiary">
+                      <p className="mt-auto min-h-[3.9em] text-small text-tertiary lg:min-h-[2.6em]">
                         <span className="text-secondary">Engagement</span> · {service.engagement}
                       </p>
 
-                      <div className="mt-auto border-t border-subtle pt-4">
+                      <div className="mt-4 border-t border-subtle pt-4">
                         <a
                           href="#contact"
                           className="focus-ring group/link -my-2 inline-flex min-h-[44px] items-center gap-1.5 rounded-md text-small font-medium text-accent-text transition-colors duration-150 ease-standard md:hover:text-[#8ab8ff]"
@@ -172,7 +165,7 @@ const ServicesSection = () => {
                 <h3 className="text-h3 text-primary">How an engagement runs</h3>
                 <p className="text-small text-tertiary">Scope first, then short increments you can review.</p>
               </div>
-              <ol className="mt-5 grid grid-cols-2 gap-5 md:grid-cols-4 md:gap-6 lg:mt-8">
+              <ol className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-4 md:gap-6 lg:mt-8">
                 {steps.map((step, i) => (
                   <li key={step.title} className="relative block pt-6 md:pt-7">
                     <span aria-hidden className="absolute left-0 top-0 z-10 h-3 w-3 shrink-0 rounded-full border-2 border-accent-text bg-bg-1" />

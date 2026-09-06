@@ -97,13 +97,8 @@ export default function BadgesShowcase() {
         const Icon = group.icon;
         return (
           <Reveal key={group.title} delay={Math.min(i, 2) * 60}>
-            <div className="flex items-center gap-3">
-              <p className="text-[13px] font-medium text-[#f2f4f8]">{group.title}</p>
-              <span className="font-mono text-[12px] tabular-nums text-[#6f7888]">
-                {group.badges.length} {group.badges.length === 1 ? 'badge' : 'badges'}
-              </span>
-            </div>
-            <div className="cascade mt-3 grid grid-cols-6 gap-x-1.5 gap-y-3 sm:mt-4 sm:flex sm:flex-wrap sm:gap-x-4 sm:gap-y-6" role="list" aria-label={`${group.title} badges`}>
+            <p className="text-center text-[13px] font-medium text-[#f2f4f8]">{group.title}</p>
+            <div className="cascade mt-3 grid grid-cols-6 gap-x-1.5 gap-y-3 sm:mt-4 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-4 sm:gap-y-6" role="list" aria-label={`${group.title} badges`}>
               {group.badges.map((badge, j) => (
                 <Badge key={badge.id} badge={badge} index={j} />
               ))}

@@ -143,13 +143,10 @@ export default function CaseStudiesSection() {
     <>
       <section id="case-studies" className="py-10 md:py-28 px-5 md:px-8">
         <div className="max-w-[1120px] mx-auto">
-          <Reveal className="max-w-[680px]">
+          <Reveal className="mx-auto max-w-[680px] text-center">
             <h2 className="text-[24px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
               Case studies
             </h2>
-            <p className="mt-3 md:mt-4 text-[15px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
-              Longer write-ups on how three systems were designed, what broke, and what I&apos;d change.
-            </p>
           </Reveal>
 
           <div className="mt-6 md:mt-12 grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">

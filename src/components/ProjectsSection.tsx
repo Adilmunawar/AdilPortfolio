@@ -301,14 +301,10 @@ const ProjectsSection = () => {
   return (
     <section id="projects" className="py-10 md:py-28 px-5 md:px-8">
       <div className="max-w-[1120px] mx-auto">
-        <Reveal className="max-w-[680px]">
+        <Reveal className="mx-auto max-w-[680px] text-center">
           <h2 className="text-[24px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
             Selected work
           </h2>
-          <p className="mt-3 md:mt-4 text-[15px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
-            Models and pipelines for private agri-tech clients, summarised by architecture, task and framework,
-            alongside public products with source available.
-          </p>
         </Reveal>
 
         <Reveal variant="none" delay={60} className="mt-8 md:mt-12">

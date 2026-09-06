@@ -94,13 +94,10 @@ const ContactSection = () => {
   return (
     <section id="contact" className="pt-10 md:pt-28 px-5 md:px-8">
       <div className="max-w-[1120px] mx-auto">
-        <Reveal className="max-w-[680px]">
+        <Reveal className="mx-auto max-w-[680px] text-center">
           <h2 className="text-[24px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
             Start a project
           </h2>
-          <p className="mt-3 md:mt-4 text-[15px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
-            I take on a small number of ML, geospatial and full-stack engagements. Send a short outline of what you are building and I will reply within a day.
-          </p>
 
           <div className="mt-5 md:mt-8 flex flex-row flex-wrap gap-2 sm:gap-3">
             <a

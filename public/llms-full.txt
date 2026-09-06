@@ -366,8 +366,8 @@ Courses and assessments from Google Cloud, AWS, Microsoft, Anthropic and LinkedI
 
 Public commits and problem-solving over the last year, refreshed automatically by GitHub Actions.
 
-- LeetCode: 1320 problems solved (311 easy, 568 medium, 441 hard), acceptance rate 89.7%, global ranking 12,820 — https://leetcode.com/u/AdilMunawar/
-- GitHub: 8,563 public contributions in the last year — https://github.com/AdilMunawar
+- LeetCode: 1320 problems solved (311 easy, 568 medium, 441 hard), acceptance rate 89.7%, global ranking 12,805 — https://leetcode.com/u/AdilMunawar/
+- GitHub: 8,653 public contributions in the last year — https://github.com/AdilMunawar
 
 ## Case studies
 
@@ -392,7 +392,7 @@ Terraced agriculture is close to the worst case for boundary extraction. Parcels
 
 The usual segmentation backbones all throw away resolution somewhere in the middle. A U-Net compresses the image through its encoder and rebuilds detail with skip connections; DeepLabv3+ runs at an output stride of eight or sixteen and upsamples bilinearly. For a boundary one or two pixels wide, the decision about whether a pixel is a bund has already been pooled with its neighbours before the decoder sees it, and the decoder can only smear it back out. Our early U-Net boundary maps looked plausible at a glance and were wrong at the terraces: risers between narrow strips fused into one blurred edge, and the watershed downstream merged the strips.
 
-HRNet keeps a high resolution stream alive from the first stage to the last and adds progressively lower resolution streams in parallel, at one eighth, one sixteenth and one thirty-second of the input. At the end of every stage the streams exchange information: each receives strided convolutions of the finer streams and upsampled maps of the coarser ones. The fine stream never has to reconstruct detail; it always had it, and it gains context from the coarse streams without paying in resolution. The W48 variant widens every stream's channels relative to W18 and W32. It costs memory per tile, but inference here is an offline batch job, not a real-time service, so we spent the budget on capacity rather than latency.
+HRNet keeps a high resolution stream alive from the first stage to the last and adds progressively lower resolution streams in parallel, at one eighth, one sixteenth and one thirty-second of the input. At the end of every stage the streams exchange information: each receives strided convolutions of the finer streams and upsampled maps of the coarser ones. The fine stream never has to reconstruct detail; it always had it, and it gains context from the coarse streams without paying in resolution. The W48 variant widens every stream's channels relative to W18 and W32. It costs memory per tile, but inference here is an offline batch job, not a real time service, so we spent the budget on capacity rather than latency.
 
 ```figure
 hrnet-kishtwar-boundaries/streams
@@ -415,7 +415,7 @@ Splitting third. Random tile splits leak: a validation tile shares its edges, cr
 
 The network predicts two channels. The first is the boundary: the digitised polygon edges rasterised into the image grid and dilated by a pixel or two, so the target is not a single pixel line the network can miss by one pixel and be scored as fully wrong. The second is the parcel interior, eroded by the same amount. We do not vectorise the interior channel, but it is an easier auxiliary task that shares features with the hard one, and it provides marker seeds for the watershed later.
 
-Boundary pixels are a tiny fraction of the image, so plain cross-entropy learns to predict background and stop. Dice loss on the boundary channel helps because it ignores the class ratio. What helped most was a per-pixel weight map from the distance transform of the boundary labels: pixels near an edge carry more weight and pixels deep inside a large parcel very little, so the penalty concentrates at the transition. A boundary-aware loss that penalises the distance between predicted and reference contours narrowed the edges further but was unstable early in training, when predictions were far from any contour; distance-weighted binary cross-entropy plus Dice was easier to tune and gave edges of the same quality once skeletonisation was in place.
+Boundary pixels are a tiny fraction of the image, so plain cross-entropy learns to predict background and stop. Dice loss on the boundary channel helps because it ignores the class ratio. What helped most was a per pixel weight map from the distance transform of the boundary labels: pixels near an edge carry more weight and pixels deep inside a large parcel very little, so the penalty concentrates at the transition. A boundary aware loss that penalises the distance between predicted and reference contours narrowed the edges further but was unstable early in training, when predictions were far from any contour; distance-weighted binary cross-entropy plus Dice was easier to tune and gave edges of the same quality once skeletonisation was in place.
 
 Augmentation was restricted on purpose. Flips, right-angle rotations and brightness jitter are useful; large scale augmentation is not, because the physical size of a terrace is diagnostic, and a network taught that parcels can be any size will split a large field along a plough line.
 
@@ -558,15 +558,15 @@ Next time the head would predict at full resolution rather than one quarter, at 
 ### Crop Type Classification from Sentinel-2 Time Series
 
 - Stack: Sentinel-2 L2A, xarray, PyTorch, XGBoost, PostGIS
-- Summary: Per-parcel crop mapping for Zaraat Dost Private Limited: cloud-masked Sentinel-2 index series resampled onto a regular grid, a bidirectional GRU with attention pooling, and scheduled district-wide inference delivered as a PostGIS layer.
+- Summary: Per parcel crop mapping for Zaraat Dost Private Limited: cloud-masked Sentinel-2 index series resampled onto a regular grid, a bidirectional GRU with attention pooling, and scheduled district-wide inference delivered as a PostGIS layer.
 - Challenge: Label every parcel in a district with its crop from Sentinel-2 alone, in a region where the monsoon removes weeks of usable imagery, the scene classification layer misses haze and small shadows, survey labels carry spatial and temporal errors, and two major crops dwarf the minor crops the client most wanted mapped.
 - Solution: We built per-parcel index series from L2A with a combined SCL and U-Net mask, resampled them onto a ten-day grid with explicit observed and age channels instead of smoothing over gaps, moved from an XGBoost baseline through a temporal CNN to a bidirectional GRU with attention pooling, validated with spatial block folds and a held-out season, and ran inference as idempotent scheduled stages that write a per-parcel prediction layer to PostGIS.
 
 #### Crop type classification from Sentinel-2 time series
 
-Zaraat Dost Private Limited needed to know what was growing in every parcel of a district without sending a surveyor to every field. Sentinel-2 passes over the same ground every five days, and a crop reveals itself less by how it looks on one date than by how its greenness rises and falls across the season. So this was a time-series problem wearing a satellite costume: turn a stack of cloud-riddled scenes into one clean sequence per parcel, learn the shape of each crop's season, and put a label with a confidence on every polygon in the district. The parcel polygons already existed from the farm digitisation work, so the unit of prediction was one label per parcel, not per pixel. The crop calendar has two seasons, rabi in winter and kharif in summer, with the monsoon in the middle of kharif, and the client wanted the map refreshed as new imagery arrived and delivered as a layer their agronomists could open in the tools they already used.
+Zaraat Dost Private Limited needed to know what was growing in every parcel of a district without sending a surveyor to every field. Sentinel-2 passes over the same ground every five days, and a crop reveals itself less by how it looks on one date than by how its greenness rises and falls across the season. So this was a time series problem wearing a satellite costume: turn a stack of cloud-riddled scenes into one clean sequence per parcel, learn the shape of each crop's season, and put a label with a confidence on every polygon in the district. The parcel polygons already existed from the farm digitisation work, so the unit of prediction was one label per parcel, not per pixel. The crop calendar has two seasons, rabi in winter and kharif in summer, with the monsoon in the middle of kharif, and the client wanted the map refreshed as new imagery arrived and delivered as a layer their agronomists could open in the tools they already used.
 
-##### Building per-parcel time series from L2A
+##### Building per parcel time series from L2A
 
 We worked from Level-2A products, which are atmospherically corrected and ship with a scene classification layer (SCL). From the thirteen bands we kept the four 10 m bands (blue, green, red, near infrared), the red-edge and narrow near infrared bands at 20 m, and the two shortwave infrared bands, with the 20 m bands resampled onto the 10 m grid by nearest-neighbour so no sub-pixel structure was invented.
 
@@ -626,7 +626,7 @@ Irregular L2A observations with cloud and shadow dates masked out, then resample
 
 ##### Gap filling and resampling to a regular grid
 
-After masking, each parcel had a ragged list of clear observations at irregular dates: five-day spacing where orbit tracks do not overlap, closer where they do, and long holes wherever weather had intervened. Sequence models want a fixed-length tensor, so we resampled every parcel onto the same grid of ten-day steps across the season.
+After masking, each parcel had a ragged list of clear observations at irregular dates: five-day spacing where orbit tracks do not overlap, closer where they do, and long holes wherever weather had intervened. Sequence models want a fixed-length tensor, so we resampled every parcel onto the same grid of ten day steps across the season.
 
 Linear interpolation in time carried values across short gaps. The monsoon produces gaps of several weeks over the whole district, and linear interpolation across a six-week hole draws a confident straight line through exactly the period where rice is transplanted and greens up. We tried a Whittaker smoother and a Savitzky-Golay filter. They produced beautiful curves and hid the problem: the model could no longer tell an observed value from an invented one, and it learned to trust the invented ones.
 
@@ -666,18 +666,18 @@ Class imbalance was severe. Two major crops covered the large majority of survey
 
 ##### Models, in the order we tried them
 
-The baseline was XGBoost on hand-crafted temporal features: for each index the maximum, minimum, mean, amplitude, the step at which the maximum occurred, the slopes of green-up and senescence, the integral over the season, plus the raw values at each grid step. It trained in minutes and was strong on the major crops. It struggled on the minor crops and, more seriously, it degraded on a season where sowing had been late, because features like "step of maximum" move with the calendar and trees split on exact thresholds.
+The baseline was XGBoost on hand-crafted temporal features: for each index the maximum, minimum, mean, amplitude, the step at which the maximum occurred, the slopes of green up and senescence, the integral over the season, plus the raw values at each grid step. It trained in minutes and was strong on the major crops. It struggled on the minor crops and, more seriously, it degraded on a season where sowing had been late, because features like "step of maximum" move with the calendar and trees split on exact thresholds.
 
-The second model was a one-dimensional temporal CNN: a few convolutional layers over the time axis with small kernels, batch normalisation, and global average pooling into a linear head. Convolution is shift-equivariant, so a late season looks like the same pattern moved along the axis, and the CNN handled calendar shift far better than the trees. The pooling threw away where in the season things happened, though, and two crops with similar green-up shapes at different dates became confusable.
+The second model was a one-dimensional temporal CNN: a few convolutional layers over the time axis with small kernels, batch normalisation, and global average pooling into a linear head. Convolution is shift-equivariant, so a late season looks like the same pattern moved along the axis, and the CNN handled calendar shift far better than the trees. The pooling threw away where in the season things happened, though, and two crops with similar green up shapes at different dates became confusable.
 
-The third was a bidirectional GRU over the resampled sequence, with the observed and age channels as input. We tried an LSTM first and switched to the GRU because it trained faster with no loss we could detect at this sequence length. Reading in both directions means the state at each step knows what came before and after, which is what you need to say "this dip in the middle is a gap, not a harvest." On top of the recurrent states we placed an attention pooling layer that learns a weight per step and takes a weighted sum, instead of using only the final hidden state. That single change made the largest difference on minor crops, and the attention weights became a diagnostic: for rice they concentrated on the transplanting flood and the late peak, for wheat on the winter green-up.
+The third was a bidirectional GRU over the resampled sequence, with the observed and age channels as input. We tried an LSTM first and switched to the GRU because it trained faster with no loss we could detect at this sequence length. Reading in both directions means the state at each step knows what came before and after, which is what you need to say "this dip in the middle is a gap, not a harvest." On top of the recurrent states we placed an attention pooling layer that learns a weight per step and takes a weighted sum, instead of using only the final hidden state. That single change made the largest difference on minor crops, and the attention weights became a diagnostic: for rice they concentrated on the transplanting flood and the late peak, for wheat on the winter green up.
 
 ```figure
 sentinel2-crop-timeseries/temporal-model
 The bidirectional GRU reads the ten-day sequence in both directions, attention pooling weights the informative steps, and the head emits per-class confidence.
 ```
 
-The GRU with attention became the final model. It won on the metrics we trusted (spatially blocked validation and a held-out season), it gave calibrated confidences after temperature scaling, and it needed none of the feature engineering the baseline did. A transformer encoder was tried briefly and dropped, because with our label count it overfitted quickly and gave nothing the GRU did not.
+The GRU with attention became the final model. It won on the metrics we trusted (spatially blocked validation and a held out season), it gave calibrated confidences after temperature scaling, and it needed none of the feature engineering the baseline did. A transformer encoder was tried briefly and dropped, because with our label count it overfitted quickly and gave nothing the GRU did not.
 
 ```python
 import torch
@@ -712,7 +712,7 @@ sentinel2-crop-timeseries/spatial-blocks
 Validation folds are dealt by spatial block so a test parcel never has a training neighbour, and one whole season is held out to measure transfer to a different calendar.
 ```
 
-The second leakage is temporal. If a parcel appears in training with one season and in test with the next, the model can learn that this field is always rice. We kept whole seasons separate: train and validate within the seasons we had, then measure on a season that was never seen. The held-out season scores were consistently lower than the blocked cross-validation scores, and closing that gap became the actual job.
+The second leakage is temporal. If a parcel appears in training with one season and in test with the next, the model can learn that this field is always rice. We kept whole seasons separate: train and validate within the seasons we had, then measure on a season that was never seen. The held out season scores were consistently lower than the blocked cross-validation scores, and closing that gap became the actual job.
 
 Augmentation was done at the observation level rather than on the tensors. For each training parcel we randomly dropped a fraction of the clear observations, shifted all dates by a few days to mimic a late or early season, scaled the amplitude slightly, and then ran the same resampler as production. Jittering the resampled tensor directly had produced fills that never occur in real data.
 
@@ -729,7 +729,7 @@ def augment_observations(obs: pd.DataFrame, rng: np.random.Generator,
 
 ##### Inference at district scale
 
-The client wanted the map refreshed as the season progressed, over a district's worth of parcels, so the pipeline was written as scheduled, idempotent stages. A scheduler wakes on a fixed cadence, lists new L2A tiles intersecting the district, and records them in a manifest. A masking stage runs the SCL and U-Net masks per tile and writes valid-pixel rasters. An aggregation stage appends new dates to a per-parcel observation table. A resampling stage rebuilds the grid tensors. The model stage batches parcels through the GRU on one GPU and writes a prediction row per parcel per run: class, confidence, number of clear observations so far, and run date.
+The client wanted the map refreshed as the season progressed, over a district's worth of parcels, so the pipeline was written as scheduled, idempotent stages. A scheduler wakes on a fixed cadence, lists new L2A tiles intersecting the district, and records them in a manifest. A masking stage runs the SCL and U-Net masks per tile and writes valid-pixel rasters. An aggregation stage appends new dates to a per parcel observation table. A resampling stage rebuilds the grid tensors. The model stage batches parcels through the GRU on one GPU and writes a prediction row per parcel per run: class, confidence, number of clear observations so far, and run date.
 
 ```mermaid
 flowchart LR
@@ -750,7 +750,7 @@ Predictions landed in a PostGIS table keyed by parcel id, joined to the parcel p
 
 ##### What we would do first next time
 
-The mask and the resampler, not the model. Every model trained on the earlier, leakier sequences looked fine in a random split and fell apart on a held-out season, and the fix was upstream every time.
+The mask and the resampler, not the model. Every model trained on the earlier, leakier sequences looked fine in a random split and fell apart on a held out season, and the fix was upstream every time.
 
 ### Serving Remote Sensing Models: On Demand Inference and Scheduled Jobs
 
@@ -767,9 +767,9 @@ The segmentation and classification models we built for farmland mapping spent t
 
 We serve ONNX rather than PyTorch for two reasons. The inference image does not need the training framework, so it is smaller and starts faster, and ONNX Runtime gives us a stable, well-tested CPU path with explicit threading control. The cost is an export step that can silently change what the model computes, so the export is never trusted without a parity check.
 
-Two classes of model go through it. The segmentation models take a multi-band tile and return a per-pixel map; the classification models take a stack of Sentinel-2 observations for a parcel and return class logits. Both are exported with a dynamic batch axis, and the segmentation models also with dynamic height and width so tile size is a deployment choice, not a training-time constant.
+Two classes of model go through it. The segmentation models take a multi-band tile and return a per pixel map; the classification models take a stack of Sentinel-2 observations for a parcel and return class logits. Both are exported with a dynamic batch axis, and the segmentation models also with dynamic height and width so tile size is a deployment choice, not a training-time constant.
 
-The parity check runs the original PyTorch model and the exported graph on the same held-out inputs and compares outputs under an absolute and relative tolerance. It also compares the argmax maps, because a small numerical difference in logits is acceptable while a flipped class at a boundary pixel is exactly the kind of regression we need to see.
+The parity check runs the original PyTorch model and the exported graph on the same held out inputs and compares outputs under an absolute and relative tolerance. It also compares the argmax maps, because a small numerical difference in logits is acceptable while a flipped class at a boundary pixel is exactly the kind of regression we need to see.
 
 ```python
 import numpy as np
@@ -942,7 +942,7 @@ Retries back off exponentially and are capped, and the error text is kept on the
 
 Every trained model is logged to MLflow with its parameters, evaluation metrics, the parity results from export, and the ONNX artifact, and registered under a model name. The services and the jobs never refer to a file. They refer to a registry alias, `production` or `candidate`, and resolve it to a specific version at startup. That version number is written into every output row and into every run.
 
-Promotion is a checklist, not a button. A candidate must pass the parity gate, must meet or beat the current production version on the held-out evaluation set, and must run in shadow on the last few scheduled ticks, producing outputs into a separate schema so the two versions can be compared over real recent imagery rather than the training distribution. Only then is the alias moved, and moving the alias is a one-line change that is itself logged. The services pick up the new version on their next restart, which is a deliberate choice: hot-swapping a session inside a live process is possible, but a restart is a clean boundary and the containers start in seconds.
+Promotion is a checklist, not a button. A candidate must pass the parity gate, must meet or beat the current production version on the held out evaluation set, and must run in shadow on the last few scheduled ticks, producing outputs into a separate schema so the two versions can be compared over real recent imagery rather than the training distribution. Only then is the alias moved, and moving the alias is a one-line change that is itself logged. The services pick up the new version on their next restart, which is a deliberate choice: hot-swapping a session inside a live process is possible, but a restart is a clean boundary and the containers start in seconds.
 
 ```figure
 model-serving-scheduled-inference/job-loop
@@ -962,7 +962,7 @@ Because every output carries its model version and every process resolves an ali
 ### An Enterprise RAG Pipeline That Can Say It Does Not Know
 
 - Stack: pgvector, PostgreSQL, FastAPI, Redis, Claude API
-- Summary: Grounded question answering over a private knowledge base, built so that refusal is a designed outcome: structure-aware chunking, hybrid retrieval fused by reciprocal rank, a cross-encoder reranker, verified citations, and an evaluation harness that existed before any prompt was tuned.
+- Summary: Grounded question answering over a private knowledge base, built so that refusal is a designed outcome: structure aware chunking, hybrid retrieval fused by reciprocal rank, a cross-encoder reranker, verified citations, and an evaluation harness that existed before any prompt was tuned.
 - Challenge: The client wanted question answering over policies, manuals and support tickets, with one non-negotiable: a confident wrong answer about a policy or a safety procedure was worse than no answer. Fixed-window chunking split tables and lost section context, dense retrieval missed exact product codes, and without a measurement of retrieval and faithfulness there was no honest way to tune anything.
 - Solution: Documents are parsed into trees and chunked along their own structure with heading paths attached. Dense pgvector search and BM25 run side by side and are merged with reciprocal rank fusion, a cross-encoder reranks the candidates, and a gate compares the best score with a calibrated threshold before generation. Every cited sentence is verified against its source span, unsupported answers are rejected, and a CI harness reports retrieval recall at k, faithfulness and refusal accuracy for every release, with content-hash, query and reranker caches keyed by index version.
 
@@ -970,7 +970,7 @@ Because every output carries its model version and every process resolves an ali
 
 The client had a private knowledge base of policies, procedures, product manuals and resolved support tickets, and wanted a question answering system over it. The requirement that shaped the whole design arrived in the first meeting: a confident wrong answer about a leave policy or a safety procedure was worse than no answer at all. So the system had to cite what it used, and it had to refuse when it had nothing worth citing. Most of the engineering below exists to make refusal a first-class outcome rather than an accident.
 
-##### Ingestion and structure-aware chunking
+##### Ingestion and structure aware chunking
 
 The first version chunked documents into fixed windows of a few hundred tokens with some overlap, because that is what every tutorial does. It failed in ways that were obvious once we looked at retrieved passages. Tables were cut across rows, so a chunk might contain the header of a rate table and none of the rates. Numbered procedure steps were split so that step four appeared without the warning in step three. Worst of all, a chunk from deep inside a document had no idea which document or section it came from, so a passage that stated a day limit retrieved well for the wrong policy.
 
@@ -1193,7 +1193,7 @@ The secret goes from the QR payload through the parser into an AES-GCM encrypted
 
 TOTP is HOTP with the counter set to the number of periods since the Unix epoch. HOTP is an HMAC over the eight byte big-endian counter, followed by dynamic truncation: take the low four bits of the last byte as an offset, read four bytes from that offset, mask the top bit, reduce modulo ten to the power of the digit count. All of this is a few lines over `crypto.subtle`, and we chose to write those lines rather than pull in a library, because the surface we most wanted to be able to read end to end was exactly this one.
 
-The important detail is how the key is imported. `crypto.subtle.importKey` is called with `extractable` set to false, so the HMAC key object that lives in memory during a session cannot be exported back to bytes by any script, including ours. The raw secret bytes are needed only twice: once when parsing the QR, and once when re-importing after the vault is decrypted. Both are short-lived.
+The important detail is how the key is imported. `crypto.subtle.importKey` is called with `extractable` set to false, so the HMAC key object that lives in memory during a session cannot be exported back to bytes by any script, including ours. The raw secret bytes are needed only twice: once when parsing the QR, and once when re-importing after the vault is decrypted. Both are short lived.
 
 ##### Encryption at rest and the key derivation choice
 
@@ -1249,7 +1249,7 @@ The biometric check is the feature people ask about first, so it is worth being 
 
 That descriptor is not a key. It varies from frame to frame, so it cannot be fed to a KDF, and even if it could, a face is not a secret. The gate therefore sits in front of the code list, not in front of decryption. Within an unlocked session, when the inactivity timer fires or the user taps lock, the vault key stays in memory but the interface hides every code behind the camera check. This gives the thing people actually want, which is not having to type a long passphrase every time they pick up the laptop, without pretending the face is protecting the ciphertext.
 
-What it protects against is the second item on the threat list: a colleague glancing at an unattended screen, a code list left open in a shared space. What it does not protect against is an attacker with the device and a photograph, a compromised page, or anyone with the vault file, and the settings screen says so in plain words. The threshold is a trade-off between false rejections in poor light and false acceptances of similar faces; we set it conservatively and always leave the passphrase as the fallback, since a gate that locks out its owner is a gate that gets disabled.
+What it protects against is the second item on the threat list: a colleague glancing at an unattended screen, a code list left open in a shared space. What it does not protect against is an attacker with the device and a photograph, a compromised page, or anyone with the vault file, and the settings screen says so in plain words. The threshold is a tradeoff between false rejections in poor light and false acceptances of similar faces; we set it conservatively and always leave the passphrase as the fallback, since a gate that locks out its owner is a gate that gets disabled.
 
 ```figure
 adinox-authenticator/unlock-flow
@@ -1516,11 +1516,11 @@ Here are the options I weighed:
 
 ##### Streaming results with Server-Sent Events
 
-A plain REST endpoint waits for the whole job before it answers. I switched the parse endpoint to Server-Sent Events so each finished candidate is pushed the moment it is ready. That changes what the recruiter feels: perceived latency collapses from "the entire batch" to "the first candidate." It is also a reliability feature: a long-running connection that emits progress is far less likely to be killed as an idle request than one that goes silent for minutes.
+A plain REST endpoint waits for the whole job before it answers. I switched the parse endpoint to Server-Sent Events so each finished candidate is pushed the moment it is ready. That changes what the recruiter feels: perceived latency collapses from "the entire batch" to "the first candidate." It is also a reliability feature: a long running connection that emits progress is far less likely to be killed as an idle request than one that goes silent for minutes.
 
 ##### Ranking: cheap filter first, vectors second
 
-Semantic search over every stored candidate is wasteful when most of them fail a hard requirement anyway. So ranking runs in two stages: a SQL pre-filter on non-negotiable criteria, then a vector similarity search on whatever survives.
+Semantic search over every stored candidate is wasteful when most of them fail a hard requirement anyway. So ranking runs in two stages: a SQL prefilter on non-negotiable criteria, then a vector similarity search on whatever survives.
 
 ```sql
 select id, full_name, 1 - (embedding <=> $1) as score
@@ -1532,9 +1532,9 @@ order by embedding <=> $1
 limit 25;
 ```
 
-Filtering first keeps the vector scan small and the query fast. I measured query latency before and after adding the pre-filter rather than trusting intuition, and the pre-filtered path was consistently the cheaper one.
+Filtering first keeps the vector scan small and the query fast. I measured query latency before and after adding the prefilter rather than trusting intuition, and the pre-filtered path was consistently the cheaper one.
 
-##### The hardest trade-off: partial failure
+##### The hardest tradeoff: partial failure
 
 In a batch of a hundred, something will fail: a malformed PDF, a transient `429`, a provider hiccup. The design rule was that one bad item must never sink the batch. A lane that hits a rate limit backs off with exponential delay and returns its item to the queue for another lane to retry. If the model is unreachable after retries, the item falls back to a keyword extraction path and is flagged so a human can review it later. The system degrades to "less clever" rather than to "broken."
 
@@ -1554,7 +1554,7 @@ Batch parsing that finishes reliably at the sizes real users upload, a shortlist
 
 1. Size concurrency to your rate limit, not your CPU count.
 2. Streaming is a reliability feature, not only a UX nicety.
-3. A cheap pre-filter is what makes vector search affordable.
+3. A cheap prefilter is what makes vector search affordable.
 4. Design the failure path before the happy path.
 5. Sanitize untrusted input before the model sees it, not after.
 
@@ -1618,7 +1618,7 @@ The goal is that the system degrades in quality rather than falling over. A recr
 
 A chatbot forgets everything when the tab closes. An agent needs memory that survives, and it should store meaning, not just strings. When a document arrives, I embed it and keep the vector alongside the row. Retrieval then works by similarity: a search for "frontend engineer" surfaces a candidate who lists React and TypeScript even if that exact phrase never appears.
 
-The trap here is retrieving too much. Vector search is only cheap when the candidate set is already small, so I pair it with a SQL pre-filter on hard constraints. Filter to what is possible, then rank by meaning.
+The trap here is retrieving too much. Vector search is only cheap when the candidate set is already small, so I pair it with a SQL prefilter on hard constraints. Filter to what is possible, then rank by meaning.
 
 ##### Part 5: the immune system
 
@@ -1634,10 +1634,10 @@ Agents ingest untrusted data (uploaded files, form fields, external submissions)
 | Cognition | Zod/JSON schemas on every model response |
 | Workers | Bounded pool across API keys inside an Edge Function |
 | Reflexes | Exponential backoff plus a keyword fallback path |
-| Memory | pgvector embeddings with a SQL pre-filter |
+| Memory | pgvector embeddings with a SQL prefilter |
 | Immune system | Input sanitization and Row Level Security |
 
-##### The trade-offs worth naming
+##### The tradeoffs worth naming
 
 Structure costs flexibility: a strict schema occasionally rejects a valid but oddly phrased answer, so the retry path has to be forgiving. Parallelism costs determinism: results arrive out of order, which is why streaming and stable sorting matter. Memory costs storage and staleness: embeddings drift as the underlying model changes, so re-embedding on a schedule has to be part of the plan. None of these are reasons to avoid the pattern; they are the things to budget for.
 
@@ -1652,13 +1652,13 @@ Structure costs flexibility: a strict schema occasionally rejects a valid but od
 ### The Supabase Sovereign
 
 - Stack: Supabase, Postgres, System Design, Resilience, Edge Functions
-- Summary: How I keep Postgres-backed backends fast and secure on Supabase under serverless load: connection pooling, targeted indexing, edge compute, async webhooks, and Row Level Security, with the trade-off behind each decision.
+- Summary: How I keep Postgres-backed backends fast and secure on Supabase under serverless load: connection pooling, targeted indexing, edge compute, async webhooks, and Row Level Security, with the tradeoff behind each decision.
 - Challenge: Serverless frontends spawn thousands of short-lived functions, each wanting a database connection, and a modestly sized Postgres hits its connection ceiling long before it runs out of CPU. Left unmanaged, that pattern takes the whole backend down under a traffic spike.
 - Solution: Put a transaction-mode pooler in front of the database, index for the queries actually run, keep heavy logic in Edge Functions off the shared database CPU, push slow side effects to async pg_net webhooks, and treat default-deny Row Level Security as the real authorization boundary.
 
 #### Building resilient backends on Supabase
 
-Across the products I ship on Supabase (the AdiCorp HRMS, the Federals news CMS, the Aditron chat app, the AdiNox authenticator), the hard part was never storing data. It was surviving the connection pattern that serverless frontends produce: thousands of short-lived functions, each wanting a database connection, all at once. This is a walk through the decisions that keep a Postgres-backed backend fast and secure under that load, and the trade-offs behind each one.
+Across the products I ship on Supabase (the AdiCorp HRMS, the Federals news CMS, the Aditron chat app, the AdiNox authenticator), the hard part was never storing data. It was surviving the connection pattern that serverless frontends produce: thousands of short lived functions, each wanting a database connection, all at once. This is a walk through the decisions that keep a Postgres-backed backend fast and secure under that load, and the tradeoffs behind each one.
 
 ##### The request path
 
@@ -1680,9 +1680,9 @@ Each direct Postgres connection costs real memory. In a serverless world the fro
 The fix is a pooler in front of the database. Supabase provides Supavisor; pointing the app at the pooler instead of the database directly changes the model from one connection per client to many clients sharing a small pool. The choice that matters is the mode:
 
 - **Session mode** holds a connection for the life of a client session. Use it when you need session-level features like prepared statements or `SET` state.
-- **Transaction mode** returns the connection to the pool the instant a statement finishes. This is what lets a handful of real connections serve a large number of concurrent, short-lived function invocations.
+- **Transaction mode** returns the connection to the pool the instant a statement finishes. This is what lets a handful of real connections serve a large number of concurrent, short lived function invocations.
 
-For serverless functions, transaction mode is almost always the right default. The trade-off is that anything relying on session state has to be rethought, which is a feature, not a bug: it forces stateless request handling.
+For serverless functions, transaction mode is almost always the right default. The tradeoff is that anything relying on session state has to be rethought, which is a feature, not a bug: it forces stateless request handling.
 
 ##### Indexing for the queries you actually run
 
@@ -1738,7 +1738,7 @@ select net.http_post(
 );
 ```
 
-The trade-off is that the work is now fire-and-forget, so it needs its own logging and retry story; an async webhook that silently fails is worse than a slow synchronous one.
+The tradeoff is that the work is now fire-and-forget, so it needs its own logging and retry story; an async webhook that silently fails is worse than a slow synchronous one.
 
 ##### Realtime, with the right primitive
 
@@ -2351,7 +2351,7 @@ Dice also has the same blindness to distance, only sharper. A one pixel line pre
 
 ##### Distance transform weighting
 
-The first fix that moved the needle is borrowed from the original U-Net paper, where a per-pixel weight map forces the network to learn the thin gaps between touching cells. Our variant is simpler. Take the Euclidean distance transform of the background, so every pixel knows how far it is from the nearest boundary pixel, and build a weight that is a Gaussian bump around the line on top of a constant floor. Pixels on and next to the line dominate the loss, and pixels in the middle of a field keep a small weight so the model still learns to stay quiet there.
+The first fix that moved the needle is borrowed from the original U-Net paper, where a per pixel weight map forces the network to learn the thin gaps between touching cells. Our variant is simpler. Take the Euclidean distance transform of the background, so every pixel knows how far it is from the nearest boundary pixel, and build a weight that is a Gaussian bump around the line on top of a constant floor. Pixels on and next to the line dominate the loss, and pixels in the middle of a field keep a small weight so the model still learns to stay quiet there.
 
 The width of the bump should follow the label quality rather than the line width. A narrow bump punishes a prediction one pixel off very hard, which is right when the labels are accurate to a pixel and wrong when they are not; when we moved to a reference set digitised at a coarser zoom, the same sigma made the loss jump around and we widened it. The map is cheap, so we compute it in the dataloader workers after augmentation rather than storing it, for a reason covered below.
 
@@ -3138,7 +3138,7 @@ Enabling RLS on a live table is default deny from the instant the statement comm
 
 #### Build the RAG Evaluation Harness Before You Touch the Prompt
 
-The enterprise RAG pipeline answers questions over a private company knowledge base: structure-aware chunking, embeddings in pgvector, hybrid dense plus keyword retrieval, a cross-encoder reranker, and answers grounded with inline citations. For the first few weeks we tuned the answer prompt against a handful of questions we happened to know. Every change looked like an improvement to the person who made it, and two people could not agree on whether the same change was better or worse. We stopped and built the evaluation harness, and everything that followed went through it. This is how it is put together and what it caught.
+The enterprise RAG pipeline answers questions over a private company knowledge base: structure aware chunking, embeddings in pgvector, hybrid dense plus keyword retrieval, a cross-encoder reranker, and answers grounded with inline citations. For the first few weeks we tuned the answer prompt against a handful of questions we happened to know. Every change looked like an improvement to the person who made it, and two people could not agree on whether the same change was better or worse. We stopped and built the evaluation harness, and everything that followed went through it. This is how it is put together and what it caught.
 
 ##### Why prompt tuning without retrieval metrics is guessing
 
@@ -3457,7 +3457,7 @@ streaming-llm-responses/resume-offset
 After the connection drops at event 7, the client reconnects with Last-Event-ID: 7 and the server replays from the stored buffer starting at 8.
 ```
 
-On a single long-running server that store is a `Map` from generation id to an array of chunks plus a done flag, and the handler tees each frame into it as it enqueues. On serverless it has to be external, because the reconnect may land on a different instance from the one still generating; a short-lived key in Redis with a list per generation is enough. Either way the generation continues independently of the connection that started it, and a reconnecting client is served from the buffer until it catches up, then from live frames.
+On a single long running server that store is a `Map` from generation id to an array of chunks plus a done flag, and the handler tees each frame into it as it enqueues. On serverless it has to be external, because the reconnect may land on a different instance from the one still generating; a short lived key in Redis with a list per generation is enough. Either way the generation continues independently of the connection that started it, and a reconnecting client is served from the buffer until it catches up, then from live frames.
 
 ##### Partial output and idempotent resume
 
@@ -3746,13 +3746,13 @@ Passkeys, meaning WebAuthn credentials, fix both. The private key never leaves t
 ### Recon for Juicy Endpoints via URLScan Dorking
 
 - Tags: URLScan, Hacking, Pentesting, Bug Bounty
-- Summary: A methodology for authorized testers: narrowing a huge in-scope estate down to the few hosts worth a human's time through passive discovery, polite confirmation, and triage, plus the defensive mirror for asset owners.
+- Summary: A methodology for authorized testers: narrowing a huge in scope estate down to the few hosts worth a human's time through passive discovery, polite confirmation, and triage, plus the defensive mirror for asset owners.
 
 #### Recon for legacy endpoints: focusing a large scope in authorized testing
 
 > **Scope and ethics.** This is a methodology write-up for authorized penetration testers and bug-bounty participants. Everything here assumes an explicit, written engagement that lists the assets and the rules. I do not test anything I am not permitted to, and neither should you. The value is in the method (how to spend limited time on the right surface), not in any single payload.
 
-Wildcard programs and enterprise engagements hand you a huge in-scope surface: thousands of subdomains across a main brand and its acquisitions. Blindly crawling all of it wastes the one resource you cannot get back: time. The skill is triage: narrowing thousands of hosts down to the handful worth a human's attention, all within scope.
+Wildcard programs and enterprise engagements hand you a huge in scope surface: thousands of subdomains across a main brand and its acquisitions. Blindly crawling all of it wastes the one resource you cannot get back: time. The skill is triage: narrowing thousands of hosts down to the handful worth a human's attention, all within scope.
 
 ##### The insight that drives the triage
 
@@ -3781,7 +3781,7 @@ The principle: be quiet and slow. Aggressive scanning is both noisy and, on prod
 
 ##### Phase 3: triage by likely attack surface
 
-This is where judgment beats automation. With a confirmed, in-scope shortlist, score each host by what it plausibly exposes, and let that ordering decide where a human spends time.
+This is where judgment beats automation. With a confirmed, in scope shortlist, score each host by what it plausibly exposes, and let that ordering decide where a human spends time.
 
 | Endpoint pattern | Priority | Class of concern to review |
 | --- | --- | --- |
@@ -3796,7 +3796,7 @@ The table intentionally names *classes of concern*, not exploits. The tester's j
 
 Automated scanners are good at breadth and bad at judgment, so use them to surface candidates and then confirm by hand. Nuclei and similar template-driven tools can flag known issues across the shortlist; a human then validates each finding, discards false positives, and writes it up. A finding is only useful to the asset owner if it comes with clear reproduction steps, an accurate severity, and a concrete remediation.
 
-Throughout, stay inside the lines: only in-scope hosts, only the tests the program permits, and no action that could degrade a production service. If a finding would require crossing scope to confirm, the correct move is to report the exposure and stop, not to push further.
+Throughout, stay inside the lines: only in scope hosts, only the tests the program permits, and no action that could degrade a production service. If a finding would require crossing scope to confirm, the correct move is to report the exposure and stop, not to push further.
 
 ##### What good recon actually optimizes for
 

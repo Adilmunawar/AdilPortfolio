@@ -27,7 +27,7 @@ const HeroSection = () => {
           </h1>
 
           <p className="hero-in mt-2 text-[11px] font-medium leading-snug text-secondary sm:mt-4 sm:text-h3" style={enter(120)}>
-            Machine-learning engineer for <span className="text-accent-text">agricultural remote sensing</span> · full-stack developer
+            Project Lead at <span className="text-accent-text">Nexus Orbits Pakistan</span> · SaaS and Web Architect · ML Researcher and Developer
           </p>
 
           {/* Hairline under the role line: one light sweep on load, looping only on hover-capable desktops. */}
@@ -36,7 +36,7 @@ const HeroSection = () => {
           </div>
 
           <p className="hero-in mt-2 text-[11px] leading-[1.45] text-secondary sm:mt-4 sm:text-lede" style={enter(180)}>
-            I train segmentation and time-series models on satellite imagery to map fields and crops, and build the web products that put those maps in front of people.
+            I lead delivery at Nexus Orbits Pakistan, architect SaaS and web platforms end to end, and research machine learning for satellite imagery and applied AI.
           </p>
 
           <div className="hero-in mt-3 flex w-full flex-wrap gap-2 sm:mt-8 sm:w-auto sm:gap-3" style={enter(240)}>
@@ -53,7 +53,7 @@ const HeroSection = () => {
           <div className="w-full max-w-[320px]">
             <ProfileCard
               name="Adil Munawar"
-              title="ML engineer · remote sensing"
+              title="Project Lead at Nexus Orbits Pakistan - SaaS and Web Architect - ML Researcher and Developer"
               handle="adilmunawarx"
               avatarUrl="/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
               miniAvatarUrl="/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"

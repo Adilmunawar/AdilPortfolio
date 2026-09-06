@@ -717,7 +717,7 @@
     },
     {
       "title": "Crop Type Classification from Sentinel-2 Time Series",
-      "excerpt": "Per-parcel crop mapping for Zaraat Dost Private Limited: cloud-masked Sentinel-2 index series resampled onto a regular grid, a bidirectional GRU with attention pooling, and scheduled district-wide inference delivered as a PostGIS layer.",
+      "excerpt": "Per parcel crop mapping for Zaraat Dost Private Limited: cloud-masked Sentinel-2 index series resampled onto a regular grid, a bidirectional GRU with attention pooling, and scheduled district-wide inference delivered as a PostGIS layer.",
       "tech_stack": [
         "Sentinel-2 L2A",
         "xarray",
@@ -746,7 +746,7 @@
     },
     {
       "title": "An Enterprise RAG Pipeline That Can Say It Does Not Know",
-      "excerpt": "Grounded question answering over a private knowledge base, built so that refusal is a designed outcome: structure-aware chunking, hybrid retrieval fused by reciprocal rank, a cross-encoder reranker, verified citations, and an evaluation harness that existed before any prompt was tuned.",
+      "excerpt": "Grounded question answering over a private knowledge base, built so that refusal is a designed outcome: structure aware chunking, hybrid retrieval fused by reciprocal rank, a cross-encoder reranker, verified citations, and an evaluation harness that existed before any prompt was tuned.",
       "tech_stack": [
         "pgvector",
         "PostgreSQL",
@@ -814,7 +814,7 @@
     },
     {
       "title": "The Supabase Sovereign",
-      "excerpt": "How I keep Postgres-backed backends fast and secure on Supabase under serverless load: connection pooling, targeted indexing, edge compute, async webhooks, and Row Level Security, with the trade-off behind each decision.",
+      "excerpt": "How I keep Postgres-backed backends fast and secure on Supabase under serverless load: connection pooling, targeted indexing, edge compute, async webhooks, and Row Level Security, with the tradeoff behind each decision.",
       "tech_stack": [
         "Supabase",
         "Postgres",
@@ -939,7 +939,7 @@
     },
     {
       "title": "Recon for Juicy Endpoints via URLScan Dorking",
-      "excerpt": "A methodology for authorized testers: narrowing a huge in-scope estate down to the few hosts worth a human's time through passive discovery, polite confirmation, and triage, plus the defensive mirror for asset owners.",
+      "excerpt": "A methodology for authorized testers: narrowing a huge in scope estate down to the few hosts worth a human's time through passive discovery, polite confirmation, and triage, plus the defensive mirror for asset owners.",
       "tags": [
         "URLScan",
         "Hacking",
@@ -1211,11 +1211,11 @@
       "medium": 568,
       "hard": 441,
       "acceptance_rate": 89.7,
-      "ranking": 12820,
+      "ranking": 12805,
       "url": "https://leetcode.com/u/AdilMunawar/"
     },
     "github": {
-      "contributions_last_year": 8563,
+      "contributions_last_year": 8653,
       "url": "https://github.com/AdilMunawar"
     }
   },
