@@ -56,7 +56,6 @@ interface FrameProps extends CoverProps {
 export function CoverFrame({ uid, title, className, glow = [320, 180, 220], children }: FrameProps) {
   const ref = useRef<SVGSVGElement>(null);
   const [live, setLive] = useState(false);
-  const [narrow, setNarrow] = useState(false);
   const [gx, gy, gr] = glow;
 
   useEffect(() => {
@@ -67,25 +66,13 @@ export function CoverFrame({ uid, title, className, glow = [320, 180, 220], chil
     return () => io.disconnect();
   }, []);
 
-  /* `slice` fills the plate by cropping whatever overflows. On a phone the
-     plate is far narrower than the 16:9 artwork, so that crop threw away the
-     sides and left only the middle of each scene. Below sm, fit the whole
-     drawing instead and let it letterbox against the matching plate colour. */
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 639px)');
-    const sync = () => setNarrow(mq.matches);
-    sync();
-    mq.addEventListener('change', sync);
-    return () => mq.removeEventListener('change', sync);
-  }, []);
-
   return (
     <svg
       ref={ref}
       viewBox="0 0 640 360"
       width="100%"
       height="100%"
-      preserveAspectRatio={narrow ? 'xMidYMid meet' : 'xMidYMid slice'}
+      preserveAspectRatio="xMidYMid slice"
       role="img"
       aria-label={title}
       className={`${live ? 'cover-live ' : ''}${className ?? ''}`.trim()}

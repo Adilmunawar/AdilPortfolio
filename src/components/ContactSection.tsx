@@ -103,7 +103,7 @@ const ContactSection = () => {
             <a
               href={`mailto:${EMAIL}`}
               className={cn(
-                'group/cta inline-flex items-center justify-center gap-2 h-11 px-5 rounded-[8px] bg-[#0066ff] hover:bg-[#1a75ff] active:bg-[#0052cc] text-[14px] font-medium text-white transition-colors duration-150',
+                'group/cta inline-flex items-center justify-center gap-2 h-11 px-5 rounded-[8px] border border-[rgba(0,102,255,0.22)] bg-[rgba(0,102,255,0.12)] text-[14px] font-medium text-[#5c9dff] transition-colors duration-150 hover:border-[rgba(0,102,255,0.45)] hover:bg-[rgba(0,102,255,0.20)] hover:text-[#f2f4f8] active:bg-[rgba(0,102,255,0.28)]',
                 FOCUS
               )}
             >

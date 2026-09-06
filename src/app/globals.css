@@ -79,7 +79,10 @@
 
   /* Buttons used by the hero/nav; sections may reuse them. */
   .btn { @apply inline-flex items-center justify-center gap-2 rounded-md px-4 text-small font-medium whitespace-nowrap transition-colors duration-150 ease-standard; }
-  .btn-primary { @apply btn bg-accent text-white hover:bg-accent-hover active:bg-accent-active; }
+  /* A solid #0066ff block was the only fully saturated surface on the page and
+     read as foreign against the muted palette. Use the accent-surface pattern
+     already used by the icon tiles and chips instead. */
+  .btn-primary { @apply btn border border-[rgba(0,102,255,0.22)] bg-[rgba(0,102,255,0.12)] text-accent-text hover:border-[rgba(0,102,255,0.45)] hover:bg-[rgba(0,102,255,0.20)] hover:text-primary active:bg-[rgba(0,102,255,0.28)]; }
   .btn-secondary { @apply btn border border-default bg-transparent text-primary hover:border-strong hover:bg-bg-1; }
 }
 

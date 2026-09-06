@@ -53,7 +53,7 @@ const HeroSection = () => {
           <div className="w-full max-w-[320px]">
             <ProfileCard
               name="Adil Munawar"
-              title="Project Lead at Nexus Orbits Pakistan - SaaS and Web Architect - ML Researcher and Developer"
+              title=""
               handle="adilmunawarx"
               avatarUrl="/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"
               miniAvatarUrl="/adil-munawar-uploads/eaf50e40-682a-4730-ac3c-407cf3e4896e.png"

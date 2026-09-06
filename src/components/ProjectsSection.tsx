@@ -144,7 +144,7 @@ function SpecStrip({ project, className }: { project: Project; className?: strin
   );
 }
 
-function Plate({ project, fill }: { project: Project; fill?: boolean; sizes?: string }) {
+function Plate({ project, fill, spec = true }: { project: Project; fill?: boolean; spec?: boolean; sizes?: string }) {
   const Icon = CATEGORY_ICON[project.category] ?? Layers;
   return (
     <div className={fill ? 'h-full' : undefined}>
@@ -159,7 +159,7 @@ function Plate({ project, fill }: { project: Project; fill?: boolean; sizes?: st
         </span>
         <span className="absolute right-2 top-2 sm:right-3 sm:top-3 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.12em] text-[#6f7888]">{KIND_LABEL[project.kind]}</span>
       </div>
-      {!fill && <SpecStrip project={project} />}
+      {!fill && spec && <SpecStrip project={project} />}
     </div>
   );
 }
@@ -227,10 +227,13 @@ function FeaturedRow({ project, index }: { project: Project; index: number }) {
     <Reveal>
       <Hairline>
         <article className="grid grid-cols-12 gap-3 md:gap-6 p-3 md:p-5 rounded-[12px] overflow-hidden">
-          <div className={cn('col-span-5 min-w-0', flip && 'order-2')}>
-            <Plate project={project} fill />
+          {/* Side by side the plate is a tall, narrow sliver and the cover art
+              gets cropped to its middle. Below sm the diagram takes the full
+              width as a 16:9 rectangle with the copy underneath. */}
+          <div className={cn('col-span-12 min-w-0 sm:col-span-5', flip && 'sm:order-2')}>
+            <Plate project={project} spec={false} />
           </div>
-          <div className={cn('col-span-7 min-w-0 flex flex-col', flip && 'order-1')}>
+          <div className={cn('col-span-12 min-w-0 flex flex-col sm:col-span-7', flip && 'sm:order-1')}>
             <div className="flex items-center justify-between gap-2">
               <p className="inline-flex items-center gap-2 text-[10px] md:text-[12px] font-mono text-[#5c9dff]">
                 <span className="hidden sm:inline-flex"><IconTile Icon={Icon} /></span>
