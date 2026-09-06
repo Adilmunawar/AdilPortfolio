@@ -74,46 +74,63 @@
   ],
   "toolkit": [
     {
-      "group": "Machine learning & remote sensing",
+      "group": null,
       "items": [
         "PyTorch",
         "HRNet / U-Net",
         "Temporal CNN & LSTM",
         "scikit-learn",
+        "XGBoost",
+        "TensorFlow / Keras",
+        "ONNX Runtime",
+        "MLflow",
         "Google Earth Engine",
         "xarray"
       ]
     },
     {
-      "group": "Backend & data",
+      "group": null,
       "items": [
         "Python",
         "Node.js",
+        "FastAPI",
         "PostgreSQL / PostGIS",
         "Supabase",
+        "Redis",
+        "pgvector",
         "GDAL / Rasterio",
-        "GeoPandas / Shapely"
+        "GeoPandas / Shapely",
+        "NumPy / pandas"
       ]
     },
     {
-      "group": "Frontend",
+      "group": null,
       "items": [
         "TypeScript",
         "React",
         "Next.js",
+        "Vite",
         "Tailwind CSS",
-        "HTML & CSS"
+        "HTML & CSS",
+        "Zod",
+        "face-api.js",
+        "jsPDF",
+        "Framer Motion"
       ]
     },
     {
-      "group": "Cloud & tooling",
+      "group": null,
       "items": [
         "Docker",
+        "AWS",
         "Azure",
         "Vercel",
         "GitHub Actions",
+        "Cron / Airflow",
         "RAG pipelines",
-        "MCP servers"
+        "MCP servers",
+        "LangChain",
+        "QGIS"
       ]
     }
   ],
@@ -1244,5 +1261,5 @@
     "notes": "https://adilmunawar.vercel.app/#blog",
     "contact": "https://adilmunawar.vercel.app/#contact"
   },
-  "last_updated": "2026-09-05"
+  "last_updated": "2026-09-06"
 }

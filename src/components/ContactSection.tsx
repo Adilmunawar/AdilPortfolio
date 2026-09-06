@@ -96,10 +96,10 @@ const ContactSection = () => {
       <div className="max-w-[1120px] mx-auto">
         <Reveal className="max-w-[680px]">
           <h2 className="text-[24px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.15] text-[#f2f4f8]">
-            Let&apos;s work together
+            Start a project
           </h2>
           <p className="mt-3 md:mt-4 text-[15px] md:text-[20px] leading-[1.5] text-[#a4adbe]">
-            I take on a small number of ML, geospatial and full-stack engagements. Email is best; I reply within a day.
+            I take on a small number of ML, geospatial and full-stack engagements. Send a short outline of what you are building and I will reply within a day.
           </p>
 
           <div className="mt-5 md:mt-8 flex flex-row flex-wrap gap-2 sm:gap-3">
@@ -245,12 +245,7 @@ const ContactSection = () => {
                 ))}
               </ul>
 
-              <p className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1">
-                <span className="inline-flex items-center gap-2 text-[#a4adbe]">
-                  <span aria-hidden="true" className="inline-block h-2 w-2 rounded-full bg-[#3ddc84]" />
-                  Available for new engagements
-                </span>
-                <span aria-hidden="true">·</span>
+              <p className="mt-6">
                 <span>Lahore, Pakistan · Remote worldwide · UTC+5</span>
               </p>
             </div>

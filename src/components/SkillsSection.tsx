@@ -1,12 +1,11 @@
 'use client';
 
-import { BrainCircuit, Database, Monitor, Wrench, type LucideIcon } from 'lucide-react';
 import { Reveal } from './Reveal';
 import Achievements from './Achievements';
 import { LogoLoop, type LogoItem } from './LogoLoop';
 
 const DEVICON = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons';
-const INVERT = new Set(['nextjs', 'github', 'express', 'vercel', 'amazonwebservices', 'linux']);
+const INVERT = new Set(['nextjs', 'github', 'express', 'vercel', 'amazonwebservices']);
 
 type Logo = LogoItem & { src: string; alt: string; invert?: boolean };
 // AWS only ships a wordmark variant on the CDN, so the file suffix is overridable.
@@ -16,10 +15,9 @@ const logo = (name: string, alt: string, variant = 'original'): Logo => ({
   invert: INVERT.has(name),
 });
 
-const rows: { title: string; icon: LucideIcon; direction: 'left' | 'right'; logos: Logo[] }[] = [
+const rows: { title: string; direction: 'left' | 'right'; logos: Logo[] }[] = [
   {
     title: 'Frontend',
-    icon: Monitor,
     direction: 'left',
     logos: [
       logo('react', 'React'),
@@ -35,7 +33,6 @@ const rows: { title: string; icon: LucideIcon; direction: 'left' | 'right'; logo
   },
   {
     title: 'Backend & data',
-    icon: Database,
     direction: 'right',
     logos: [
       logo('nodejs', 'Node.js'),
@@ -51,7 +48,6 @@ const rows: { title: string; icon: LucideIcon; direction: 'left' | 'right'; logo
   },
   {
     title: 'Machine learning',
-    icon: BrainCircuit,
     direction: 'left',
     logos: [
       logo('pytorch', 'PyTorch'),
@@ -67,7 +63,6 @@ const rows: { title: string; icon: LucideIcon; direction: 'left' | 'right'; logo
   },
   {
     title: 'Cloud & tooling',
-    icon: Wrench,
     direction: 'right',
     logos: [
       logo('amazonwebservices', 'AWS', 'original-wordmark'),
@@ -76,7 +71,6 @@ const rows: { title: string; icon: LucideIcon; direction: 'left' | 'right'; logo
       logo('vercel', 'Vercel'),
       logo('docker', 'Docker'),
       logo('kubernetes', 'Kubernetes'),
-      logo('linux', 'Linux'),
       logo('git', 'Git'),
       logo('github', 'GitHub'),
       logo('figma', 'Figma'),
@@ -95,26 +89,24 @@ const renderLogo = (item: LogoItem) => {
   );
 };
 
-const toolkit: { group: string; icon: LucideIcon; items: string[] }[] = [
+// The group headings and their icons were removed from the visual design, so the
+// names survive only as aria-labels to keep each column announceable.
+const toolkit: { label: string; items: string[] }[] = [
   {
-    group: 'Machine learning & remote sensing',
-    icon: BrainCircuit,
-    items: ['PyTorch', 'HRNet / U-Net', 'Temporal CNN & LSTM', 'scikit-learn', 'Google Earth Engine', 'xarray'],
+    label: 'Machine learning and remote sensing',
+    items: ['PyTorch', 'HRNet / U-Net', 'Temporal CNN & LSTM', 'scikit-learn', 'XGBoost', 'TensorFlow / Keras', 'ONNX Runtime', 'MLflow', 'Google Earth Engine', 'xarray'],
   },
   {
-    group: 'Backend & data',
-    icon: Database,
-    items: ['Python', 'Node.js', 'PostgreSQL / PostGIS', 'Supabase', 'GDAL / Rasterio', 'GeoPandas / Shapely'],
+    label: 'Backend and data',
+    items: ['Python', 'Node.js', 'FastAPI', 'PostgreSQL / PostGIS', 'Supabase', 'Redis', 'pgvector', 'GDAL / Rasterio', 'GeoPandas / Shapely', 'NumPy / pandas'],
   },
   {
-    group: 'Frontend',
-    icon: Monitor,
-    items: ['TypeScript', 'React', 'Next.js', 'Tailwind CSS', 'HTML & CSS'],
+    label: 'Frontend',
+    items: ['TypeScript', 'React', 'Next.js', 'Vite', 'Tailwind CSS', 'HTML & CSS', 'Zod', 'face-api.js', 'jsPDF', 'Framer Motion'],
   },
   {
-    group: 'Cloud & tooling',
-    icon: Cloud,
-    items: ['Docker', 'Azure', 'Vercel', 'GitHub Actions', 'RAG pipelines', 'MCP servers'],
+    label: 'Cloud and tooling',
+    items: ['Docker', 'AWS', 'Azure', 'Vercel', 'GitHub Actions', 'Cron / Airflow', 'RAG pipelines', 'MCP servers', 'LangChain', 'QGIS'],
   },
 ];
 
@@ -146,17 +138,9 @@ const SkillsSection = () => {
           </Reveal>
 
           <div className="space-y-8 lg:space-y-10">
-            {rows.map((row, i) => {
-              const Icon = row.icon;
-              return (
+            {rows.map((row, i) => (
                 <Reveal key={row.title} delay={Math.min(i, 2) * 60} className="min-w-0">
-                  <div className="mb-4 flex items-center gap-3">
-                    <span className="stat-tile__icon" aria-hidden>
-                      <Icon size={15} strokeWidth={1.75} />
-                    </span>
-                    <p className="text-[13px] font-medium text-[#f2f4f8]">{row.title}</p>
-                    <span className="font-mono text-[12px] tabular-nums text-[#6f7888]">{row.logos.length} tools</span>
-                  </div>
+                  <p className="mb-3 text-[13px] font-medium text-[#f2f4f8]">{row.title}</p>
                   <LogoLoop
                     logos={row.logos}
                     speed={36}
@@ -172,31 +156,21 @@ const SkillsSection = () => {
                     className="py-1"
                   />
                 </Reveal>
-              );
-            })}
+            ))}
           </div>
 
-          <div className="mt-10 grid grid-cols-4 gap-x-3 gap-y-6 border-t border-white/[0.06] pt-8 lg:mt-16 lg:gap-8 lg:pt-12">
-            {toolkit.map((column, i) => {
-              const Icon = column.icon;
-              return (
-                <Reveal key={column.group} delay={Math.min(i, 2) * 60} className="min-w-0">
-                  <div className="flex items-start gap-2">
-                    <span className="stat-tile__icon hidden shrink-0 sm:inline-flex" aria-hidden>
-                      <Icon size={15} strokeWidth={1.75} />
-                    </span>
-                    <p className="text-[11px] font-medium leading-tight text-[#a4adbe] lg:text-[13px]">{column.group}</p>
-                  </div>
-                  <ul className="mt-3 space-y-1.5">
-                    {column.items.map((item) => (
-                      <li key={item} className="text-[11px] leading-snug text-[#a4adbe] sm:text-[13px] lg:text-[15px] lg:leading-relaxed">
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </Reveal>
-              );
-            })}
+          <div className="mt-10 grid grid-cols-2 gap-x-3 gap-y-6 border-t border-white/[0.06] pt-8 sm:grid-cols-4 lg:mt-16 lg:gap-8 lg:pt-12">
+            {toolkit.map((column, i) => (
+              <Reveal key={column.label} delay={Math.min(i, 2) * 60} className="min-w-0">
+                <ul className="space-y-1.5 text-center" aria-label={column.label}>
+                  {column.items.map((item) => (
+                    <li key={item} className="text-[11px] leading-snug text-[#a4adbe] sm:text-[12px] lg:text-[14px] lg:leading-relaxed">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            ))}
           </div>
         </div>
       </div>

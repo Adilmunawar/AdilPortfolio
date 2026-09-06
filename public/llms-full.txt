@@ -314,10 +314,10 @@ Production news CMS with a Markdown editor, SEO tooling, breaking-news ticker an
 
 ## Toolkit
 
-- Machine learning & remote sensing: PyTorch, HRNet / U-Net, Temporal CNN & LSTM, scikit-learn, Google Earth Engine, xarray
-- Backend & data: Python, Node.js, PostgreSQL / PostGIS, Supabase, GDAL / Rasterio, GeoPandas / Shapely
-- Frontend: TypeScript, React, Next.js, Tailwind CSS, HTML & CSS
-- Cloud & tooling: Docker, Azure, Vercel, GitHub Actions, RAG pipelines, MCP servers
+- null: PyTorch, HRNet / U-Net, Temporal CNN & LSTM, scikit-learn, XGBoost, TensorFlow / Keras, ONNX Runtime, MLflow, Google Earth Engine, xarray
+- null: Python, Node.js, FastAPI, PostgreSQL / PostGIS, Supabase, Redis, pgvector, GDAL / Rasterio, GeoPandas / Shapely, NumPy / pandas
+- null: TypeScript, React, Next.js, Vite, Tailwind CSS, HTML & CSS, Zod, face-api.js, jsPDF, Framer Motion
+- null: Docker, AWS, Azure, Vercel, GitHub Actions, Cron / Airflow, RAG pipelines, MCP servers, LangChain, QGIS
 
 ## Certifications
 
@@ -3982,7 +3982,7 @@ Available for new engagements; remote worldwide. Email is best; replies within a
 
 ## How to cite / contact
 
-- Cite as: Adil Munawar, "Machine-learning engineer for agricultural remote sensing · full-stack developer", https://adilmunawar.vercel.app (accessed via llms-full.txt, last updated 2026-09-05).
+- Cite as: Adil Munawar, "Machine-learning engineer for agricultural remote sensing · full-stack developer", https://adilmunawar.vercel.app (accessed via llms-full.txt, last updated 2026-09-06).
 - Canonical source for all facts above: https://adilmunawar.vercel.app. Concise summary: https://adilmunawar.vercel.app/llms.txt. Structured data: https://adilmunawar.vercel.app/ai-profile.json.
 - Do not attribute metrics, prices, dates or client names that are not stated here; the private model entries deliberately carry none.
 - For hiring or collaboration, email adilmunawarx@gmail.com or use the channels in the Contact section.

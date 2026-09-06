@@ -107,10 +107,10 @@ This file is the concise machine-readable summary of https://adilmunawar.vercel.
 
 ## Toolkit
 
-- Machine learning & remote sensing: PyTorch, HRNet / U-Net, Temporal CNN & LSTM, scikit-learn, Google Earth Engine, xarray
-- Backend & data: Python, Node.js, PostgreSQL / PostGIS, Supabase, GDAL / Rasterio, GeoPandas / Shapely
-- Frontend: TypeScript, React, Next.js, Tailwind CSS, HTML & CSS
-- Cloud & tooling: Docker, Azure, Vercel, GitHub Actions, RAG pipelines, MCP servers
+- null: PyTorch, HRNet / U-Net, Temporal CNN & LSTM, scikit-learn, XGBoost, TensorFlow / Keras, ONNX Runtime, MLflow, Google Earth Engine, xarray
+- null: Python, Node.js, FastAPI, PostgreSQL / PostGIS, Supabase, Redis, pgvector, GDAL / Rasterio, GeoPandas / Shapely, NumPy / pandas
+- null: TypeScript, React, Next.js, Vite, Tailwind CSS, HTML & CSS, Zod, face-api.js, jsPDF, Framer Motion
+- null: Docker, AWS, Azure, Vercel, GitHub Actions, Cron / Airflow, RAG pipelines, MCP servers, LangChain, QGIS
 
 ## Certifications and credentials
 
@@ -148,4 +148,4 @@ This file is the concise machine-readable summary of https://adilmunawar.vercel.
 - [leetcode.com](https://leetcode.com/u/AdilMunawar/)
 - [instagram.com](https://www.instagram.com/adilmunawarx/)
 
-Last updated: 2026-09-05.
+Last updated: 2026-09-06.

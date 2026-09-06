@@ -26,6 +26,80 @@ const wrap = (text: string, max: number): string[] => {
 
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
+const repeatTo = (text: string, chars: number) =>
+  text.repeat(Math.max(1, Math.ceil(chars / text.length))).slice(0, Math.max(1, chars));
+
+/* Engraved-document primitives. Geometry, gradients and tiled patterns only:
+   no SVG filter is used anywhere, because feTurbulence / feGaussianBlur across
+   several plates is exactly the kind of paint cost this site budgets against. */
+
+const PaperDefs = ({ id, ink, accent }: { id: string; ink: string; accent: string }) => (
+  <>
+    <pattern id={`${id}-laid`} width="24" height="4" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="3.5" x2="24" y2="3.5" stroke={ink} strokeOpacity="0.045" strokeWidth="0.6" />
+      <line x1="0.5" y1="0" x2="0.5" y2="4" stroke={ink} strokeOpacity="0.05" strokeWidth="0.6" />
+    </pattern>
+    <pattern id={`${id}-guilloche`} width="28" height="14" patternUnits="userSpaceOnUse">
+      <path d="M0 7 Q7 0.5 14 7 T28 7" fill="none" stroke={accent} strokeOpacity="0.5" strokeWidth="0.5" />
+      <path d="M0 7 Q7 13.5 14 7 T28 7" fill="none" stroke={accent} strokeOpacity="0.5" strokeWidth="0.5" />
+      <path d="M14 7 Q21 1.5 28 7" fill="none" stroke={accent} strokeOpacity="0.28" strokeWidth="0.5" />
+    </pattern>
+    <radialGradient id={`${id}-vignette`} cx="50%" cy="46%" r="72%">
+      <stop offset="0.68" stopColor="#000000" stopOpacity="0" />
+      <stop offset="1" stopColor="#000000" stopOpacity="0.07" />
+    </radialGradient>
+    <radialGradient id={`${id}-dome`} cx="36%" cy="30%" r="72%">
+      <stop offset="0" stopColor="#ffffff" stopOpacity="0.62" />
+      <stop offset="0.55" stopColor="#ffffff" stopOpacity="0.08" />
+      <stop offset="1" stopColor="#000000" stopOpacity="0.24" />
+    </radialGradient>
+  </>
+);
+
+const Paper = ({ id }: { id: string }) => (
+  <>
+    <rect width="640" height="480" fill={`url(#${id}-paper)`} />
+    <rect width="640" height="480" fill={`url(#${id}-laid)`} />
+  </>
+);
+
+const Vignette = ({ id }: { id: string }) => (
+  <rect width="640" height="480" fill={`url(#${id}-vignette)`} pointerEvents="none" />
+);
+
+/* Rosette drawn as N rotated ellipses rather than a sampled polyline: same
+   spirograph read, a fraction of the path data in the server HTML. */
+const Rosette = ({
+  cx, cy, rx, ry, count = 18, color, opacity = 0.5, width = 0.5,
+}: { cx: number; cy: number; rx: number; ry: number; count?: number; color: string; opacity?: number; width?: number }) => (
+  <g transform={`translate(${cx} ${cy})`} fill="none" stroke={color} strokeOpacity={opacity} strokeWidth={width}>
+    {Array.from({ length: count }, (_, i) => (
+      <ellipse key={i} rx={rx} ry={ry} transform={`rotate(${(180 / count) * i})`} />
+    ))}
+  </g>
+);
+
+const GuillocheBand = ({ id, x, y, width, height }: { id: string; x: number; y: number; width: number; height: number }) => (
+  <rect x={x} y={y} width={width} height={height} fill={`url(#${id}-guilloche)`} />
+);
+
+/* Reads as a hairline at tile size and as real lettering when zoomed. */
+const Microtext = ({ x, y, width, text, color, size = 3.2 }: { x: number; y: number; width: number; text: string; color: string; size?: number }) => (
+  <text
+    x={x}
+    y={y}
+    fontFamily={SANS}
+    fontSize={size}
+    letterSpacing="0.35"
+    fill={color}
+    fillOpacity="0.55"
+    textLength={width}
+    lengthAdjust="spacingAndGlyphs"
+  >
+    {repeatTo(`${text} · `, Math.round(width / (size * 0.5)))}
+  </text>
+);
+
 const Corners = ({ color, inset = 30, size = 22, top }: { color: string; inset?: number; size?: number; top?: number }) => {
   const a = inset;
   const t = top ?? inset;
@@ -41,14 +115,21 @@ const Corners = ({ color, inset = 30, size = 22, top }: { color: string; inset?:
   );
 };
 
+/* Domed, milled-rim seal: the dash pattern on the thick ring reads as the
+   serrations on a struck medal, and the radial gradient supplies the relief. */
 const Seal = ({ id, cx, cy, ring, core, text, font = SANS }: { id: string; cx: number; cy: number; ring: string; core: string; text: string; font?: string }) => (
   <g transform={`translate(${cx} ${cy})`}>
     <defs>
       <path id={`${id}-arc`} d="M 0 28 a 28 28 0 1 1 0 -56 a 28 28 0 1 1 0 56" />
     </defs>
+    <Rosette cx={0} cy={0} rx={30} ry={11} count={16} color={ring} opacity={0.22} width={0.4} />
+    <circle r="40" fill="none" stroke={ring} strokeOpacity="0.85" strokeWidth="3.2" strokeDasharray="1.6 3.1" />
     <circle r="38" fill="none" stroke={ring} strokeWidth="1.5" />
+    <circle r="36.2" fill="none" stroke="#ffffff" strokeOpacity="0.5" strokeWidth="0.7" />
     <circle r="34" fill="none" stroke={ring} strokeOpacity="0.45" strokeWidth="0.75" strokeDasharray="2 2.5" />
+    <circle r="17.8" fill={ring} fillOpacity="0.28" />
     <circle r="17" fill={core} />
+    <circle r="17" fill={`url(#${id}-dome)`} />
     <text fontFamily={font} fontSize="6" letterSpacing="1.1" fill={ring} fontWeight="600">
       <textPath href={`#${id}-arc`} startOffset="50%" textAnchor="middle">
         {text}
@@ -76,6 +157,16 @@ const Footer = ({ issued, credentialId, ink, muted, x = 60, y = 402 }: { issued?
   </g>
 );
 
+const MitBars = ({ red, dark }: { red: string; dark: string }) => (
+  <>
+    <rect x="0" y="0" width="7" height="30" fill={red} />
+    <rect x="11" y="0" width="7" height="30" fill={red} />
+    <rect x="22" y="0" width="7" height="18" fill={red} />
+    <rect x="22" y="22" width="7" height="8" fill={red} />
+    <rect x="33" y="0" width="7" height="30" fill={dark} />
+  </>
+);
+
 const MitDocument = ({ id, title, issuer, issued, credentialId }: CertificateDocumentProps & { id: string }) => {
   const red = '#a31f34';
   const dark = '#750014';
@@ -92,40 +183,47 @@ const MitDocument = ({ id, title, issuer, issued, credentialId }: CertificateDoc
         <pattern id={`${id}-hatch`} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
           <line x1="0" y1="0" x2="0" y2="6" stroke={red} strokeOpacity="0.06" strokeWidth="1" />
         </pattern>
+        <PaperDefs id={id} ink={ink} accent={red} />
       </defs>
-      <rect width="640" height="480" fill={`url(#${id}-paper)`} />
+
+      <Paper id={id} />
       <rect width="640" height="480" fill={`url(#${id}-hatch)`} />
+
+      <g transform="translate(300 128) scale(6.6)" opacity="0.028">
+        <MitBars red={red} dark={red} />
+      </g>
+
       <rect x="0" y="0" width="16" height="480" fill={red} />
       <rect x="16" y="0" width="3" height="480" fill={dark} />
       <rect x="40" y="26" width="574" height="428" fill="none" stroke={red} strokeOpacity="0.35" strokeWidth="1.25" />
+      <rect x="45" y="31" width="564" height="418" fill="none" stroke={red} strokeOpacity="0.16" strokeWidth="0.6" />
       <Corners color={red} inset={34} />
 
       <g transform="translate(60 62)">
-        <rect x="0" y="0" width="7" height="30" fill={red} />
-        <rect x="11" y="0" width="7" height="30" fill={red} />
-        <rect x="22" y="0" width="7" height="18" fill={red} />
-        <rect x="22" y="22" width="7" height="8" fill={red} />
-        <rect x="33" y="0" width="7" height="30" fill={dark} />
+        <MitBars red={red} dark={dark} />
       </g>
       <text x="112" y="74" fontFamily={SERIF} fontSize="15" letterSpacing="3.5" fill={dark} fontWeight="600">MIT</text>
       <text x="112" y="90" fontFamily={SANS} fontSize="9.5" letterSpacing="2.4" fill={muted}>PROFESSIONAL EDUCATION</text>
       <text x="580" y="74" textAnchor="end" fontFamily={SANS} fontSize="9" letterSpacing="2.6" fill={red}>CERTIFICATE</text>
       <text x="580" y="90" textAnchor="end" fontFamily={SANS} fontSize="9" letterSpacing="2.6" fill={muted}>OF COMPLETION</text>
       <line x1="60" y1="108" x2="580" y2="108" stroke={red} strokeOpacity="0.4" strokeWidth="1" />
+      <Microtext x={60} y={116} width={520} text="MASSACHUSETTS INSTITUTE OF TECHNOLOGY PROFESSIONAL EDUCATION" color={red} />
+      <GuillocheBand id={id} x={60} y={120} width={520} height={12} />
 
-      <text x="60" y="150" fontFamily={SANS} fontSize="11.5" fill={muted}>This certifies that</text>
-      <text x="60" y="196" fontFamily={SERIF} fontSize="38" fill={ink}>Adil Munawar</text>
-      <line x1="60" y1="210" x2="330" y2="210" stroke={red} strokeWidth="1.5" />
-      <text x="60" y="244" fontFamily={SANS} fontSize="11.5" fill={muted}>has successfully completed the online course</text>
+      <text x="60" y="164" fontFamily={SANS} fontSize="11.5" fill={muted}>This certifies that</text>
+      <text x="60" y="206" fontFamily={SERIF} fontSize="38" fill={ink}>Adil Munawar</text>
+      <line x1="60" y1="220" x2="330" y2="220" stroke={red} strokeWidth="1.5" />
+      <text x="60" y="252" fontFamily={SANS} fontSize="11.5" fill={muted}>has successfully completed the online course</text>
       {lines.map((line, i) => (
-        <text key={line} x="60" y={282 + i * 30} fontFamily={SERIF} fontSize="25" fill={red} fontWeight="600">
+        <text key={line} x="60" y={288 + i * 30} fontFamily={SERIF} fontSize="25" fill={red} fontWeight="600">
           {line}
         </text>
       ))}
-      <text x="60" y={lines.length > 1 ? 348 : 318} fontFamily={SANS} fontSize="11" fill={muted}>{issuer}</text>
+      <text x="60" y={lines.length > 1 ? 352 : 322} fontFamily={SANS} fontSize="11" fill={muted}>{issuer}</text>
 
       <Seal id={id} cx={534} cy={382} ring={red} core={red} text="RECORD OF COMPLETION" />
       <Footer issued={issued} credentialId={credentialId} ink={ink} muted={muted} />
+      <Vignette id={id} />
     </>
   );
 };
@@ -151,14 +249,13 @@ const EuspaDocument = ({ id, title, issued, credentialId }: CertificateDocumentP
         <clipPath id={`${id}-clip`}>
           <rect width="640" height="132" />
         </clipPath>
+        <PaperDefs id={id} ink={ink} accent={navy} />
       </defs>
-      <rect width="640" height="480" fill={`url(#${id}-paper)`} />
+      <Paper id={id} />
       <rect width="640" height="132" fill={`url(#${id}-band)`} />
-      <g clipPath={`url(#${id}-clip)`} fill="none" stroke="#ffffff" strokeOpacity="0.18" strokeWidth="1">
-        <ellipse cx="540" cy="70" rx="150" ry="52" transform="rotate(-18 540 70)" />
-        <ellipse cx="540" cy="70" rx="105" ry="36" transform="rotate(-18 540 70)" />
-        <ellipse cx="540" cy="70" rx="60" ry="21" transform="rotate(-18 540 70)" />
-        <circle cx="540" cy="70" r="120" strokeOpacity="0.08" />
+      <g clipPath={`url(#${id}-clip)`}>
+        <Rosette cx={540} cy={70} rx={150} ry={52} count={20} color="#ffffff" opacity={0.16} width={0.6} />
+        <circle cx="540" cy="70" r="120" fill="none" stroke="#ffffff" strokeOpacity="0.08" strokeWidth="1" />
       </g>
       <g fill={gold}>
         <circle cx="611" cy="40" r="2.4" />
@@ -173,7 +270,10 @@ const EuspaDocument = ({ id, title, issued, credentialId }: CertificateDocumentP
       <text x="60" y="110" fontFamily={SANS} fontSize="10.5" letterSpacing="1.8" fill="#dfe7ff">CERTIFICATE OF COMPLETION</text>
 
       <rect x="28" y="152" width="584" height="300" fill="none" stroke={navy} strokeOpacity="0.2" strokeWidth="1" />
+      <rect x="33" y="157" width="574" height="290" fill="none" stroke={navy} strokeOpacity="0.1" strokeWidth="0.6" />
       <Corners color={navy} inset={34} top={158} size={18} />
+      <Microtext x={60} y={168} width={520} text="EUROPEAN UNION AGENCY FOR THE SPACE PROGRAMME" color={navy} />
+      <GuillocheBand id={id} x={60} y={430} width={520} height={12} />
 
       <text x="60" y="190" fontFamily={SANS} fontSize="11.5" fill={muted}>This certificate is awarded to</text>
       <text x="60" y="232" fontFamily={SERIF} fontSize="36" fill={ink}>Adil Munawar</text>
@@ -187,6 +287,7 @@ const EuspaDocument = ({ id, title, issued, credentialId }: CertificateDocumentP
 
       <Seal id={id} cx={534} cy={382} ring={navy} core={blue} text="EU SPACE PROGRAMME" />
       <Footer issued={issued} credentialId={credentialId} ink={ink} muted={muted} />
+      <Vignette id={id} />
     </>
   );
 };
@@ -206,9 +307,11 @@ const GoogleDocument = ({ id, title, issuer, issued, credentialId }: Certificate
         <pattern id={`${id}-dots`} width="14" height="14" patternUnits="userSpaceOnUse">
           <circle cx="1" cy="1" r="1" fill={blue} fillOpacity="0.12" />
         </pattern>
+        <PaperDefs id={id} ink={ink} accent={blue} />
       </defs>
-      <rect width="640" height="480" fill={`url(#${id}-paper)`} />
+      <Paper id={id} />
       <rect x="400" y="0" width="240" height="480" fill={`url(#${id}-dots)`} />
+      <Rosette cx={534} cy={382} rx={46} ry={17} count={18} color={blue} opacity={0.16} width={0.45} />
       <rect x="0" y="0" width="160" height="8" fill="#4285f4" />
       <rect x="160" y="0" width="160" height="8" fill="#ea4335" />
       <rect x="320" y="0" width="160" height="8" fill="#fbbc04" />
@@ -216,6 +319,7 @@ const GoogleDocument = ({ id, title, issuer, issued, credentialId }: Certificate
 
       <text x="56" y="66" fontFamily={SANS} fontSize="10" letterSpacing="2.4" fill={muted} fontWeight="600">{issuer.toUpperCase()}</text>
       <text x="56" y="88" fontFamily={SANS} fontSize="13" fill={blue} fontWeight="600">Certificate of Completion</text>
+      <Microtext x={56} y={104} width={330} text="GOOGLE CLOUD SKILLS BOOST" color={blue} />
 
       <text x="56" y="140" fontFamily={SANS} fontSize="11.5" fill={muted}>Awarded to</text>
       <text x="56" y="184" fontFamily={SANS} fontSize="36" fill={ink} fontWeight="700">Adil Munawar</text>
@@ -238,6 +342,7 @@ const GoogleDocument = ({ id, title, issuer, issued, credentialId }: Certificate
         <path d="M -9 1 L -3 7 L 10 -7" fill="none" stroke={blue} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       </g>
       <Footer issued={issued} credentialId={credentialId} ink={ink} muted={muted} x={56} />
+      <Vignette id={id} />
     </>
   );
 };
@@ -254,14 +359,18 @@ const ClassicDocument = ({ id, title, issuer, issued, credentialId }: Certificat
           <stop offset="0" stopColor="#fbfbf9" />
           <stop offset="1" stopColor="#eef1f6" />
         </linearGradient>
+        <PaperDefs id={id} ink={ink} accent={navy} />
       </defs>
-      <rect width="640" height="480" fill={`url(#${id}-paper)`} />
+      <Paper id={id} />
       <rect x="0" y="0" width="640" height="10" fill={navy} />
       <rect x="26" y="30" width="588" height="424" fill="none" stroke={navy} strokeOpacity="0.25" strokeWidth="1" />
+      <rect x="31" y="35" width="578" height="414" fill="none" stroke={navy} strokeOpacity="0.12" strokeWidth="0.6" />
       <Corners color={navy} inset={34} />
       <text x="60" y="74" fontFamily={SERIF} fontSize="15" letterSpacing="2" fill={navy} fontWeight="600">{issuer}</text>
       <text x="580" y="74" textAnchor="end" fontFamily={SANS} fontSize="9" letterSpacing="2.6" fill={muted}>CERTIFICATE OF COMPLETION</text>
       <line x1="60" y1="92" x2="580" y2="92" stroke={navy} strokeOpacity="0.35" strokeWidth="1" />
+      <Microtext x={60} y={100} width={520} text={issuer.toUpperCase()} color={navy} />
+      <GuillocheBand id={id} x={60} y={430} width={520} height={12} />
       <text x="60" y="150" fontFamily={SANS} fontSize="11.5" fill={muted}>This certifies that</text>
       <text x="60" y="196" fontFamily={SERIF} fontSize="38" fill={ink}>Adil Munawar</text>
       <line x1="60" y1="210" x2="330" y2="210" stroke={navy} strokeWidth="1.5" />
@@ -273,6 +382,7 @@ const ClassicDocument = ({ id, title, issuer, issued, credentialId }: Certificat
       ))}
       <Seal id={id} cx={534} cy={382} ring={navy} core={navy} text="RECORD OF COMPLETION" />
       <Footer issued={issued} credentialId={credentialId} ink={ink} muted={muted} />
+      <Vignette id={id} />
     </>
   );
 };

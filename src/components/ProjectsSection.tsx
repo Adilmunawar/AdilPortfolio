@@ -130,8 +130,10 @@ function SpecStrip({ project, className }: { project: Project; className?: strin
     ] as [string, string | null | undefined][]
   ).filter((r): r is [string, string] => Boolean(r[1]));
   if (!rows.length) return null;
+  // One column below sm: two columns inside a 150px card leaves ~65px, which is
+  // narrow enough that break-words splits values like "Segmentation".
   return (
-    <dl className={cn('grid grid-cols-2 gap-x-4 gap-y-2 font-mono text-[11px] md:text-[12px] leading-[1.45]', className ?? 'mt-3')}>
+    <dl className={cn('grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 sm:gap-y-2 font-mono text-[10px] sm:text-[11px] md:text-[12px] leading-[1.45]', className ?? 'mt-3')}>
       {rows.map(([key, value]) => (
         <div key={key} className="min-w-0">
           <dt className="text-[#6f7888]">{key}</dt>
@@ -149,11 +151,13 @@ function Plate({ project, fill }: { project: Project; fill?: boolean; sizes?: st
       <div className={cn('relative rounded-[8px] overflow-hidden bg-[#0b0f17] border border-white/[0.06]', fill ? 'h-full min-h-[150px] sm:min-h-[200px] md:min-h-[260px]' : 'aspect-[16/10]')}>
         <ProjectCover id={project.id} title={project.title} className="absolute inset-0 h-full w-full transition-transform duration-500 ease-out-expo md:group-hover:scale-[1.03]" />
         <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#111622]/80 to-transparent" />
-        <span className="absolute left-3 bottom-3 inline-flex items-center gap-2 text-[12px] text-[#a4adbe]">
-          <IconTile Icon={Icon} className="bg-[#111622]/90" />
-          {CATEGORY_LABEL[project.category] ?? project.category}
+        {/* Cards sit two-up at 375px, so the overlay has to stay inside ~150px:
+            cap its width and let the label truncate instead of running over the art. */}
+        <span className="absolute left-2 bottom-2 sm:left-3 sm:bottom-3 inline-flex max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-1.5rem)] items-center gap-1.5 sm:gap-2 text-[10px] sm:text-[12px] text-[#a4adbe]">
+          <IconTile Icon={Icon} className="hidden sm:inline-flex bg-[#111622]/90" />
+          <span className="truncate">{CATEGORY_LABEL[project.category] ?? project.category}</span>
         </span>
-        <span className="absolute right-3 top-3 font-mono text-[10px] uppercase tracking-[0.12em] text-[#6f7888]">{KIND_LABEL[project.kind]}</span>
+        <span className="absolute right-2 top-2 sm:right-3 sm:top-3 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.12em] text-[#6f7888]">{KIND_LABEL[project.kind]}</span>
       </div>
       {!fill && <SpecStrip project={project} />}
     </div>
@@ -262,11 +266,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       <Hairline className="h-full">
         <article className="h-full flex flex-col p-3 md:p-6">
           <Plate project={project} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px" />
-          <h3 className="mt-2.5 md:mt-4 text-[13px] sm:text-[16px] md:text-[20px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8]">
+          <h3 className="mt-2.5 md:mt-4 text-[12px] sm:text-[16px] md:text-[20px] font-semibold tracking-[-0.01em] leading-[1.3] text-[#f2f4f8]">
             {project.title}
           </h3>
-          {meta && <p className="mt-0.5 md:mt-1 text-[10px] md:text-[12px] text-[#6f7888]">{meta}</p>}
-          <p className="mt-1.5 md:mt-3 text-[11px] sm:text-[13px] md:text-[15px] leading-[1.5] md:leading-[1.6] text-[#a4adbe] line-clamp-3">{project.description}</p>
+          {meta && <p className="mt-0.5 md:mt-1 text-[9px] sm:text-[10px] md:text-[12px] text-[#6f7888]">{meta}</p>}
+          <p className="mt-1.5 md:mt-3 text-[10px] sm:text-[13px] md:text-[15px] leading-[1.5] md:leading-[1.6] text-[#a4adbe] line-clamp-3">{project.description}</p>
           <div className="mt-2 hidden sm:block md:mt-4">
             <TechChips tech={project.tech} max={MAX_CHIPS} />
           </div>
