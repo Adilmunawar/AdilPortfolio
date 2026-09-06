@@ -1,6 +1,6 @@
 'use client';
 import type { CSSProperties } from 'react';
-import { ACCENT, AMBER, ANIM, caption, CoverFrame, Edge, GREEN, LINE, LINE_SOFT, mono, NODE_FILL, Tag, TEXT_MUTED, type CoverComponent } from '../shared';
+import { ACCENT, AMBER, caption, CoverFrame, Edge, GREEN, LINE, LINE_SOFT, mono, NODE_FILL, Tag, TEXT_MUTED, type CoverComponent } from '../shared';
 
 const V: Record<string, [number, number]> = {
   a: [0, 0], b: [60, 0], c: [144, 0],
@@ -37,26 +37,80 @@ for (let stage = 0; stage < 3; stage++) {
   );
 }
 
-const PULSES: { x: number; y: number; dx: number; dy: number; delay: number; tone: string }[] = [
-  { x: 178, y: 156, dx: 46, dy: -64, delay: 0, tone: ACCENT },
-  { x: 242, y: 92, dx: 44, dy: 0, delay: 300, tone: ACCENT },
-  { x: 242, y: 92, dx: 44, dy: 48, delay: 600, tone: AMBER },
-  { x: 306, y: 140, dx: 44, dy: 48, delay: 900, tone: AMBER },
-  { x: 306, y: 92, dx: 44, dy: 0, delay: 1200, tone: ACCENT },
-  { x: 370, y: 188, dx: 44, dy: -96, delay: 1500, tone: GREEN },
-  { x: 370, y: 92, dx: 44, dy: 144, delay: 1800, tone: AMBER },
-  { x: 370, y: 140, dx: 44, dy: -48, delay: 400, tone: GREEN },
-  { x: 434, y: 92, dx: 38, dy: 64, delay: 1000, tone: ACCENT },
-];
+const LOOP = 10000;
+// Every offset path is stretched to REACH px so one 1.5s keyframe slot gives one speed (112 px/s); the overrun is clipped by the nested svg.
+const REACH = 168;
+const WAVE = [2100, 3200, 4600];
+const ACTIVE = [1800, 2800, 4300, 5800];
+const COLLECT = 442;
+const OUT_AT = 6500;
+const DRAW_AT = 7500;
 
-const travel = (dx: number, dy: number, delay: number): CSSProperties => ({
-  offsetPath: `path("M0 0 L${dx} ${dy}")`,
-  offsetRotate: '0deg',
-  animationDelay: `${delay}ms`,
+const STYLE = `
+.hrn-pulse,.hrn-scan,.hrn-active{opacity:0}
+@media (hover:hover) and (min-width:768px){
+.hrn-draw{stroke-dasharray:1}
+.cover-live .hrn-scan{animation:hrn-scan ${LOOP}ms linear infinite}
+.cover-live .hrn-pulse{animation:hrn-travel ${LOOP}ms linear infinite}
+.cover-live .hrn-active{animation:hrn-active ${LOOP}ms ease-in-out infinite}
+.cover-live .hrn-draw{animation:hrn-draw ${LOOP}ms linear infinite both}
+}
+@media (prefers-reduced-motion:reduce){.hrn-scan,.hrn-pulse,.hrn-active,.hrn-draw{animation:none !important}}
+@keyframes hrn-scan{0%{transform:translate3d(0,0,0);opacity:0}1%{opacity:1}14%{opacity:1}15%{transform:translate3d(0,139px,0);opacity:0}100%{transform:translate3d(0,139px,0);opacity:0}}
+@keyframes hrn-travel{0%{offset-distance:0%;opacity:1}15%{offset-distance:100%;opacity:1}15.1%{opacity:0}100%{offset-distance:100%;opacity:0}}
+@keyframes hrn-active{0%{opacity:0}2%{opacity:0.9}7%{opacity:0.45}12%{opacity:0.9}17%{opacity:0.45}20%{opacity:0}100%{opacity:0}}
+@keyframes hrn-draw{0%{stroke-dashoffset:1;opacity:1}12%{stroke-dashoffset:0;opacity:1}25%{stroke-dashoffset:0;opacity:1}27%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:0;opacity:0}}
+`;
+
+const f = (n: number) => Math.round(n * 10) / 10;
+
+const along = (points: [number, number][], delay: number): CSSProperties => {
+  let len = 0;
+  for (let i = 1; i < points.length; i++) len += Math.hypot(points[i][0] - points[i - 1][0], points[i][1] - points[i - 1][1]);
+  const [lx, ly] = points[points.length - 1];
+  const [px, py] = points[points.length - 2];
+  const seg = Math.hypot(lx - px, ly - py);
+  const ext = REACH - len;
+  const end: [number, number] = [lx + ((lx - px) / seg) * ext, ly + ((ly - py) / seg) * ext];
+  const d = [...points.slice(0, -1), end].map(([x, y], i) => `${i ? 'L' : 'M'}${f(x)} ${f(y)}`).join(' ');
+  return { offsetPath: `path("${d}")`, offsetRotate: '0deg', animationDelay: `${delay}ms` };
+};
+
+type Pulse = { points: [number, number][]; delay: number; tone: string };
+const STAGE_PULSES: Pulse[][] = [0, 1, 2].map((stage) => {
+  const out: Pulse[] = [];
+  let pair = 0;
+  streamsAt(stage).forEach((ys) =>
+    streamsAt(stage + 1).forEach((yt) => {
+      const cross = pair % 2 === 1;
+      [0, 1].forEach((v) => {
+        const ns = v ? 9 : -9;
+        const nt = cross ? -ns : ns;
+        out.push({
+          points: [[0, ys + ns - 70], [44, yt + nt - 70]],
+          delay: WAVE[stage] + v * 180,
+          tone: yt === ys ? ACCENT : yt > ys ? AMBER : GREEN,
+        });
+      });
+      pair++;
+    })
+  );
+  return out;
 });
+
+const OUT_PULSES: Pulse[] = ROWS.map((y) => ({
+  points: [[0, y - 80], [COLLECT - 434, y - 80], [COLLECT - 434, 84], [26, 84]],
+  delay: OUT_AT,
+  tone: ACCENT,
+}));
+
+const Dot = ({ p }: { p: Pulse }) => (
+  <circle r={2.4} fill={p.tone} stroke={p.tone} strokeOpacity={0.25} strokeWidth={5} className="hrn-pulse" style={along(p.points, p.delay)} />
+);
 
 const HrnetW48: CoverComponent = ({ uid, title, className }) => (
   <CoverFrame uid={uid} title={title} className={className} glow={[328, 164, 210]}>
+    <style>{STYLE}</style>
     <text {...caption} x={32} y={60}>Input tile</text>
     <text {...caption} x={232} y={60}>HRNet-W48 · four resolutions, fused at every stage</text>
     <text {...caption} x={608} y={60} textAnchor="end">Field boundaries</text>
@@ -67,13 +121,15 @@ const HrnetW48: CoverComponent = ({ uid, title, className }) => (
         <path key={p} d={poly(p, 32, 84)} fill={TONES[i]} fillOpacity={ALPHA[i]} stroke="#0b0f17" strokeWidth={1} />
       ))}
       <rect x={32} y={84} width={144} height={144} rx={6} fill="none" stroke={LINE} strokeWidth={1.25} />
-      <g className={ANIM.scan} style={{ transformOrigin: '104px 84px' }}>
-        <rect x={33} y={86} width={142} height={3} fill={ACCENT} fillOpacity={0.55} />
-      </g>
+      <svg x={33} y={85} width={142} height={142} overflow="hidden">
+        <rect className="hrn-scan" x={0} y={1} width={142} height={3} fill={ACCENT} fillOpacity={0.55} />
+      </svg>
     </g>
 
     <Edge d="M180 156 L218 156" uid={uid} />
-    <Edge d="M454 164 L488 164" uid={uid} />
+    <svg x={176} y={140} width={46} height={32} overflow="hidden">
+      <Dot p={{ points: [[4, 16], [42, 16]], delay: 1500, tone: ACCENT }} />
+    </svg>
 
     <g>
       {ROWS.map((y, r) => (
@@ -96,6 +152,12 @@ const HrnetW48: CoverComponent = ({ uid, title, className }) => (
         />
       ))}
 
+      {ROWS.map((y) => (
+        <path key={y} d={`M434 ${y} L${COLLECT} ${y}`} stroke={LINE} strokeWidth={1.25} />
+      ))}
+      <path d={`M${COLLECT} 92 L${COLLECT} 236`} stroke={LINE} strokeWidth={1.25} fill="none" />
+      <Edge d={`M${COLLECT} 164 L460 164`} uid={uid} />
+
       {COLS.map((x, stage) =>
         streamsAt(stage).map((y) => (
           <g key={`${x}-${y}`}>
@@ -103,6 +165,7 @@ const HrnetW48: CoverComponent = ({ uid, title, className }) => (
             {NEURON.map((n) => (
               <circle key={n} cx={x} cy={y + n} r={2.6} fill={ACCENT} fillOpacity={0.9} />
             ))}
+            <rect className="hrn-active" style={{ animationDelay: `${ACTIVE[stage]}ms` }} x={x - 12} y={y - 17} width={24} height={34} rx={6} fill={ACCENT} fillOpacity={0.14} stroke={ACCENT} strokeOpacity={0.8} strokeWidth={1} />
           </g>
         ))
       )}
@@ -110,16 +173,19 @@ const HrnetW48: CoverComponent = ({ uid, title, className }) => (
       {COLS.map((x, stage) => (
         <text key={x} {...mono} x={x} y={272} textAnchor="middle" fill={TEXT_MUTED}>stage {stage + 1}</text>
       ))}
+      {COLS.map((x, stage) => (
+        <text key={`a-${x}`} {...mono} className="hrn-active" style={{ animationDelay: `${ACTIVE[stage]}ms` }} x={x} y={272} textAnchor="middle" fill={ACCENT}>stage {stage + 1}</text>
+      ))}
       <path d="M222 254 L434 254" stroke={LINE_SOFT} strokeWidth={1} />
 
-      {PULSES.map((p, i) => (
-        <g key={i} transform={`translate(${p.x} ${p.y})`}>
-          <g className={ANIM.travel} style={travel(p.dx, p.dy, p.delay)}>
-            <circle r={2.4} fill={p.tone} />
-            <circle r={5} fill={p.tone} fillOpacity={0.25} />
-          </g>
-        </g>
+      {STAGE_PULSES.map((pulses, stage) => (
+        <svg key={stage} x={COLS[stage] + 10} y={70} width={44} height={190} overflow="hidden">
+          {pulses.map((p, i) => <Dot key={i} p={p} />)}
+        </svg>
       ))}
+      <svg x={434} y={80} width={27} height={168} overflow="hidden">
+        {OUT_PULSES.map((p, i) => <Dot key={i} p={p} />)}
+      </svg>
     </g>
 
     <g>
@@ -136,8 +202,8 @@ const HrnetW48: CoverComponent = ({ uid, title, className }) => (
           stroke={ACCENT}
           strokeWidth={1.5}
           strokeLinejoin="round"
-          className={ANIM.draw}
-          style={{ animationDelay: `${i * 140}ms` }}
+          className="hrn-draw"
+          style={{ animationDelay: `${DRAW_AT + i * 100}ms` }}
         />
       ))}
       {Object.entries(V).map(([k, [vx, vy]]) => (

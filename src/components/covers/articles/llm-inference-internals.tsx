@@ -1,29 +1,56 @@
 'use client';
 import type { CSSProperties } from 'react';
-import { ACCENT, AMBER, ANIM, caption, CoverFrame, Edge, GREEN, LINE, LINE_SOFT, mono, NODE_FILL_2, Panel, ROSE, Tag, TEXT_MUTED, type CoverComponent } from '../shared';
+import { ACCENT, AMBER, ANIM, caption, CoverFrame, delay, Edge, GREEN, LINE, LINE_SOFT, mono, NODE_FILL, NODE_FILL_2, Panel, ROSE, Tag, TEXT_MUTED, type CoverComponent } from '../shared';
 
 const PAPER = '#f2f4f8';
 
-const travel = (dx: number, dy: number, ms = 0): CSSProperties => ({
+const GATE = 'lii-gate';
+const GO = 'lii-go';
+const RUN = 'lii-run';
+const CUR = 'lii-cur';
+const DRAW = 'lii-draw';
+const STYLE = `
+.lii-go{opacity:0}
+.lii-run{transform:translateX(1px)}
+.lii-cur{opacity:0}
+.lii-draw{stroke-dasharray:1}
+@media (hover:hover) and (min-width:768px){
+.cover-live .lii-gate{animation:lii-gate 12s linear infinite both}
+.cover-live .lii-go{animation:lii-go 12s linear infinite}
+.cover-live .lii-run{animation:lii-run 12s linear infinite}
+.cover-live .lii-draw{animation:lii-draw 12s linear infinite both}
+.cover-live .lii-cur{opacity:1}
+}
+@media (prefers-reduced-motion:reduce){
+.lii-gate,.lii-go,.lii-run,.lii-draw{animation:none !important}
+.lii-cur{opacity:0 !important}
+}
+@keyframes lii-gate{0%{opacity:0}3%{opacity:1}60%{opacity:1}64%{opacity:0}100%{opacity:0}}
+@keyframes lii-go{0%{offset-distance:0%;opacity:0}0.5%{opacity:1}5%{offset-distance:100%;opacity:1}5.5%{offset-distance:100%;opacity:0}100%{offset-distance:100%;opacity:0}}
+@keyframes lii-run{0%{transform:translateX(0)}50%{transform:translateX(1px)}97%{transform:translateX(1px)}100%{transform:translateX(0)}}
+@keyframes lii-draw{0%{stroke-dashoffset:1;opacity:1}6%{stroke-dashoffset:0;opacity:1}60%{stroke-dashoffset:0;opacity:1}64%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:1;opacity:0}}
+`;
+
+const go = (dx: number, dy: number, ms = 0): CSSProperties => ({
   offsetPath: `path("M0 0 L${dx} ${dy}")`,
   offsetRotate: '0deg',
   animationDelay: `${ms}ms`,
 });
-const grow = (ms: number): CSSProperties => ({ transformOrigin: 'left center', animationDelay: `${ms}ms` });
 
 const PROMPT = ['The', 'KV', 'cac', 'he', 'is', 'read', 'each', 'step'];
 
-/* A row of token boxes; with stagger set, boxes appear left to right. */
-function TokenRow({ x, y, w, h, gap, tokens, tone = 'muted', stagger = 0 }: {
-  x: number; y: number; w: number; h: number; gap: number; tokens: string[]; tone?: 'muted' | 'accent'; stagger?: number;
+/* A row of token boxes; with from set, boxes fade in left to right from that time. */
+function TokenRow({ x, y, w, h, gap, tokens, tone = 'muted', from, stagger = 0 }: {
+  x: number; y: number; w: number; h: number; gap: number; tokens: string[]; tone?: 'muted' | 'accent'; from?: number; stagger?: number;
 }) {
   const accent = tone === 'accent';
+  const gated = from !== undefined;
   return (
     <g>
       {tokens.map((t, i) => {
         const bx = x + i * (w + gap);
         return (
-          <g key={`${t}-${i}`} className={stagger ? ANIM.grow : undefined} style={stagger ? grow(i * stagger) : undefined}>
+          <g key={`${t}-${i}`} className={gated ? GATE : undefined} style={gated ? delay(from + i * stagger) : undefined}>
             <rect x={bx} y={y} width={w} height={h} rx={3} fill={accent ? ACCENT : NODE_FILL_2} fillOpacity={accent ? 0.22 : 1} stroke={accent ? ACCENT : LINE} strokeOpacity={accent ? 0.7 : 1} strokeWidth={1} />
             <text {...mono} x={bx + w / 2} y={y + h / 2 + 3.5} textAnchor="middle">{t}</text>
           </g>
@@ -33,12 +60,13 @@ function TokenRow({ x, y, w, h, gap, tokens, tone = 'muted', stagger = 0 }: {
   );
 }
 
-/* Cache cells, rows are layers and columns are token positions; stagger fills columns left to right. */
-function CacheGrid({ x, y, cols, rows, cw, ch, gx, gy, outline = false, stagger = 0, from = 0, opacity = 0.4 }: {
-  x: number; y: number; cols: number; rows: number; cw: number; ch: number; gx: number; gy: number; outline?: boolean; stagger?: number; from?: number; opacity?: number;
+/* Cache cells, rows are layers and columns are token positions; stagger fills columns, rowStagger fills layers. */
+function CacheGrid({ x, y, cols, rows, cw, ch, gx, gy, outline = false, from, stagger = 0, rowStagger = 0, opacity = 0.4 }: {
+  x: number; y: number; cols: number; rows: number; cw: number; ch: number; gx: number; gy: number; outline?: boolean; from?: number; stagger?: number; rowStagger?: number; opacity?: number;
 }) {
   const cells: [number, number][] = [];
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) cells.push([r, c]);
+  const gated = from !== undefined;
   return (
     <g>
       {cells.map(([r, c]) => (
@@ -53,8 +81,8 @@ function CacheGrid({ x, y, cols, rows, cw, ch, gx, gy, outline = false, stagger 
           fillOpacity={outline ? undefined : opacity}
           stroke={outline ? LINE_SOFT : undefined}
           strokeWidth={outline ? 1 : undefined}
-          className={stagger ? ANIM.grow : undefined}
-          style={stagger ? grow(from + c * stagger) : undefined}
+          className={gated ? GATE : undefined}
+          style={gated ? delay(from + c * stagger + r * rowStagger) : undefined}
         />
       ))}
     </g>
@@ -72,24 +100,43 @@ function Seq({ x, y, w, tone }: { x: number; y: number; w: number; tone: string 
 }
 
 function Idle({ x, y, w }: { x: number; y: number; w: number }) {
-  return <rect x={x} y={y} width={w} height={16} rx={3} fill={ROSE} fillOpacity={0.1} stroke={ROSE} strokeOpacity={0.5} strokeWidth={1} strokeDasharray="3 3" />;
+  return <rect x={x} y={y} width={w} height={16} rx={3} fill={ROSE} fillOpacity={0.1} stroke={ROSE} strokeOpacity={0.5} strokeWidth={1} strokeDasharray="3 3" className={ANIM.pulse} />;
 }
+
+/* Curtain is 1 unit wide inside a group scaled to the panel width, so translateX(1px) in the keyframe equals one panel width. */
+function Timeline({ x, y, w, h }: { x: number; y: number; w: number; h: number }) {
+  return (
+    <svg x={x} y={y} width={w} height={h} overflow="hidden">
+      <g transform={`scale(${w} 1)`}>
+        <g className={RUN}>
+          <rect x={0} y={0} width={1} height={h} fill={NODE_FILL} />
+          <line x1={0} y1={0} x2={0} y2={h} stroke={PAPER} strokeOpacity={0.7} strokeWidth={1} vectorEffect="non-scaling-stroke" className={`${CUR} ${GATE}`} />
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+const DRAFT_TOKENS: [string, string, boolean][] = [['the', GREEN, false], ['cache', GREEN, false], ['is', GREEN, false], ['at', AMBER, false], ['every', ROSE, true]];
 
 /* Cover: cache filling on the left, batching slots and a verified draft on the right. */
 const Cover: CoverComponent = ({ uid, title, className }) => (
   <CoverFrame uid={uid} title={title} className={className} glow={[240, 170, 220]}>
+    <style>{STYLE}</style>
     <text {...caption} x={40} y={44}>Prefill fills the cache, decode reads it every step</text>
     <text {...caption} x={600} y={44} textAnchor="end">Slots and drafts</text>
 
     <Panel x={40} y={56} w={320} h={200} />
-    <TokenRow x={56} y={70} w={30} h={18} gap={4} tokens={PROMPT} />
-    <Edge d="M190 92V100" uid={uid} />
+    <TokenRow x={56} y={70} w={30} h={18} gap={4} tokens={PROMPT} from={0} stagger={60} />
+    <Edge d="M190 92V100" uid={uid} className={GATE} style={delay(600)} />
     <CacheGrid x={56} y={104} cols={8} rows={6} cw={30} ch={16} gx={4} gy={4} outline />
-    <CacheGrid x={56} y={104} cols={8} rows={6} cw={30} ch={16} gx={4} gy={4} stagger={120} />
+    <CacheGrid x={56} y={104} cols={8} rows={6} cw={30} ch={16} gx={4} gy={4} from={800} rowStagger={110} />
     <g transform="translate(56 104)">
-      <g className={ANIM.travel} style={travel(238, 0, 1000)}>
-        <rect width={30} height={116} fill={PAPER} fillOpacity={0.16} />
-      </g>
+      {[2100, 2900, 3700].map((ms) => (
+        <g key={ms} className={GO} style={go(238, 0, ms)}>
+          <rect width={30} height={116} fill={PAPER} fillOpacity={0.16} />
+        </g>
+      ))}
     </g>
     <text {...caption} x={56} y={240}>per token: 2 x layers x kv heads x head dim x bytes</text>
 
@@ -97,30 +144,29 @@ const Cover: CoverComponent = ({ uid, title, className }) => (
     <text {...mono} x={392} y={79.5} fill={TEXT_MUTED}>s0</text>
     <text {...mono} x={392} y={101.5} fill={TEXT_MUTED}>s1</text>
     <text {...mono} x={392} y={123.5} fill={TEXT_MUTED}>s2</text>
-    <Seq x={412} y={68} w={176} tone={ACCENT} />
-    <Seq x={412} y={90} w={80} tone={ACCENT} />
-    <Seq x={496} y={90} w={92} tone={GREEN} />
-    <Seq x={412} y={112} w={124} tone={ACCENT} />
-    <Seq x={540} y={112} w={48} tone={GREEN} />
-    <g transform="translate(412 68)">
-      <g className={ANIM.travel} style={travel(176, 0)}>
-        <path d="M0 0V60" stroke={PAPER} strokeOpacity={0.7} strokeWidth={1} />
-      </g>
+    <g className={GATE} style={delay(0)}>
+      <Seq x={412} y={68} w={176} tone={ACCENT} />
+      <Seq x={412} y={90} w={80} tone={ACCENT} />
+      <Seq x={496} y={90} w={92} tone={GREEN} />
+      <Seq x={412} y={112} w={124} tone={ACCENT} />
+      <Seq x={540} y={112} w={48} tone={GREEN} />
     </g>
+    <Timeline x={412} y={66} w={176} h={64} />
     <text {...caption} x={392} y={140}>continuous batching: a freed slot is refilled</text>
 
     <Panel x={376} y={164} w={224} h={92} />
     <text {...caption} x={392} y={182}>draft tokens after one verify pass</text>
-    {[
-      ['the', GREEN, false],
-      ['cache', GREEN, false],
-      ['is', GREEN, false],
-      ['at', AMBER, false],
-      ['every', ROSE, true],
-    ].map(([t, tone, dead], i) => (
-      <g key={t as string}>
-        <rect x={392 + i * 42} y={196} width={36} height={22} rx={3} fill={tone as string} fillOpacity={dead ? 0.05 : 0.22} stroke={tone as string} strokeOpacity={dead ? 0.5 : 0.75} strokeWidth={1} strokeDasharray={dead ? '3 3' : undefined} />
-        <text {...mono} x={410 + i * 42} y={210.5} textAnchor="middle" fill={dead ? TEXT_MUTED : (tone as string)}>{t as string}</text>
+    {DRAFT_TOKENS.map(([t], i) => (
+      <g key={`d-${t}`} className={GATE} style={delay(1200 + i * 220)}>
+        <rect x={392 + i * 42} y={196} width={36} height={22} rx={3} fill={ACCENT} fillOpacity={0.18} stroke={ACCENT} strokeOpacity={0.7} strokeWidth={1} />
+        <text {...mono} x={410 + i * 42} y={210.5} textAnchor="middle">{t}</text>
+      </g>
+    ))}
+    {DRAFT_TOKENS.map(([t, tone, dead], i) => (
+      <g key={`v-${t}`} className={GATE} style={delay(3000 + i * 160)}>
+        <rect x={390 + i * 42} y={194} width={40} height={26} fill={NODE_FILL} />
+        <rect x={392 + i * 42} y={196} width={36} height={22} rx={3} fill={tone} fillOpacity={dead ? 0.05 : 0.22} stroke={tone} strokeOpacity={dead ? 0.5 : 0.75} strokeWidth={1} strokeDasharray={dead ? '3 3' : undefined} />
+        <text {...mono} x={410 + i * 42} y={210.5} textAnchor="middle" fill={dead ? TEXT_MUTED : tone}>{t}</text>
       </g>
     ))}
     <text {...caption} x={392} y={240}>accept, accept, accept, resample, discard</text>
@@ -137,33 +183,41 @@ const Cover: CoverComponent = ({ uid, title, className }) => (
 /* Figure 1: prefill writes every column of the cache at once; decode reads all of them and appends one. */
 const PrefillDecode: CoverComponent = ({ uid, title, className }) => (
   <CoverFrame uid={uid} title={title} className={className} glow={[320, 180, 220]}>
+    <style>{STYLE}</style>
     <text {...caption} x={40} y={44}>Prefill: the whole prompt in one pass</text>
     <text {...caption} x={600} y={44} textAnchor="end">Decode: one token per step</text>
 
     <Panel x={40} y={56} w={272} h={240} />
-    <TokenRow x={56} y={70} w={26} h={18} gap={4} tokens={PROMPT} />
-    <Edge d="M174 92V110" uid={uid} />
-    <text {...caption} x={182} y={104}>all positions at once</text>
+    <TokenRow x={56} y={70} w={26} h={18} gap={4} tokens={PROMPT} from={0} stagger={60} />
+    <g className={GATE} style={delay(600)}>
+      <Edge d="M174 92V110" uid={uid} />
+      <text {...caption} x={182} y={104}>all positions at once</text>
+    </g>
     <CacheGrid x={56} y={116} cols={8} rows={6} cw={26} ch={14} gx={4} gy={4} outline />
-    <CacheGrid x={56} y={116} cols={8} rows={6} cw={26} ch={14} gx={4} gy={4} stagger={120} />
+    <CacheGrid x={56} y={116} cols={8} rows={6} cw={26} ch={14} gx={4} gy={4} from={800} rowStagger={110} />
     <text {...caption} x={56} y={236}>KV cache: one column of K and V per token</text>
     <Tag x={56} y={268} text="compute bound" tone="accent" />
     <Tag x={152} y={268} text="matrix x matrix" />
 
     <Panel x={328} y={56} w={272} h={240} />
-    <TokenRow x={344} y={70} w={22} h={18} gap={5} tokens={PROMPT} />
-    <g className={ANIM.blink}>
-      <rect x={560} y={70} width={22} height={18} rx={3} fill={ACCENT} fillOpacity={0.25} stroke={ACCENT} strokeWidth={1} />
-      <text {...mono} x={571} y={82.5} textAnchor="middle" fill={ACCENT}>new</text>
+    <TokenRow x={344} y={70} w={22} h={18} gap={5} tokens={PROMPT} from={0} />
+    <g className={GATE} style={delay(2150)}>
+      <g className={ANIM.pulse}>
+        <rect x={560} y={70} width={22} height={18} rx={3} fill={ACCENT} fillOpacity={0.25} stroke={ACCENT} strokeWidth={1} />
+        <text {...mono} x={571} y={82.5} textAnchor="middle" fill={ACCENT}>new</text>
+      </g>
     </g>
-    <Edge d="M571 110V94" uid={uid} />
+    <Edge d="M571 110V94" uid={uid} className={GATE} style={delay(2000)} />
     <CacheGrid x={344} y={116} cols={8} rows={6} cw={22} ch={14} gx={5} gy={4} outline />
-    <CacheGrid x={344} y={116} cols={8} rows={6} cw={22} ch={14} gx={5} gy={4} />
+    <CacheGrid x={344} y={116} cols={8} rows={6} cw={22} ch={14} gx={5} gy={4} from={0} />
     {Array.from({ length: 6 }, (_, r) => (
-      <rect key={r} x={560} y={116 + r * 18} width={22} height={14} rx={2} fill={ACCENT} fillOpacity={0.18} stroke={ACCENT} strokeOpacity={0.7} strokeWidth={1} strokeDasharray="2 2" className={ANIM.blink} />
+      <rect key={r} x={560} y={116 + r * 18} width={22} height={14} rx={2} fill={ACCENT} fillOpacity={0.18} stroke={ACCENT} strokeOpacity={0.7} strokeWidth={1} strokeDasharray="2 2" className={GATE} style={delay(2500 + r * 90)} />
     ))}
     <g transform="translate(344 116)">
-      <g className={ANIM.travel} style={travel(189, 0)}>
+      <g className={GO} style={go(189, 0, 1400)}>
+        <rect width={22} height={104} fill={PAPER} fillOpacity={0.18} />
+      </g>
+      <g className={GO} style={go(216, 0, 3500)}>
         <rect width={22} height={104} fill={PAPER} fillOpacity={0.18} />
       </g>
     </g>
@@ -187,6 +241,7 @@ const CONT: [number, number][][] = [
 
 const ContinuousBatching: CoverComponent = ({ uid, title, className }) => (
   <CoverFrame uid={uid} title={title} className={className} glow={[320, 190, 240]}>
+    <style>{STYLE}</style>
     <text {...caption} x={40} y={44}>Static batching: four slots, one batch at a time</text>
     <Panel x={40} y={56} w={560} h={112} />
     {STATIC_1.map((w, i) => {
@@ -194,19 +249,17 @@ const ContinuousBatching: CoverComponent = ({ uid, title, className }) => (
       return (
         <g key={`s1-${i}`}>
           <text {...mono} x={52} y={y + 11.5} fill={TEXT_MUTED}>slot {i}</text>
-          <Seq x={104} y={y} w={w} tone={ACCENT} />
-          {w < 240 && <Idle x={104 + w + 4} y={y} w={240 - w - 4} />}
-          <Seq x={352} y={y} w={STATIC_2[i]} tone={GREEN} />
-          {STATIC_2[i] < 236 && <Idle x={352 + STATIC_2[i] + 4} y={y} w={236 - STATIC_2[i] - 4} />}
+          <g className={GATE} style={delay(0)}>
+            <Seq x={104} y={y} w={w} tone={ACCENT} />
+            {w < 240 && <Idle x={104 + w + 4} y={y} w={240 - w - 4} />}
+            <Seq x={352} y={y} w={STATIC_2[i]} tone={GREEN} />
+            {STATIC_2[i] < 236 && <Idle x={352 + STATIC_2[i] + 4} y={y} w={236 - STATIC_2[i] - 4} />}
+          </g>
         </g>
       );
     })}
     <path d="M348 62V154" stroke={LINE} strokeWidth={1} strokeDasharray="3 3" />
-    <g transform="translate(104 68)">
-      <g className={ANIM.travel} style={travel(484, 0)}>
-        <path d="M0 0V82" stroke={PAPER} strokeOpacity={0.7} strokeWidth={1} />
-      </g>
-    </g>
+    <Timeline x={104} y={64} w={484} h={92} />
     <text {...caption} x={104} y={162}>the next batch starts only when the longest sequence of this one ends</text>
 
     <text {...caption} x={40} y={190}>Continuous batching: the scheduler runs at every decode step</text>
@@ -216,15 +269,13 @@ const ContinuousBatching: CoverComponent = ({ uid, title, className }) => (
       return (
         <g key={`c-${i}`}>
           <text {...mono} x={52} y={y + 11.5} fill={TEXT_MUTED}>slot {i}</text>
-          {row.map(([x, w], j) => <Seq key={`${x}-${j}`} x={x} y={y} w={w} tone={j % 2 === 0 ? ACCENT : GREEN} />)}
+          <g className={GATE} style={delay(0)}>
+            {row.map(([x, w], j) => <Seq key={`${x}-${j}`} x={x} y={y} w={w} tone={j % 2 === 0 ? ACCENT : GREEN} />)}
+          </g>
         </g>
       );
     })}
-    <g transform="translate(104 214)">
-      <g className={ANIM.travel} style={travel(484, 0)}>
-        <path d="M0 0V82" stroke={PAPER} strokeOpacity={0.7} strokeWidth={1} />
-      </g>
-    </g>
+    <Timeline x={104} y={210} w={484} h={92} />
     <text {...caption} x={104} y={308}>a slot frees at the next step and the newcomer's prefill runs in that same step</text>
 
     <Tag x={40} y={336} text="idle slot" tone="rose" />
@@ -239,19 +290,30 @@ const DRAFT = ['the', 'cache', 'is', 'read', 'every'];
 const RATIO = ['p/q 1.3', 'p/q 0.9', 'p/q 0.6', 'p/q 0.1', 'p/q 0.8'];
 const RESULT: [string, string, boolean][] = [['the', GREEN, false], ['cache', GREEN, false], ['is', GREEN, false], ['at', AMBER, false], ['every', ROSE, true]];
 const COL = (i: number) => 148 + i * 72;
+const HOP = 520;
 
 const SpeculativeDecoding: CoverComponent = ({ uid, title, className }) => (
   <CoverFrame uid={uid} title={title} className={className} glow={[320, 190, 240]}>
+    <style>{STYLE}</style>
     <text {...caption} x={40} y={44}>Draft proposes, target verifies, the acceptance rule keeps the target's distribution</text>
 
     <Panel x={40} y={56} w={560} h={76} />
     <text {...caption} x={56} y={74}>draft model: five cheap sequential steps</text>
-    <rect x={56} y={88} width={76} height={26} rx={3} fill={NODE_FILL_2} stroke={LINE} strokeWidth={1} />
-    <text {...mono} x={94} y={104.5} textAnchor="middle" fill={TEXT_MUTED}>context</text>
     <Edge d="M134 101H146" uid={uid} />
     {DRAFT.map((t, i) => (
+      <g key={`hop-${t}`} transform={`translate(${i === 0 ? 94 : COL(i) - 44} 101)`}>
+        <g className={GO} style={go(i === 0 ? 82 : 72, 0, 200 + i * HOP)}>
+          <circle r={2.5} fill={ACCENT} />
+        </g>
+      </g>
+    ))}
+    <g className={GATE} style={delay(0)}>
+      <rect x={56} y={88} width={76} height={26} rx={3} fill={NODE_FILL_2} stroke={LINE} strokeWidth={1} />
+      <text {...mono} x={94} y={104.5} textAnchor="middle" fill={TEXT_MUTED}>context</text>
+    </g>
+    {DRAFT.map((t, i) => (
       <g key={t}>
-        <g className={ANIM.grow} style={grow(i * 220)}>
+        <g className={GATE} style={delay(500 + i * HOP)}>
           <rect x={COL(i)} y={88} width={56} height={26} rx={3} fill={ACCENT} fillOpacity={0.18} stroke={ACCENT} strokeOpacity={0.7} strokeWidth={1} />
           <text {...mono} x={COL(i) + 28} y={104.5} textAnchor="middle">{t}</text>
         </g>
@@ -263,9 +325,9 @@ const SpeculativeDecoding: CoverComponent = ({ uid, title, className }) => (
 
     <Panel x={40} y={148} w={560} h={76} />
     <text {...caption} x={56} y={166}>target model: one forward pass scores all positions in parallel</text>
-    <path d="M144 176H496V212H144Z" fill="none" stroke={ACCENT} strokeOpacity={0.7} strokeWidth={1.25} pathLength={1} className={ANIM.draw} />
+    <path d="M144 176H496V212H144Z" fill="none" stroke={ACCENT} strokeOpacity={0.7} strokeWidth={1.25} pathLength={1} className={DRAW} style={delay(3000)} />
     {RATIO.map((t, i) => (
-      <g key={t}>
+      <g key={t} className={GATE} style={delay(3500)}>
         <rect x={COL(i)} y={180} width={56} height={26} rx={3} fill={i === 3 ? ROSE : ACCENT} fillOpacity={0.14} stroke={i === 3 ? ROSE : ACCENT} strokeOpacity={0.6} strokeWidth={1} />
         <text {...mono} x={COL(i) + 28} y={196.5} textAnchor="middle" fill={i === 3 ? ROSE : undefined}>{t}</text>
       </g>
@@ -276,7 +338,7 @@ const SpeculativeDecoding: CoverComponent = ({ uid, title, className }) => (
     <Panel x={40} y={240} w={560} h={76} />
     <text {...caption} x={56} y={258}>result: accepted prefix, one corrected token, the rest discarded</text>
     {RESULT.map(([t, tone, dead], i) => (
-      <g key={t}>
+      <g key={t} className={GATE} style={delay(3800 + i * 140)}>
         <rect x={COL(i)} y={272} width={56} height={26} rx={3} fill={tone} fillOpacity={dead ? 0.05 : 0.2} stroke={tone} strokeOpacity={dead ? 0.5 : 0.75} strokeWidth={1} strokeDasharray={dead ? '3 3' : undefined} />
         <text {...mono} x={COL(i) + 28} y={288.5} textAnchor="middle" fill={dead ? TEXT_MUTED : tone}>{t}</text>
       </g>

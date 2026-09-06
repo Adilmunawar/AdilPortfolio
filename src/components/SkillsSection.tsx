@@ -1,16 +1,17 @@
 'use client';
 
-import { BrainCircuit, Cloud, Database, Monitor, Wrench, type LucideIcon } from 'lucide-react';
+import { BrainCircuit, Database, Monitor, Wrench, type LucideIcon } from 'lucide-react';
 import { Reveal } from './Reveal';
 import Achievements from './Achievements';
 import { LogoLoop, type LogoItem } from './LogoLoop';
 
 const DEVICON = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons';
-const INVERT = new Set(['nextjs', 'github', 'express', 'vercel']);
+const INVERT = new Set(['nextjs', 'github', 'express', 'vercel', 'amazonwebservices', 'linux']);
 
 type Logo = LogoItem & { src: string; alt: string; invert?: boolean };
-const logo = (name: string, alt: string): Logo => ({
-  src: `${DEVICON}/${name}/${name}-original.svg`,
+// AWS only ships a wordmark variant on the CDN, so the file suffix is overridable.
+const logo = (name: string, alt: string, variant = 'original'): Logo => ({
+  src: `${DEVICON}/${name}/${name}-${variant}.svg`,
   alt,
   invert: INVERT.has(name),
 });
@@ -28,6 +29,7 @@ const rows: { title: string; icon: LucideIcon; direction: 'left' | 'right'; logo
       logo('html5', 'HTML5'),
       logo('css3', 'CSS3'),
       logo('tailwindcss', 'Tailwind'),
+      logo('vitejs', 'Vite'),
       logo('vuejs', 'Vue.js'),
     ],
   },
@@ -38,6 +40,7 @@ const rows: { title: string; icon: LucideIcon; direction: 'left' | 'right'; logo
     logos: [
       logo('nodejs', 'Node.js'),
       logo('python', 'Python'),
+      logo('fastapi', 'FastAPI'),
       logo('express', 'Express'),
       logo('azuresqldatabase', 'SQL'),
       logo('postgresql', 'PostgreSQL'),
@@ -51,30 +54,32 @@ const rows: { title: string; icon: LucideIcon; direction: 'left' | 'right'; logo
     icon: BrainCircuit,
     direction: 'left',
     logos: [
-      logo('python', 'Python'),
       logo('pytorch', 'PyTorch'),
       logo('tensorflow', 'TensorFlow'),
+      logo('keras', 'Keras'),
       logo('scikitlearn', 'scikit-learn'),
+      logo('opencv', 'OpenCV'),
       logo('pandas', 'pandas'),
       logo('numpy', 'NumPy'),
-      logo('opencv', 'OpenCV'),
+      logo('anaconda', 'Anaconda'),
       logo('jupyter', 'Jupyter'),
-      logo('docker', 'Docker'),
     ],
   },
   {
-    title: 'Tools & cloud',
+    title: 'Cloud & tooling',
     icon: Wrench,
     direction: 'right',
     logos: [
-      logo('git', 'Git'),
-      logo('github', 'GitHub'),
-      logo('vscode', 'VS Code'),
-      logo('docker', 'Docker'),
-      logo('figma', 'Figma'),
-      logo('webpack', 'Webpack'),
+      logo('amazonwebservices', 'AWS', 'original-wordmark'),
+      logo('googlecloud', 'Google Cloud'),
       logo('azure', 'Azure'),
       logo('vercel', 'Vercel'),
+      logo('docker', 'Docker'),
+      logo('kubernetes', 'Kubernetes'),
+      logo('linux', 'Linux'),
+      logo('git', 'Git'),
+      logo('github', 'GitHub'),
+      logo('figma', 'Figma'),
     ],
   },
 ];
